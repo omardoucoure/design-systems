@@ -1,0 +1,95 @@
+{
+  "$description": "HaHo Design System — Primitives Collection (82 variables × 4 brand modes)",
+  "$source": "Figma file 4kcXyu53LWpUMVyhPvA4hY, variable set 2-5334",
+
+  "colors": {
+    "brand": {
+      "primary80":     { "coralCamo": "#657671", "seaLime": "#5370A1", "mistyRose": "#5E6B80", "blueHaze": "#4A5FD5" },
+      "primary100":    { "coralCamo": "#465A54", "seaLime": "#3B588A", "mistyRose": "#4C5A6F", "blueHaze": "#2742DA" },
+      "primary120":    { "coralCamo": "#252F2C", "seaLime": "#1B2940", "mistyRose": "#262D37", "blueHaze": "#21253D" },
+      "secondary10":   { "coralCamo": "#FFF3F2", "seaLime": "#FAFEF2", "mistyRose": "#FFF5FB", "blueHaze": "#FCFAF8" },
+      "secondary40":   { "coralCamo": "#FFC3BF", "seaLime": "#E5FBBF", "mistyRose": "#FED6EF", "blueHaze": "#F4EAE3" },
+      "secondary100":  { "coralCamo": "#FF6A5F", "seaLime": "#B1E158", "mistyRose": "#EA81C2", "blueHaze": "#D6B7A1" },
+      "secondary120":  { "coralCamo": "#EB5B52", "seaLime": "#A0D342", "mistyRose": "#DC70B3", "blueHaze": "#CCA78F" }
+    },
+    "neutrals": {
+      "0":    { "coralCamo": "#FFFFFF", "seaLime": "#FFFFFF", "mistyRose": "#FFFFFF", "blueHaze": "#FFFFFF" },
+      "0.5":  { "coralCamo": "#FAFAF9", "seaLime": "#FAFAFA", "mistyRose": "#F9F9FA", "blueHaze": "#F9F8F8" },
+      "1":    { "coralCamo": "#F5F5F3", "seaLime": "#F5F6F4", "mistyRose": "#F4F4F5", "blueHaze": "#F3F1F1" },
+      "1.5":  { "coralCamo": "#F0F0EC", "seaLime": "#F0F1EF", "mistyRose": "#EEEEF1", "blueHaze": "#EDEBE9" },
+      "2":    { "coralCamo": "#EBEBE6", "seaLime": "#EBEDE9", "mistyRose": "#E9E8EC", "blueHaze": "#E7E4E2" },
+      "3":    { "coralCamo": "#E2E1DA", "seaLime": "#E1E3DF", "mistyRose": "#DDDDE2", "blueHaze": "#DBD6D4" },
+      "4":    { "coralCamo": "#D8D7CD", "seaLime": "#D7DAD5", "mistyRose": "#D2D1D9", "blueHaze": "#CFC9C5" },
+      "5":    { "coralCamo": "#CECDC1", "seaLime": "#CDD1CA", "mistyRose": "#C7C6CF", "blueHaze": "#C3BBB7" },
+      "6":    { "coralCamo": "#A5A49A", "seaLime": "#A4A8A2", "mistyRose": "#9F9EA6", "blueHaze": "#9C9692" },
+      "7":    { "coralCamo": "#7C7B74", "seaLime": "#7B7E7A", "mistyRose": "#77777C", "blueHaze": "#75706E" },
+      "8":    { "coralCamo": "#52524D", "seaLime": "#535551", "mistyRose": "#504F53", "blueHaze": "#4E4B49" },
+      "8.5":  { "coralCamo": "#3E3E3A", "seaLime": "#3E403D", "mistyRose": "#3C3B3E", "blueHaze": "#3B3837" },
+      "9":    { "coralCamo": "#292927", "seaLime": "#2A2B29", "mistyRose": "#282829", "blueHaze": "#272525" },
+      "9.5":  { "coralCamo": "#151513", "seaLime": "#151715", "mistyRose": "#141415", "blueHaze": "#141312" },
+      "10":   { "coralCamo": "#000000", "seaLime": "#000000", "mistyRose": "#000000", "blueHaze": "#000000" }
+    },
+    "semantic": {
+      "error":     { "all": "#FF6565" },
+      "warning":   { "all": "#FFD143" },
+      "validated": { "all": "#76F057" },
+      "infoFocus": { "all": "#53D5FF" }
+    }
+  },
+
+  "spacing": {
+    "$description": "Shared across all brands",
+    "none":   0,
+    "xxxs":   2,
+    "xxs":    4,
+    "xs":     8,
+    "sm":     12,
+    "md":     16,
+    "lg":     24,
+    "xl":     32,
+    "xxl":    40,
+    "xxxl":   48,
+    "xxxxl":  64
+  },
+
+  "radius": {
+    "$description": "Shared across all brands",
+    "none":   0,
+    "xxs":    4,
+    "xs":     8,
+    "sm":     12,
+    "md":     16,
+    "lg":     24,
+    "xl":     32,
+    "xxl":    40,
+    "xxxl":   64,
+    "full":   360
+  },
+
+  "borderWidth": {
+    "none": 0,
+    "sm":   1,
+    "md":   2,
+    "lg":   4
+  },
+
+  "opacity": {
+    "none": 0,
+    "sm":   25,
+    "md":   50,
+    "lg":   75,
+    "full": 100
+  },
+
+  "dropShadow": {
+    "positioning": {
+      "none": 0, "xxxs": 2, "xxs": 4, "xs": 8, "sm": 12, "md": 16, "lg": 20, "xl": 24, "xxl": 32, "xxxl": 48
+    },
+    "blur": {
+      "none": 0, "xxs": 2, "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 48, "xxl": 64
+    },
+    "spread": {
+      "none": 0, "xxs": -2, "xs": -4, "sm": -8, "md": -12, "lg": -16, "xl": -20, "xxl": -24
+    }
+  }
+}
