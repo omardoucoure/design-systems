@@ -7,50 +7,48 @@ struct CombinationGridView: View {
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 4)
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("4 Brands x 4 Styles = 16 Combinations")
-                        .font(theme.typography.largeSemiBold.font)
-                        .foregroundStyle(theme.colors.textNeutral9)
-                        .padding(.horizontal)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("4 Brands x 4 Styles = 16 Combinations")
+                    .font(theme.typography.largeSemiBold.font)
+                    .foregroundStyle(theme.colors.textNeutral9)
+                    .padding(.horizontal)
 
-                    // Column headers
-                    HStack(spacing: 8) {
-                        Color.clear.frame(width: 0)
+                // Column headers
+                HStack(spacing: 8) {
+                    Color.clear.frame(width: 0)
+                    ForEach(Brand.allCases) { brand in
+                        Text(brand.displayName)
+                            .font(theme.typography.small.font)
+                            .foregroundStyle(theme.colors.textNeutral8)
+                            .frame(maxWidth: .infinity)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                    }
+                }
+                .padding(.horizontal)
+
+                // Grid rows
+                ForEach(Style.allCases) { style in
+                    HStack(alignment: .top, spacing: 8) {
+                        Text(style.displayName)
+                            .font(theme.typography.small.font)
+                            .foregroundStyle(theme.colors.textNeutral8)
+                            .frame(width: 50)
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.6)
+
                         ForEach(Brand.allCases) { brand in
-                            Text(brand.displayName)
-                                .font(theme.typography.small.font)
-                                .foregroundStyle(theme.colors.textNeutral8)
-                                .frame(maxWidth: .infinity)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.6)
+                            miniPreviewCard(brand: brand, style: style)
                         }
                     }
                     .padding(.horizontal)
-
-                    // Grid rows
-                    ForEach(Style.allCases) { style in
-                        HStack(alignment: .top, spacing: 8) {
-                            Text(style.displayName)
-                                .font(theme.typography.small.font)
-                                .foregroundStyle(theme.colors.textNeutral8)
-                                .frame(width: 50)
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.6)
-
-                            ForEach(Brand.allCases) { brand in
-                                miniPreviewCard(brand: brand, style: style)
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
                 }
-                .padding(.vertical)
             }
-            .background(theme.colors.surfaceNeutral0_5)
-            .navigationTitle("Combination Grid")
+            .padding(.vertical)
         }
+        .background(theme.colors.surfaceNeutral0_5)
+        .navigationTitle("Combination Grid")
     }
 
     private func miniPreviewCard(brand: Brand, style: Style) -> some View {
@@ -94,4 +92,9 @@ struct CombinationGridView: View {
                 .stroke(config.colors.borderNeutral3, lineWidth: 0.5)
         )
     }
+}
+
+#Preview {
+    CombinationGridView()
+        .previewThemed()
 }

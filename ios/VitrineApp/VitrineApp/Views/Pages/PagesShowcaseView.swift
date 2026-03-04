@@ -1,0 +1,85 @@
+import SwiftUI
+import DesignSystem
+
+// MARK: - PagesShowcaseView
+
+/// Lists all page examples. Each row navigates to a full-screen page demo.
+struct PagesShowcaseView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        List {
+            Section("Onboarding") {
+                NavigationLink("Walkthrough 1 — Text carousel") {
+                    WalkthroughPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Walkthrough 2 — Stacked images") {
+                    Walkthrough2Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Walkthrough 3 — Side-by-side") {
+                    Walkthrough3Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
+
+            Section("Authentication") {
+                NavigationLink("Log In 1 — Capsule tabs") {
+                    LoginPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Log In 2 — Underline tabs") {
+                    Login2Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Log In 4 — Social first") {
+                    Login4Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Log In 6 — Error state") {
+                    Login6ErrorPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Biometric Login") {
+                    BiometricLoginPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Passcode Login") {
+                    PasscodeLoginPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
+
+            Section("Password Recovery") {
+                NavigationLink("Forgot Password") {
+                    ForgotPasswordPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("Verify Code") {
+                    VerifyCodePage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("New Password") {
+                    NewPasswordPage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
+        }
+        .navigationTitle("Pages")
+    }
+}
+
+#Preview {
+    PagesShowcaseView()
+        .previewThemed()
+}

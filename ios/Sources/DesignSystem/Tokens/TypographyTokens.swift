@@ -8,7 +8,15 @@ public struct TypographyStyle: Sendable {
     public let letterSpacing: CGFloat
 
     public var font: Font {
-        .custom("DMSans", size: size).weight(weight)
+        .custom("DMSans-\(weightSuffix)", size: size)
+    }
+
+    private var weightSuffix: String {
+        switch weight {
+        case .semibold: return "SemiBold"
+        case .medium: return "Medium"
+        default: return "Regular"
+        }
     }
 
     /// Line spacing = (lineHeight * size) - size
@@ -22,11 +30,16 @@ public struct TypographyStyle: Sendable {
     }
 }
 
-/// 11 named typography styles using DM Sans (shared across all modes).
+/// Named typography styles using DM Sans (shared across all modes).
 public struct TypographyTokens: Sendable {
     public let display1: TypographyStyle
+    public let display2: TypographyStyle
     public let h1: TypographyStyle
+    public let h2: TypographyStyle
     public let h3: TypographyStyle
+    public let h4: TypographyStyle
+    public let h5: TypographyStyle
+    public let h6: TypographyStyle
     public let largeSemiBold: TypographyStyle
     public let largeRegular: TypographyStyle
     public let bodySemiBold: TypographyStyle
@@ -38,8 +51,13 @@ public struct TypographyTokens: Sendable {
 
     public static let shared = TypographyTokens(
         display1: TypographyStyle(size: 56, weight: .medium, lineHeight: 1.2, letterSpacing: -5.0),
+        display2: TypographyStyle(size: 48, weight: .medium, lineHeight: 1.2, letterSpacing: -5.0),
         h1: TypographyStyle(size: 40, weight: .medium, lineHeight: 1.2, letterSpacing: -4.5),
+        h2: TypographyStyle(size: 36, weight: .medium, lineHeight: 1.2, letterSpacing: -4.5),
         h3: TypographyStyle(size: 32, weight: .medium, lineHeight: 1.2, letterSpacing: -4.5),
+        h4: TypographyStyle(size: 24, weight: .medium, lineHeight: 1.4, letterSpacing: -4.0),
+        h5: TypographyStyle(size: 20, weight: .medium, lineHeight: 1.4, letterSpacing: -4.0),
+        h6: TypographyStyle(size: 18, weight: .medium, lineHeight: 1.4, letterSpacing: -3.5),
         largeSemiBold: TypographyStyle(size: 18, weight: .semibold, lineHeight: 1.5, letterSpacing: -3.5),
         largeRegular: TypographyStyle(size: 18, weight: .regular, lineHeight: 1.5, letterSpacing: -3.5),
         bodySemiBold: TypographyStyle(size: 16, weight: .semibold, lineHeight: 1.5, letterSpacing: -2.5),

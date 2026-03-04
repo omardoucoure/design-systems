@@ -20,6 +20,12 @@ private struct DesignSystemModifier: ViewModifier {
     let brand: Brand
     let style: Style
 
+    init(brand: Brand, style: Style) {
+        FontRegistration.registerFonts()
+        self.brand = brand
+        self.style = style
+    }
+
     func body(content: Content) -> some View {
         content
             .environment(\.theme, ThemeConfiguration(brand: brand, style: style))

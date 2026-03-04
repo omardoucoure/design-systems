@@ -5,17 +5,15 @@ struct ColorPaletteView: View {
     @Environment(\.theme) private var theme
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    activeThemeSection
-                    allBrandPrimitivesSection
-                }
-                .padding()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                activeThemeSection
+                allBrandPrimitivesSection
             }
-            .background(theme.colors.surfaceNeutral0_5)
-            .navigationTitle("Color Palette")
+            .padding()
         }
+        .background(theme.colors.surfaceNeutral0_5)
+        .navigationTitle("Color Palette")
     }
 
     // MARK: - Active Theme Resolved Colors
@@ -124,4 +122,14 @@ struct ColorPaletteView: View {
     private func neutralBar(_ color: Color) -> some View {
         Rectangle().fill(color).frame(height: 20)
     }
+}
+
+#Preview("Light Rounded") {
+    ColorPaletteView()
+        .previewThemed(brand: .coralCamo, style: .lightRounded)
+}
+
+#Preview("Dark Rounded") {
+    ColorPaletteView()
+        .previewThemed(brand: .coralCamo, style: .darkRounded)
 }

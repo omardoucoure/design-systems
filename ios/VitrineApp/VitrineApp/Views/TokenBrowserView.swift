@@ -5,21 +5,19 @@ struct TokenBrowserView: View {
     @Environment(\.theme) private var theme
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 32) {
-                    spacingSection
-                    radiusSection
-                    typographySection
-                    borderSection
-                    opacitySection
-                    elevationSection
-                }
-                .padding()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 32) {
+                spacingSection
+                radiusSection
+                typographySection
+                borderSection
+                opacitySection
+                elevationSection
             }
-            .background(theme.colors.surfaceNeutral0_5)
-            .navigationTitle("Token Browser")
+            .padding()
         }
+        .background(theme.colors.surfaceNeutral0_5)
+        .navigationTitle("Token Browser")
     }
 
     // MARK: - Spacing
@@ -196,4 +194,14 @@ struct TokenBrowserView: View {
                 .minimumScaleFactor(0.7)
         }
     }
+}
+
+#Preview("Rounded") {
+    TokenBrowserView()
+        .previewThemed(brand: .seaLime, style: .lightRounded)
+}
+
+#Preview("Sharp") {
+    TokenBrowserView()
+        .previewThemed(brand: .seaLime, style: .lightSharp)
 }

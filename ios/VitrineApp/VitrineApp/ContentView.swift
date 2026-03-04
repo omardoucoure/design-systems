@@ -7,47 +7,95 @@ struct ContentView: View {
     @Environment(\.theme) private var theme
 
     var body: some View {
-        TabView {
-            ColorPaletteView()
-                .tabItem {
-                    Label("Colors", systemImage: "paintpalette")
-                }
+        NavigationStack {
+            TabView {
+                ComponentShowcaseView()
+                    .tabItem {
+                        Label("Components", systemImage: "cube")
+                    }
 
-            TokenBrowserView()
-                .tabItem {
-                    Label("Tokens", systemImage: "slider.horizontal.3")
-                }
+                PagesShowcaseView()
+                    .tabItem {
+                        Label("Pages", systemImage: "doc.richtext")
+                    }
 
-            CombinationGridView()
-                .tabItem {
-                    Label("Grid", systemImage: "square.grid.4x3.fill")
-                }
+                ColorPaletteView()
+                    .tabItem {
+                        Label("Colors", systemImage: "paintpalette")
+                    }
 
-            ComponentShowcaseView()
-                .tabItem {
-                    Label("Components", systemImage: "cube")
-                }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 12) {
-                    Picker("Brand", selection: $brand) {
+                TokenBrowserView()
+                    .tabItem {
+                        Label("Tokens", systemImage: "slider.horizontal.3")
+                    }
+
+                CombinationGridView()
+                    .tabItem {
+                        Label("Grid", systemImage: "square.grid.4x3.fill")
+                    }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Menu {
                         ForEach(Brand.allCases) { b in
-                            Text(b.displayName).tag(b)
+                            Button {
+                                brand = b
+                            } label: {
+                                if b == brand {
+                                    Label(b.displayName, systemImage: "checkmark")
+                                } else {
+                                    Text(b.displayName)
+                                }
+                            }
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "paintbrush")
+                            Text(brand.displayName)
+                                .font(.subheadline.weight(.medium))
                         }
                     }
-                    .pickerStyle(.menu)
+                }
 
-                    Picker("Style", selection: $style) {
-                        ForEach(Style.allCases) { s in
-                            Text(s.displayName).tag(s)
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack(spacing: 12) {
+                        // Dark mode toggle
+                        Button {
+                            let dark = !style.isDark
+                            let sharp = style.isSharp
+                            switch (dark, sharp) {
+                            case (false, false): style = .lightRounded
+                            case (true, false): style = .darkRounded
+                            case (false, true): style = .lightSharp
+                            case (true, true): style = .darkSharp
+                            }
+                        } label: {
+                            Image(systemName: style.isDark ? "moon.fill" : "sun.max.fill")
+                        }
+
+                        // Shape toggle
+                        Button {
+                            let dark = style.isDark
+                            let sharp = !style.isSharp
+                            switch (dark, sharp) {
+                            case (false, false): style = .lightRounded
+                            case (true, false): style = .darkRounded
+                            case (false, true): style = .lightSharp
+                            case (true, true): style = .darkSharp
+                            }
+                        } label: {
+                            Image(systemName: style.isSharp ? "square" : "square.on.circle")
                         }
                     }
-                    .pickerStyle(.menu)
                 }
             }
         }
-        .background(theme.colors.surfaceNeutral0_5)
-        .preferredColorScheme(theme.isDark ? .dark : .light)
+        .preferredColorScheme(style.isDark ? .dark : .light)
     }
+}
+
+#Preview {
+    ContentView(brand: .constant(.coralCamo), style: .constant(.lightRounded))
+        .previewThemed()
 }

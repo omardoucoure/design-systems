@@ -1,0 +1,149 @@
+# Design System — Project Instructions
+
+## ZERO-HALLUCINATION POLICY (CRITICAL — READ FIRST)
+
+**NEVER guess, assume, or hallucinate ANY design value.** Every single property must be read directly from the Figma design context output. If you cannot find a value in the Figma data, ASK — do not invent it.
+
+### What "no hallucination" means concretely:
+
+- **DO NOT** guess which typography token to use — read the exact `font-size`, `font-weight` from Figma and map to the correct token (h2=36, h4=24, h5=20, bodySemiBold=16/600, body=16/500, bodyRegular=16/400, caption=14, small=12)
+- **DO NOT** guess button styles — read the background color from Figma (`surfaceSecondary100` = `.filledA`, `surfacePrimary100` = `.filledB`, `surfacePrimary120` = `.filledC`, `surfaceNeutral2` = `.neutral`)
+- **DO NOT** guess spacing/padding — read `gap`, `px`, `py`, `pt`, `pb`, `pl`, `pr` from Figma and map to exact spacing tokens (xxs=4, xs=8, sm=12, md=16, lg=24, xl=32, xxl=40, xxxl=48, xxxxl=64)
+- **DO NOT** guess component states — read the actual Figma content (dots `••••` = secure/password field, checked checkbox = `true` state, specific border color = specific state)
+- **DO NOT** guess overlap/margin values — read `mb-[-50px]` from Figma, use exactly `-50`
+- **DO NOT** invent initial state — if Figma shows a checkbox checked, initialize it as `true`
+
+### Common hallucination mistakes to NEVER repeat:
+
+1. **Password fields**: If Figma text shows `••••••••`, use `isSecure: true` on DSTextField — NEVER show plaintext
+2. **Asymmetric padding**: When Figma shows `px=32, py=40`, do NOT use a single uniform `padding: 32` — use `padding: 0` on DSCard and apply `.padding(.horizontal, 32).padding(.vertical, 40)` manually
+3. **Navigation bar**: If Figma has NO back button, add `.toolbar(.hidden, for: .navigationBar)` — ALWAYS check this for every page
+4. **Button style mapping**: Read the actual background color hex from Figma, map it to the correct style enum — NEVER default to `.neutral` without checking
+5. **Spacing values**: Read the exact `py`, `gap` values — do NOT substitute `xxs` (4) when Figma says `xs` (8)
+
+### Mandatory extraction checklist (before writing ANY page):
+
+For each element in the Figma design context output, extract:
+- [ ] `font-*` → typography token
+- [ ] `bg-[var(--surface/*)]` → color token
+- [ ] `text-[color:var(--text/*)]` → text color token
+- [ ] `border-*` → border color + width
+- [ ] `gap-[var(--spacing/*)]` → spacing token
+- [ ] `px-*`, `py-*`, `pt-*`, `pb-*` → padding (check for asymmetry!)
+- [ ] `rounded-[var(--radius/*)]` → radius token
+- [ ] `h-[*px]`, `w-[*px]` → fixed dimensions
+- [ ] `opacity-*` → opacity values
+- [ ] `mb-[-*px]` → negative margins for overlaps
+- [ ] Text content (dots = secure, checked = true, specific icon names)
+
+## How to Read Figma Design Context Output
+
+The `get_design_context` tool returns React+Tailwind code with CSS variables that map to our design tokens:
+
+### Token mapping reference:
+
+| Figma CSS Variable | Swift Token |
+|---|---|
+| `var(--spacing/spacing-sm-(12),12px)` | `theme.spacing.sm` |
+| `var(--spacing/spacing-lg-(24),24px)` | `theme.spacing.lg` |
+| `var(--spacing/spacing-xl-(32),32px)` | `theme.spacing.xl` |
+| `var(--spacing/spacing-xxl-(40),40px)` | `theme.spacing.xxl` |
+| `var(--spacing/spacing-xxxxl-(64),64px)` | `theme.spacing.xxxxl` |
+| `var(--surface/surface-neutral-(2),#ebebe6)` | `theme.colors.surfaceNeutral2` |
+| `var(--surface/surface-primary-(100),#465a54)` | `theme.colors.surfacePrimary100` |
+| `var(--surface/surface-secondary-(100),#ff6a5f)` | `theme.colors.surfaceSecondary100` |
+| `var(--text/text-neutral-(9),#292927)` | `theme.colors.textNeutral9` |
+| `var(--text/text-neutral-(0,5),#fafaf9)` | `theme.colors.textNeutral0_5` |
+| `var(--border/border-neutral-(2),#ebebe6)` | `theme.colors.borderNeutral2` |
+| `var(--radius/radius-xl-(32),32px)` | `theme.radius.xl` |
+| `var(--radius/radius-mg-(16),16px)` | `theme.radius.md` |
+| `font-semibold text-[16px]` | `theme.typography.bodySemiBold` |
+| `font-medium text-[16px]` | `theme.typography.body` |
+| `font-normal text-[16px]` | `theme.typography.bodyRegular` |
+| `font-medium text-[24px]` | `theme.typography.h4` |
+| `font-medium text-[20px]` | `theme.typography.h5` |
+| `font-medium text-[36px]` | `theme.typography.h2` |
+| `font-medium text-[14px]` | `theme.typography.caption` |
+| `font-medium text-[12px]` | `theme.typography.small` |
+
+### Reading padding from Figma output:
+
+When you see: `px-[var(--spacing/spacing-xl-(32),32px)] py-[var(--spacing/spacing-xxl-(40),40px)]`
+- This means: horizontal padding = `xl` (32), vertical padding = `xxl` (40)
+- Since DSCard only accepts a single `padding` parameter, use `padding: 0` and apply manually:
+```swift
+DSCard(background: ..., radius: ..., padding: 0) {
+    content
+        .padding(.horizontal, theme.spacing.xl)
+        .padding(.vertical, theme.spacing.xxl)
+}
+```
+
+### Reading overlapping cards:
+
+When you see: `mb-[-50px]` on a card
+- This means the NEXT card overlaps this one by 50px
+- Implement with `.padding(.top, -50)` on the next card in the VStack
+
+When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for overlap from the card above.
+
+## Component-First Architecture
+
+**Every visual element on a page MUST be a DS component.** Pages should be simple compositions of components.
+
+### Rules:
+1. **If a pattern appears in a Figma design, it must be a reusable component** — not inline SwiftUI in the page file
+2. **If a component doesn't exist yet, create it** in `ios/Sources/DesignSystem/Components/` before using it in a page
+3. **Pages must be thin** — only composition logic (VStack/HStack/ZStack of DS components), state management (@State), and navigation
+4. **No raw styling in pages** — colors, fonts, spacing, radius should come from components or theme tokens
+5. **Always use DSCard as container** — never build raw containers with `.background().clipShape()` in pages
+
+### Component Design Principles:
+- Components are **highly customizable via properties** — changing a property changes the state/appearance
+- Use enums for variants/styles/states (e.g., `InputState.error`, `DSButtonStyle.filledA`)
+- Accept `LocalizedStringKey` for all user-facing text
+- Access theme via `@Environment(\.theme) private var theme`
+- All tokens come from the theme, never hardcoded values
+
+### Available DS Components:
+- `DSButton` — styles: `.filledA`, `.filledB`, `.filledC`, `.neutral`, `.outlined`, `.text`
+- `DSTextField` — variants: `.filled`, `.lined` / states: `.empty`, `.filled`, `.active`, `.error`, `.validated` / supports `isSecure: true` for password fields
+- `DSCard` — container with `background`, `radius`, `padding` (use `padding: 0` for asymmetric padding)
+- `DSCheckbox` — toggle with label
+- `DSCodeInput` — OTP/verification code input (interactive, numeric keyboard)
+- `DSChip`, `DSBadge`, `DSAvatar`, `DSToggle`, `DSRadio`, `DSDivider`, `DSDropdown`, `DSListItem`, `DSSearchField`, `DSTextArea`, `DSProgressCircle`, `DSTooltip`, `DSTopAppBar`, `DSBottomAppBar`, `DSSegmentedPicker`, `DSDatePicker`
+
+### Page Implementation Checklist:
+1. **Fetch Figma context** — `get_design_context` for the node
+2. **Inventory all elements** — map each to a DS component
+3. **Extract ALL properties** from the Figma output (see extraction checklist above)
+4. **Create missing components** if needed
+5. **Compose the page** using only DS components and theme tokens
+6. **Add `.toolbar(.hidden, for: .navigationBar)`** if the Figma design has no native navigation bar
+7. **Verify against Figma screenshot** after building
+
+## Figma File Reference
+
+- **File key**: `4kcXyu53LWpUMVyhPvA4hY`
+- **File name**: HaHo — Mobile UI Kit — Multibrand Design System
+- Always use `get_design_context` or `get_screenshot` to verify designs before implementation
+
+## Project Structure
+
+- **DS Components**: `ios/Sources/DesignSystem/Components/` (public, in SPM package)
+- **Theme/Tokens**: `ios/Sources/DesignSystem/Theme/` and `ios/Sources/DesignSystem/Tokens/`
+- **App Pages**: `ios/VitrineApp/VitrineApp/Views/Pages/`
+- **Assets**: `ios/VitrineApp/VitrineApp/Assets.xcassets/`
+- **Xcode Project**: `ios/VitrineApp/VitrineApp.xcodeproj/project.pbxproj` — must register all new page files
+- **Deployment target**: iOS 16.0 — do not use iOS 17+ APIs (e.g., use old `onChange(of:)` syntax)
+
+## Build & Run
+
+```bash
+# Build
+xcodebuild -project VitrineApp.xcodeproj -scheme VitrineApp -destination 'id=9F00C211-4F98-4D02-A49D-DF1F10809873' -quiet build
+
+# Install + launch on simulator
+xcrun simctl install 9F00C211-4F98-4D02-A49D-DF1F10809873 ~/Library/Developer/Xcode/DerivedData/VitrineApp-*/Build/Products/Debug-iphonesimulator/VitrineApp.app
+xcrun simctl launch 9F00C211-4F98-4D02-A49D-DF1F10809873 com.haho.vitrine.VitrineApp
+```

@@ -1,0 +1,265 @@
+import SwiftUI
+
+// MARK: - Button Style
+
+public enum DSButtonStyle: Sendable, CaseIterable {
+    /// Secondary-colored background, dark text.
+    case filledA
+    /// Primary-colored background, light text.
+    case filledB
+    /// Primary-120 background, light text.
+    case filledC
+    /// Neutral-2 background, dark text.
+    case neutral
+    /// Transparent with primary-120 border, dark text.
+    case outlined
+    /// No background, no border, dark text.
+    case text
+}
+
+// MARK: - Button Size
+
+public enum DSButtonSize: Sendable, CaseIterable {
+    /// Height 56, icon 24, font bodySemiBold(16).
+    case big
+    /// Height 40, icon 24, font label(14).
+    case medium
+    /// Height 32, icon 20, font label(14).
+    case small
+}
+
+// MARK: - DSButton
+
+/// A themed button matching all 6 Figma styles × 3 sizes.
+///
+/// Usage:
+/// ```swift
+/// DSButton("Save", style: .filledB, size: .big) { save() }
+/// DSButton("Cancel", style: .text, size: .medium) { cancel() }
+/// DSButton(style: .neutral, size: .big, systemIcon: "xmark") { dismiss() }
+/// ```
+public struct DSButton: View {
+    @Environment(\.theme) private var theme
+    @Environment(\.isEnabled) private var isEnabled
+
+    private let label: LocalizedStringKey?
+    private let style: DSButtonStyle
+    private let size: DSButtonSize
+    private let iconLeft: String?
+    private let iconRight: String?
+    private let isFullWidth: Bool
+    private let action: () -> Void
+
+    /// Text button with optional icons.
+    public init(
+        _ label: LocalizedStringKey,
+        style: DSButtonStyle = .filledB,
+        size: DSButtonSize = .big,
+        iconLeft: String? = nil,
+        iconRight: String? = nil,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.label = label
+        self.style = style
+        self.size = size
+        self.iconLeft = iconLeft
+        self.iconRight = iconRight
+        self.isFullWidth = isFullWidth
+        self.action = action
+    }
+
+    /// Icon-only button.
+    public init(
+        style: DSButtonStyle = .neutral,
+        size: DSButtonSize = .big,
+        systemIcon: String,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.label = nil
+        self.style = style
+        self.size = size
+        self.iconLeft = systemIcon
+        self.iconRight = nil
+        self.isFullWidth = isFullWidth
+        self.action = action
+    }
+
+    // MARK: - Backward-compatible init
+
+    /// Backward-compatible initializer mapping old variants.
+    public init(
+        _ label: LocalizedStringKey,
+        variant: _LegacyButtonVariant,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.label = label
+        self.style = variant.mapped
+        self.size = .big
+        self.iconLeft = nil
+        self.iconRight = nil
+        self.isFullWidth = isFullWidth
+        self.action = action
+    }
+
+    public init(
+        variant: _LegacyButtonVariant,
+        systemIcon: String,
+        action: @escaping () -> Void
+    ) {
+        self.label = nil
+        self.style = variant.mapped
+        self.size = .big
+        self.iconLeft = systemIcon
+        self.iconRight = nil
+        self.isFullWidth = false
+        self.action = action
+    }
+
+    // MARK: - Body
+
+    public var body: some View {
+        Button(action: action) {
+            HStack(spacing: gap) {
+                if let iconLeft {
+                    Image(systemName: iconLeft)
+                        .font(.system(size: iconSize, weight: .medium))
+                        .frame(width: iconSize, height: iconSize)
+                }
+
+                if let label {
+                    Text(label)
+                }
+
+                if let iconRight {
+                    Image(systemName: iconRight)
+                        .font(.system(size: iconSize, weight: .medium))
+                        .frame(width: iconSize, height: iconSize)
+                }
+            }
+            .font(textFont)
+            .tracking(textTracking)
+            .foregroundStyle(foregroundColor)
+            .padding(.horizontal, paddingH)
+            .padding(.vertical, paddingV)
+            .frame(height: height)
+            .frame(maxWidth: isFullWidth ? .infinity : nil)
+            .background(backgroundColor)
+            .clipShape(Capsule())
+            .overlay(borderOverlay)
+            .opacity(isEnabled ? 1.0 : 0.5)
+        }
+        .buttonStyle(DSButtonPressStyle())
+    }
+
+    // MARK: - Resolved Sizes
+
+    private var height: CGFloat {
+        switch size {
+        case .big: return 56
+        case .medium: return 40
+        case .small: return 32
+        }
+    }
+
+    private var paddingH: CGFloat {
+        switch size {
+        case .big: return theme.spacing.lg
+        case .medium: return theme.spacing.md
+        case .small: return theme.spacing.sm
+        }
+    }
+
+    private var paddingV: CGFloat {
+        switch size {
+        case .big: return theme.spacing.md
+        case .medium: return theme.spacing.xs
+        case .small: return theme.spacing.xxs
+        }
+    }
+
+    private var gap: CGFloat {
+        switch size {
+        case .big, .medium: return theme.spacing.sm
+        case .small: return theme.spacing.xs
+        }
+    }
+
+    private var iconSize: CGFloat {
+        switch size {
+        case .big, .medium: return 24
+        case .small: return 20
+        }
+    }
+
+    private var textFont: Font {
+        switch size {
+        case .big: return theme.typography.bodySemiBold.font
+        case .medium, .small: return theme.typography.label.font
+        }
+    }
+
+    private var textTracking: CGFloat {
+        switch size {
+        case .big: return theme.typography.bodySemiBold.tracking
+        case .medium, .small: return theme.typography.label.tracking
+        }
+    }
+
+    // MARK: - Resolved Colors
+
+    private var backgroundColor: Color {
+        switch style {
+        case .filledA: return theme.colors.surfaceSecondary100
+        case .filledB: return theme.colors.surfacePrimary100
+        case .filledC: return theme.colors.surfacePrimary120
+        case .neutral: return theme.colors.surfaceNeutral2
+        case .outlined, .text: return .clear
+        }
+    }
+
+    private var foregroundColor: Color {
+        switch style {
+        case .filledA, .neutral, .outlined, .text:
+            return theme.colors.textNeutral9
+        case .filledB, .filledC:
+            return theme.colors.textNeutral0_5
+        }
+    }
+
+    @ViewBuilder
+    private var borderOverlay: some View {
+        if style == .outlined {
+            Capsule()
+                .stroke(theme.colors.surfacePrimary120, lineWidth: theme.borders.widthSm)
+        }
+    }
+}
+
+// MARK: - Press Style
+
+private struct DSButtonPressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.7 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
+// MARK: - Legacy Compat
+
+public enum _LegacyButtonVariant: Sendable {
+    case primary, secondary, ghost, icon
+
+    var mapped: DSButtonStyle {
+        switch self {
+        case .primary: return .filledC
+        case .secondary: return .filledA
+        case .ghost: return .text
+        case .icon: return .neutral
+        }
+    }
+}
