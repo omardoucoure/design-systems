@@ -61,7 +61,7 @@ public struct DSDivider: View {
 
     private var dividerLine: some View {
         Rectangle()
-            .fill(theme.colors.borderNeutral3)
+            .fill(theme.colors.borderNeutral9_5)
             .frame(height: 1)
     }
 }

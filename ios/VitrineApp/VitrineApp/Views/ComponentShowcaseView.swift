@@ -64,6 +64,7 @@ struct ComponentShowcaseView: View {
                 case .misc: MiscShowcase()
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         }
         .background(theme.colors.surfaceNeutral0_5)
@@ -689,9 +690,9 @@ private struct MiscShowcase: View {
 
             sectionTitle("Progress Circle — Large")
             HStack(spacing: 16) {
-                DSProgressCircle(progress: 0.25, size: 56, lineWidth: 4)
-                DSProgressCircle(progress: 0.65, size: 56, lineWidth: 4)
-                DSProgressCircle(progress: 0.9, size: 56, lineWidth: 4)
+                DSProgressCircle(progress: 0.25, size: 56)
+                DSProgressCircle(progress: 0.65, size: 56)
+                DSProgressCircle(progress: 0.9, size: 56)
             }
 
             // MARK: Dividers

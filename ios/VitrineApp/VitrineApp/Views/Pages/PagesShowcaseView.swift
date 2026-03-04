@@ -58,6 +58,21 @@ struct PagesShowcaseView: View {
                 }
             }
 
+            Section("Profile") {
+                NavigationLink("Profile — Photo carousel") {
+                    ProfilePage()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+                NavigationLink("Profile 2 — Stats & list") {
+                    Profile2Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+                NavigationLink("Profile 3 — Carousel & CTAs") {
+                    Profile3Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
+
             Section("Password Recovery") {
                 NavigationLink("Forgot Password") {
                     ForgotPasswordPage()

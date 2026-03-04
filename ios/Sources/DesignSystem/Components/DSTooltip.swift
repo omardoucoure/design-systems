@@ -125,7 +125,7 @@ public struct DSTooltip: View {
                 .padding(theme.spacing.md)
             }
         }
-        .frame(width: 240)
+        .frame(maxWidth: 240)
         .background(theme.colors.surfacePrimary120)
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }

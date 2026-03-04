@@ -44,6 +44,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
             return ColorTokens(
                 // Surface — dark: inverted neutrals, swapped brand colors
                 surfaceNeutral0_5: p.neutrals.n9,
+                surfaceNeutral1: p.neutrals.n8_5,
                 surfaceNeutral2: p.neutrals.n8_5,
                 surfaceNeutral3: p.neutrals.n8,
                 surfaceNeutral9: p.neutrals.n0_5,
@@ -78,6 +79,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
             return ColorTokens(
                 // Surface — light: direct mapping
                 surfaceNeutral0_5: p.neutrals.n0_5,
+                surfaceNeutral1: p.neutrals.n1,
                 surfaceNeutral2: p.neutrals.n2,
                 surfaceNeutral3: p.neutrals.n3,
                 surfaceNeutral9: p.neutrals.n9,

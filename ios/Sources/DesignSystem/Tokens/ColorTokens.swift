@@ -3,8 +3,9 @@ import SwiftUI
 /// Resolved semantic color tokens (surface + text + border + semantic).
 /// Values depend on Brand (palette) and Style (light/dark inversion + primary/secondary swap).
 public struct ColorTokens: Sendable {
-    // MARK: Surface (7)
+    // MARK: Surface (8)
     public let surfaceNeutral0_5: Color
+    public let surfaceNeutral1: Color
     public let surfaceNeutral2: Color
     public let surfaceNeutral3: Color
     public let surfaceNeutral9: Color
