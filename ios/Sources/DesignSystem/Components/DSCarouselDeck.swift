@@ -18,20 +18,24 @@ struct DoubleContainerModifier: ViewModifier {
     let height: CGFloat
 
     /// How far the back ghost card peeks below the content.
-    private let deckPeek: CGFloat = 36
+    private let deckPeek: CGFloat = 48
     /// Horizontal insets matching Figma: 308px and 258px cards on a 375px screen.
     private let middleInset: CGFloat = 22
     private let backInset: CGFloat = 47
 
     func body(content: Content) -> some View {
         ZStack(alignment: .top) {
-            // Back ghost — narrowest, extends furthest below
+            // Back ghost — narrowest, darkest (surfaceNeutral3 + 10% black overlay per Figma)
             RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral3.opacity(0.8))
+                .fill(theme.colors.surfaceNeutral3)
+                .overlay(
+                    RoundedRectangle(cornerRadius: theme.radius.xl)
+                        .fill(Color.black.opacity(0.1))
+                )
                 .frame(height: height + deckPeek)
                 .padding(.horizontal, backInset)
 
-            // Middle ghost
+            // Middle ghost — surfaceNeutral3 (lighter than back)
             RoundedRectangle(cornerRadius: theme.radius.xl)
                 .fill(theme.colors.surfaceNeutral3)
                 .frame(height: height + deckPeek / 2)

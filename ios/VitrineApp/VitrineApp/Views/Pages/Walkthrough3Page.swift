@@ -71,29 +71,27 @@ struct Walkthrough3Page: View {
 
     // MARK: - Side-by-Side Images
 
+    private let tallCardHeight: CGFloat = 488
+    private let shortCardHeight: CGFloat = 340
+    private let shortCardWidth: CGFloat = 160
+
     private var sideBySideImages: some View {
         HStack(spacing: theme.spacing.sm) {
             // Left card — tall
-            RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral2)
-                .frame(maxWidth: .infinity)
-                .frame(height: 488)
-                .overlay(
-                    Image(systemName: "photo.artframe")
-                        .font(.system(size: 60, weight: .ultraLight))
-                        .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
-                )
+            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+                Image(systemName: "photo.artframe")
+                    .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .frame(maxWidth: .infinity, minHeight: tallCardHeight, maxHeight: tallCardHeight)
 
             // Right card — shorter
-            RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral2)
-                .frame(width: 160)
-                .frame(height: 340)
-                .overlay(
-                    Image(systemName: "photo")
-                        .font(.system(size: 40, weight: .ultraLight))
-                        .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
-                )
+            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+                Image(systemName: "photo")
+                    .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .frame(width: shortCardWidth, height: shortCardHeight)
         }
     }
 }

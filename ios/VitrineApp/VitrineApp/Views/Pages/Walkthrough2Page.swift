@@ -96,20 +96,20 @@ struct Walkthrough2Page: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .frame(height: 440)
+        .frame(height: carouselHeight)
     }
 
+    private let carouselHeight: CGFloat = 440
+
     private func cardLayer(width: CGFloat, color: Color, iconName: String, offset: CGFloat) -> some View {
-        RoundedRectangle(cornerRadius: theme.radius.xl)
-            .fill(color)
-            .frame(width: width, height: 440 - offset * 2)
-            .overlay(
-                Image(systemName: iconName)
-                    .font(.system(size: 80, weight: .ultraLight))
-                    .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
-            )
-            .offset(y: offset)
-            .frame(maxWidth: .infinity)
+        DSCard(background: color, radius: theme.radius.xl, padding: 0) {
+            Image(systemName: iconName)
+                .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(width: width, height: carouselHeight - offset * 2)
+        .offset(y: offset)
+        .frame(maxWidth: .infinity)
     }
 }
 

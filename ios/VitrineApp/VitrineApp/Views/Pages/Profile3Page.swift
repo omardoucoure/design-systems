@@ -24,7 +24,9 @@ struct Profile3Page: View {
 
             ScrollView {
                 VStack(spacing: theme.spacing.lg) {
-                    carouselSection
+                    VStack(spacing: theme.spacing.md) {
+                        carouselSection
+                    }
 
                     VStack(spacing: 0) {
                         socialInfoCard
@@ -33,9 +35,10 @@ struct Profile3Page: View {
                         ctaCard
                             .zIndex(1)
                     }
+                    .padding(.horizontal, theme.spacing.sm)
                 }
-                .padding(.horizontal, theme.spacing.sm)
                 .padding(.bottom, theme.spacing.lg)
+                
             }
         }
         .background(theme.colors.surfaceNeutral0_5)

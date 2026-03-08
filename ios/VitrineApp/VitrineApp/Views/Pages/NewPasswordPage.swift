@@ -15,10 +15,10 @@ struct NewPasswordPage: View {
     @State private var confirmPassword = ""
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                backButtonRow(title: "New password")
+        VStack(spacing: 0) {
+            DSTopAppBar(title: "New password", style: .small, onBack: { dismiss() })
 
+            ScrollView {
                 DSCard(
                     background: theme.colors.surfaceNeutral2,
                     radius: theme.radius.xl,
@@ -63,32 +63,12 @@ struct NewPasswordPage: View {
                         .disabled(newPassword.isEmpty || confirmPassword.isEmpty)
                     }
                 }
+                .padding(.horizontal, theme.spacing.sm)
+                .padding(.bottom, theme.spacing.sm)
             }
-            .padding(.horizontal, theme.spacing.sm)
-            .padding(.bottom, theme.spacing.sm)
         }
         .background(theme.colors.surfaceNeutral0_5)
         .toolbar(.hidden, for: .navigationBar)
-    }
-
-    private func backButtonRow(title: String) -> some View {
-        ZStack {
-            HStack {
-                DSButton(
-                    style: .neutral,
-                    size: .medium,
-                    systemIcon: "arrow.left"
-                ) {
-                    dismiss()
-                }
-                Spacer()
-            }
-
-            Text(title)
-                .font(theme.typography.h5.font)
-                .tracking(theme.typography.h5.tracking)
-                .foregroundStyle(theme.colors.textNeutral9)
-        }
     }
 }
 

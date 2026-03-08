@@ -10,14 +10,16 @@ import DesignSystem
 struct BiometricLoginPage: View {
     @Environment(\.theme) private var theme
 
+    private let cardOverlap: CGFloat = 50
+
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.sm) {
                 imageCarousel(imageName: "astronaut_balloons")
                 touchIDCard
-                    .padding(.top, -50)
+                    .padding(.top, -cardOverlap)
                 passcodeBar
-                    .padding(.top, -50)
+                    .padding(.top, -cardOverlap)
             }
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
@@ -65,9 +67,7 @@ struct BiometricLoginPage: View {
 
                 Spacer()
 
-                Image(systemName: "ellipsis.rectangle")
-                    .font(.system(size: 20))
-                    .foregroundStyle(theme.colors.textNeutral9)
+                DSButton(style: .text, size: .medium, systemIcon: "ellipsis.rectangle") {}
             }
             .padding(.vertical, theme.spacing.sm)
         }
@@ -91,18 +91,20 @@ struct ImageCarouselView: View {
     var body: some View {
         ZStack(alignment: .top) {
             // Back card
-            RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral2.opacity(0.5))
-                .frame(height: height - 26)
-                .padding(.horizontal, 60)
-                .offset(y: 20)
+            DSCard(background: theme.colors.surfaceNeutral2.opacity(0.5), radius: theme.radius.xl, padding: 0) {
+                Color.clear
+            }
+            .frame(height: height - 26)
+            .padding(.horizontal, 60)
+            .offset(y: 20)
 
             // Middle card
-            RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral3)
-                .frame(height: height - 16)
-                .padding(.horizontal, 30)
-                .offset(y: 10)
+            DSCard(background: theme.colors.surfaceNeutral3, radius: theme.radius.xl, padding: 0) {
+                Color.clear
+            }
+            .frame(height: height - 16)
+            .padding(.horizontal, 30)
+            .offset(y: 10)
 
             // Front card — image
             Image(imageName)

@@ -71,6 +71,10 @@ struct PagesShowcaseView: View {
                     Profile3Page()
                         .navigationBarTitleDisplayMode(.inline)
                 }
+                NavigationLink("Profile 4 — Hero & photo grid") {
+                    Profile4Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
             }
 
             Section("Password Recovery") {

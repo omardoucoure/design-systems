@@ -14,13 +14,15 @@ struct Login6ErrorPage: View {
     @State private var password = "secretpassword123"
     @State private var rememberMe = true
 
+    private let cardOverlap: CGFloat = 50
+
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.sm) {
                 formsCard
                 socialLoginCard
                 signUpBar
-                    .padding(.top, -50)
+                    .padding(.top, -cardOverlap)
             }
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
@@ -84,15 +86,7 @@ struct Login6ErrorPage: View {
                 HStack {
                     DSCheckbox(isOn: $rememberMe, label: "Remember me")
                     Spacer()
-                    Button {
-                        // Forgot password action
-                    } label: {
-                        Text("Forgot Password?")
-                            .font(theme.typography.body.font)
-                            .tracking(theme.typography.body.tracking)
-                            .foregroundStyle(theme.colors.textNeutral9)
-                    }
-                    .buttonStyle(.plain)
+                    DSButton("Forgot Password?", style: .text, size: .medium) {}
                 }
                 .padding(.vertical, theme.spacing.xs)
 
@@ -170,15 +164,7 @@ struct Login6ErrorPage: View {
 
                 Spacer()
 
-                Button {
-                    // Sign up action
-                } label: {
-                    Text("Sign Up")
-                        .font(theme.typography.bodySemiBold.font)
-                        .tracking(theme.typography.bodySemiBold.tracking)
-                        .foregroundStyle(theme.colors.textNeutral9)
-                }
-                .buttonStyle(.plain)
+                DSButton("Sign Up", style: .text, size: .medium) {}
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.top, theme.spacing.xxxxl)

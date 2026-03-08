@@ -47,10 +47,11 @@ public struct DSButton: View {
     private let size: DSButtonSize
     private let iconLeft: String?
     private let iconRight: String?
+    private let isSystemIcon: Bool
     private let isFullWidth: Bool
     private let action: () -> Void
 
-    /// Text button with optional icons.
+    /// Text button with optional SF Symbol icons.
     public init(
         _ label: LocalizedStringKey,
         style: DSButtonStyle = .filledB,
@@ -65,11 +66,12 @@ public struct DSButton: View {
         self.size = size
         self.iconLeft = iconLeft
         self.iconRight = iconRight
+        self.isSystemIcon = true
         self.isFullWidth = isFullWidth
         self.action = action
     }
 
-    /// Icon-only button.
+    /// Icon-only button with SF Symbol.
     public init(
         style: DSButtonStyle = .neutral,
         size: DSButtonSize = .big,
@@ -82,8 +84,51 @@ public struct DSButton: View {
         self.size = size
         self.iconLeft = systemIcon
         self.iconRight = nil
+        self.isSystemIcon = true
         self.isFullWidth = isFullWidth
         self.action = action
+    }
+
+    /// Icon-only button with custom asset image.
+    public init(
+        style: DSButtonStyle = .neutral,
+        size: DSButtonSize = .big,
+        assetIcon: String,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.label = nil
+        self.style = style
+        self.size = size
+        self.iconLeft = assetIcon
+        self.iconRight = nil
+        self.isSystemIcon = false
+        self.isFullWidth = isFullWidth
+        self.action = action
+    }
+
+    /// Text button with a custom asset icon (left or right).
+    public init(
+        _ label: LocalizedStringKey,
+        style: DSButtonStyle = .filledB,
+        size: DSButtonSize = .big,
+        assetIcon: String,
+        iconPosition: IconPosition = .left,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.label = label
+        self.style = style
+        self.size = size
+        self.iconLeft = iconPosition == .left ? assetIcon : nil
+        self.iconRight = iconPosition == .right ? assetIcon : nil
+        self.isSystemIcon = false
+        self.isFullWidth = isFullWidth
+        self.action = action
+    }
+
+    public enum IconPosition {
+        case left, right
     }
 
     // MARK: - Backward-compatible init
@@ -100,6 +145,7 @@ public struct DSButton: View {
         self.size = .big
         self.iconLeft = nil
         self.iconRight = nil
+        self.isSystemIcon = true
         self.isFullWidth = isFullWidth
         self.action = action
     }
@@ -114,6 +160,7 @@ public struct DSButton: View {
         self.size = .big
         self.iconLeft = systemIcon
         self.iconRight = nil
+        self.isSystemIcon = true
         self.isFullWidth = false
         self.action = action
     }
@@ -124,9 +171,7 @@ public struct DSButton: View {
         Button(action: action) {
             HStack(spacing: gap) {
                 if let iconLeft {
-                    Image(systemName: iconLeft)
-                        .font(.system(size: iconSize, weight: .medium))
-                        .frame(width: iconSize, height: iconSize)
+                    iconView(iconLeft)
                 }
 
                 if let label {
@@ -134,9 +179,7 @@ public struct DSButton: View {
                 }
 
                 if let iconRight {
-                    Image(systemName: iconRight)
-                        .font(.system(size: iconSize, weight: .medium))
-                        .frame(width: iconSize, height: iconSize)
+                    iconView(iconRight)
                 }
             }
             .font(textFont)
@@ -152,6 +195,21 @@ public struct DSButton: View {
             .opacity(isEnabled ? 1.0 : 0.5)
         }
         .buttonStyle(DSButtonPressStyle())
+    }
+
+    @ViewBuilder
+    private func iconView(_ name: String) -> some View {
+        if isSystemIcon {
+            Image(systemName: name)
+                .font(.system(size: iconSize, weight: .medium))
+                .frame(width: iconSize, height: iconSize)
+        } else {
+            Image(name)
+                .resizable()
+                .renderingMode(.template)
+                .scaledToFit()
+                .frame(width: iconSize, height: iconSize)
+        }
     }
 
     // MARK: - Resolved Sizes

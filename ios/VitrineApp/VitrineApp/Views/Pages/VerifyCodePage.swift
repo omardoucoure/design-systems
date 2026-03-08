@@ -14,10 +14,10 @@ struct VerifyCodePage: View {
     @State private var code = ""
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                backButtonRow(title: "Forgot password")
+        VStack(spacing: 0) {
+            DSTopAppBar(title: "Forgot password", style: .small, onBack: { dismiss() })
 
+            ScrollView {
                 DSCard(
                     background: theme.colors.surfaceNeutral2,
                     radius: theme.radius.xl,
@@ -43,15 +43,7 @@ struct VerifyCodePage: View {
                                 .tracking(theme.typography.bodyRegular.tracking)
                                 .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
 
-                            Button {
-                                // Resend code action
-                            } label: {
-                                Text("Resend Code")
-                                    .font(theme.typography.bodySemiBold.font)
-                                    .tracking(theme.typography.bodySemiBold.tracking)
-                                    .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
-                            }
-                            .buttonStyle(.plain)
+                            DSButton("Resend Code", style: .text, size: .medium) {}
                         }
 
                         DSButton(
@@ -66,52 +58,24 @@ struct VerifyCodePage: View {
                         .disabled(code.count < 4)
 
                         // Terms
-                        VStack(spacing: 2) {
+                        VStack(spacing: theme.spacing.xxs) {
                             Text("By Signing In, you agree to our?")
                                 .font(theme.typography.bodyRegular.font)
                                 .tracking(theme.typography.bodyRegular.tracking)
                                 .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
 
-                            Button {
-                                // Terms action
-                            } label: {
-                                Text("Terms and Conditions")
-                                    .font(theme.typography.bodySemiBold.font)
-                                    .tracking(theme.typography.bodySemiBold.tracking)
-                                    .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
-                            }
-                            .buttonStyle(.plain)
+                            DSButton("Terms and Conditions", style: .text, size: .medium) {}
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
                     }
                 }
+                .padding(.horizontal, theme.spacing.sm)
+                .padding(.bottom, theme.spacing.sm)
             }
-            .padding(.horizontal, theme.spacing.sm)
-            .padding(.bottom, theme.spacing.sm)
         }
         .background(theme.colors.surfaceNeutral0_5)
         .toolbar(.hidden, for: .navigationBar)
-    }
-
-    private func backButtonRow(title: String) -> some View {
-        ZStack {
-            HStack {
-                DSButton(
-                    style: .neutral,
-                    size: .medium,
-                    systemIcon: "arrow.left"
-                ) {
-                    dismiss()
-                }
-                Spacer()
-            }
-
-            Text(title)
-                .font(theme.typography.h5.font)
-                .tracking(theme.typography.h5.tracking)
-                .foregroundStyle(theme.colors.textNeutral9)
-        }
     }
 }
 

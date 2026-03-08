@@ -126,15 +126,7 @@ struct Login4Page: View {
                 HStack {
                     DSCheckbox(isOn: $rememberMe, label: "Remember me")
                     Spacer()
-                    Button {
-                        // Forgot password action
-                    } label: {
-                        Text("Forgot Password?")
-                            .font(theme.typography.body.font)
-                            .tracking(theme.typography.body.tracking)
-                            .foregroundStyle(theme.colors.textNeutral9)
-                    }
-                    .buttonStyle(.plain)
+                    DSButton("Forgot Password?", style: .text, size: .medium) {}
                 }
                 .padding(.vertical, theme.spacing.xxs)
 
@@ -156,16 +148,7 @@ struct Login4Page: View {
                         .tracking(theme.typography.bodyRegular.tracking)
                         .foregroundStyle(theme.colors.textNeutral9)
 
-                    Button {
-                        // Sign up action
-                    } label: {
-                        Text("Sign Up")
-                            .font(theme.typography.bodySemiBold.font)
-                            .tracking(theme.typography.bodySemiBold.tracking)
-                            .foregroundStyle(theme.colors.textNeutral9)
-                            .bold()
-                    }
-                    .buttonStyle(.plain)
+                    DSButton("Sign Up", style: .text, size: .medium) {}
                 }
             }
         }

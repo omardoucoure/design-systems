@@ -33,6 +33,15 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
         }
     }
 
+    public init(isDark: Bool, isSharp: Bool) {
+        switch (isDark, isSharp) {
+        case (false, false): self = .lightRounded
+        case (true, false): self = .darkRounded
+        case (false, true): self = .lightSharp
+        case (true, true): self = .darkSharp
+        }
+    }
+
     // MARK: - Color Resolution
 
     /// Resolves semantic color tokens from brand primitives.

@@ -20,6 +20,9 @@
 3. **Navigation bar**: If Figma has NO back button, add `.toolbar(.hidden, for: .navigationBar)` — ALWAYS check this for every page
 4. **Button style mapping**: Read the actual background color hex from Figma, map it to the correct style enum — NEVER default to `.neutral` without checking
 5. **Spacing values**: Read the exact `py`, `gap` values — do NOT substitute `xxs` (4) when Figma says `xs` (8)
+6. **Images**: NEVER reuse existing placeholder images if Figma provides different ones — ALWAYS download images from the Figma asset URLs (`curl -sL "https://www.figma.com/api/mcp/asset/..."`) and create proper asset catalog entries (`.imageset/` with `Contents.json`)
+7. **Icons**: NEVER substitute SF Symbols when Figma provides custom vector icons — download SVG assets from Figma and add them to the asset catalog with `preserves-vector-representation: true`. Use `DSButton(assetIcon:)` for custom icon buttons
+8. **Every Figma property must be used**: Do NOT skip opacity values, exact icon names, z-index ordering, negative margins, or any CSS variable from the design context. Read EVERY line of the Figma output and map it to code
 
 ### Mandatory extraction checklist (before writing ANY page):
 
@@ -98,6 +101,17 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 4. **No raw styling in pages** — colors, fonts, spacing, radius should come from components or theme tokens
 5. **Always use DSCard as container** — never build raw containers with `.background().clipShape()` in pages
 
+### NEVER DO THIS — Common violations:
+- ❌ `RoundedRectangle(cornerRadius: ...).fill(color)` → ✅ `DSCard(background: color, radius: theme.radius.xl, padding: 0) { Color.clear }`
+- ❌ `Button { } label: { Text("...") }` → ✅ `DSButton("...", style: .text, size: .medium) { }`
+- ❌ `.font(.system(size: 20))` or `.font(.custom("DMSans-...", size: 14))` → ✅ `theme.typography.caption.font`
+- ❌ Custom back-button ZStack with DSButton + Text → ✅ `DSTopAppBar(title: "...", style: .small, onBack: { dismiss() })`
+- ❌ `.foregroundStyle(.black)` or `.foregroundStyle(Color(hex: ...))` → ✅ `theme.colors.textNeutral9`
+- ❌ `VStack(spacing: 2)` or `padding(50)` → ✅ `theme.spacing.xxs`, `theme.spacing.xxxl`
+- ❌ `.frame(width: 12, height: 12)` → ✅ `.frame(width: theme.spacing.sm, height: theme.spacing.sm)`
+- ❌ `.bold()` modifier on top of typography token → remove; token already encodes weight
+- ❌ `Image(...).resizable().clipShape(Circle())` for avatars → ✅ `DSAvatar(style: .image(...), size: 40)`
+
 ### Component Design Principles:
 - Components are **highly customizable via properties** — changing a property changes the state/appearance
 - Use enums for variants/styles/states (e.g., `InputState.error`, `DSButtonStyle.filledA`)
@@ -106,12 +120,32 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 - All tokens come from the theme, never hardcoded values
 
 ### Available DS Components:
-- `DSButton` — styles: `.filledA`, `.filledB`, `.filledC`, `.neutral`, `.outlined`, `.text`
+- `DSButton` — styles: `.filledA`, `.filledB`, `.filledC`, `.neutral`, `.outlined`, `.text` / supports SF Symbols via `systemIcon:` and custom asset images via `assetIcon:` / text+asset icon via `init(_:style:size:assetIcon:iconPosition:)`
 - `DSTextField` — variants: `.filled`, `.lined` / states: `.empty`, `.filled`, `.active`, `.error`, `.validated` / supports `isSecure: true` for password fields
 - `DSCard` — container with `background`, `radius`, `padding` (use `padding: 0` for asymmetric padding)
 - `DSCheckbox` — toggle with label
 - `DSCodeInput` — OTP/verification code input (interactive, numeric keyboard)
-- `DSChip`, `DSBadge`, `DSAvatar`, `DSToggle`, `DSRadio`, `DSDivider`, `DSDropdown`, `DSListItem`, `DSSearchField`, `DSTextArea`, `DSProgressCircle`, `DSTooltip`, `DSTopAppBar`, `DSBottomAppBar`, `DSSegmentedPicker`, `DSDatePicker`
+- `DSListItem` — list row with `overline`, `headline`, `metadata`, generic leading/trailing slots
+- `DSDivider` — styles: `.fullBleed`, `.inset`, `.middle`, `.subheader(...)`
+- `DSProgressCircle` — circular progress indicator; supports `customLabel`, `progressColor`, `labelColor`
+- `DSCarousel` — horizontal image carousel; styles: `.spotlight` (zoom focus), `.standard` (flat)
+- `DSChip`, `DSBadge`, `DSAvatar`, `DSToggle`, `DSRadio`, `DSDropdown`, `DSSearchField`, `DSTextArea`, `DSTooltip`, `DSTopAppBar`, `DSBottomAppBar`, `DSSegmentedPicker`, `DSDatePicker`, `DSPageControl`
+
+### Typography quick reference (NEVER use .font(.system(...)) or .font(.custom(...))):
+| Size | Weight | Token |
+|---|---|---|
+| 36px medium | `theme.typography.h2` |
+| 24px medium | `theme.typography.h4` |
+| 20px medium | `theme.typography.h5` |
+| 18px medium | `theme.typography.h6` |
+| 18px semibold | `theme.typography.largeSemiBold` |
+| 16px semibold | `theme.typography.bodySemiBold` |
+| 16px medium | `theme.typography.body` |
+| 16px regular | `theme.typography.bodyRegular` |
+| 14px semibold | `theme.typography.label` |
+| 14px medium | `theme.typography.caption` |
+| 12px medium | `theme.typography.small` |
+| 12px regular | `theme.typography.smallRegular` |
 
 ### Page Implementation Checklist:
 1. **Fetch Figma context** — `get_design_context` for the node

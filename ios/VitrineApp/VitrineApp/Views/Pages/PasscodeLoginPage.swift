@@ -48,7 +48,7 @@ struct PasscodeLoginPage: View {
                                     ? theme.colors.surfaceSecondary100
                                     : theme.colors.surfaceNeutral0_5.opacity(0.3)
                             )
-                            .frame(width: 12, height: 12)
+                            .frame(width: theme.spacing.sm, height: theme.spacing.sm)
                     }
                 }
 
@@ -85,13 +85,11 @@ struct PasscodeLoginPage: View {
 
             // Row 4: fingerprint, 0, backspace
             HStack(spacing: theme.spacing.sm) {
-                actionButton(systemIcon: "touchid") {
-                    // Biometric auth action
-                }
+                DSButton(style: .filledB, size: .big, systemIcon: "touchid", isFullWidth: true) {}
 
                 digitButton("0")
 
-                actionButton(systemIcon: "delete.backward") {
+                DSButton(style: .filledB, size: .big, systemIcon: "delete.backward", isFullWidth: true) {
                     if !passcode.isEmpty {
                         passcode.removeLast()
                     }
@@ -101,34 +99,11 @@ struct PasscodeLoginPage: View {
     }
 
     private func digitButton(_ digit: String) -> some View {
-        Button {
+        DSButton(LocalizedStringKey(digit), style: .filledC, size: .big, isFullWidth: true) {
             if passcode.count < passcodeLength {
                 passcode.append(digit)
             }
-        } label: {
-            Text(digit)
-                .font(theme.typography.bodySemiBold.font)
-                .tracking(theme.typography.bodySemiBold.tracking)
-                .foregroundStyle(theme.colors.textNeutral0_5)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .background(theme.colors.surfacePrimary120)
-                .clipShape(Capsule())
         }
-        .buttonStyle(.plain)
-    }
-
-    private func actionButton(systemIcon: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: systemIcon)
-                .font(.system(size: 24, weight: .medium))
-                .foregroundStyle(theme.colors.textNeutral0_5)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .background(theme.colors.surfacePrimary100)
-                .clipShape(Capsule())
-        }
-        .buttonStyle(.plain)
     }
 }
 
