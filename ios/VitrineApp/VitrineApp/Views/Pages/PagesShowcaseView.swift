@@ -77,6 +77,63 @@ struct PagesShowcaseView: View {
                 }
             }
 
+            Section("Alerts") {
+                NavigationLink("[Alerts] 1 — Offline Error") {
+                    Alert1Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 2 — Photo Upload") {
+                    Alert2Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 3 - Error — Bottom Sheet") {
+                    Alert3Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 4 - Warning — Banner") {
+                    Alert4Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 5 - Success — Banner") {
+                    Alert5Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 6 - Info — Banner") {
+                    Alert6Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 7 — Battery Warning") {
+                    Alert7Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 8 — Contacts Access") {
+                    Alert8Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 9 — Notification Permission") {
+                    Alert9Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 10 — Server Error") {
+                    Alert10Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+
+                NavigationLink("[Alerts] 11 — Calendar Notification") {
+                    Alert11Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
+
             Section("Password Recovery") {
                 NavigationLink("Forgot Password") {
                     ForgotPasswordPage()

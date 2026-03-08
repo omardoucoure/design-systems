@@ -6,85 +6,48 @@ struct ContentView: View {
     @Binding var style: Style
     @Environment(\.theme) private var theme
 
-    @State private var selectedTab = Tab.components
+    @State private var selectedTab = "components"
+    @State private var barStyle: DSBottomAppBarStyle = .labeled
 
-    private enum Tab: String, CaseIterable {
-        case components, pages, colors, tokens, grid
-
-        var label: LocalizedStringKey {
-            switch self {
-            case .components: return "Components"
-            case .pages: return "Pages"
-            case .colors: return "Colors"
-            case .tokens: return "Tokens"
-            case .grid: return "Grid"
-            }
-        }
-
-        var systemIcon: String {
-            switch self {
-            case .components: return "cube"
-            case .pages: return "doc.richtext"
-            case .colors: return "paintpalette"
-            case .tokens: return "slider.horizontal.3"
-            case .grid: return "square.grid.4x3.fill"
-            }
-        }
-    }
-
-    private var tabs: [DSBottomBarItem] {
-        Tab.allCases.map { DSBottomBarItem(id: $0.rawValue, label: $0.label, systemIcon: $0.systemIcon) }
-    }
-
-    private var selectedTabId: Binding<String> {
-        Binding(
-            get: { selectedTab.rawValue },
-            set: { selectedTab = Tab(rawValue: $0) ?? .components }
-        )
-    }
+    private let tabs: [DSBottomBarItem] = [
+        DSBottomBarItem(id: "components", label: "Components", systemIcon: "cube"),
+        DSBottomBarItem(id: "pages", label: "Pages", systemIcon: "doc.richtext"),
+        DSBottomBarItem(id: "colors", label: "Colors", systemIcon: "paintpalette"),
+        DSBottomBarItem(id: "tokens", label: "Tokens", systemIcon: "slider.horizontal.3"),
+        DSBottomBarItem(id: "grid", label: "Grid", systemIcon: "square.grid.4x3.fill"),
+    ]
 
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack {
-                NavigationStack {
-                    ComponentShowcaseView()
-                        .toolbar { brandStyleToolbar }
-                }
-                .opacity(selectedTab == .components ? 1 : 0)
-                .allowsHitTesting(selectedTab == .components)
-
-                NavigationStack {
-                    PagesShowcaseView()
-                        .toolbar { brandStyleToolbar }
-                }
-                .opacity(selectedTab == .pages ? 1 : 0)
-                .allowsHitTesting(selectedTab == .pages)
-
-                NavigationStack {
-                    ColorPaletteView()
-                        .toolbar { brandStyleToolbar }
-                }
-                .opacity(selectedTab == .colors ? 1 : 0)
-                .allowsHitTesting(selectedTab == .colors)
-
-                NavigationStack {
-                    TokenBrowserView()
-                        .toolbar { brandStyleToolbar }
-                }
-                .opacity(selectedTab == .tokens ? 1 : 0)
-                .allowsHitTesting(selectedTab == .tokens)
-
-                NavigationStack {
-                    CombinationGridView()
-                        .toolbar { brandStyleToolbar }
-                }
-                .opacity(selectedTab == .grid ? 1 : 0)
-                .allowsHitTesting(selectedTab == .grid)
+        DSTabView(selection: $selectedTab, tabs: tabs, style: barStyle) {
+            NavigationStack {
+                ComponentShowcaseView()
+                    .toolbar { brandStyleToolbar }
             }
-            .frame(maxHeight: .infinity)
+            .tag("components")
 
-            DSBottomAppBar(items: tabs, selectedId: selectedTabId, style: .labeled)
-                .background(theme.colors.surfaceNeutral2)
+            NavigationStack {
+                PagesShowcaseView()
+                    .toolbar { brandStyleToolbar }
+            }
+            .tag("pages")
+
+            NavigationStack {
+                ColorPaletteView()
+                    .toolbar { brandStyleToolbar }
+            }
+            .tag("colors")
+
+            NavigationStack {
+                TokenBrowserView()
+                    .toolbar { brandStyleToolbar }
+            }
+            .tag("tokens")
+
+            NavigationStack {
+                CombinationGridView()
+                    .toolbar { brandStyleToolbar }
+            }
+            .tag("grid")
         }
         .ignoresSafeArea(.keyboard)
         .preferredColorScheme(style.isDark ? .dark : .light)
@@ -116,6 +79,22 @@ struct ContentView: View {
 
         ToolbarItem(placement: .topBarTrailing) {
             HStack(spacing: 12) {
+                Menu {
+                    ForEach(DSBottomAppBarStyle.allCases, id: \.self) { s in
+                        Button {
+                            barStyle = s
+                        } label: {
+                            if s == barStyle {
+                                Label(barStyleName(s), systemImage: "checkmark")
+                            } else {
+                                Text(barStyleName(s))
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: barStyleIcon)
+                }
+
                 Button {
                     style = Style(isDark: !style.isDark, isSharp: style.isSharp)
                 } label: {
@@ -128,6 +107,21 @@ struct ContentView: View {
                     Image(systemName: style.isSharp ? "square" : "square.on.circle")
                 }
             }
+        }
+    }
+    private var barStyleIcon: String {
+        switch barStyle {
+        case .labeled: return "dock.rectangle"
+        case .full: return "dock.arrow.up.rectangle"
+        case .floating: return "capsule"
+        }
+    }
+
+    private func barStyleName(_ s: DSBottomAppBarStyle) -> String {
+        switch s {
+        case .labeled: return "Labeled"
+        case .full: return "Full"
+        case .floating: return "Floating"
         }
     }
 }

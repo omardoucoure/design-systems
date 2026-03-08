@@ -28,9 +28,11 @@ public struct DSDivider: View {
     @Environment(\.theme) private var theme
 
     private let style: DSDividerStyle
+    private let color: Color?
 
-    public init(style: DSDividerStyle = .fullBleed) {
+    public init(style: DSDividerStyle = .fullBleed, color: Color? = nil) {
         self.style = style
+        self.color = color
     }
 
     public var body: some View {
@@ -61,7 +63,7 @@ public struct DSDivider: View {
 
     private var dividerLine: some View {
         Rectangle()
-            .fill(theme.colors.borderNeutral9_5)
+            .fill(color ?? theme.colors.borderNeutral9_5)
             .frame(height: 1)
     }
 }

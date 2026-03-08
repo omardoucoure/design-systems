@@ -1,790 +1,664 @@
 import SwiftUI
 import DesignSystem
 
-// MARK: - Component Category
-
-private enum ComponentCategory: String, CaseIterable, Identifiable {
-    case buttons = "Buttons"
-    case chips = "Chips, Tags & Badges"
-    case selectionControls = "Selection Controls"
-    case forms = "Forms & Inputs"
-    case lists = "Lists"
-    case navigation = "Navigation"
-    case misc = "Avatars, Dividers & More"
-
-    var id: String { rawValue }
-
-    var icon: String {
-        switch self {
-        case .buttons: return "hand.tap"
-        case .chips: return "tag"
-        case .selectionControls: return "checkmark.circle"
-        case .forms: return "text.cursor"
-        case .lists: return "list.bullet"
-        case .navigation: return "sidebar.left"
-        case .misc: return "circle.grid.2x2"
-        }
-    }
-}
-
-// MARK: - Component Showcase
+// MARK: - Component Catalog
 
 struct ComponentShowcaseView: View {
     @Environment(\.theme) private var theme
 
     var body: some View {
-        List(ComponentCategory.allCases) { category in
-            NavigationLink(value: category) {
-                Label(category.rawValue, systemImage: category.icon)
-                    .font(theme.typography.body.font)
-                    .tracking(theme.typography.body.tracking)
-                    .foregroundStyle(theme.colors.textNeutral9)
-            }
-            .listRowBackground(theme.colors.surfaceNeutral0_5)
-        }
-        .listStyle(.plain)
-        .background(theme.colors.surfaceNeutral0_5)
-        .navigationTitle("Components")
-        .navigationDestination(for: ComponentCategory.self) { category in
-            categoryDetailView(category)
-        }
-    }
+        List {
+            Section("Actions") {
+                NavigationLink("Buttons — Filled, outlined, text, icons") {
+                    ButtonDetailView()
+                }
 
-    @ViewBuilder
-    private func categoryDetailView(_ category: ComponentCategory) -> some View {
+                NavigationLink("Chips & Badges — Tags, dots, counts") {
+                    ChipBadgeDetailView()
+                }
+            }
+
+            Section("Selection") {
+                NavigationLink("Checkbox, Radio & Toggle") {
+                    SelectionDetailView()
+                }
+            }
+
+            Section("Forms") {
+                NavigationLink("Text Fields — Filled, lined, search") {
+                    TextFieldDetailView()
+                }
+
+                NavigationLink("Dropdown, Text Area & Code Input") {
+                    FormExtrasDetailView()
+                }
+
+                NavigationLink("Date Picker — Single & range") {
+                    DatePickerDetailView()
+                }
+            }
+
+            Section("Lists & Dividers") {
+                NavigationLink("List Item & Divider") {
+                    ListDividerDetailView()
+                }
+            }
+
+            Section("Navigation") {
+                NavigationLink("App Bars — Top & bottom") {
+                    AppBarDetailView()
+                }
+
+                NavigationLink("Segmented Picker & Page Control") {
+                    PickerControlDetailView()
+                }
+            }
+
+            Section("Feedback") {
+                NavigationLink("Alert, Banner & Dialog") {
+                    FeedbackDetailView()
+                }
+
+                NavigationLink("Tooltip — Simple & rich") {
+                    TooltipDetailView()
+                }
+            }
+
+            Section("Data Visualization") {
+                NavigationLink("Charts — Bar, line, lollipop, stacked") {
+                    ChartsDetailView()
+                }
+
+                NavigationLink("Gauge & Progress — Circle, semi-circular") {
+                    GaugeProgressDetailView()
+                }
+            }
+
+            Section("Calendar") {
+                NavigationLink("Calendar, Day Picker & Timeline") {
+                    CalendarDetailView()
+                }
+            }
+
+            Section("Layout") {
+                NavigationLink("Cards — Standard & metric") {
+                    CardDetailView()
+                }
+
+                NavigationLink("Carousel & Deck") {
+                    CarouselDetailView()
+                }
+            }
+
+            Section("Media & Typography") {
+                NavigationLink("Avatar & Icon Image") {
+                    AvatarIconDetailView()
+                }
+
+                NavigationLink("Typography — All text styles") {
+                    TextDetailView()
+                }
+            }
+        }
+        .navigationTitle("Components")
+    }
+}
+
+// MARK: - Detail Views
+
+private struct ButtonDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.lg) {
+                DSButton("Filled A", style: .filledA, size: .big, isFullWidth: true) {}
+                DSButton("Filled B", style: .filledB, size: .big, isFullWidth: true) {}
+                DSButton("Filled C", style: .filledC, size: .big, isFullWidth: true) {}
+                DSButton("Neutral", style: .neutral, size: .big, isFullWidth: true) {}
+                DSButton("Outlined", style: .outlined, size: .big, isFullWidth: true) {}
+                DSButton("Text", style: .text, size: .big) {}
+
+                DSDivider(style: .subheader("Sizes"))
+
+                HStack(spacing: theme.spacing.sm) {
+                    DSButton("Small", style: .filledA, size: .small) {}
+                    DSButton("Medium", style: .filledA, size: .medium) {}
+                    DSButton("Big", style: .filledA, size: .big) {}
+                }
+
+                DSDivider(style: .subheader("With Icons"))
+
+                HStack(spacing: theme.spacing.sm) {
+                    DSButton("Left", style: .filledA, size: .medium, iconLeft: "arrow.left") {}
+                    DSButton("Right", style: .filledA, size: .medium, iconRight: "arrow.right") {}
+                    DSButton(style: .filledA, size: .medium, systemIcon: "plus") {}
+                }
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Buttons")
+    }
+}
+
+private struct ChipBadgeDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: theme.spacing.xl) {
+                DSDivider(style: .subheader("Chips"))
+
+                HStack(spacing: theme.spacing.xs) {
+                    DSChip("Filled A", style: .filledA)
+                    DSChip("Filled B", style: .filledB)
+                    DSChip("Neutral", style: .neutral)
+                }
+                HStack(spacing: theme.spacing.xs) {
+                    DSChip("Outlined", style: .outlined)
+                    DSChip("Filled C", style: .filledC)
+                }
+
+                DSDivider(style: .subheader("Badges"))
+
+                HStack(spacing: theme.spacing.xl) {
+                    DSBadge(variant: .dot)
+                    DSBadge(variant: .numberBrand, count: 3)
+                    DSBadge(variant: .numberSemantic, count: 12)
+                }
+                HStack(spacing: theme.spacing.sm) {
+                    DSBadge(variant: .tagSemantic, text: "Info")
+                    DSBadge(variant: .tagBrand, text: "New")
+                }
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Chips & Badges")
+    }
+}
+
+private struct SelectionDetailView: View {
+    @State private var checkOn = true
+    @State private var selected = 0
+    @State private var toggleOn = true
+
+    var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                switch category {
-                case .buttons: ButtonShowcase()
-                case .chips: ChipsBadgesShowcase()
-                case .selectionControls: SelectionControlsShowcase()
-                case .forms: FormsShowcase()
-                case .lists: ListShowcase()
-                case .navigation: NavigationShowcase()
-                case .misc: MiscShowcase()
-                }
+                DSDivider(style: .subheader("Checkbox"))
+                DSCheckbox(isOn: $checkOn, label: "Accept terms")
+                DSCheckbox(isOn: .constant(false), label: "Unchecked")
+
+                DSDivider(style: .subheader("Radio"))
+                DSRadio(isSelected: selected == 0, label: "Option A") { selected = 0 }
+                DSRadio(isSelected: selected == 1, label: "Option B") { selected = 1 }
+                DSRadio(isSelected: selected == 2, label: "Option C") { selected = 2 }
+
+                DSDivider(style: .subheader("Toggle"))
+                DSToggle(isOn: $toggleOn, label: "Dark mode")
+                DSToggle(isOn: .constant(false), label: "Notifications")
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .padding(24)
         }
-        .background(theme.colors.surfaceNeutral0_5)
-        .navigationTitle(category.rawValue)
+        .navigationTitle("Selection Controls")
     }
 }
 
-// MARK: - Button Showcase
-
-private struct ButtonShowcase: View {
+private struct TextFieldDetailView: View {
+    @State private var text = ""
     @Environment(\.theme) private var theme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            sectionTitle("Filled A (Secondary)")
-            HStack(spacing: 12) {
-                DSButton("Big", style: .filledA, size: .big) {}
-                DSButton("Med", style: .filledA, size: .medium) {}
-                DSButton("Sm", style: .filledA, size: .small) {}
+        ScrollView {
+            VStack(spacing: theme.spacing.lg) {
+                DSDivider(style: .subheader("Text Field"))
+
+                DSTextField(text: $text, placeholder: "Empty", variant: .filled, state: .empty)
+                DSTextField(text: .constant("Hello"), placeholder: "Filled", variant: .filled, state: .filled)
+                DSTextField(text: .constant("Error"), placeholder: "Error", variant: .filled, state: .error)
+                DSTextField(text: .constant("OK"), placeholder: "Validated", variant: .filled, state: .validated)
+                DSTextField(text: .constant("Lined"), placeholder: "Lined", variant: .lined, state: .filled)
+
+                DSDivider(style: .subheader("Search Field"))
+
+                DSSearchField(text: .constant(""), placeholder: "Search...")
             }
-
-            sectionTitle("Filled B (Primary)")
-            HStack(spacing: 12) {
-                DSButton("Big", style: .filledB, size: .big) {}
-                DSButton("Med", style: .filledB, size: .medium) {}
-                DSButton("Sm", style: .filledB, size: .small) {}
-            }
-
-            sectionTitle("Filled C (Primary 120)")
-            HStack(spacing: 12) {
-                DSButton("Big", style: .filledC, size: .big) {}
-                DSButton("Med", style: .filledC, size: .medium) {}
-                DSButton("Sm", style: .filledC, size: .small) {}
-            }
-
-            sectionTitle("Neutral")
-            HStack(spacing: 12) {
-                DSButton("Big", style: .neutral, size: .big) {}
-                DSButton("Med", style: .neutral, size: .medium) {}
-                DSButton("Sm", style: .neutral, size: .small) {}
-            }
-
-            sectionTitle("Outlined")
-            HStack(spacing: 12) {
-                DSButton("Big", style: .outlined, size: .big) {}
-                DSButton("Med", style: .outlined, size: .medium) {}
-                DSButton("Sm", style: .outlined, size: .small) {}
-            }
-
-            sectionTitle("Text")
-            HStack(spacing: 12) {
-                DSButton("Big", style: .text, size: .big) {}
-                DSButton("Med", style: .text, size: .medium) {}
-                DSButton("Sm", style: .text, size: .small) {}
-            }
-
-            sectionTitle("With Icons")
-            DSButton("Continue", style: .filledB, size: .big, iconRight: "arrow.right") {}
-            DSButton("Back", style: .outlined, size: .medium, iconLeft: "arrow.left") {}
-
-            sectionTitle("Full Width")
-            DSButton("Full Width Primary", style: .filledB, size: .big, isFullWidth: true) {}
-            DSButton("Full Width Outlined", style: .outlined, size: .big, isFullWidth: true) {}
-
-            sectionTitle("Disabled State")
-            DSButton("Disabled", style: .filledB, size: .big) {}
-                .disabled(true)
+            .padding(theme.spacing.lg)
         }
-    }
-
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
+        .navigationTitle("Text Fields")
     }
 }
 
-// MARK: - Chips, Badges & Tags Showcase
+private struct FormExtrasDetailView: View {
+    @State private var areaText = ""
+    @State private var code = ""
 
-private struct ChipsBadgesShowcase: View {
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                DSDivider(style: .subheader("Dropdown"))
+
+                DSDropdown(
+                    items: [
+                        DSDropdownItem(id: "s", label: "Small"),
+                        DSDropdownItem(id: "m", label: "Medium"),
+                        DSDropdownItem(id: "l", label: "Large"),
+                    ],
+                    selectedId: .constant("m"),
+                    placeholder: "Size"
+                )
+
+                DSDivider(style: .subheader("Text Area"))
+
+                DSTextArea(text: $areaText, title: "Notes", placeholder: "Write something...")
+
+                DSDivider(style: .subheader("Code Input"))
+
+                DSCodeInput(code: $code, digitCount: 6)
+            }
+            .padding(24)
+        }
+        .navigationTitle("Dropdown, Area & Code")
+    }
+}
+
+private struct DatePickerDetailView: View {
+    @State private var date = Date()
+
+    var body: some View {
+        ScrollView {
+            DSDatePicker(startDate: $date)
+                .padding(24)
+        }
+        .navigationTitle("Date Picker")
+    }
+}
+
+private struct ListDividerDetailView: View {
     @Environment(\.theme) private var theme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            sectionTitle("Chips")
-            FlowLayout(spacing: 8) {
-                DSChip("Swift", style: .filledA)
-                DSChip("iOS", style: .filledB)
-                DSChip("SwiftUI", style: .filledC)
-                DSChip("UIKit", style: .neutral)
-                DSChip("Xcode", style: .outlined)
-            }
+        ScrollView {
+            VStack(spacing: theme.spacing.xl) {
+                DSDivider(style: .subheader("List Items"))
 
-            sectionTitle("Chips with dismiss")
-            FlowLayout(spacing: 8) {
-                DSChip("Removable", style: .filledA, onDismiss: {})
-                DSChip("Removable", style: .filledB, onDismiss: {})
-                DSChip("Removable", style: .neutral, onDismiss: {})
-                DSChip("Removable", style: .outlined, onDismiss: {})
-            }
-
-            sectionTitle("Disabled Chips")
-            FlowLayout(spacing: 8) {
-                DSChip("Disabled", style: .filledA).disabled(true)
-                DSChip("Disabled", style: .outlined).disabled(true)
-            }
-
-            sectionTitle("Badges")
-            HStack(spacing: 24) {
-                VStack(spacing: 4) {
-                    DSBadge(variant: .dot)
-                    Text("Dot").font(theme.typography.small.font)
+                DSListItem(overline: "Category", headline: "Item Title", metadata: "3m ago") {
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(theme.colors.surfaceSecondary100)
+                } trailing: {
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(theme.colors.textNeutral8)
                 }
-                VStack(spacing: 4) {
-                    DSBadge(variant: .numberBrand, count: 9)
-                    Text("Number").font(theme.typography.small.font)
+
+                DSListItem(headline: "Simple row") {
+                    EmptyView()
+                } trailing: {
+                    EmptyView()
                 }
-                VStack(spacing: 4) {
-                    DSBadge(variant: .numberSemantic, count: 3)
-                    Text("Semantic").font(theme.typography.small.font)
-                }
-            }
-            .foregroundStyle(theme.colors.textNeutral9)
 
-            sectionTitle("Tags")
-            HStack(spacing: 12) {
-                DSBadge(variant: .tagBrand, text: "Brand")
-                DSBadge(variant: .tagSemantic, text: "Info")
-            }
-        }
-    }
+                DSDivider(style: .subheader("Divider Styles"))
 
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
-    }
-}
-
-// MARK: - Flow Layout (horizontal wrapping)
-
-private struct FlowLayout: Layout {
-    var spacing: CGFloat = 8
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let result = layout(in: proposal.width ?? 0, subviews: subviews)
-        return result.size
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let result = layout(in: bounds.width, subviews: subviews)
-        for (index, offset) in result.offsets.enumerated() {
-            subviews[index].place(
-                at: CGPoint(x: bounds.minX + offset.x, y: bounds.minY + offset.y),
-                proposal: .unspecified
-            )
-        }
-    }
-
-    private func layout(in width: CGFloat, subviews: Subviews) -> (size: CGSize, offsets: [CGPoint]) {
-        var offsets: [CGPoint] = []
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        var rowHeight: CGFloat = 0
-        var maxWidth: CGFloat = 0
-
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if x + size.width > width, x > 0 {
-                x = 0
-                y += rowHeight + spacing
-                rowHeight = 0
-            }
-            offsets.append(CGPoint(x: x, y: y))
-            rowHeight = max(rowHeight, size.height)
-            x += size.width + spacing
-            maxWidth = max(maxWidth, x)
-        }
-
-        return (CGSize(width: maxWidth, height: y + rowHeight), offsets)
-    }
-}
-
-// MARK: - Selection Controls Showcase
-
-private struct SelectionControlsShowcase: View {
-    @Environment(\.theme) private var theme
-
-    @State private var check1 = true
-    @State private var check2 = false
-    @State private var radioOption = 0
-    @State private var toggle1 = true
-    @State private var toggle2 = false
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            sectionTitle("Checkboxes")
-            DSCheckbox(isOn: $check1, label: "Accepted terms", description: "You agree to our terms and conditions")
-            DSCheckbox(isOn: $check2, label: "Subscribe to newsletter")
-
-            sectionTitle("Radio Buttons")
-            DSRadio(isSelected: radioOption == 0, label: "Option A", description: "First option") { radioOption = 0 }
-            DSRadio(isSelected: radioOption == 1, label: "Option B", description: "Second option") { radioOption = 1 }
-            DSRadio(isSelected: radioOption == 2, label: "Option C") { radioOption = 2 }
-
-            sectionTitle("Toggles")
-            DSToggle(isOn: $toggle1, label: "Dark mode", description: "Switch between light and dark themes")
-            DSToggle(isOn: $toggle2, label: "Notifications")
-        }
-    }
-
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
-    }
-}
-
-// MARK: - Forms Showcase
-
-private struct FormsShowcase: View {
-    @Environment(\.theme) private var theme
-
-    @State private var textEmpty = ""
-    @State private var textFilled = "John Doe"
-    @State private var textError = "bad@"
-    @State private var searchText = ""
-    @State private var textAreaText = ""
-    @State private var dropdownSelection: String? = nil
-    @State private var dateStart = Date()
-    @State private var dateEnd = Date().addingTimeInterval(86400 * 7)
-
-    private let dropdownItems = [
-        DSDropdownItem(id: "1", label: "Option 1"),
-        DSDropdownItem(id: "2", label: "Option 2"),
-        DSDropdownItem(id: "3", label: "Option 3"),
-    ]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            sectionTitle("Text Fields — Filled")
-            DSTextField(text: $textEmpty, placeholder: "Empty state", variant: .filled, state: .empty, iconLeft: "person")
-            DSTextField(text: $textFilled, placeholder: "Full name", label: "Name", variant: .filled, state: .filled, iconLeft: "person.fill")
-            DSTextField(text: $textError, placeholder: "Email", label: "Email", helperText: "Invalid email format", variant: .filled, state: .error, iconLeft: "envelope")
-            DSTextField(text: .constant("verified@email.com"), placeholder: "Email", label: "Email", variant: .filled, state: .validated, iconLeft: "envelope.fill", iconRight: "checkmark.circle.fill")
-
-            sectionTitle("Text Fields — Lined")
-            DSTextField(text: $textEmpty, placeholder: "Lined empty", variant: .lined, state: .empty)
-            DSTextField(text: $textFilled, placeholder: "Lined filled", label: "Name", variant: .lined, state: .filled)
-
-            sectionTitle("Search")
-            DSSearchField(text: $searchText, placeholder: "Search components...")
-
-            sectionTitle("Dropdown")
-            DSDropdown(items: dropdownItems, selectedId: $dropdownSelection, placeholder: "Choose an option", label: "Selection")
-
-            sectionTitle("Text Area")
-            DSTextArea(text: $textAreaText, title: "Notes", placeholder: "Write your notes here...")
-
-            sectionTitle("Date Picker — Single")
-            DSDatePicker(startDate: $dateStart, variant: .single, title: "Select date")
-
-            sectionTitle("Date Picker — Range")
-            DSDatePicker(startDate: $dateStart, endDate: $dateEnd, variant: .range, title: "Select range")
-        }
-    }
-
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
-    }
-}
-
-// MARK: - List Showcase
-
-private struct ListShowcase: View {
-    @Environment(\.theme) private var theme
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            sectionTitle("Minimal")
-            DSListItem(headline: "Headline")
-
-            sectionTitle("With Trailing Arrow")
-            DSListItem(headline: "Headline", showTrailingArrow: true)
-
-            sectionTitle("With Leading Icon")
-            DSListItem(headline: "Headline", leadingIcon: "eye", showTrailingArrow: true)
-
-            sectionTitle("With Metadata")
-            DSListItem(headline: "Headline", metadata: "Label", showTrailingArrow: true)
-
-            sectionTitle("With Supporting Text")
-            DSListItem(
-                headline: "Headline",
-                supportingText: "Supporting Text",
-                leadingIcon: "eye",
-                showTrailingArrow: true
-            )
-
-            sectionTitle("With Overline")
-            DSListItem(
-                overline: "Overline",
-                headline: "Headline",
-                leadingIcon: "eye",
-                metadata: "Label",
-                showTrailingArrow: true
-            )
-
-            sectionTitle("Full (All Options)")
-            DSListItem(
-                overline: "Overline",
-                headline: "Headline",
-                supportingText: "Supporting Text",
-                leadingIcon: "eye",
-                metadata: "Label",
-                showTrailingArrow: true,
-                showDivider: true
-            )
-
-            sectionTitle("List Group with Dividers")
-            VStack(spacing: 0) {
-                DSListItem(headline: "Notifications", leadingIcon: "bell", showTrailingArrow: true, showDivider: true)
-                DSListItem(headline: "Privacy", leadingIcon: "lock", showTrailingArrow: true, showDivider: true)
-                DSListItem(headline: "Appearance", leadingIcon: "paintbrush", showTrailingArrow: true)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
-
-            // MARK: - Generic Leading/Trailing Content
-
-            sectionTitle("Leading: Checkbox")
-            DSListItem(headline: "Pickled Cucumber", showDivider: true, leading: {
-                DSCheckbox(isOn: .constant(true))
-            }, trailing: {
-                EmptyView()
-            })
-
-            sectionTitle("Leading: Radio")
-            DSListItem(headline: "Option A", leading: {
-                DSRadio(isSelected: true) {}
-            }, trailing: {
-                EmptyView()
-            })
-
-            sectionTitle("Leading: Toggle")
-            DSListItem(headline: "Dark Mode", leading: {
-                DSToggle(isOn: .constant(true))
-            }, trailing: {
-                EmptyView()
-            })
-
-            sectionTitle("Leading: Avatar")
-            DSListItem(headline: "John Doe", supportingText: "Online", leading: {
-                DSAvatar(style: .monogram("J"))
-            }, trailing: {
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 20))
-                    .foregroundStyle(theme.colors.textNeutral9)
-                    .padding(8)
-            })
-
-            sectionTitle("Leading: Progress Circle")
-            DSListItem(headline: "Uploading file...", supportingText: "3 of 10 items", leading: {
-                DSProgressCircle(progress: 0.3)
-            }, trailing: {
-                EmptyView()
-            })
-
-            sectionTitle("Leading: Image")
-            DSListItem(headline: "Mountain View", supportingText: "Landscape photo", leading: {
-                RoundedRectangle(cornerRadius: theme.radius.sm)
-                    .fill(theme.colors.surfaceSecondary100)
-                    .frame(width: 56, height: 48)
-                    .overlay(
-                        Image(systemName: "photo")
-                            .foregroundStyle(theme.colors.textNeutral0_5)
-                    )
-            }, trailing: {
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 20))
-                    .foregroundStyle(theme.colors.textNeutral9)
-                    .padding(8)
-            })
-
-            sectionTitle("Leading: Video")
-            DSListItem(headline: "Tutorial", supportingText: "12 min", leading: {
-                RoundedRectangle(cornerRadius: theme.radius.sm)
-                    .fill(theme.colors.surfacePrimary100)
-                    .frame(width: 96, height: 56)
-                    .overlay(
-                        Image(systemName: "play.fill")
-                            .foregroundStyle(theme.colors.textNeutral0_5)
-                    )
-            }, trailing: {
-                EmptyView()
-            })
-
-            sectionTitle("Trailing: Button")
-            DSListItem(headline: "Invite Friend", leading: {
-                DSAvatar(style: .icon("person"))
-            }, trailing: {
-                DSButton("Follow", style: .filledA, size: .small) {}
-            })
-
-            sectionTitle("Full Combo: Avatar + Metadata + Arrow")
-            DSListItem(
-                overline: "Team Lead",
-                headline: "Sarah Connor",
-                supportingText: "Last active 2h ago",
-                metadata: "Admin",
-                leading: {
-                    DSAvatar(style: .monogram("SC"))
-                }, trailing: {
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 20))
-                        .foregroundStyle(theme.colors.textNeutral9)
-                        .padding(8)
-                }
-            )
-
-            sectionTitle("Group: Checkbox List")
-            VStack(spacing: 0) {
-                DSListItem(headline: "Tomatoes", showDivider: true, leading: {
-                    DSCheckbox(isOn: .constant(true))
-                }, trailing: { EmptyView() })
-                DSListItem(headline: "Lettuce", showDivider: true, leading: {
-                    DSCheckbox(isOn: .constant(false))
-                }, trailing: { EmptyView() })
-                DSListItem(headline: "Cucumber", leading: {
-                    DSCheckbox(isOn: .constant(true))
-                }, trailing: { EmptyView() })
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
-        }
-    }
-
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
-    }
-}
-
-// MARK: - Navigation Showcase
-
-private struct NavigationShowcase: View {
-    @Environment(\.theme) private var theme
-
-    @State private var segmentIndex = 0
-    @State private var pillsIndex = 1
-    @State private var pageIndex = 0
-    @State private var fullTab = "home"
-    @State private var floatingTab = "home"
-    @State private var labeledTab = "calendar"
-
-    private let iconItems = [
-        DSBottomBarItem(id: "home", label: "Home", systemIcon: "house"),
-        DSBottomBarItem(id: "person", label: "Profile", systemIcon: "person"),
-        DSBottomBarItem(id: "calendar", label: "Calendar", systemIcon: "calendar"),
-        DSBottomBarItem(id: "bell", label: "Alerts", systemIcon: "bell"),
-    ]
-
-    private let labeledItems = [
-        DSBottomBarItem(id: "home", label: "Home", systemIcon: "house", badgeCount: 12),
-        DSBottomBarItem(id: "person", label: "Profile", systemIcon: "person", badgeCount: 9),
-        DSBottomBarItem(id: "docs", label: "Docs", systemIcon: "doc.on.doc", badgeCount: 9),
-        DSBottomBarItem(id: "calendar", label: "Calendar", systemIcon: "calendar", badgeCount: 9),
-        DSBottomBarItem(id: "bell", label: "Alerts", systemIcon: "bell", badgeCount: 12),
-    ]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            sectionTitle("Top App Bar — Small")
-            DSTopAppBar(title: "Settings", style: .small, onBack: {}) {
-                DSButton(style: .neutral, size: .medium, systemIcon: "bell") {}
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Top App Bar — Small Centered")
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: {}) {
-                DSButton(style: .neutral, size: .medium, systemIcon: "person.circle") {}
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Top App Bar — Medium")
-            DSTopAppBar(title: "Documents", style: .medium, onBack: {}) {
-                DSButton(style: .neutral, size: .medium, systemIcon: "paperclip") {}
-                DSButton(style: .neutral, size: .medium, systemIcon: "ellipsis") {}
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Top App Bar — Large")
-            DSTopAppBar(title: "Explore", style: .large, onBack: {}) {
-                DSButton(style: .neutral, size: .medium, systemIcon: "paperclip") {}
-                DSButton(style: .neutral, size: .medium, systemIcon: "ellipsis") {}
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Top App Bar — Logo")
-            DSTopAppBar(leadingIcon: "person.circle", onLeadingTap: {}) {
-                HStack(spacing: 8) {
-                    Image(systemName: "leaf.fill")
-                        .font(.system(size: 20))
-                        .foregroundStyle(theme.colors.surfacePrimary100)
-                    Text("haho")
-                        .font(theme.typography.bodySemiBold.font)
-                        .tracking(theme.typography.bodySemiBold.tracking)
-                        .foregroundStyle(theme.colors.textNeutral9)
-                }
-            } actions: {
-                DSButton(style: .neutral, size: .medium, systemIcon: "line.3.horizontal") {}
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Top App Bar — Search")
-            DSTopAppBar(searchPlaceholder: "Search...", onSearchTap: {}, leadingIcon: "line.3.horizontal", onLeadingTap: {}) {
-                Button {} label: {
-                    Image(systemName: "plus.circle")
-                        .font(.system(size: 24))
-                        .foregroundStyle(theme.colors.textNeutral9)
-                }
-                .buttonStyle(.plain)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Top App Bar — Image-Title")
-            DSTopAppBar(title: "User Name") {
-                RoundedRectangle(cornerRadius: theme.radius.sm)
-                    .fill(theme.colors.surfaceSecondary100)
-                    .overlay(
-                        Image(systemName: "photo")
-                            .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
-                    )
-            } actions: {
-                DSButton("Follow", style: .neutral, size: .medium, iconRight: "plus") {}
-            }
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
-
-            sectionTitle("Bottom App Bar — Full")
-            DSBottomAppBar(
-                items: iconItems,
-                selectedId: $fullTab,
-                style: .full,
-                fabIcon: "plus",
-                onFabTap: {}
-            )
-
-            sectionTitle("Bottom App Bar — Floating")
-            DSBottomAppBar(
-                items: iconItems,
-                selectedId: $floatingTab,
-                style: .floating,
-                fabIcon: "plus",
-                onFabTap: {}
-            )
-
-            sectionTitle("Bottom App Bar — Labeled")
-            DSBottomAppBar(
-                items: labeledItems,
-                selectedId: $labeledTab,
-                style: .labeled
-            )
-
-            sectionTitle("Segmented Picker — Tabs")
-            DSSegmentedPicker(items: ["Day", "Week", "Month"], selectedIndex: $segmentIndex)
-
-            sectionTitle("Segmented Picker — Pills")
-            DSSegmentedPicker(items: ["All", "Active", "Archived", "Done"], selectedIndex: $pillsIndex, style: .pills)
-
-            sectionTitle("Page Control")
-            HStack {
-                Spacer()
-                DSPageControl(count: 5, currentIndex: $pageIndex)
-                Spacer()
-            }
-        }
-    }
-
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
-    }
-}
-
-// MARK: - Misc Showcase (Avatar, ProgressCircle, Divider, Tooltip)
-
-private struct MiscShowcase: View {
-    @Environment(\.theme) private var theme
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            // MARK: Avatars
-            sectionTitle("Avatars — Monogram")
-            HStack(spacing: 16) {
-                DSAvatar(style: .monogram("H"))
-                DSAvatar(style: .monogram("AB"), size: 48)
-                DSAvatar(style: .monogram("Z"), size: 56)
-            }
-
-            sectionTitle("Avatars — Icon")
-            HStack(spacing: 16) {
-                DSAvatar(style: .icon("person"))
-                DSAvatar(style: .icon("star.fill"), size: 48)
-            }
-
-            sectionTitle("Avatars — Image")
-            HStack(spacing: 16) {
-                DSAvatar(style: .image(Image(systemName: "photo.fill")))
-                DSAvatar(style: .image(Image(systemName: "mountain.2.fill")), size: 56)
-            }
-
-            // MARK: Progress Circles
-            sectionTitle("Progress Circle")
-            HStack(spacing: 12) {
-                DSProgressCircle(progress: 0.1)
-                DSProgressCircle(progress: 0.3)
-                DSProgressCircle(progress: 0.5)
-                DSProgressCircle(progress: 0.7)
-                DSProgressCircle(progress: 1.0)
-            }
-
-            sectionTitle("Progress Circle — Large")
-            HStack(spacing: 16) {
-                DSProgressCircle(progress: 0.25, size: 56)
-                DSProgressCircle(progress: 0.65, size: 56)
-                DSProgressCircle(progress: 0.9, size: 56)
-            }
-
-            // MARK: Dividers
-            sectionTitle("Dividers")
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Full-bleed")
-                    .font(theme.typography.small.font)
-                    .foregroundStyle(theme.colors.textNeutral8)
                 DSDivider(style: .fullBleed)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Inset")
-                    .font(theme.typography.small.font)
-                    .foregroundStyle(theme.colors.textNeutral8)
                 DSDivider(style: .inset)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Middle")
-                    .font(theme.typography.small.font)
-                    .foregroundStyle(theme.colors.textNeutral8)
                 DSDivider(style: .middle)
+                DSDivider(style: .subheader("Section Header"))
             }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Subheader")
-                    .font(theme.typography.small.font)
-                    .foregroundStyle(theme.colors.textNeutral8)
-                DSDivider(style: .subheader("Section Title"))
-            }
-
-            // MARK: Tooltips
-            sectionTitle("Tooltips — Simple")
-            HStack(spacing: 24) {
-                VStack(spacing: 4) {
-                    DSTooltip(style: .simple("Hint text here."), direction: .top)
-                    Text("Top").font(theme.typography.small.font)
-                }
-                VStack(spacing: 4) {
-                    DSTooltip(style: .simple("Hint text here."), direction: .bottom)
-                    Text("Bottom").font(theme.typography.small.font)
-                }
-            }
-            .foregroundStyle(theme.colors.textNeutral8)
-
-            sectionTitle("Tooltips — Rich")
-            DSTooltip(
-                style: .rich(
-                    title: "Tooltip Title",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    actionLabel: "Find out more",
-                    onAction: {}
-                ),
-                direction: .top
-            )
-
-            DSTooltip(
-                style: .rich(
-                    title: "Tooltip Title",
-                    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    image: AnyView(
-                        LinearGradient(
-                            colors: [Color(red: 1.0, green: 0.42, blue: 0.37), Color(red: 0.4, green: 0.35, blue: 0.35)],
-                            startPoint: .topTrailing,
-                            endPoint: .bottomLeading
-                        )
-                    ),
-                    actionLabel: "Find out more",
-                    onAction: {}
-                ),
-                direction: .bottom
-            )
+            .padding(theme.spacing.lg)
         }
-    }
-
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(theme.typography.label.font)
-            .foregroundStyle(theme.colors.textNeutral8)
+        .navigationTitle("Lists & Dividers")
     }
 }
 
-// MARK: - Previews
+private struct AppBarDetailView: View {
+    @Environment(\.theme) private var theme
+    @State private var selected = "home"
 
-#Preview("Light Rounded") {
-    ComponentShowcaseView()
-        .previewThemed(brand: .coralCamo, style: .lightRounded)
+    private let items = [
+        DSBottomBarItem(id: "home", label: "Home", systemIcon: "house"),
+        DSBottomBarItem(id: "search", label: "Search", systemIcon: "magnifyingglass"),
+        DSBottomBarItem(id: "profile", label: "Profile", systemIcon: "person"),
+    ]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: theme.spacing.xl) {
+                    DSDivider(style: .subheader("Top App Bar"))
+
+                    DSTopAppBar(title: "Small", style: .small, onBack: {}) {
+                        EmptyView()
+                    }
+
+                    DSTopAppBar(title: "Centered", style: .smallCentered, onBack: {}) {
+                        DSButton(style: .text, size: .small, systemIcon: "bell") {}
+                    }
+
+                    DSTopAppBar(title: "Medium", style: .medium, onBack: {}) {
+                        EmptyView()
+                    }
+                }
+            }
+
+            DSDivider(style: .subheader("Bottom App Bar"))
+
+            DSBottomAppBar(items: items, selectedId: $selected, style: .labeled)
+        }
+        .navigationTitle("App Bars")
+    }
 }
 
-#Preview("Dark Sharp") {
-    ComponentShowcaseView()
-        .previewThemed(brand: .blueHaze, style: .darkSharp)
+private struct PickerControlDetailView: View {
+    @State private var index = 0
+    @State private var current = 2
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 32) {
+                DSDivider(style: .subheader("Segmented Picker"))
+                DSSegmentedPicker(items: ["Day", "Week", "Month"], selectedIndex: $index)
+
+                DSDivider(style: .subheader("Page Control"))
+                DSPageControl(count: 5, currentIndex: $current)
+            }
+            .padding(24)
+        }
+        .navigationTitle("Picker & Page Control")
+    }
+}
+
+private struct FeedbackDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.lg) {
+                DSDivider(style: .subheader("Alerts"))
+
+                DSAlert(
+                    title: "Something went wrong",
+                    message: "Please try again later.",
+                    severity: .error
+                ) {
+                    EmptyView()
+                } actions: {
+                    DSButton("Retry", style: .filledA, size: .small) {}
+                }
+
+                DSAlert(
+                    title: "Update available",
+                    message: "A new version is ready.",
+                    severity: .neutral
+                ) {
+                    EmptyView()
+                } actions: {
+                    DSButton("Update", style: .filledB, size: .small) {}
+                }
+
+                DSDivider(style: .subheader("Banners"))
+
+                DSBanner(title: "Success!", message: "Operation completed.", severity: .success, onDismiss: {})
+                DSBanner(title: "Warning", message: "Check your input.", severity: .warning, onDismiss: {})
+                DSBanner(title: "Error", message: "Something failed.", severity: .error, onDismiss: {})
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Alerts & Banners")
+    }
+}
+
+private struct TooltipDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.xl) {
+                DSTooltip(style: .simple("Top tooltip"), direction: .top)
+                DSTooltip(style: .simple("Bottom tooltip"), direction: .bottom)
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Tooltip")
+    }
+}
+
+private struct ChartsDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.xl) {
+                DSDivider(style: .subheader("Line Chart"))
+
+                DSLineChart(
+                    points: [
+                        .init(x: 0, y: 0.3), .init(x: 0.25, y: 0.7),
+                        .init(x: 0.5, y: 0.4), .init(x: 0.75, y: 0.8), .init(x: 1, y: 0.5),
+                    ],
+                    lineColor: theme.colors.surfacePrimary100,
+                    shadowColor: theme.colors.surfacePrimary100.opacity(0.3)
+                )
+                .frame(height: 160)
+
+                DSDivider(style: .subheader("Lollipop Chart"))
+
+                DSLollipopChart(
+                    data: [
+                        .init(label: "Jan", height: 20), .init(label: "Feb", height: 35),
+                        .init(label: "Mar", height: 55), .init(label: "Apr", height: 40),
+                        .init(label: "May", height: 25), .init(label: "Jun", height: 60),
+                    ],
+                    highlightIndex: 2,
+                    highlightLabel: "$55"
+                )
+                .frame(height: 160)
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Charts")
+    }
+}
+
+private struct GaugeProgressDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.xl) {
+                DSDivider(style: .subheader("Progress Circle"))
+
+                HStack(spacing: theme.spacing.xl) {
+                    DSProgressCircle(progress: 0.25, size: 80)
+                    DSProgressCircle(progress: 0.6, size: 80)
+                    DSProgressCircle(progress: 1.0, size: 80)
+                }
+
+                DSDivider(style: .subheader("Semi-Circular Gauge"))
+
+                DSSemiCircularGauge(segments: [
+                    .init(fraction: 0.6, color: theme.colors.textNeutral9),
+                    .init(fraction: 0.2, color: theme.colors.surfaceSecondary100),
+                    .init(fraction: 0.2, color: theme.colors.surfaceNeutral2),
+                ]) {
+                    EmptyView()
+                }
+                .frame(height: 160)
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Gauge & Progress")
+    }
+}
+
+private struct CalendarDetailView: View {
+    @State private var date = Date()
+    @State private var selectedDay = "2"
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.xl) {
+                DSDivider(style: .subheader("Date Picker"))
+
+                DSDatePicker(startDate: $date)
+
+                DSDivider(style: .subheader("Day Picker"))
+
+                DSDayPicker(
+                    items: [
+                        .init(id: "1", label: "Mon"),
+                        .init(id: "2", label: "Tue"),
+                        .init(id: "3", label: "Wed"),
+                        .init(id: "4", label: "Thu"),
+                        .init(id: "5", label: "Fri"),
+                    ],
+                    selectedId: $selectedDay
+                )
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Calendar")
+    }
+}
+
+private struct CardDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.lg) {
+                DSDivider(style: .subheader("Cards"))
+
+                DSCard(
+                    background: theme.colors.surfaceNeutral2,
+                    radius: theme.radius.xl,
+                    padding: theme.spacing.xl
+                ) {
+                    DSText("Neutral card", style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
+                }
+
+                DSCard(
+                    background: theme.colors.surfacePrimary100,
+                    radius: theme.radius.xl,
+                    padding: theme.spacing.xl
+                ) {
+                    DSText("Primary card", style: theme.typography.bodyRegular, color: theme.colors.textNeutral0_5)
+                }
+
+                DSDivider(style: .subheader("Metric Cards"))
+
+                DSMetricCard(
+                    title: "Walk",
+                    icon: .walking,
+                    value: "6,560",
+                    unit: "steps",
+                    background: theme.colors.surfacePrimary100,
+                    foreground: theme.colors.textNeutral0_5
+                )
+
+                DSMetricCard(
+                    title: "Calories",
+                    icon: .fireFlame,
+                    value: "1,248",
+                    unit: "kcal",
+                    background: theme.colors.surfaceSecondary100,
+                    foreground: theme.colors.textNeutral0_5
+                )
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Cards")
+    }
+}
+
+private struct CarouselDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            DSText(
+                "Horizontal image carousel with spotlight, standard, and deck styles",
+                style: theme.typography.bodyRegular,
+                color: theme.colors.textNeutral8
+            )
+            .padding(24)
+        }
+        .navigationTitle("Carousel & Deck")
+    }
+}
+
+private struct AvatarIconDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.xl) {
+                DSDivider(style: .subheader("Avatars"))
+
+                HStack(spacing: theme.spacing.lg) {
+                    DSAvatar(style: .monogram("H"), size: 56)
+                    DSAvatar(style: .monogram("AB"), size: 56)
+                    DSAvatar(style: .icon("star.fill"), size: 56)
+                }
+
+                HStack(spacing: theme.spacing.lg) {
+                    DSAvatar(style: .monogram("S"), size: 32)
+                    DSAvatar(style: .monogram("M"), size: 48)
+                    DSAvatar(style: .monogram("L"), size: 64)
+                }
+
+                DSDivider(style: .subheader("Icon Images"))
+
+                LazyVGrid(columns: [
+                    GridItem(.adaptive(minimum: 60))
+                ], spacing: theme.spacing.lg) {
+                    DSIconImage(.heart, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.bellNotification, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.camera, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.home, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.calendar, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.user, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.walking, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.fireFlame, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.server, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.graphUp, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.plus, size: 32, color: theme.colors.textNeutral9)
+                    DSIconImage(.xmark, size: 32, color: theme.colors.textNeutral9)
+                }
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Avatars & Icons")
+    }
+}
+
+private struct TextDetailView: View {
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: theme.spacing.lg) {
+                DSText("Display 1", style: theme.typography.display1, color: theme.colors.textNeutral9)
+                DSText("Display 2", style: theme.typography.display2, color: theme.colors.textNeutral9)
+                DSText("Heading 2", style: theme.typography.h2, color: theme.colors.textNeutral9)
+                DSText("Heading 4", style: theme.typography.h4, color: theme.colors.textNeutral9)
+                DSText("Heading 5", style: theme.typography.h5, color: theme.colors.textNeutral9)
+                DSText("Heading 6", style: theme.typography.h6, color: theme.colors.textNeutral9)
+                DSText("Body Semi Bold", style: theme.typography.bodySemiBold, color: theme.colors.textNeutral9)
+                DSText("Body Medium", style: theme.typography.body, color: theme.colors.textNeutral9)
+                DSText("Body Regular", style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
+                DSText("Label", style: theme.typography.label, color: theme.colors.textNeutral9)
+                DSText("Caption", style: theme.typography.caption, color: theme.colors.textNeutral9)
+                DSText("Small", style: theme.typography.small, color: theme.colors.textNeutral9)
+            }
+            .padding(theme.spacing.lg)
+        }
+        .navigationTitle("Typography")
+    }
+}
+
+#Preview {
+    NavigationStack {
+        ComponentShowcaseView()
+    }
+    .previewThemed()
 }

@@ -317,7 +317,9 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
     @ViewBuilder
     private var backButton: some View {
         if let onBack {
-            iconCapsuleButton(icon: "arrow.left", action: onBack)
+            DSButton(style: .neutral, size: .medium, icon: .arrowLeftLong) {
+                onBack()
+            }
         }
     }
 

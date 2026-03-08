@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_boxing_glove.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

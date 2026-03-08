@@ -11,8 +11,12 @@ public enum DSButtonStyle: Sendable, CaseIterable {
     case filledC
     /// Neutral-2 background, dark text.
     case neutral
+    /// Neutral-0.5 (white/cream) background, dark text. For dark backgrounds.
+    case neutralLight
     /// Transparent with primary-120 border, dark text.
     case outlined
+    /// Transparent with neutral-0.5 border, light text. For dark backgrounds.
+    case outlinedLight
     /// No background, no border, dark text.
     case text
 }
@@ -127,6 +131,30 @@ public struct DSButton: View {
         self.action = action
     }
 
+    /// Icon-only button with DSIcon enum.
+    public init(
+        style: DSButtonStyle = .neutral,
+        size: DSButtonSize = .big,
+        icon: DSIcon,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.init(style: style, size: size, assetIcon: icon.imageName, isFullWidth: isFullWidth, action: action)
+    }
+
+    /// Text button with a DSIcon enum (left or right).
+    public init(
+        _ label: LocalizedStringKey,
+        style: DSButtonStyle = .filledB,
+        size: DSButtonSize = .big,
+        icon: DSIcon,
+        iconPosition: IconPosition = .left,
+        isFullWidth: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.init(label, style: style, size: size, assetIcon: icon.imageName, iconPosition: iconPosition, isFullWidth: isFullWidth, action: action)
+    }
+
     public enum IconPosition {
         case left, right
     }
@@ -223,6 +251,13 @@ public struct DSButton: View {
     }
 
     private var paddingH: CGFloat {
+        if style == .text {
+            switch size {
+            case .big: return theme.spacing.md
+            case .medium: return theme.spacing.xs
+            case .small: return theme.spacing.xxs
+            }
+        }
         switch size {
         case .big: return theme.spacing.lg
         case .medium: return theme.spacing.md
@@ -274,15 +309,16 @@ public struct DSButton: View {
         case .filledB: return theme.colors.surfacePrimary100
         case .filledC: return theme.colors.surfacePrimary120
         case .neutral: return theme.colors.surfaceNeutral2
-        case .outlined, .text: return .clear
+        case .neutralLight: return theme.colors.surfaceNeutral0_5
+        case .outlined, .outlinedLight, .text: return .clear
         }
     }
 
     private var foregroundColor: Color {
         switch style {
-        case .filledA, .neutral, .outlined, .text:
+        case .filledA, .neutral, .neutralLight, .outlined, .text:
             return theme.colors.textNeutral9
-        case .filledB, .filledC:
+        case .filledB, .filledC, .outlinedLight:
             return theme.colors.textNeutral0_5
         }
     }
@@ -292,6 +328,9 @@ public struct DSButton: View {
         if style == .outlined {
             Capsule()
                 .stroke(theme.colors.surfacePrimary120, lineWidth: theme.borders.widthSm)
+        } else if style == .outlinedLight {
+            Capsule()
+                .stroke(theme.colors.surfaceNeutral0_5, lineWidth: theme.borders.widthSm)
         }
     }
 }

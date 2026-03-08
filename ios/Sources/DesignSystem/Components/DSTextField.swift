@@ -106,9 +106,9 @@ public struct DSTextField: View {
 
                 Group {
                     if isSecure && isTextHidden {
-                        SecureField(showFloatingLabel ? "" : placeholder, text: $text)
+                        SecureField(placeholder, text: $text)
                     } else {
-                        TextField(showFloatingLabel ? "" : placeholder, text: $text)
+                        TextField(placeholder, text: $text)
                     }
                 }
                 .font(theme.typography.body.font)
@@ -192,7 +192,7 @@ public struct DSTextField: View {
     private var backgroundColor: Color {
         switch variant {
         case .filled:
-            return theme.colors.surfaceNeutral0_5
+            return theme.colors.surfaceNeutral2
         case .lined:
             return .clear
         }
@@ -210,15 +210,24 @@ public struct DSTextField: View {
             switch variant {
             case .filled:
                 RoundedRectangle(cornerRadius: theme.radius.md)
-                    .stroke(borderColor, lineWidth: theme.borders.widthSm)
+                    .stroke(borderColor, lineWidth: borderWidth)
             case .lined:
                 VStack {
                     Spacer()
                     Rectangle()
                         .fill(borderColor)
-                        .frame(height: theme.borders.widthSm)
+                        .frame(height: borderWidth)
                 }
             }
+        }
+    }
+
+    private var borderWidth: CGFloat {
+        switch state {
+        case .error, .active, .validated:
+            return theme.borders.widthMd
+        case .empty, .filled:
+            return theme.borders.widthSm
         }
     }
 

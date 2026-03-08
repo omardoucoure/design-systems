@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_cube_cut_with_curve.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
