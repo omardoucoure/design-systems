@@ -244,9 +244,9 @@ public struct DSButton: View {
 
     private var height: CGFloat {
         switch size {
-        case .big: return 56
-        case .medium: return 40
-        case .small: return 32
+        case .big: return theme.components.button.bigHeight
+        case .medium: return theme.components.button.mediumHeight
+        case .small: return theme.components.button.smallHeight
         }
     }
 
@@ -282,8 +282,8 @@ public struct DSButton: View {
 
     private var iconSize: CGFloat {
         switch size {
-        case .big, .medium: return 24
-        case .small: return 20
+        case .big, .medium: return theme.components.button.bigIconSize
+        case .small: return theme.components.button.smallIconSize
         }
     }
 
@@ -338,11 +338,13 @@ public struct DSButton: View {
 // MARK: - Press Style
 
 private struct DSButtonPressStyle: ButtonStyle {
+    @Environment(\.theme) private var theme
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .opacity(configuration.isPressed ? 0.7 : 1.0)
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+            .opacity(configuration.isPressed ? theme.components.button.pressedOpacity : 1.0)
+            .scaleEffect(configuration.isPressed ? theme.components.button.pressedScale : 1.0)
+            .animation(.easeInOut(duration: theme.components.button.pressedAnimationDuration), value: configuration.isPressed)
     }
 }
 

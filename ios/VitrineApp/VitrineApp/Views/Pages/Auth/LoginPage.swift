@@ -80,19 +80,8 @@ struct LoginPage: View {
     }
 
     private func socialButton(imageName: String) -> some View {
-        Button {} label: {
-            Image(imageName)
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundStyle(theme.colors.textNeutral9)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .background(theme.colors.surfaceNeutral2)
-                .clipShape(Capsule())
+        DSButton(style: .neutral, size: .big, assetIcon: imageName, isFullWidth: true) {
         }
-        .buttonStyle(.plain)
     }
 }
 
