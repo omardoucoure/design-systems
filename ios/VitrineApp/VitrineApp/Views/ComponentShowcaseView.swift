@@ -10,93 +10,93 @@ struct ComponentShowcaseView: View {
         List {
             Section("Actions") {
                 NavigationLink("Buttons — Filled, outlined, text, icons") {
-                    ButtonDetailView()
+                    LazyView(ButtonDetailView())
                 }
 
                 NavigationLink("Chips & Badges — Tags, dots, counts") {
-                    ChipBadgeDetailView()
+                    LazyView(ChipBadgeDetailView())
                 }
             }
 
             Section("Selection") {
                 NavigationLink("Checkbox, Radio & Toggle") {
-                    SelectionDetailView()
+                    LazyView(SelectionDetailView())
                 }
             }
 
             Section("Forms") {
                 NavigationLink("Text Fields — Filled, lined, search") {
-                    TextFieldDetailView()
+                    LazyView(TextFieldDetailView())
                 }
 
                 NavigationLink("Dropdown, Text Area & Code Input") {
-                    FormExtrasDetailView()
+                    LazyView(FormExtrasDetailView())
                 }
 
                 NavigationLink("Date Picker — Single & range") {
-                    DatePickerDetailView()
+                    LazyView(DatePickerDetailView())
                 }
             }
 
             Section("Lists & Dividers") {
                 NavigationLink("List Item & Divider") {
-                    ListDividerDetailView()
+                    LazyView(ListDividerDetailView())
                 }
             }
 
             Section("Navigation") {
                 NavigationLink("App Bars — Top & bottom") {
-                    AppBarDetailView()
+                    LazyView(AppBarDetailView())
                 }
 
                 NavigationLink("Segmented Picker & Page Control") {
-                    PickerControlDetailView()
+                    LazyView(PickerControlDetailView())
                 }
             }
 
             Section("Feedback") {
                 NavigationLink("Alert, Banner & Dialog") {
-                    FeedbackDetailView()
+                    LazyView(FeedbackDetailView())
                 }
 
                 NavigationLink("Tooltip — Simple & rich") {
-                    TooltipDetailView()
+                    LazyView(TooltipDetailView())
                 }
             }
 
             Section("Data Visualization") {
                 NavigationLink("Charts — Bar, line, lollipop, stacked") {
-                    ChartsDetailView()
+                    LazyView(ChartsDetailView())
                 }
 
                 NavigationLink("Gauge & Progress — Circle, semi-circular") {
-                    GaugeProgressDetailView()
+                    LazyView(GaugeProgressDetailView())
                 }
             }
 
             Section("Calendar") {
                 NavigationLink("Calendar, Day Picker & Timeline") {
-                    CalendarDetailView()
+                    LazyView(CalendarDetailView())
                 }
             }
 
             Section("Layout") {
                 NavigationLink("Cards — Standard & metric") {
-                    CardDetailView()
+                    LazyView(CardDetailView())
                 }
 
                 NavigationLink("Carousel & Deck") {
-                    CarouselDetailView()
+                    LazyView(CarouselDetailView())
                 }
             }
 
             Section("Media & Typography") {
                 NavigationLink("Avatar & Icon Image") {
-                    AvatarIconDetailView()
+                    LazyView(AvatarIconDetailView())
                 }
 
                 NavigationLink("Typography — All text styles") {
-                    TextDetailView()
+                    LazyView(TextDetailView())
                 }
             }
         }

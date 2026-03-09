@@ -5,30 +5,60 @@ import DesignSystem
 
 /// Figma: [Profile] 5 (node 332:7525)
 ///
-/// Dark info card + stacked carousel with icon tabs and photo grid.
+/// Dark info card + stacked carousel with icon tab pager and photo grid.
+/// Tap any photo to zoom it full-screen with a smooth scale transition.
 struct Profile5Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
+    @State private var selectedTab = 0
+    @State private var zoomedPhoto: String? = nil
+    @State private var playingVideoURL: String? = nil
+
+    private let tabs: [DSIcon] = [.table2Columns, .movie, .play, .sparks, .hashtag]
 
     var body: some View {
-        VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
-                HStack(spacing: 0) {
-                    DSButton(style: .text, size: .medium, icon: .plusCircle) {}
-                    DSButton(style: .text, size: .medium, icon: .moreVert) {}
+        ZStack {
+            VStack(spacing: theme.spacing.sm) {
+                DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
+                    HStack(spacing: 0) {
+                        DSButton(style: .text, size: .medium, icon: .plusCircle) {}
+                        DSButton(style: .text, size: .medium, icon: .moreVert) {}
+                    }
                 }
-            }
 
-            ScrollView {
-                VStack(spacing: theme.spacing.lg) {
-                    infoCard
-//                    carouselCard
+                ScrollView {
+                    VStack(spacing: theme.spacing.lg) {
+                        infoCard
+                        carouselCard
+                    }
+                    .padding(.horizontal, theme.spacing.sm)
+                    .padding(.bottom, theme.spacing.sm)
                 }
-                .padding(.bottom, theme.spacing.sm)
             }
-            .padding(.horizontal, theme.spacing.sm)
+            .background(theme.colors.surfaceNeutral0_5)
+
+            if let videoURL = playingVideoURL {
+                DSVideoPlayer(urlString: videoURL) {
+                    withAnimation(.easeInOut(duration: 0.25)) { playingVideoURL = nil }
+                }
+                .ignoresSafeArea()
+            } else if let photo = zoomedPhoto {
+                Color.black.opacity(0.85)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { zoomedPhoto = nil }
+                    }
+                Image(photo)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .padding(theme.spacing.lg)
+                    .transition(.scale(scale: 0.85).combined(with: .opacity))
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { zoomedPhoto = nil }
+                    }
+            }
         }
-        .background(theme.colors.surfaceNeutral0_5)
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }
@@ -53,9 +83,7 @@ struct Profile5Page: View {
                         .frame(width: 61, height: 64)
                         .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
                 }
-
                 DSDivider(style: .fullBleed, color: theme.colors.textNeutral0_5.opacity(0.2))
-
                 HStack(spacing: 0) {
                     statCol("1,200", label: "photos")
                     statCol("2,980", label: "followers")
@@ -74,77 +102,90 @@ struct Profile5Page: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    // MARK: - Carousel Card (stacked depth effect)
+    // MARK: - Carousel Card
 
     private var carouselCard: some View {
-        ZStack(alignment: .top) {
-            // Back card (deepest)
-            RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral3)
-                .frame(height: 419)
-                .padding(.horizontal, theme.spacing.xxl)
-
-            // Middle card
-            RoundedRectangle(cornerRadius: theme.radius.xl)
-                .fill(theme.colors.surfaceNeutral3)
-                .frame(height: 419)
-                .padding(.horizontal, theme.spacing.sm)
-                .padding(.top, 20)
-
-            // Front card — full width with tabs + photo grid
-            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
-                VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                    iconTabsRow
-                    photoGrid
-                }
+        // Figma stacking (from node 332:7549):
+        // Card 3 (back):   w=258, h=419.5, rendered first
+        // Card 2 (middle): w=308, h=419.5, mb=[-400] → top offset = 419.5-400 = 19.5pt
+        // Card 1 (front):  w=full, h=400,  mb=[-400] → top offset = 19.5+19.5 ≈ 39pt from back
+        DSStackedCard(
+            levels: [
+                // Middle: 308pt wide on 393pt screen → inset = (393-308)/2 = 42.5pt, peek = 19.5pt
+                DSStackedCardLevel(horizontalInset: 42, darkOverlay: 0.00, peekOffset: 20),
+                // Back: 258pt wide → inset = (393-258)/2 = 67.5pt, peek = 0pt (at very top)
+                DSStackedCardLevel(horizontalInset: 67, darkOverlay: 0.10, peekOffset: 0),
+            ],
+            alignment: .top,
+            frontOffset: 39
+        ) {
+            VStack(alignment: .leading, spacing: theme.spacing.lg) {
+                iconTabBar
+                tabContent
             }
-            .padding(.top, 39)
         }
     }
 
-    private var iconTabsRow: some View {
+    // MARK: - Icon Tab Bar
+
+    private var iconTabBar: some View {
         HStack(spacing: 0) {
-            // Active tab — underline indicator
-            VStack(spacing: 0) {
-                DSIconImage(.table2Columns, size: 24, color: theme.colors.textNeutral9)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, theme.spacing.xs)
-                Rectangle().fill(theme.colors.textNeutral9).frame(height: 1)
-            }
-            .frame(width: 47)
-
-            ForEach([DSIcon.movie, .play, .sparks, .hashtag], id: \.rawValue) { icon in
-                DSIconImage(icon, size: 24, color: theme.colors.textNeutral9)
-                    .opacity(0.5)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, theme.spacing.xs)
+            ForEach(tabs.indices, id: \.self) { i in
+                VStack(spacing: 0) {
+                    DSIconImage(tabs[i], size: 24, color: theme.colors.textNeutral9)
+                        .opacity(selectedTab == i ? 1.0 : 0.5)
+                        .padding(.vertical, 4) // Figma: py=4pt
+                    Rectangle()
+                        .fill(selectedTab == i ? theme.colors.textNeutral9 : Color.clear)
+                        .frame(height: 1)
+                }
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+                .onTapGesture { withAnimation(.easeInOut(duration: 0.2)) { selectedTab = i } }
             }
         }
     }
 
-    private var photoGrid: some View {
-        VStack(spacing: theme.spacing.sm) {
-            // Row 1: 3 equal photos, h=88
-            HStack(spacing: theme.spacing.sm) {
-                ForEach(["p5_photo1", "p5_photo2", "p5_photo3"], id: \.self) { photo(name: $0, height: 88) }
-            }
-            // Row 2: 2 equal photos, h=96
-            HStack(spacing: theme.spacing.sm) {
-                ForEach(["p5_photo4", "p5_photo5"], id: \.self) { photo(name: $0, height: 96) }
-            }
-            // Row 3: 3 equal photos, h=88
-            HStack(spacing: theme.spacing.sm) {
-                ForEach(["p5_photo6", "p5_photo7", "p5_photo8"], id: \.self) { photo(name: $0, height: 88) }
+    // MARK: - Paged Content
+
+    @ViewBuilder
+    private var tabContent: some View {
+        switch selectedTab {
+        case 0:
+            DSPhotoGrid(
+                items: [.photo("p5_photo1"), .photo("p5_photo2"), .photo("p5_photo3"),
+                        .photo("p5_photo4"), .photo("p5_photo5"),
+                        .photo("p5_photo6"), .photo("p5_photo7"), .photo("p5_photo8")],
+                onTap: { item in
+                    if case .photo(let name) = item {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { zoomedPhoto = name }
+                    }
+                }
+            )
+        case 1:
+            DSPhotoGrid(
+                items: [
+                    .video("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
+                    .video("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
+                    .video("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
+                    .video("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"),
+                    .video("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4")
+                ],
+                onTap: { item in
+                    if case .video(let url) = item {
+                        withAnimation(.easeInOut(duration: 0.25)) { playingVideoURL = url }
+                    }
+                }
+            )
+        default:
+            VStack {
+                Spacer().frame(height: theme.spacing.xxl)
+                DSIconImage(tabs[selectedTab], size: 40, color: theme.colors.textNeutral9)
+                    .opacity(0.3)
+                    .frame(maxWidth: .infinity)
+                Spacer().frame(height: theme.spacing.xxl)
             }
         }
-    }
-
-    private func photo(name: String, height: CGFloat) -> some View {
-        Image(name)
-            .resizable().scaledToFill()
-            .frame(maxWidth: .infinity)
-            .frame(height: height)
-            .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
     }
 }
 

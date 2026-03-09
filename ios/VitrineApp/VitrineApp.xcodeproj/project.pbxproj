@@ -47,7 +47,11 @@
 		A10011AA00112233445567E1 /* Alert3Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10011AA00112233445567E2 /* Alert3Page.swift */; };
 		D70496C9495E425193BD5FA2 /* Profile6Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534B83EDD2B84BB584AA5314 /* Profile6Page.swift */; };
 		9355416BB4EF43CCAF83EC05 /* Profile5Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CAC2B0FDD1E47BEB29BEA09 /* Profile5Page.swift */; };
-		/* End PBXBuildFile section */
+		A56F415D54304FF693B626CD /* Profile8Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EF4719DC254F3983F17D73 /* Profile8Page.swift */; };
+		B3C2D1E0F4A5678901234567 /* Profile9Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6789012345678 /* Profile9Page.swift */; };
+		E6F7A8B9C0D1E2F3A4B5C6D7 /* Profile10Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C0D1E2F3A4B5C6D7E8 /* Profile10Page.swift */; };
+		FA0102030405060708090AB1 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0102030405060708090AB2 /* LazyView.swift */; };
+/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0E5CF402BBDCE950096418E3 /* TokenBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBrowserView.swift; sourceTree = "<group>"; };
@@ -91,7 +95,11 @@
 		A10011AA00112233445567E2 /* Alert3Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert3Page.swift; sourceTree = "<group>"; };
 		534B83EDD2B84BB584AA5314 /* Profile6Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile6Page.swift; sourceTree = "<group>"; };
 		9CAC2B0FDD1E47BEB29BEA09 /* Profile5Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile5Page.swift; sourceTree = "<group>"; };
-		/* End PBXFileReference section */
+		E1EF4719DC254F3983F17D73 /* Profile8Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile8Page.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6789012345678 /* Profile9Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile9Page.swift; sourceTree = "<group>"; };
+		F7A8B9C0D1E2F3A4B5C6D7E8 /* Profile10Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile10Page.swift; sourceTree = "<group>"; };
+		FA0102030405060708090AB2 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		721CB7158AF208B23ADFB89C /* Frameworks */ = {
@@ -137,6 +145,7 @@
 				E8FF54034A29ADC0DE3E085B /* CombinationGridView.swift */,
 				3AF142772ACE9BC20EC1079F /* ComponentShowcaseView.swift */,
 				0E5CF402BBDCE950096418E3 /* TokenBrowserView.swift */,
+				FA0102030405060708090AB2 /* LazyView.swift */,
 				E5F6A1B2C3D01234567890EF /* Pages */,
 			);
 			path = Views;
@@ -210,6 +219,9 @@
 				4DCE5CD3CFD3F24B8ACED0BF /* Profile7Page.swift */,
 				534B83EDD2B84BB584AA5314 /* Profile6Page.swift */,
 				9CAC2B0FDD1E47BEB29BEA09 /* Profile5Page.swift */,
+				E1EF4719DC254F3983F17D73 /* Profile8Page.swift */,
+				A1B2C3D4E5F6789012345678 /* Profile9Page.swift */,
+				F7A8B9C0D1E2F3A4B5C6D7E8 /* Profile10Page.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -327,6 +339,9 @@
 				83ACAE2FFFF94F14A03E701B /* Profile7Page.swift in Sources */,
 				D70496C9495E425193BD5FA2 /* Profile6Page.swift in Sources */,
 				9355416BB4EF43CCAF83EC05 /* Profile5Page.swift in Sources */,
+				A56F415D54304FF693B626CD /* Profile8Page.swift in Sources */,
+				B3C2D1E0F4A5678901234567 /* Profile9Page.swift in Sources */,
+				E6F7A8B9C0D1E2F3A4B5C6D7 /* Profile10Page.swift in Sources */,
 				A10011AA00112233445566A1 /* Alert10Page.swift in Sources */,
 				A10011AA00112233445566B1 /* Alert9Page.swift in Sources */,
 				A10011AA00112233445566C1 /* Alert2Page.swift in Sources */,
@@ -338,6 +353,7 @@
 				A10011AA00112233445567C1 /* Alert5Page.swift in Sources */,
 				A10011AA00112233445567D1 /* Alert4Page.swift in Sources */,
 				A10011AA00112233445567E1 /* Alert3Page.swift in Sources */,
+				FA0102030405060708090AB1 /* LazyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

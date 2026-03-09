@@ -21,13 +21,15 @@ struct Profile6Page: View {
             ScrollView {
                 ZStack(alignment: .top) {
                     // Hero image — 280pt tall, overlaps card below by 91pt
-                    Image("profile6_hero")
-                        .resizable()
-                        .scaledToFill()
+                    Color.clear
                         .frame(maxWidth: .infinity)
                         .frame(height: 280)
+                        .overlay(
+                            Image("profile6_hero")
+                                .resizable()
+                                .scaledToFill()
+                        )
                         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
-                        .clipped()
 
                     // Single card — clipsContent: false so the photo scroll overflows right edge
                     DSCard(

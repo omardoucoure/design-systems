@@ -11,155 +11,134 @@ struct PagesShowcaseView: View {
         List {
             Section("Onboarding") {
                 NavigationLink("Walkthrough 1 — Text carousel") {
-                    WalkthroughPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(WalkthroughPage().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Walkthrough 2 — Stacked images") {
-                    Walkthrough2Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Walkthrough2Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Walkthrough 3 — Side-by-side") {
-                    Walkthrough3Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Walkthrough3Page().navigationBarTitleDisplayMode(.inline))
                 }
             }
 
             Section("Authentication") {
                 NavigationLink("Log In 1 — Capsule tabs") {
-                    LoginPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(LoginPage().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Log In 2 — Underline tabs") {
-                    Login2Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Login2Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Log In 4 — Social first") {
-                    Login4Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Login4Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Log In 6 — Error state") {
-                    Login6ErrorPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Login6ErrorPage().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Biometric Login") {
-                    BiometricLoginPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(BiometricLoginPage().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Passcode Login") {
-                    PasscodeLoginPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(PasscodeLoginPage().navigationBarTitleDisplayMode(.inline))
                 }
             }
 
             Section("Profile") {
                 NavigationLink("[Profile] 1 — Carousel & dark info card") {
-                    ProfilePage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(ProfilePage().navigationBarTitleDisplayMode(.inline))
                 }
                 NavigationLink("[Profile] 2 — Stats & list") {
-                    Profile2Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Profile2Page().navigationBarTitleDisplayMode(.inline))
                 }
                 NavigationLink("[Profile] 3 — Carousel & CTAs") {
-                    Profile3Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Profile3Page().navigationBarTitleDisplayMode(.inline))
                 }
                 NavigationLink("[Profile] 4 — Hero & photo grid") {
-                    Profile4Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Profile4Page().navigationBarTitleDisplayMode(.inline))
+                }
+                NavigationLink("[Profile] 8 — Coral card & photo grid") {
+                    LazyView(Profile8Page().navigationBarTitleDisplayMode(.inline))
+                }
+                NavigationLink("[Profile] 10 — Portrait & stacked follower cards") {
+                    LazyView(Profile10Page().navigationBarTitleDisplayMode(.inline))
+                }
+                NavigationLink("[Profile] 9 — Offset hero & info card") {
+                    LazyView(Profile9Page().navigationBarTitleDisplayMode(.inline))
                 }
                 NavigationLink("[Profile] 5 — Dark card & photo grid") {
-                    Profile5Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Profile5Page().navigationBarTitleDisplayMode(.inline))
                 }
                 NavigationLink("[Profile] 6 — Hero image & social icons") {
-                    Profile6Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Profile6Page().navigationBarTitleDisplayMode(.inline))
                 }
                 NavigationLink("[Profile] 7 — Stats & progress circles") {
-                    Profile7Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Profile7Page().navigationBarTitleDisplayMode(.inline))
                 }
             }
 
             Section("Alerts") {
                 NavigationLink("[Alerts] 1 — Offline Error") {
-                    Alert1Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert1Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 2 — Photo Upload") {
-                    Alert2Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert2Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 3 - Error — Bottom Sheet") {
-                    Alert3Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert3Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 4 - Warning — Banner") {
-                    Alert4Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert4Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 5 - Success — Banner") {
-                    Alert5Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert5Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 6 - Info — Banner") {
-                    Alert6Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert6Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 7 — Battery Warning") {
-                    Alert7Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert7Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 8 — Contacts Access") {
-                    Alert8Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert8Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 9 — Notification Permission") {
-                    Alert9Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert9Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 10 — Server Error") {
-                    Alert10Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert10Page().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("[Alerts] 11 — Calendar Notification") {
-                    Alert11Page()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(Alert11Page().navigationBarTitleDisplayMode(.inline))
                 }
             }
 
             Section("Password Recovery") {
                 NavigationLink("Forgot Password") {
-                    ForgotPasswordPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(ForgotPasswordPage().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("Verify Code") {
-                    VerifyCodePage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(VerifyCodePage().navigationBarTitleDisplayMode(.inline))
                 }
 
                 NavigationLink("New Password") {
-                    NewPasswordPage()
-                        .navigationBarTitleDisplayMode(.inline)
+                    LazyView(NewPasswordPage().navigationBarTitleDisplayMode(.inline))
                 }
             }
         }
