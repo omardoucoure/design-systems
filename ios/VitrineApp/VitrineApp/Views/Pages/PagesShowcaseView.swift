@@ -59,25 +59,32 @@ struct PagesShowcaseView: View {
             }
 
             Section("Profile") {
-                NavigationLink("Profile — Photo carousel") {
+                NavigationLink("[Profile] 1 — Carousel & dark info card") {
                     ProfilePage()
                         .navigationBarTitleDisplayMode(.inline)
                 }
-                NavigationLink("Profile 2 — Stats & list") {
+                NavigationLink("[Profile] 2 — Stats & list") {
                     Profile2Page()
                         .navigationBarTitleDisplayMode(.inline)
                 }
-                NavigationLink("Profile 3 — Carousel & CTAs") {
+                NavigationLink("[Profile] 3 — Carousel & CTAs") {
                     Profile3Page()
                         .navigationBarTitleDisplayMode(.inline)
                 }
-                NavigationLink("Profile 4 — Hero & photo grid") {
+                NavigationLink("[Profile] 4 — Hero & photo grid") {
                     Profile4Page()
                         .navigationBarTitleDisplayMode(.inline)
                 }
-
-                NavigationLink("Profile 5 — Stats & progress circles") {
+                NavigationLink("[Profile] 5 — Dark card & photo grid") {
                     Profile5Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+                NavigationLink("[Profile] 6 — Hero image & social icons") {
+                    Profile6Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+                NavigationLink("[Profile] 7 — Stats & progress circles") {
+                    Profile7Page()
                         .navigationBarTitleDisplayMode(.inline)
                 }
             }

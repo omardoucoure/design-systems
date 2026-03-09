@@ -3,212 +3,149 @@ import DesignSystem
 
 // MARK: - Profile5Page
 
-/// Figma: [Profile] 7 (node 320:7324)
+/// Figma: [Profile] 5 (node 332:7525)
 ///
-/// Profile with avatar, bio, stats, two dark stat cards with
-/// progress circles, and a views bar chart card.
+/// Dark info card + stacked carousel with icon tabs and photo grid.
 struct Profile5Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
+                HStack(spacing: 0) {
+                    DSButton(style: .text, size: .medium, icon: .plusCircle) {}
+                    DSButton(style: .text, size: .medium, icon: .moreVert) {}
+                }
             }
 
             ScrollView {
-                VStack(spacing: theme.spacing.sm) {
-                    profileInfoCard
-                    statsCard
-                    viewsCard
+                VStack(spacing: theme.spacing.lg) {
+                    infoCard
+//                    carouselCard
                 }
-                .padding(.horizontal, theme.spacing.sm)
                 .padding(.bottom, theme.spacing.sm)
             }
+            .padding(.horizontal, theme.spacing.sm)
         }
         .background(theme.colors.surfaceNeutral0_5)
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }
 
-    // MARK: - Profile Info
+    // MARK: - Info Card
 
-    private var profileInfoCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+    private var infoCard: some View {
+        DSCard(background: theme.colors.surfacePrimary120, radius: theme.radius.xl, padding: theme.spacing.xl) {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                // Avatar + name + bio
                 HStack(alignment: .top, spacing: theme.spacing.lg) {
-                    Image("profile5_avatar")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 61, height: 64)
-                        .clipShape(RoundedRectangle(cornerRadius: theme.spacing.md))
-
                     VStack(alignment: .leading, spacing: theme.spacing.sm) {
-                        DSText("Hristo Hristov",
-                               style: theme.typography.h4, color: theme.colors.textNeutral9)
-
+                        DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
                         (Text("Sports superhero. Training for the office chair Olympics... ")
-                            .font(theme.typography.caption.font)
-                            .foregroundColor(theme.colors.textNeutral9)
+                            .font(theme.typography.bodyRegular.font)
+                            .foregroundColor(theme.colors.textNeutral0_5)
                          + Text("read more")
                             .font(theme.typography.label.font)
-                            .foregroundColor(theme.colors.textNeutral9))
+                            .foregroundColor(theme.colors.textNeutral0_5))
                     }
+                    Image("p5_avatar")
+                        .resizable().scaledToFill()
+                        .frame(width: 61, height: 64)
+                        .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
                 }
 
-                DSDivider(style: .fullBleed)
+                DSDivider(style: .fullBleed, color: theme.colors.textNeutral0_5.opacity(0.2))
 
-                // Stats row
                 HStack(spacing: 0) {
-                    statColumn("1,200", label: "photos")
-                    statColumn("2,980", label: "followers")
-                    statColumn("1,600", label: "following")
-
-                    DSButton(style: .filledA, size: .medium, icon: .plus) {}
+                    statCol("1,200", label: "photos")
+                    statCol("2,980", label: "followers")
+                    statCol("1,600", label: "following")
+                    DSButton(style: .filledA, size: .medium, icon: .editPencil) {}
                 }
             }
         }
     }
 
-    // MARK: - Stats Card
-
-    private var statsCard: some View {
-        DSCard(
-            background: theme.colors.surfacePrimary120,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
-            VStack(spacing: theme.spacing.xl) {
-                statRow(
-                    title: "560 works done",
-                    subtitle: "268 works in progress",
-                    date: "March, 2030",
-                    value: "560",
-                    progress: 0.65,
-                    barPattern: [4, 4, 20, 12, 4, 4, 4, 4],
-                    highlightRange: 0..<4
-                )
-
-                statRow(
-                    title: "12,380 reviews",
-                    subtitle: "3h22m / 832m",
-                    date: "April, 2030",
-                    value: "12,380",
-                    progress: 0.85,
-                    barPattern: [4, 4, 4, 12, 20, 4, 4, 4],
-                    highlightRange: 2..<5
-                )
-            }
-        }
-    }
-
-    // MARK: - Views Card
-
-    private var viewsCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral3,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
-            VStack(alignment: .leading, spacing: theme.spacing.md) {
-                // Header
-                HStack {
-                    DSText("Views of your profile",
-                           style: theme.typography.caption, color: theme.colors.textNeutral9)
-
-                    Spacer()
-
-                    DSBadge(variant: .tagSemantic, text: "14,238")
-                }
-
-                // Bar chart — 32 bars, max height 56
-                DSBarChart(
-                    data: viewBars.map { DSBarChartData(label: "", value: CGFloat($0) / 56.0) },
-                    barColor: theme.colors.textNeutral9.opacity(0.5),
-                    highlightColor: theme.colors.textNeutral9,
-                    highlightIndex: nil,
-                    maxHeight: 56
-                )
-            }
-            .padding(.horizontal, theme.spacing.xl)
-            .padding(.top, theme.spacing.xl)
-            .padding(.bottom, theme.spacing.lg)
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func statColumn(_ value: String, label: String) -> some View {
+    private func statCol(_ value: String, label: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral9)
-            DSText(label, style: theme.typography.smallRegular, color: theme.colors.textNeutral9)
-                .opacity(0.75)
+            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
+            DSText(label, style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5).opacity(0.75)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private func statRow(
-        title: String,
-        subtitle: String,
-        date: String,
-        value: String,
-        progress: CGFloat,
-        barPattern: [CGFloat],
-        highlightRange: Range<Int>
-    ) -> some View {
-        HStack(spacing: theme.spacing.lg) {
-            // Info + mini bars
-            VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                VStack(alignment: .leading, spacing: 0) {
-                    DSText(title,
-                           style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                    DSText(subtitle,
-                           style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5)
-                        .lineLimit(1)
-                }
+    // MARK: - Carousel Card (stacked depth effect)
 
-                // Mini stat bars
-                HStack(alignment: .bottom, spacing: theme.spacing.xs) {
-                    ForEach(Array(barPattern.enumerated()), id: \.offset) { index, height in
-                        RoundedRectangle(cornerRadius: 100)
-                            .fill(highlightRange.contains(index)
-                                  ? theme.colors.surfaceSecondary100
-                                  : theme.colors.surfaceNeutral0_5)
-                            .frame(width: 4, height: height)
-                    }
+    private var carouselCard: some View {
+        ZStack(alignment: .top) {
+            // Back card (deepest)
+            RoundedRectangle(cornerRadius: theme.radius.xl)
+                .fill(theme.colors.surfaceNeutral3)
+                .frame(height: 419)
+                .padding(.horizontal, theme.spacing.xxl)
+
+            // Middle card
+            RoundedRectangle(cornerRadius: theme.radius.xl)
+                .fill(theme.colors.surfaceNeutral3)
+                .frame(height: 419)
+                .padding(.horizontal, theme.spacing.sm)
+                .padding(.top, 20)
+
+            // Front card — full width with tabs + photo grid
+            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+                VStack(alignment: .leading, spacing: theme.spacing.lg) {
+                    iconTabsRow
+                    photoGrid
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            // Rotated date
-            DSText(date, style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5)
-                .rotationEffect(.degrees(-90))
-                .fixedSize()
-
-            // Progress circle
-            DSProgressCircle(
-                progress: progress,
-                size: 88,
-                customLabel: value,
-                progressColor: theme.colors.surfaceNeutral0_5,
-                labelColor: theme.colors.textNeutral0_5
-            )
+            .padding(.top, 39)
         }
     }
 
-    private let viewBars: [Int] = [
-        35, 56, 38, 49, 28, 26, 35, 48, 56, 35, 48, 52,
-        35, 26, 35, 18, 30, 12, 18, 16, 13, 10,
-        17, 24, 9, 17, 4, 28, 56, 36, 51, 23
-    ]
+    private var iconTabsRow: some View {
+        HStack(spacing: 0) {
+            // Active tab — underline indicator
+            VStack(spacing: 0) {
+                DSIconImage(.table2Columns, size: 24, color: theme.colors.textNeutral9)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, theme.spacing.xs)
+                Rectangle().fill(theme.colors.textNeutral9).frame(height: 1)
+            }
+            .frame(width: 47)
+
+            ForEach([DSIcon.movie, .play, .sparks, .hashtag], id: \.rawValue) { icon in
+                DSIconImage(icon, size: 24, color: theme.colors.textNeutral9)
+                    .opacity(0.5)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, theme.spacing.xs)
+            }
+        }
+    }
+
+    private var photoGrid: some View {
+        VStack(spacing: theme.spacing.sm) {
+            // Row 1: 3 equal photos, h=88
+            HStack(spacing: theme.spacing.sm) {
+                ForEach(["p5_photo1", "p5_photo2", "p5_photo3"], id: \.self) { photo(name: $0, height: 88) }
+            }
+            // Row 2: 2 equal photos, h=96
+            HStack(spacing: theme.spacing.sm) {
+                ForEach(["p5_photo4", "p5_photo5"], id: \.self) { photo(name: $0, height: 96) }
+            }
+            // Row 3: 3 equal photos, h=88
+            HStack(spacing: theme.spacing.sm) {
+                ForEach(["p5_photo6", "p5_photo7", "p5_photo8"], id: \.self) { photo(name: $0, height: 88) }
+            }
+        }
+    }
+
+    private func photo(name: String, height: CGFloat) -> some View {
+        Image(name)
+            .resizable().scaledToFill()
+            .frame(maxWidth: .infinity)
+            .frame(height: height)
+            .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
+    }
 }
 
 #Preview {
