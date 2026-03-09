@@ -9,10 +9,13 @@ Its purpose is to make the system understandable to an LLM without requiring the
 - [`design-system-contract.yaml`](design-system-contract.yaml): machine-readable component, token, and page-pattern registry
 - [`page-spec.schema.json`](page-spec.schema.json): strict page-spec schema for AI-generated screens
 - [`figma-mapping.yaml`](figma-mapping.yaml): DS component to Figma component/property mapping
+- [`figma-playground-rules.yaml`](figma-playground-rules.yaml): strict execution rules for another AI working in Figma Playground
+- [`playground-handoff-template.md`](playground-handoff-template.md): reusable prompt shell for Playground generation
 - [`plugin-bundle.schema.json`](plugin-bundle.schema.json): schema for Figma plugin bundle payloads
 - [`IMPLEMENTATION_TODO.md`](IMPLEMENTATION_TODO.md): phased roadmap to make AI-driven page generation reliable
 - [`examples`](examples): example page specs for major page families
 - [`FIGMA_PLUGIN_WORKFLOW.md`](FIGMA_PLUGIN_WORKFLOW.md): end-to-end workflow from spec to Figma plugin bundle
+- [`FIGMA_PLAYGROUND_WORKFLOW.md`](FIGMA_PLAYGROUND_WORKFLOW.md): primary workflow when another AI is rendering inside Figma Playground
 
 ## Why this exists
 
@@ -73,6 +76,23 @@ python3 scripts/build_figma_plugin_bundle.py \
 ```
 
 The repository now includes a first Figma plugin scaffold in [`../../figma-plugin`](../../figma-plugin) that can consume the bundle and create page content in an active Figma file.
+
+Build a Playground handoff packet from a validated page spec:
+
+```bash
+python3 scripts/build_figma_playground_handoff.py \
+  docs/ai/examples/auth-login.yaml \
+  docs/ai/output/auth-login.playground.md
+```
+
+The Playground handoff combines:
+
+- a concise prompt shell
+- explicit rendering rules
+- the validated page spec
+- a transformed Figma-oriented payload
+
+For your current setup, this is the preferred path because Figma Playground can consume a precise handoff even when direct write access to the source design file is unavailable.
 
 ## External Principles Used
 
