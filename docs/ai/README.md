@@ -8,6 +8,7 @@ Its purpose is to make the system understandable to an LLM without requiring the
 
 - [`design-system-contract.yaml`](design-system-contract.yaml): machine-readable component, token, and page-pattern registry
 - [`page-spec.schema.json`](page-spec.schema.json): strict page-spec schema for AI-generated screens
+- [`figma-mapping.yaml`](figma-mapping.yaml): DS component to Figma component/property mapping
 - [`IMPLEMENTATION_TODO.md`](IMPLEMENTATION_TODO.md): phased roadmap to make AI-driven page generation reliable
 - [`examples`](examples): example page specs for major page families
 
@@ -41,6 +42,25 @@ The validator checks two layers:
 
 - structural validity against `page-spec.schema.json`
 - semantic validity against `design-system-contract.yaml`
+
+Transform a valid page spec into Figma-ready JSON:
+
+```bash
+python3 scripts/transform_page_spec_to_figma.py \
+  docs/ai/examples/auth-login.yaml \
+  docs/ai/output/auth-login.json
+```
+
+The transformer currently produces a deterministic Figma-oriented instance tree:
+
+- page metadata
+- screen frame metadata
+- section frames
+- component instances
+- variant properties
+- component properties
+
+It is designed as the bridge between AI page generation and a future Figma API or plugin writer.
 
 ## External Principles Used
 
