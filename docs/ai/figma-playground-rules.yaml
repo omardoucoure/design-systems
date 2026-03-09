@@ -1,0 +1,82 @@
+version: 0.1
+target: figma-playground
+goal: >
+  Give an external AI enough precision to compose a new screen in Figma Playground
+  using the HaHo design system without reading Swift source.
+
+execution_model:
+  input_order:
+    - read_theme
+    - read_page_goal
+    - read_sections
+    - instantiate_components
+    - apply_layout
+    - apply_copy
+    - check_accessibility
+  output_shape:
+    - one mobile screen unless spec says otherwise
+    - use auto-layout frames for screen and sections
+    - prefer component instances over redrawn primitives
+
+hard_rules:
+  - Never invent a new component when a registered DS component already covers the job.
+  - Never use raw spacing, radius, or colors outside the registered token names in the page spec.
+  - Always preserve the explicit theme combination of brand and style.
+  - Treat section order in the page spec as final unless the spec explicitly allows reordering.
+  - For icon-only actions, keep the accessibility label in the handoff.
+  - When a property is unknown in Figma, preserve the intent in a note instead of silently dropping it.
+
+layout_rules:
+  screen:
+    device: iPhone portrait
+    width_px: 390
+    min_height_px: 844
+    outer_padding_px: 24
+    section_gap_px: 16
+  section:
+    layout: vertical
+    item_gap_px: 12
+    stretch_children: true
+  cards:
+    prefer_component_instance: true
+    avoid_manual_rectangle_reconstruction: true
+  buttons:
+    full_width_means_horizontal_fill: true
+  text_fields:
+    stack_label_and_control_in_component: true
+
+interpretation_rules:
+  component_priority:
+    - DSCard
+    - DSButton
+    - DSTextField
+    - DSCheckbox
+    - DSText
+  pattern_behavior:
+    auth.form-card:
+      notes:
+        - Card-backed auth form with one clear primary CTA.
+        - Keep text fields vertically stacked.
+        - Social sign-in belongs in its own section when present.
+    auth.social-sign-in:
+      notes:
+        - Keep provider actions visually balanced.
+        - Prefer equal-width controls.
+    alert.banner:
+      notes:
+        - Feedback should feel immediate and compact.
+    profile.hero:
+      notes:
+        - Lead with media or summary content before secondary stats.
+
+failure_behavior:
+  - If a component instance cannot be found in Playground, create the closest semantic placeholder and label it with the DS component name.
+  - If an icon asset cannot be resolved, keep the button and annotate the missing icon name.
+  - If nested slot content is ambiguous, preserve hierarchy and add a short implementation note.
+
+review_checklist:
+  - Theme is explicit and unchanged.
+  - All sections from the spec exist in the output.
+  - All component ids map to one visual element or instance.
+  - No raw custom button visuals replaced DSButton.
+  - Accessibility notes from the spec are preserved.

@@ -1,0 +1,341 @@
+version: 0.1
+system:
+  name: HaHo Design System
+  platforms:
+    - iOS
+  source_repo_focus: SwiftUI package + showcase app
+  figma_file_key: "4kcXyu53LWpUMVyhPvA4hY"
+  theme_axes:
+    brand:
+      values: [coralCamo, seaLime, mistyRose, blueHaze]
+      meaning: selects primitive palette
+    style:
+      values: [lightRounded, darkRounded, lightSharp, darkSharp]
+      meaning: selects color mode and shape treatment
+  token_layers:
+    - primitives
+    - semantic
+    - component
+  source_of_truth:
+    token_files:
+      - ../../tokens/primitives.json
+      - ../../tokens/tokens.json
+    runtime_theme:
+      - ../../ios/Sources/DesignSystem/Theme/ThemeConfiguration.swift
+      - ../../ios/Sources/DesignSystem/Theme/Brand.swift
+      - ../../ios/Sources/DesignSystem/Theme/Style.swift
+  ai_generation_goal:
+    generate_new_pages_in_figma_from_registered_components_and_patterns
+
+generation_rules:
+  required:
+    - use registered DS components before raw primitives
+    - select theme explicitly with brand + style
+    - use semantic or component tokens for sizing, spacing, radius, and color
+    - attach accessibility labels to icon-only actions
+    - compose from page patterns when a matching pattern exists
+  forbidden:
+    - raw custom button visuals when DSButton covers the need
+    - unregistered spacing scales
+    - unregistered colors or radii
+    - page structures that bypass DSCard when a DS container exists
+  output_expectations:
+    - page spec must cite used components
+    - page spec must cite used page patterns
+    - page spec must include accessibility notes
+    - page spec must remain theme-safe across all 16 combinations
+
+page_patterns:
+  - id: auth.form-card
+    family: auth
+    source_examples: [LoginPage, Login2Page, Login4Page, Login6ErrorPage]
+    structure:
+      - DSCard
+      - heading block
+      - one or more DSTextField items
+      - remembered-state control row
+      - primary DSButton CTA
+    optional:
+      - DSSegmentedPicker
+      - social-sign-in block
+      - support text action
+  - id: auth.social-sign-in
+    family: auth
+    source_examples: [LoginPage, Login2Page, Login4Page, Login6ErrorPage]
+    structure:
+      - DSCard
+      - section title
+      - DSButton social actions
+    rules:
+      - icon-only social buttons require accessibility labels
+      - multi-provider rows should stay visually balanced
+  - id: auth.verification
+    family: auth
+    source_examples: [VerifyCodePage, PasscodeLoginPage]
+    structure:
+      - title block
+      - DSCodeInput
+      - supporting text
+      - primary DSButton CTA
+  - id: alert.banner
+    family: alerts
+    source_examples: [Alert4Page, Alert5Page, Alert6Page]
+    structure:
+      - DSBanner or DSCard-backed banner block
+      - severity icon
+      - headline + body copy
+      - optional dismiss action
+  - id: alert.dialog
+    family: alerts
+    source_examples: [Alert7Page, Alert8Page, Alert9Page, Alert10Page, Alert11Page]
+    structure:
+      - DSAlertDialog
+      - severity icon
+      - title
+      - message
+      - stacked DSButton actions
+  - id: dashboard.metrics-grid
+    family: alerts
+    source_examples: [Alert4Page]
+    structure:
+      - DSMetricCard
+      - chart or progress primitive
+      - numeric summary
+  - id: profile.hero
+    family: profile
+    source_examples: [ProfilePage, Profile4Page, Profile6Page]
+    structure:
+      - DSTopAppBar
+      - hero media or carousel
+      - DSCard summary block
+      - CTA or stat row
+  - id: profile.stats
+    family: profile
+    source_examples: [Profile2Page, Profile7Page]
+    structure:
+      - DSStatRow or metric summary
+      - DSProgressCircle or other data-viz primitive
+      - DSListItem group
+  - id: onboarding.walkthrough
+    family: walkthrough
+    source_examples: [WalkthroughPage, Walkthrough2Page, Walkthrough3Page]
+    structure:
+      - visual hero block
+      - DSText heading/body
+      - DSPageControl or carousel progress
+      - primary/secondary CTA row
+
+components:
+  - name: DSButton
+    category: actions
+    path: ../../ios/Sources/DesignSystem/Components/DSButton.swift
+    variants: [filledA, filledB, filledC, neutral, neutralLight, outlined, outlinedLight, text]
+    sizes: [big, medium, small]
+    content_modes: [text, icon_only_system, icon_only_asset, text_with_left_icon, text_with_right_icon]
+    ai_roles: [primary_cta, secondary_cta, tertiary_action, social_action, dismiss_action, toolbar_action]
+    figma_mapping: button component variants
+  - name: DSChip
+    category: actions
+    path: ../../ios/Sources/DesignSystem/Components/DSChip.swift
+    variants: [filledA, filledB, filledC, neutral, outlined]
+    ai_roles: [filter_chip, status_chip, tag]
+  - name: DSBadge
+    category: feedback
+    path: ../../ios/Sources/DesignSystem/Components/DSBadge.swift
+    variants: [dot, numberBrand, numberSemantic, tagBrand, tagSemantic]
+    ai_roles: [count_badge, status_badge, dot_indicator]
+  - name: DSCheckbox
+    category: selection
+    path: ../../ios/Sources/DesignSystem/Components/DSCheckbox.swift
+    states: [selected, unselected, disabled]
+    ai_roles: [remember_me, checklist, consent]
+  - name: DSRadio
+    category: selection
+    path: ../../ios/Sources/DesignSystem/Components/DSRadio.swift
+    states: [selected, unselected, disabled]
+    ai_roles: [single_select_choice]
+  - name: DSToggle
+    category: selection
+    path: ../../ios/Sources/DesignSystem/Components/DSToggle.swift
+    states: [on, off, disabled]
+    ai_roles: [settings_toggle]
+  - name: DSSegmentedPicker
+    category: selection
+    path: ../../ios/Sources/DesignSystem/Components/DSSegmentedPicker.swift
+    variants: [tabs, pills, underline]
+    ai_roles: [mode_switcher, auth_tab_switcher, category_switcher]
+  - name: DSPageControl
+    category: navigation
+    path: ../../ios/Sources/DesignSystem/Components/DSSegmentedPicker.swift
+    ai_roles: [carousel_progress, onboarding_progress]
+  - name: DSTextField
+    category: forms
+    path: ../../ios/Sources/DesignSystem/Components/DSTextField.swift
+    variants: [filled, lined]
+    states: [empty, filled, active, error, validated]
+    ai_roles: [text_input, email_input, password_input, validated_field]
+  - name: DSSearchField
+    category: forms
+    path: ../../ios/Sources/DesignSystem/Components/DSSearchField.swift
+    ai_roles: [search_input]
+  - name: DSTextArea
+    category: forms
+    path: ../../ios/Sources/DesignSystem/Components/DSTextArea.swift
+    ai_roles: [multiline_input, notes_field]
+  - name: DSDropdown
+    category: forms
+    path: ../../ios/Sources/DesignSystem/Components/DSDropdown.swift
+    ai_roles: [single_select_menu]
+  - name: DSCodeInput
+    category: forms
+    path: ../../ios/Sources/DesignSystem/Components/DSCodeInput.swift
+    ai_roles: [otp, passcode, verification]
+  - name: DSDatePicker
+    category: calendar
+    path: ../../ios/Sources/DesignSystem/Components/DSDatePicker.swift
+    variants: [single, range]
+    ai_roles: [date_selection, range_selection]
+  - name: DSCalendarGrid
+    category: calendar
+    path: ../../ios/Sources/DesignSystem/Components/DSCalendarGrid.swift
+    variants: [single, range]
+    ai_roles: [calendar_surface]
+  - name: DSDayPicker
+    category: calendar
+    path: ../../ios/Sources/DesignSystem/Components/DSDayPicker.swift
+    ai_roles: [day_selector]
+  - name: DSWeekStrip
+    category: calendar
+    path: ../../ios/Sources/DesignSystem/Components/DSWeekStrip.swift
+    ai_roles: [compact_week_selector]
+  - name: DSTimelineGrid
+    category: calendar
+    path: ../../ios/Sources/DesignSystem/Components/DSTimelineGrid.swift
+    ai_roles: [schedule_grid, availability_grid]
+  - name: DSAlert
+    category: feedback
+    path: ../../ios/Sources/DesignSystem/Components/DSAlert.swift
+    variants: [error, warning, success, info, neutral]
+    ai_roles: [inline_alert]
+  - name: DSAlertDialog
+    category: feedback
+    path: ../../ios/Sources/DesignSystem/Components/DSAlertDialog.swift
+    ai_roles: [modal_alert, destructive_confirmation, permission_prompt]
+  - name: DSBanner
+    category: feedback
+    path: ../../ios/Sources/DesignSystem/Components/DSBanner.swift
+    ai_roles: [banner_notice, warning_banner, success_banner]
+  - name: DSTooltip
+    category: feedback
+    path: ../../ios/Sources/DesignSystem/Components/DSTooltip.swift
+    variants: [simple, rich]
+    directions: [top, bottom, left, right]
+    ai_roles: [context_help, hint]
+  - name: DSProgressCircle
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSProgressCircle.swift
+    ai_roles: [progress_indicator, radial_metric]
+  - name: DSSemiCircularGauge
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSSemiCircularGauge.swift
+    ai_roles: [gauge, score_summary]
+  - name: DSBarChart
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSBarChart.swift
+    ai_roles: [simple_bar_chart]
+  - name: DSLineChart
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSLineChart.swift
+    ai_roles: [trend_chart]
+  - name: DSLollipopChart
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSLollipopChart.swift
+    ai_roles: [lightweight_comparison_chart]
+  - name: DSStackedBarChart
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSStackedBarChart.swift
+    ai_roles: [stacked_comparison_chart]
+  - name: DSMetricCard
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSMetricCard.swift
+    ai_roles: [dashboard_metric, summary_card]
+  - name: DSStatRow
+    category: data_viz
+    path: ../../ios/Sources/DesignSystem/Components/DSStatRow.swift
+    ai_roles: [equal_width_stats, summary_strip]
+  - name: DSEventCard
+    category: content
+    path: ../../ios/Sources/DesignSystem/Components/DSEventCard.swift
+    ai_roles: [event_summary, schedule_card]
+  - name: DSCard
+    category: layout
+    path: ../../ios/Sources/DesignSystem/Components/DSCard.swift
+    ai_roles: [surface_container, section_card]
+  - name: DSCarousel
+    category: layout
+    path: ../../ios/Sources/DesignSystem/Components/DSCarousel.swift
+    variants: [spotlight, standard]
+    ai_roles: [image_carousel, hero_carousel]
+  - name: DSCarouselDeck
+    category: layout
+    path: ../../ios/Sources/DesignSystem/Components/DSCarouselDeck.swift
+    ai_roles: [stacked_card_carousel]
+  - name: DSTopAppBar
+    category: navigation
+    path: ../../ios/Sources/DesignSystem/Components/DSTopAppBar.swift
+    variants: [small, smallCentered, medium, large, logo, search, imageTitle]
+    ai_roles: [screen_header, search_header, brand_header]
+  - name: DSBottomAppBar
+    category: navigation
+    path: ../../ios/Sources/DesignSystem/Components/DSBottomAppBar.swift
+    variants: [full, floating, labeled]
+    ai_roles: [bottom_navigation, fab_navigation]
+  - name: DSTabView
+    category: navigation
+    path: ../../ios/Sources/DesignSystem/Components/DSTabView.swift
+    ai_roles: [multi_tab_shell]
+  - name: DSListItem
+    category: navigation
+    path: ../../ios/Sources/DesignSystem/Components/DSListItem.swift
+    slots: [leading, text_block, metadata, trailing]
+    ai_roles: [list_row, settings_row, actionable_row]
+  - name: DSDivider
+    category: navigation
+    path: ../../ios/Sources/DesignSystem/Components/DSDivider.swift
+    variants: [fullBleed, inset, middle, subheader]
+    ai_roles: [content_separator, section_label]
+  - name: DSAvatar
+    category: media
+    path: ../../ios/Sources/DesignSystem/Components/DSAvatar.swift
+    variants: [monogram, icon, image]
+    shapes: [circle, roundedRect]
+    ai_roles: [user_avatar, contact_avatar]
+  - name: DSIconImage
+    category: media
+    path: ../../ios/Sources/DesignSystem/Components/DSIconImage.swift
+    ai_roles: [themed_icon_render]
+  - name: DSIcon
+    category: media
+    path: ../../ios/Sources/DesignSystem/Components/DSIcon.swift
+    notes: large asset-backed icon catalog; use icon enum values rather than raw image names when possible
+    ai_roles: [icon_reference_catalog]
+  - name: DSText
+    category: typography
+    path: ../../ios/Sources/DesignSystem/Components/DSText.swift
+    ai_roles: [tokenized_text]
+
+sample_page_families:
+  walkthrough:
+    files: [WalkthroughPage, Walkthrough2Page, Walkthrough3Page]
+  auth:
+    files: [LoginPage, Login2Page, Login4Page, Login6ErrorPage, BiometricLoginPage, PasscodeLoginPage, ForgotPasswordPage, VerifyCodePage, NewPasswordPage]
+  profile:
+    files: [ProfilePage, Profile2Page, Profile3Page, Profile4Page, Profile5Page, Profile6Page, Profile7Page]
+  alerts:
+    files: [Alert1Page, Alert2Page, Alert3Page, Alert4Page, Alert5Page, Alert6Page, Alert7Page, Alert8Page, Alert9Page, Alert10Page, Alert11Page]
+
+known_gaps:
+  - figma_component_instance_names are not yet mapped for each DS component
+  - page patterns are derived from showcase screens and still need stricter constraints
+  - icon-only DS APIs still depend on callers for accessibility labels in some cases
+  - no validator exists yet for page specs against this contract

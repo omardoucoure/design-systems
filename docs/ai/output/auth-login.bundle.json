@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1,
+    "bundleType": "figma-plugin-bundle"
+  },
+  "page": {
+    "id": "auth.login.generated",
+    "name": "AI Generated Login",
+    "type": "auth",
+    "description": "Login screen using the auth form-card and social-sign-in patterns.",
+    "theme": {
+      "brand": "coralCamo",
+      "style": "lightRounded"
+    }
+  },
+  "screenFrame": {
+    "name": "AI Generated Login",
+    "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "FIXED"
+  },
+  "sections": [
+    {
+      "id": "auth.form",
+      "patternId": "auth.form-card",
+      "title": "Sign in form",
+      "nodes": [
+        {
+          "id": "auth.form.card",
+          "kind": "component-instance",
+          "role": "section_card",
+          "lookup": {
+            "component": "DSCard",
+            "figmaComponent": "Card"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Background": "surfaceNeutral2",
+            "Radius": "radiusXl",
+            "Padding": "spacingXl"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "auth.form.heading",
+          "kind": "component-instance",
+          "role": "heading",
+          "lookup": {
+            "component": "DSText",
+            "figmaComponent": "Text Primitive"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Text": "Login",
+            "style_token": "h2",
+            "color_token": "textNeutral9"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "auth.form.email",
+          "kind": "component-instance",
+          "role": "email_input",
+          "lookup": {
+            "component": "DSTextField",
+            "figmaComponent": "Text Field"
+          },
+          "variantProperties": {
+            "Variant": "filled",
+            "State": "filled"
+          },
+          "componentProperties": {
+            "Label": "Your Email",
+            "Placeholder": "Enter your email",
+            "Right icon": "envelope"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "auth.form.password",
+          "kind": "component-instance",
+          "role": "password_input",
+          "lookup": {
+            "component": "DSTextField",
+            "figmaComponent": "Text Field"
+          },
+          "variantProperties": {
+            "Variant": "filled",
+            "State": "filled"
+          },
+          "componentProperties": {
+            "Label": "Your Password",
+            "Placeholder": "Enter your password",
+            "Secure": true
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "auth.form.remember",
+          "kind": "component-instance",
+          "role": "remember_me",
+          "lookup": {
+            "component": "DSCheckbox",
+            "figmaComponent": "Checkbox"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Label": "Remember me",
+            "Checked": false
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "auth.form.cta",
+          "kind": "component-instance",
+          "role": "primary_cta",
+          "lookup": {
+            "component": "DSButton",
+            "figmaComponent": "Button"
+          },
+          "variantProperties": {
+            "Variant": "filledA",
+            "Size": "big",
+            "Content": "text+icon"
+          },
+          "componentProperties": {
+            "Label": "Let's Roll!",
+            "Right icon": "arrow.right",
+            "Full width": true
+          },
+          "accessibility": {}
+        }
+      ]
+    },
+    {
+      "id": "auth.social",
+      "patternId": "auth.social-sign-in",
+      "title": "Social sign in",
+      "nodes": [
+        {
+          "id": "auth.social.card",
+          "kind": "component-instance",
+          "role": "section_card",
+          "lookup": {
+            "component": "DSCard",
+            "figmaComponent": "Card"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Background": "surfacePrimary100",
+            "Radius": "radiusXl",
+            "Padding": "spacingXl"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "auth.social.google",
+          "kind": "component-instance",
+          "role": "social_action",
+          "lookup": {
+            "component": "DSButton",
+            "figmaComponent": "Button"
+          },
+          "variantProperties": {
+            "Variant": "neutral",
+            "Size": "big",
+            "Content": "icon-only"
+          },
+          "componentProperties": {
+            "Asset icon": "icon_google",
+            "Full width": true
+          },
+          "accessibility": {
+            "label": "Continue with Google"
+          }
+        },
+        {
+          "id": "auth.social.facebook",
+          "kind": "component-instance",
+          "role": "social_action",
+          "lookup": {
+            "component": "DSButton",
+            "figmaComponent": "Button"
+          },
+          "variantProperties": {
+            "Variant": "neutral",
+            "Size": "big",
+            "Content": "icon-only"
+          },
+          "componentProperties": {
+            "Asset icon": "icon_facebook",
+            "Full width": true
+          },
+          "accessibility": {
+            "label": "Continue with Facebook"
+          }
+        },
+        {
+          "id": "auth.social.x",
+          "kind": "component-instance",
+          "role": "social_action",
+          "lookup": {
+            "component": "DSButton",
+            "figmaComponent": "Button"
+          },
+          "variantProperties": {
+            "Variant": "neutral",
+            "Size": "big",
+            "Content": "icon-only"
+          },
+          "componentProperties": {
+            "Asset icon": "icon_x",
+            "Full width": true
+          },
+          "accessibility": {
+            "label": "Continue with X"
+          }
+        }
+      ]
+    }
+  ],
+  "copy": [
+    {
+      "id": "auth.caption",
+      "text": "Welcome back!",
+      "style_token": "caption",
+      "color_token": "textNeutral9"
+    }
+  ],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "Social icon-only actions include explicit accessibility labels.",
+      "Password field is secure and should expose a readable show or hide password affordance."
+    ]
+  },
+  "implementation_notes": [
+    "Use auth.form-card and auth.social-sign-in patterns without introducing raw SwiftUI buttons."
+  ]
+}

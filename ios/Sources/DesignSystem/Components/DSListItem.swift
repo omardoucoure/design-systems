@@ -63,7 +63,7 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
     // MARK: - Body
 
     public var body: some View {
-        let content = HStack(spacing: 16) {
+        let content = HStack(spacing: theme.components.listItem.rowGap) {
             leading
 
             VStack(alignment: .leading, spacing: 0) {
@@ -95,7 +95,7 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
                         .tracking(theme.typography.body.tracking)
                         .foregroundStyle(theme.colors.textNeutral8.opacity(theme.colors.textOpacity75))
                         .padding(.horizontal, theme.spacing.xs)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, theme.components.listItem.metadataVerticalPadding)
                 }
             }
 
@@ -149,9 +149,9 @@ extension DSListItem where Leading == AnyView, Trailing == AnyView {
         if let leadingIcon {
             self.leading = AnyView(
                 Image(systemName: leadingIcon)
-                    .font(.system(size: 24))
-                    .frame(width: 24, height: 24)
-                    .padding(8)
+                    .font(.system(size: ListItemComponentTokens.shared.leadingIconSize))
+                    .frame(width: ListItemComponentTokens.shared.leadingIconSize, height: ListItemComponentTokens.shared.leadingIconSize)
+                    .padding(ListItemComponentTokens.shared.iconPadding)
             )
         } else {
             self.leading = AnyView(EmptyView())
@@ -160,9 +160,9 @@ extension DSListItem where Leading == AnyView, Trailing == AnyView {
         if showTrailingArrow {
             self.trailing = AnyView(
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 20))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
+                    .font(.system(size: ListItemComponentTokens.shared.trailingIconSize))
+                    .padding(.horizontal, ListItemComponentTokens.shared.metadataVerticalPadding)
+                    .padding(.vertical, ListItemComponentTokens.shared.iconPadding)
             )
         } else {
             self.trailing = AnyView(EmptyView())

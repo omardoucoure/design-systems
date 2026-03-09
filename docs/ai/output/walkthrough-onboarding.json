@@ -1,0 +1,355 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1
+  },
+  "page": {
+    "id": "walkthrough.onboarding.generated",
+    "name": "AI Generated Onboarding",
+    "type": "walkthrough",
+    "description": "Onboarding walkthrough screen using card-backed messaging, page control, and navigation actions.",
+    "theme": {
+      "brand": "coralCamo",
+      "style": "darkSharp"
+    }
+  },
+  "figma": {
+    "rootPageNodeType": "PAGE",
+    "screenNodeType": "FRAME",
+    "screenFrame": {
+      "name": "AI Generated Onboarding",
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "FIXED"
+    },
+    "sections": [
+      {
+        "id": "walkthrough.hero",
+        "patternId": "onboarding.walkthrough",
+        "title": "Walkthrough hero",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "walkthrough.hero.card",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "hero_surface",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfaceNeutral2",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.hero.heading",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "heading",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "Design Systems That Scale. Build once, use everywhere with confidence.",
+              "style_token": "display2",
+              "color_token": "textNeutral9"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.hero.divider",
+            "nodeType": "INSTANCE",
+            "component": "DSDivider",
+            "figmaComponent": "Divider",
+            "role": "separator",
+            "variantProperties": {},
+            "componentProperties": {
+              "Label": ""
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.hero.body",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "supporting_copy",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "Consistency across every screen.",
+              "style_token": "bodyRegular",
+              "color_token": "textNeutral9"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.hero.progress",
+            "nodeType": "INSTANCE",
+            "component": "DSPageControl",
+            "figmaComponent": "Page Control",
+            "role": "onboarding_progress",
+            "variantProperties": {},
+            "componentProperties": {
+              "Count": 3,
+              "Current index": 1
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.hero.prev",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "toolbar_action",
+            "variantProperties": {
+              "Variant": "filledA",
+              "Size": "big",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "System icon": "arrow.left"
+            },
+            "accessibility": {
+              "label": "Previous page"
+            }
+          },
+          {
+            "id": "walkthrough.hero.next",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "toolbar_action",
+            "variantProperties": {
+              "Variant": "filledA",
+              "Size": "big",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "System icon": "arrow.right"
+            },
+            "accessibility": {
+              "label": "Next page"
+            }
+          }
+        ]
+      },
+      {
+        "id": "walkthrough.footer",
+        "patternId": "onboarding.walkthrough",
+        "title": "Walkthrough footer",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "walkthrough.footer.card",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "footer_surface",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfacePrimary100",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.footer.caption",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "supporting_copy",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "For designers who dare to think differently.",
+              "style_token": "bodyRegular",
+              "color_token": "textNeutral0_5"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "walkthrough.footer.skip",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "secondary_cta",
+            "variantProperties": {
+              "Variant": "filledA",
+              "Size": "medium",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "Label": "Skip"
+            },
+            "accessibility": {}
+          }
+        ]
+      }
+    ],
+    "instances": [
+      {
+        "id": "walkthrough.hero.card",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "hero_surface",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfaceNeutral2",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.hero.heading",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "heading",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "Design Systems That Scale. Build once, use everywhere with confidence.",
+          "style_token": "display2",
+          "color_token": "textNeutral9"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.hero.divider",
+        "nodeType": "INSTANCE",
+        "component": "DSDivider",
+        "figmaComponent": "Divider",
+        "role": "separator",
+        "variantProperties": {},
+        "componentProperties": {
+          "Label": ""
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.hero.body",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "supporting_copy",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "Consistency across every screen.",
+          "style_token": "bodyRegular",
+          "color_token": "textNeutral9"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.hero.progress",
+        "nodeType": "INSTANCE",
+        "component": "DSPageControl",
+        "figmaComponent": "Page Control",
+        "role": "onboarding_progress",
+        "variantProperties": {},
+        "componentProperties": {
+          "Count": 3,
+          "Current index": 1
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.hero.prev",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "toolbar_action",
+        "variantProperties": {
+          "Variant": "filledA",
+          "Size": "big",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "System icon": "arrow.left"
+        },
+        "accessibility": {
+          "label": "Previous page"
+        }
+      },
+      {
+        "id": "walkthrough.hero.next",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "toolbar_action",
+        "variantProperties": {
+          "Variant": "filledA",
+          "Size": "big",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "System icon": "arrow.right"
+        },
+        "accessibility": {
+          "label": "Next page"
+        }
+      },
+      {
+        "id": "walkthrough.footer.card",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "footer_surface",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfacePrimary100",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.footer.caption",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "supporting_copy",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "For designers who dare to think differently.",
+          "style_token": "bodyRegular",
+          "color_token": "textNeutral0_5"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "walkthrough.footer.skip",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "secondary_cta",
+        "variantProperties": {
+          "Variant": "filledA",
+          "Size": "medium",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "Label": "Skip"
+        },
+        "accessibility": {}
+      }
+    ]
+  },
+  "copy": [],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "The previous and next actions are icon-only and need explicit accessibility labels.",
+      "Keep onboarding progress exposed as a distinct page-control element."
+    ]
+  },
+  "implementation_notes": [
+    "The hero card should dominate the screen vertically.",
+    "The footer card is a compact secondary section with one supporting CTA."
+  ]
+}

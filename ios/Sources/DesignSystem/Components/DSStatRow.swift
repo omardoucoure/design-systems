@@ -47,8 +47,8 @@ public struct DSStatRow<ValueContent: View>: View {
                     valueContent(item)
 
                     Text(item.label)
-                        .font(.system(size: 10, weight: .medium))
-                        .tracking(-0.2)
+                        .font(theme.typography.tiny.font)
+                        .tracking(theme.components.statRow.labelTracking)
                         .foregroundStyle(theme.colors.textNeutral9.opacity(theme.colors.textOpacity50))
                 }
                 .padding(theme.spacing.md)

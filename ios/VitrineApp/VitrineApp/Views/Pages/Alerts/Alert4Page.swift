@@ -135,12 +135,10 @@ struct Alert4Page: View {
                     .background(theme.colors.surfaceNeutral2)
                     .clipShape(Capsule())
                 Spacer()
-                Button {
+                DSButton(style: .text, size: .medium, icon: .xmark) {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { showBanner = false }
-                } label: {
-                    DSIconImage(.xmark, size: 20, color: theme.colors.textNeutral9)
                 }
-                .buttonStyle(.plain)
+                .accessibilityLabel("Close warning")
                 .padding(.vertical, theme.spacing.xxs)
             }
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {

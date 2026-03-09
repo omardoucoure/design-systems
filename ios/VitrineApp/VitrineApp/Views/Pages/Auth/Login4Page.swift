@@ -40,25 +40,9 @@ struct Login4Page: View {
         }
     }
 
-    private func socialButton(label: String, imageName: String) -> some View {
-        Button {} label: {
-            HStack {
-                DSText(label, style: theme.typography.bodySemiBold, color: theme.colors.textNeutral0_5)
-                Spacer()
-                Image(imageName)
-                    .resizable()
-                    .renderingMode(.template)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-                    .foregroundStyle(theme.colors.textNeutral0_5)
-            }
-            .padding(.horizontal, theme.spacing.lg)
-            .padding(.vertical, theme.spacing.md)
-            .frame(height: 56)
-            .background(theme.colors.surfacePrimary120)
-            .clipShape(Capsule())
+    private func socialButton(label: LocalizedStringKey, imageName: String) -> some View {
+        DSButton(label, style: .filledC, size: .big, assetIcon: imageName, iconPosition: .right, isFullWidth: true) {
         }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Forms Card

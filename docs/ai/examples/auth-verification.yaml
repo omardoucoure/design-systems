@@ -1,0 +1,92 @@
+page_id: auth.verification.generated
+page_name: AI Generated Verification
+page_type: auth
+description: Verification screen using the auth.verification pattern with supporting legal copy.
+theme:
+  brand: seaLime
+  style: lightRounded
+sections:
+  - id: auth.verify
+    pattern_id: auth.verification
+    title: Verify identity
+    component_refs:
+      - auth.verify.card
+      - auth.verify.appbar
+      - auth.verify.heading
+      - auth.verify.body
+      - auth.verify.code
+      - auth.verify.resend
+      - auth.verify.next
+      - auth.verify.terms
+components:
+  - id: auth.verify.card
+    component: DSCard
+    role: section_card
+    props:
+      background: surfaceNeutral2
+      radius: radiusXl
+      padding: spacingXl
+  - id: auth.verify.appbar
+    component: DSTopAppBar
+    role: page_header
+    props:
+      title: Forgot password
+  - id: auth.verify.heading
+    component: DSText
+    role: heading
+    props:
+      text: Verify your identity
+      style_token: h4
+      color_token: textNeutral9
+  - id: auth.verify.body
+    component: DSText
+    role: supporting_copy
+    props:
+      text: An authentication code has been sent to hristov123@gmail.com
+      style_token: caption
+      color_token: textNeutral9
+  - id: auth.verify.code
+    component: DSCodeInput
+    role: verification
+    props:
+      digitCount: 4
+      code: ""
+  - id: auth.verify.resend
+    component: DSButton
+    role: tertiary_action
+    variant: text
+    size: medium
+    props:
+      label: Resend Code
+  - id: auth.verify.next
+    component: DSButton
+    role: primary_cta
+    variant: filledA
+    size: big
+    props:
+      label: Next
+      iconRight: arrow.right
+      isFullWidth: true
+  - id: auth.verify.terms
+    component: DSButton
+    role: tertiary_action
+    variant: text
+    size: medium
+    props:
+      label: Terms and Conditions
+copy:
+  - id: auth.verify.caption
+    text: I didn't receive code?
+    style_token: bodyRegular
+    color_token: textNeutral9
+  - id: auth.verify.legal
+    text: By Signing In, you agree to our
+    style_token: bodyRegular
+    color_token: textNeutral9
+accessibility:
+  notes:
+    - The verification code input should expose each digit field in reading order.
+    - The resend code action should remain discoverable as a secondary text action.
+implementation_notes:
+  - Keep the verification flow card-backed and vertically stacked.
+  - Preserve the supporting legal copy below the primary CTA.

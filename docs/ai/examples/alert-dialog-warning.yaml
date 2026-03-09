@@ -1,0 +1,65 @@
+page_id: alerts.dialog.warning.generated
+page_name: AI Generated Warning Dialog
+page_type: alerts
+description: Warning dialog overlay with stacked actions using the alert.dialog pattern.
+theme:
+  brand: mistyRose
+  style: darkRounded
+sections:
+  - id: alerts.dialog
+    pattern_id: alert.dialog
+    title: Warning dialog
+    component_refs:
+      - alerts.dialog.surface
+      - alerts.dialog.modal
+      - alerts.dialog.primary
+      - alerts.dialog.secondary
+      - alerts.dialog.cancel
+components:
+  - id: alerts.dialog.surface
+    component: DSCard
+    role: overlay_surface
+    props:
+      background: surfaceNeutral2
+      radius: radiusXl
+      padding: spacingXl
+  - id: alerts.dialog.modal
+    component: DSAlertDialog
+    role: modal_alert
+    props:
+      title: HaHo's been a battery hog!
+      message: Keep going and risk a system tantrum, or take a break? Your call.
+      severity: warning
+      icon: batterySlash
+  - id: alerts.dialog.primary
+    component: DSButton
+    role: primary_cta
+    variant: filledA
+    size: medium
+    props:
+      label: Delete App
+      iconRight: log.out
+      isFullWidth: true
+  - id: alerts.dialog.secondary
+    component: DSButton
+    role: secondary_cta
+    variant: neutral
+    size: medium
+    props:
+      label: Disable Background Usage
+      isFullWidth: true
+  - id: alerts.dialog.cancel
+    component: DSButton
+    role: dismiss_action
+    variant: neutral
+    size: medium
+    props:
+      label: Cancel
+      isFullWidth: true
+accessibility:
+  notes:
+    - Focus should land on the dialog before the background content.
+    - The stacked actions should read in destructive-to-safe order.
+implementation_notes:
+  - Treat the background surface as dimmed context and the dialog as the primary focus.
+  - Keep all actions full width and vertically stacked.

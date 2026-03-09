@@ -86,13 +86,13 @@ public struct DSTextField: View {
     // MARK: - Input Container
 
     private var inputContainer: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: theme.components.textField.contentGap) {
             // Left icon
             if let iconLeft {
                 Image(systemName: iconLeft)
-                    .font(.system(size: 20))
+                    .font(.system(size: theme.components.textField.iconSize))
                     .foregroundStyle(iconColor)
-                    .frame(width: 24, height: 24)
+                    .frame(width: theme.components.textField.iconFrame, height: theme.components.textField.iconFrame)
             }
 
             // Text field + floating label
@@ -123,36 +123,26 @@ public struct DSTextField: View {
                     isTextHidden.toggle()
                 } label: {
                     Image(systemName: isTextHidden ? "eye.slash" : "eye")
-                        .font(.system(size: 20))
+                        .font(.system(size: theme.components.textField.iconSize))
                         .foregroundStyle(iconColor)
-                        .frame(width: 24, height: 24)
+                        .frame(width: theme.components.textField.iconFrame, height: theme.components.textField.iconFrame)
                 }
                 .buttonStyle(.plain)
             } else if let iconRight {
                 Image(systemName: iconRight)
-                    .font(.system(size: 20))
+                    .font(.system(size: theme.components.textField.iconSize))
                     .foregroundStyle(iconColor)
-                    .frame(width: 24, height: 24)
+                    .frame(width: theme.components.textField.iconFrame, height: theme.components.textField.iconFrame)
             }
 
             // Action button
             if let actionLabel, let onAction {
-                Button(action: onAction) {
-                    Text(actionLabel)
-                        .font(theme.typography.label.font)
-                        .tracking(theme.typography.label.tracking)
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, theme.spacing.sm)
-                        .frame(height: 32)
-                        .background(theme.colors.surfaceSecondary100)
-                        .clipShape(Capsule())
-                }
-                .buttonStyle(.plain)
+                DSButton(actionLabel, style: .filledA, size: .small, action: onAction)
             }
         }
         .padding(.horizontal, theme.spacing.md)
         .padding(.vertical, theme.spacing.md)
-        .frame(height: 56)
+        .frame(height: theme.components.textField.fieldHeight)
         .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: containerRadius))
         .overlay(borderOverlay)
@@ -251,7 +241,7 @@ public struct DSTextField: View {
     private var helperTextColor: Color {
         switch state {
         case .error: return theme.colors.error
-        default: return theme.colors.textNeutral9.opacity(0.5)
+        default: return theme.colors.textNeutral9.opacity(theme.opacity.md)
         }
     }
 }

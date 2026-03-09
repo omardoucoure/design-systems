@@ -1,0 +1,281 @@
+version: 0.1
+figma:
+  concepts:
+    notes:
+      - Use component properties over deprecated variantProperties when possible.
+      - Variant values should remain string-safe for Figma.
+      - Generated output should prefer component instances and auto-layout frames over raw vector reconstruction.
+  root:
+    page_node_type: PAGE
+    screen_node_type: FRAME
+    default_layout_mode: VERTICAL
+    default_primary_axis_sizing_mode: AUTO
+    default_counter_axis_sizing_mode: FIXED
+components:
+  DSButton:
+    figma_component: Button
+    variant_keys:
+      style: Style
+      size: Size
+      content_mode: Content
+    property_keys:
+      label: Label
+      systemIcon: System icon
+      assetIcon: Asset icon
+      iconLeft: Left icon
+      iconRight: Right icon
+      isFullWidth: Full width
+  DSChip:
+    figma_component: Chip
+    variant_keys:
+      style: Style
+    property_keys:
+      label: Label
+  DSBadge:
+    figma_component: Badge
+    variant_keys:
+      variant: Variant
+    property_keys:
+      text: Label
+      count: Count
+  DSCheckbox:
+    figma_component: Checkbox
+    variant_keys:
+      state: State
+    property_keys:
+      label: Label
+      isOn: Checked
+  DSRadio:
+    figma_component: Radio
+    variant_keys:
+      state: State
+    property_keys:
+      label: Label
+      isSelected: Selected
+  DSToggle:
+    figma_component: Toggle
+    variant_keys:
+      state: State
+    property_keys:
+      label: Label
+      isOn: Checked
+  DSSegmentedPicker:
+    figma_component: Segmented Picker
+    variant_keys:
+      style: Style
+    property_keys:
+      items: Items
+      selectedIndex: Selected index
+  DSPageControl:
+    figma_component: Page Control
+    property_keys:
+      count: Count
+      currentIndex: Current index
+  DSTextField:
+    figma_component: Text Field
+    variant_keys:
+      variant: Variant
+      state: State
+    property_keys:
+      label: Label
+      placeholder: Placeholder
+      helperText: Helper text
+      isSecure: Secure
+      iconLeft: Left icon
+      iconRight: Right icon
+      actionLabel: Action label
+  DSSearchField:
+    figma_component: Search Field
+    property_keys:
+      placeholder: Placeholder
+      text: Value
+  DSTextArea:
+    figma_component: Text Area
+    property_keys:
+      title: Title
+      placeholder: Placeholder
+      text: Value
+  DSDropdown:
+    figma_component: Dropdown
+    property_keys:
+      items: Items
+      selectedId: Selected id
+      placeholder: Placeholder
+  DSCodeInput:
+    figma_component: Code Input
+    property_keys:
+      digitCount: Digits
+      code: Value
+  DSDatePicker:
+    figma_component: Date Picker
+    variant_keys:
+      variant: Variant
+    property_keys:
+      startDate: Start date
+      endDate: End date
+  DSCalendarGrid:
+    figma_component: Calendar Grid
+    variant_keys:
+      mode: Mode
+  DSDayPicker:
+    figma_component: Day Picker
+    property_keys:
+      items: Items
+      selectedId: Selected id
+  DSWeekStrip:
+    figma_component: Week Strip
+    property_keys:
+      items: Items
+      selectedId: Selected id
+  DSTimelineGrid:
+    figma_component: Timeline Grid
+    property_keys:
+      slots: Slots
+  DSAlert:
+    figma_component: Alert
+    variant_keys:
+      severity: Severity
+    property_keys:
+      title: Title
+      message: Message
+  DSAlertDialog:
+    figma_component: Alert Dialog
+    property_keys:
+      title: Title
+      message: Message
+      severity: Severity
+      icon: Icon
+  DSBanner:
+    figma_component: Banner
+    property_keys:
+      title: Title
+      message: Message
+      icon: Icon
+  DSTooltip:
+    figma_component: Tooltip
+    variant_keys:
+      direction: Direction
+      style: Style
+    property_keys:
+      title: Title
+      message: Message
+  DSProgressCircle:
+    figma_component: Progress Circle
+    property_keys:
+      progress: Progress
+      size: Size
+      customLabel: Label
+  DSSemiCircularGauge:
+    figma_component: Semi Circular Gauge
+    property_keys:
+      segments: Segments
+      label: Label
+  DSBarChart:
+    figma_component: Bar Chart
+    property_keys:
+      data: Data
+  DSLineChart:
+    figma_component: Line Chart
+    property_keys:
+      points: Points
+  DSLollipopChart:
+    figma_component: Lollipop Chart
+    property_keys:
+      items: Items
+  DSStackedBarChart:
+    figma_component: Stacked Bar Chart
+    property_keys:
+      columns: Columns
+  DSMetricCard:
+    figma_component: Metric Card
+    property_keys:
+      title: Title
+      icon: Icon
+      value: Value
+      unit: Unit
+      background: Background
+  DSStatRow:
+    figma_component: Stat Row
+    property_keys:
+      items: Items
+  DSEventCard:
+    figma_component: Event Card
+    property_keys:
+      title: Title
+      subtitle: Subtitle
+      metadata: Metadata
+  DSCard:
+    figma_component: Card
+    property_keys:
+      background: Background
+      radius: Radius
+      padding: Padding
+  DSCarousel:
+    figma_component: Carousel
+    variant_keys:
+      style: Style
+    property_keys:
+      images: Images
+  DSCarouselDeck:
+    figma_component: Carousel Deck
+    property_keys:
+      cards: Cards
+  DSTopAppBar:
+    figma_component: Top App Bar
+    variant_keys:
+      style: Style
+    property_keys:
+      title: Title
+      searchPlaceholder: Search placeholder
+  DSBottomAppBar:
+    figma_component: Bottom App Bar
+    variant_keys:
+      style: Style
+    property_keys:
+      items: Items
+      selectedId: Selected id
+      fabIcon: Fab icon
+  DSTabView:
+    figma_component: Tab View Shell
+    property_keys:
+      tabs: Tabs
+      selection: Selection
+  DSListItem:
+    figma_component: List Item
+    property_keys:
+      overline: Overline
+      headline: Headline
+      supportingText: Supporting text
+      metadata: Metadata
+  DSDivider:
+    figma_component: Divider
+    variant_keys:
+      style: Style
+    property_keys:
+      label: Label
+  DSAvatar:
+    figma_component: Avatar
+    variant_keys:
+      style: Style
+      shape: Shape
+    property_keys:
+      text: Monogram
+      icon: Icon
+      image: Image
+      size: Size
+  DSIconImage:
+    figma_component: Icon Image
+    property_keys:
+      icon: Icon
+      size: Size
+      color: Color
+  DSIcon:
+    figma_component: Icon Catalog
+    property_keys:
+      name: Name
+  DSText:
+    figma_component: Text Primitive
+    property_keys:
+      text: Text
+      style: Text style
+      color: Color

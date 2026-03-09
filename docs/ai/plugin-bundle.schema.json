@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haho.design-system/figma-plugin-bundle.schema.json",
+  "title": "HaHo Figma Plugin Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "page", "screenFrame", "sections"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "type", "theme"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "theme": { "type": "object" }
+      }
+    },
+    "screenFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "layoutMode", "primaryAxisSizingMode", "counterAxisSizingMode"],
+      "properties": {
+        "name": { "type": "string" },
+        "layoutMode": { "type": "string" },
+        "primaryAxisSizingMode": { "type": "string" },
+        "counterAxisSizingMode": { "type": "string" }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/section"
+      }
+    },
+    "copy": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/copyItem"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assetItem"
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "implementation_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "patternId", "title", "nodes"],
+      "properties": {
+        "id": { "type": "string" },
+        "patternId": { "type": "string" },
+        "title": { "type": ["string", "null"] },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "lookup", "role"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "type": "string", "enum": ["component-instance"] },
+        "role": { "type": "string" },
+        "lookup": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["component", "figmaComponent"],
+          "properties": {
+            "component": { "type": "string" },
+            "figmaComponent": { "type": "string" }
+          }
+        },
+        "variantProperties": {
+          "type": "object"
+        },
+        "componentProperties": {
+          "type": "object"
+        },
+        "accessibility": {
+          "type": "object"
+        }
+      }
+    },
+    "copyItem": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "assetItem": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,105 @@
+page_id: walkthrough.onboarding.generated
+page_name: AI Generated Onboarding
+page_type: walkthrough
+description: Onboarding walkthrough screen using card-backed messaging, page control, and navigation actions.
+theme:
+  brand: coralCamo
+  style: darkSharp
+sections:
+  - id: walkthrough.hero
+    pattern_id: onboarding.walkthrough
+    title: Walkthrough hero
+    component_refs:
+      - walkthrough.hero.card
+      - walkthrough.hero.heading
+      - walkthrough.hero.divider
+      - walkthrough.hero.body
+      - walkthrough.hero.progress
+      - walkthrough.hero.prev
+      - walkthrough.hero.next
+  - id: walkthrough.footer
+    pattern_id: onboarding.walkthrough
+    title: Walkthrough footer
+    component_refs:
+      - walkthrough.footer.card
+      - walkthrough.footer.caption
+      - walkthrough.footer.skip
+components:
+  - id: walkthrough.hero.card
+    component: DSCard
+    role: hero_surface
+    props:
+      background: surfaceNeutral2
+      radius: radiusXl
+      padding: spacingXl
+  - id: walkthrough.hero.heading
+    component: DSText
+    role: heading
+    props:
+      text: Design Systems That Scale. Build once, use everywhere with confidence.
+      style_token: display2
+      color_token: textNeutral9
+  - id: walkthrough.hero.divider
+    component: DSDivider
+    role: separator
+    props:
+      label: ""
+  - id: walkthrough.hero.body
+    component: DSText
+    role: supporting_copy
+    props:
+      text: Consistency across every screen.
+      style_token: bodyRegular
+      color_token: textNeutral9
+  - id: walkthrough.hero.progress
+    component: DSPageControl
+    role: onboarding_progress
+    props:
+      count: 3
+      currentIndex: 1
+  - id: walkthrough.hero.prev
+    component: DSButton
+    role: toolbar_action
+    variant: filledA
+    size: big
+    props:
+      systemIcon: arrow.left
+    accessibility:
+      label: Previous page
+  - id: walkthrough.hero.next
+    component: DSButton
+    role: toolbar_action
+    variant: filledA
+    size: big
+    props:
+      systemIcon: arrow.right
+    accessibility:
+      label: Next page
+  - id: walkthrough.footer.card
+    component: DSCard
+    role: footer_surface
+    props:
+      background: surfacePrimary100
+      radius: radiusXl
+      padding: spacingXl
+  - id: walkthrough.footer.caption
+    component: DSText
+    role: supporting_copy
+    props:
+      text: For designers who dare to think differently.
+      style_token: bodyRegular
+      color_token: textNeutral0_5
+  - id: walkthrough.footer.skip
+    component: DSButton
+    role: secondary_cta
+    variant: filledA
+    size: medium
+    props:
+      label: Skip
+accessibility:
+  notes:
+    - The previous and next actions are icon-only and need explicit accessibility labels.
+    - Keep onboarding progress exposed as a distinct page-control element.
+implementation_notes:
+  - The hero card should dominate the screen vertically.
+  - The footer card is a compact secondary section with one supporting CTA.
