@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>HaHo AI Page Writer</title>
+    <style>
+      body {
+        font: 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 16px;
+        color: #111827;
+      }
+      textarea {
+        width: 100%;
+        height: 320px;
+        font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+        box-sizing: border-box;
+      }
+      button {
+        margin-top: 12px;
+        padding: 8px 12px;
+      }
+      .hint {
+        margin-top: 12px;
+        color: #4b5563;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>HaHo AI Page Writer</h3>
+    <p>Paste a plugin bundle JSON generated from the AI pipeline.</p>
+    <textarea id="bundle"></textarea>
+    <button id="create">Create Page</button>
+    <p class="hint">The plugin looks up components by Figma component name and falls back to placeholders when a component is missing.</p>
+    <script>
+      document.getElementById("create").onclick = () => {
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "create-page",
+              bundleText: document.getElementById("bundle").value
+            }
+          },
+          "*"
+        );
+      };
+      window.onmessage = (event) => {
+        const message = event.data.pluginMessage;
+        if (!message) {
+          return;
+        }
+        if (message.type === "status") {
+          alert(message.text);
+        }
+      };
+    </script>
+  </body>
+</html>

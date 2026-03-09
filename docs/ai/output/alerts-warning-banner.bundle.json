@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1,
+    "bundleType": "figma-plugin-bundle"
+  },
+  "page": {
+    "id": "alerts.warning.generated",
+    "name": "AI Generated Warning Banner",
+    "type": "alerts",
+    "description": "Alert screen using a dashboard metrics layout and an inline warning banner.",
+    "theme": {
+      "brand": "seaLime",
+      "style": "lightRounded"
+    }
+  },
+  "screenFrame": {
+    "name": "AI Generated Warning Banner",
+    "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "FIXED"
+  },
+  "sections": [
+    {
+      "id": "dashboard.metrics",
+      "patternId": "dashboard.metrics-grid",
+      "title": "Daily metrics",
+      "nodes": [
+        {
+          "id": "metrics.walk",
+          "kind": "component-instance",
+          "role": "dashboard_metric",
+          "lookup": {
+            "component": "DSMetricCard",
+            "figmaComponent": "Metric Card"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Title": "Walk",
+            "Icon": "walking",
+            "Background": "surfacePrimary100"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "metrics.water",
+          "kind": "component-instance",
+          "role": "dashboard_metric",
+          "lookup": {
+            "component": "DSMetricCard",
+            "figmaComponent": "Metric Card"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Title": "Water",
+            "Icon": "droplet",
+            "Background": "surfaceSecondary100"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "metrics.heart",
+          "kind": "component-instance",
+          "role": "dashboard_metric",
+          "lookup": {
+            "component": "DSMetricCard",
+            "figmaComponent": "Metric Card"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Title": "Heart",
+            "Icon": "heart",
+            "Background": "surfaceNeutral3"
+          },
+          "accessibility": {}
+        }
+      ]
+    },
+    {
+      "id": "alert.banner",
+      "patternId": "alert.banner",
+      "title": "Warning banner",
+      "nodes": [
+        {
+          "id": "alert.banner.container",
+          "kind": "component-instance",
+          "role": "banner_notice",
+          "lookup": {
+            "component": "DSBanner",
+            "figmaComponent": "Banner"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Title": "Heads up!",
+            "Message": "You're about to step into uncharted territory. Proceed with caution.",
+            "background": "warning"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "alert.banner.close",
+          "kind": "component-instance",
+          "role": "dismiss_action",
+          "lookup": {
+            "component": "DSButton",
+            "figmaComponent": "Button"
+          },
+          "variantProperties": {
+            "Variant": "text",
+            "Size": "medium",
+            "Content": "icon-only"
+          },
+          "componentProperties": {
+            "icon": "xmark"
+          },
+          "accessibility": {
+            "label": "Close warning"
+          }
+        }
+      ]
+    }
+  ],
+  "copy": [],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "Dismiss action is icon-only and must expose a label.",
+      "Warning state is communicated with both iconography and copy, not only color."
+    ]
+  },
+  "implementation_notes": [
+    "Favor DSBanner semantics over a custom banner shell when possible."
+  ]
+}

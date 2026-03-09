@@ -1,0 +1,144 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1,
+    "bundleType": "figma-plugin-bundle"
+  },
+  "page": {
+    "id": "profile.hero.generated",
+    "name": "AI Generated Profile Hero",
+    "type": "profile",
+    "description": "Profile screen combining the profile.hero and profile.stats patterns.",
+    "theme": {
+      "brand": "mistyRose",
+      "style": "darkRounded"
+    }
+  },
+  "screenFrame": {
+    "name": "AI Generated Profile Hero",
+    "layoutMode": "VERTICAL",
+    "primaryAxisSizingMode": "AUTO",
+    "counterAxisSizingMode": "FIXED"
+  },
+  "sections": [
+    {
+      "id": "profile.hero",
+      "patternId": "profile.hero",
+      "title": "Profile header",
+      "nodes": [
+        {
+          "id": "profile.header",
+          "kind": "component-instance",
+          "role": "screen_header",
+          "lookup": {
+            "component": "DSTopAppBar",
+            "figmaComponent": "Top App Bar"
+          },
+          "variantProperties": {
+            "Variant": "small"
+          },
+          "componentProperties": {
+            "Title": "Profile"
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "profile.carousel",
+          "kind": "component-instance",
+          "role": "hero_carousel",
+          "lookup": {
+            "component": "DSCarousel",
+            "figmaComponent": "Carousel"
+          },
+          "variantProperties": {
+            "Variant": "standard"
+          },
+          "componentProperties": {
+            "Images": [
+              "profile-photo-1",
+              "profile-photo-2"
+            ]
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "profile.summary",
+          "kind": "component-instance",
+          "role": "section_card",
+          "lookup": {
+            "component": "DSCard",
+            "figmaComponent": "Card"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Background": "surfacePrimary100",
+            "Radius": "radiusXl",
+            "Padding": "spacingXl"
+          },
+          "accessibility": {}
+        }
+      ]
+    },
+    {
+      "id": "profile.stats",
+      "patternId": "profile.stats",
+      "title": "Profile metrics",
+      "nodes": [
+        {
+          "id": "profile.stats.row",
+          "kind": "component-instance",
+          "role": "summary_strip",
+          "lookup": {
+            "component": "DSStatRow",
+            "figmaComponent": "Stat Row"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Items": [
+              {
+                "id": "photos",
+                "label": "photos"
+              },
+              {
+                "id": "followers",
+                "label": "followers"
+              },
+              {
+                "id": "following",
+                "label": "following"
+              }
+            ]
+          },
+          "accessibility": {}
+        },
+        {
+          "id": "profile.stats.progress",
+          "kind": "component-instance",
+          "role": "radial_metric",
+          "lookup": {
+            "component": "DSProgressCircle",
+            "figmaComponent": "Progress Circle"
+          },
+          "variantProperties": {},
+          "componentProperties": {
+            "Progress": 0.76,
+            "Size": 88
+          },
+          "accessibility": {}
+        }
+      ]
+    }
+  ],
+  "copy": [],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "Hero media should remain decorative unless it communicates essential content.",
+      "Stats should read as coherent grouped values."
+    ]
+  },
+  "implementation_notes": [
+    "Use the profile.hero and profile.stats patterns before inventing new profile composition grammar."
+  ]
+}

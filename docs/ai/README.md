@@ -9,8 +9,10 @@ Its purpose is to make the system understandable to an LLM without requiring the
 - [`design-system-contract.yaml`](design-system-contract.yaml): machine-readable component, token, and page-pattern registry
 - [`page-spec.schema.json`](page-spec.schema.json): strict page-spec schema for AI-generated screens
 - [`figma-mapping.yaml`](figma-mapping.yaml): DS component to Figma component/property mapping
+- [`plugin-bundle.schema.json`](plugin-bundle.schema.json): schema for Figma plugin bundle payloads
 - [`IMPLEMENTATION_TODO.md`](IMPLEMENTATION_TODO.md): phased roadmap to make AI-driven page generation reliable
 - [`examples`](examples): example page specs for major page families
+- [`FIGMA_PLUGIN_WORKFLOW.md`](FIGMA_PLUGIN_WORKFLOW.md): end-to-end workflow from spec to Figma plugin bundle
 
 ## Why this exists
 
@@ -61,6 +63,16 @@ The transformer currently produces a deterministic Figma-oriented instance tree:
 - component properties
 
 It is designed as the bridge between AI page generation and a future Figma API or plugin writer.
+
+Build a plugin bundle from the transformed JSON:
+
+```bash
+python3 scripts/build_figma_plugin_bundle.py \
+  docs/ai/output/auth-login.json \
+  docs/ai/output/auth-login.bundle.json
+```
+
+The repository now includes a first Figma plugin scaffold in [`../../figma-plugin`](../../figma-plugin) that can consume the bundle and create page content in an active Figma file.
 
 ## External Principles Used
 
