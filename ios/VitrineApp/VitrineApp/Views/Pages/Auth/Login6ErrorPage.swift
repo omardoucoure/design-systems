@@ -72,9 +72,9 @@ struct Login6ErrorPage: View {
                 DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
 
                 HStack(spacing: theme.spacing.xs) {
-                    socialButton(imageName: "icon_google")
-                    socialButton(imageName: "icon_facebook")
-                    socialButton(imageName: "icon_x")
+                    socialButton(label: "Continue with Google", imageName: "icon_google")
+                    socialButton(label: "Continue with Facebook", imageName: "icon_facebook")
+                    socialButton(label: "Continue with X", imageName: "icon_x")
                 }
             }
             .padding(.horizontal, theme.spacing.xl)
@@ -82,20 +82,10 @@ struct Login6ErrorPage: View {
         }
     }
 
-    private func socialButton(imageName: String) -> some View {
-        Button {} label: {
-            Image(imageName)
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundStyle(theme.colors.textNeutral9)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .background(theme.colors.surfaceNeutral2)
-                .clipShape(Capsule())
+    private func socialButton(label: String, imageName: String) -> some View {
+        DSButton(style: .neutral, size: .big, assetIcon: imageName, isFullWidth: true) {
         }
-        .buttonStyle(.plain)
+        .accessibilityLabel(label)
     }
 
     // MARK: - Sign Up Bar

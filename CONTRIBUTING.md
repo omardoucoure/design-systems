@@ -46,5 +46,7 @@ Every new interactive component should be checked for:
 If you add a new public component or token layer, update:
 
 - [`README.md`](README.md)
+- [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md)
+- relevant files under `docs/components`
 - showcase coverage in `VitrineApp`
 - any relevant architecture notes in [`PRD.md`](PRD.md)

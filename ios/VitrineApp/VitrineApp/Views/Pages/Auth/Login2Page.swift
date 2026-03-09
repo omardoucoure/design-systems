@@ -70,29 +70,19 @@ struct Login2Page: View {
                 DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral9)
 
                 HStack(spacing: theme.spacing.xs) {
-                    socialButton(imageName: "icon_google")
-                    socialButton(imageName: "icon_facebook")
-                    socialButton(imageName: "icon_x")
+                    socialButton(label: "Continue with Google", imageName: "icon_google")
+                    socialButton(label: "Continue with Facebook", imageName: "icon_facebook")
+                    socialButton(label: "Continue with X", imageName: "icon_x")
                 }
             }
             .padding(.vertical, theme.spacing.xs)
         }
     }
 
-    private func socialButton(imageName: String) -> some View {
-        Button {} label: {
-            Image(imageName)
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundStyle(theme.colors.textNeutral0_5)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .background(theme.colors.surfacePrimary120)
-                .clipShape(Capsule())
+    private func socialButton(label: String, imageName: String) -> some View {
+        DSButton(style: .filledC, size: .big, assetIcon: imageName, isFullWidth: true) {
         }
-        .buttonStyle(.plain)
+        .accessibilityLabel(label)
     }
 }
 

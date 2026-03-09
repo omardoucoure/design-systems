@@ -16,6 +16,8 @@ At runtime those axes resolve into a `ThemeConfiguration`, which components read
 - [`tokens/primitives.json`](tokens/primitives.json): primitive token source data
 - [`tokens/tokens.json`](tokens/tokens.json): semantic token mappings by mode
 - [`PRD.md`](PRD.md): product and architecture intent
+- [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md): accessibility expectations for components and pages
+- [`docs/components`](docs/components): component usage notes for public DS primitives
 
 ## Quick Start
 
