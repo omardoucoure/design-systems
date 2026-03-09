@@ -18,6 +18,7 @@ At runtime those axes resolve into a `ThemeConfiguration`, which components read
 - [`PRD.md`](PRD.md): product and architecture intent
 - [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md): accessibility expectations for components and pages
 - [`docs/components`](docs/components): component usage notes for public DS primitives
+- [`docs/ai`](docs/ai): AI-facing design contract, registry, and implementation roadmap
 
 ## Quick Start
 
