@@ -16,15 +16,13 @@ let package = Package(
     targets: [
         .target(
             name: "DesignSystem",
-            path: "ios/Sources/DesignSystem",
             resources: [
                 .process("Resources")
             ]
         ),
         .testTarget(
             name: "DesignSystemTests",
-            dependencies: ["DesignSystem"],
-            path: "ios/Tests/DesignSystemTests"
+            dependencies: ["DesignSystem"]
         )
     ]
 )
