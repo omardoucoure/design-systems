@@ -1,0 +1,122 @@
+page_id: auth.login.generated
+page_name: AI Generated Login
+page_type: auth
+description: Login screen using the auth form-card and social-sign-in patterns.
+theme:
+  brand: coralCamo
+  style: lightRounded
+sections:
+  - id: auth.form
+    pattern_id: auth.form-card
+    title: Sign in form
+    component_refs:
+      - auth.form.card
+      - auth.form.heading
+      - auth.form.email
+      - auth.form.password
+      - auth.form.remember
+      - auth.form.cta
+  - id: auth.social
+    pattern_id: auth.social-sign-in
+    title: Social sign in
+    component_refs:
+      - auth.social.card
+      - auth.social.google
+      - auth.social.facebook
+      - auth.social.x
+components:
+  - id: auth.form.card
+    component: DSCard
+    role: section_card
+    props:
+      background: surfaceNeutral2
+      radius: radiusXl
+      padding: spacingXl
+  - id: auth.form.heading
+    component: DSText
+    role: heading
+    props:
+      text: Login
+      style_token: h2
+      color_token: textNeutral9
+  - id: auth.form.email
+    component: DSTextField
+    role: email_input
+    variant: filled
+    state: filled
+    props:
+      label: Your Email
+      placeholder: Enter your email
+      iconRight: envelope
+  - id: auth.form.password
+    component: DSTextField
+    role: password_input
+    variant: filled
+    state: filled
+    props:
+      label: Your Password
+      placeholder: Enter your password
+      isSecure: true
+  - id: auth.form.remember
+    component: DSCheckbox
+    role: remember_me
+    props:
+      label: Remember me
+      isOn: false
+  - id: auth.form.cta
+    component: DSButton
+    role: primary_cta
+    variant: filledA
+    size: big
+    props:
+      label: Let's Roll!
+      iconRight: arrow.right
+      isFullWidth: true
+  - id: auth.social.card
+    component: DSCard
+    role: section_card
+    props:
+      background: surfacePrimary100
+      radius: radiusXl
+      padding: spacingXl
+  - id: auth.social.google
+    component: DSButton
+    role: social_action
+    variant: neutral
+    size: big
+    props:
+      assetIcon: icon_google
+      isFullWidth: true
+    accessibility:
+      label: Continue with Google
+  - id: auth.social.facebook
+    component: DSButton
+    role: social_action
+    variant: neutral
+    size: big
+    props:
+      assetIcon: icon_facebook
+      isFullWidth: true
+    accessibility:
+      label: Continue with Facebook
+  - id: auth.social.x
+    component: DSButton
+    role: social_action
+    variant: neutral
+    size: big
+    props:
+      assetIcon: icon_x
+      isFullWidth: true
+    accessibility:
+      label: Continue with X
+copy:
+  - id: auth.caption
+    text: Welcome back!
+    style_token: caption
+    color_token: textNeutral9
+accessibility:
+  notes:
+    - Social icon-only actions include explicit accessibility labels.
+    - Password field is secure and should expose a readable show or hide password affordance.
+implementation_notes:
+  - Use auth.form-card and auth.social-sign-in patterns without introducing raw SwiftUI buttons.

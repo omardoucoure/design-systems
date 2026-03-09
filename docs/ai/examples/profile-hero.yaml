@@ -1,0 +1,66 @@
+page_id: profile.hero.generated
+page_name: AI Generated Profile Hero
+page_type: profile
+description: Profile screen combining the profile.hero and profile.stats patterns.
+theme:
+  brand: mistyRose
+  style: darkRounded
+sections:
+  - id: profile.hero
+    pattern_id: profile.hero
+    title: Profile header
+    component_refs:
+      - profile.header
+      - profile.carousel
+      - profile.summary
+  - id: profile.stats
+    pattern_id: profile.stats
+    title: Profile metrics
+    component_refs:
+      - profile.stats.row
+      - profile.stats.progress
+components:
+  - id: profile.header
+    component: DSTopAppBar
+    role: screen_header
+    variant: small
+    props:
+      title: Profile
+  - id: profile.carousel
+    component: DSCarousel
+    role: hero_carousel
+    variant: standard
+    props:
+      images:
+        - profile-photo-1
+        - profile-photo-2
+  - id: profile.summary
+    component: DSCard
+    role: section_card
+    props:
+      background: surfacePrimary100
+      radius: radiusXl
+      padding: spacingXl
+  - id: profile.stats.row
+    component: DSStatRow
+    role: summary_strip
+    props:
+      items:
+        - id: photos
+          label: photos
+        - id: followers
+          label: followers
+        - id: following
+          label: following
+  - id: profile.stats.progress
+    component: DSProgressCircle
+    role: radial_metric
+    props:
+      progress: 0.76
+      size: 88
+accessibility:
+  notes:
+    - Hero media should remain decorative unless it communicates essential content.
+    - Stats should read as coherent grouped values.
+implementation_notes:
+  - Use the profile.hero and profile.stats patterns before inventing new profile composition grammar.

@@ -1,0 +1,65 @@
+page_id: alerts.warning.generated
+page_name: AI Generated Warning Banner
+page_type: alerts
+description: Alert screen using a dashboard metrics layout and an inline warning banner.
+theme:
+  brand: seaLime
+  style: lightRounded
+sections:
+  - id: dashboard.metrics
+    pattern_id: dashboard.metrics-grid
+    title: Daily metrics
+    component_refs:
+      - metrics.walk
+      - metrics.water
+      - metrics.heart
+  - id: alert.banner
+    pattern_id: alert.banner
+    title: Warning banner
+    component_refs:
+      - alert.banner.container
+      - alert.banner.close
+components:
+  - id: metrics.walk
+    component: DSMetricCard
+    role: dashboard_metric
+    props:
+      title: Walk
+      icon: walking
+      background: surfacePrimary100
+  - id: metrics.water
+    component: DSMetricCard
+    role: dashboard_metric
+    props:
+      title: Water
+      icon: droplet
+      background: surfaceSecondary100
+  - id: metrics.heart
+    component: DSMetricCard
+    role: dashboard_metric
+    props:
+      title: Heart
+      icon: heart
+      background: surfaceNeutral3
+  - id: alert.banner.container
+    component: DSBanner
+    role: banner_notice
+    props:
+      title: Heads up!
+      message: You're about to step into uncharted territory. Proceed with caution.
+      background: warning
+  - id: alert.banner.close
+    component: DSButton
+    role: dismiss_action
+    variant: text
+    size: medium
+    props:
+      icon: xmark
+    accessibility:
+      label: Close warning
+accessibility:
+  notes:
+    - Dismiss action is icon-only and must expose a label.
+    - Warning state is communicated with both iconography and copy, not only color.
+implementation_notes:
+  - Favor DSBanner semantics over a custom banner shell when possible.

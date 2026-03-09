@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haho.design-system/page-spec.schema.json",
+  "title": "HaHo AI Page Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "page_id",
+    "page_name",
+    "page_type",
+    "theme",
+    "sections",
+    "components",
+    "accessibility"
+  ],
+  "properties": {
+    "page_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9._-]+$"
+    },
+    "page_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "page_type": {
+      "type": "string",
+      "enum": ["auth", "alerts", "profile", "walkthrough", "dashboard", "calendar", "custom"]
+    },
+    "description": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brand", "style"],
+      "properties": {
+        "brand": {
+          "type": "string",
+          "enum": ["coralCamo", "seaLime", "mistyRose", "blueHaze"]
+        },
+        "style": {
+          "type": "string",
+          "enum": ["lightRounded", "darkRounded", "lightSharp", "darkSharp"]
+        }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/section"
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/componentInstance"
+      }
+    },
+    "copy": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/copyBlock"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["notes"],
+      "properties": {
+        "notes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "implementation_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "pattern_id", "component_refs"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9._-]+$"
+        },
+        "pattern_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9._-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "component_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9._-]+$"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "componentInstance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "component", "role"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9._-]+$"
+        },
+        "component": {
+          "type": "string",
+          "pattern": "^DS[A-Za-z0-9]+$"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variant": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "props": {
+          "type": "object"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9._-]+$"
+          }
+        },
+        "accessibility": {
+          "$ref": "#/$defs/componentAccessibility"
+        }
+      }
+    },
+    "componentAccessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "copyBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "style_token"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9._-]+$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "style_token": {
+          "type": "string"
+        },
+        "color_token": {
+          "type": "string"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9._-]+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["image", "icon", "illustration"]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,9 @@ Its purpose is to make the system understandable to an LLM without requiring the
 ## What lives here
 
 - [`design-system-contract.yaml`](design-system-contract.yaml): machine-readable component, token, and page-pattern registry
+- [`page-spec.schema.json`](page-spec.schema.json): strict page-spec schema for AI-generated screens
 - [`IMPLEMENTATION_TODO.md`](IMPLEMENTATION_TODO.md): phased roadmap to make AI-driven page generation reliable
+- [`examples`](examples): example page specs for major page families
 
 ## Why this exists
 
@@ -26,6 +28,19 @@ This folder closes that gap.
 3. Compose screens only from registered DS primitives and registered page patterns.
 4. Treat raw SwiftUI controls as disallowed unless the contract explicitly permits them.
 5. Use accessibility requirements as part of the output contract, not as optional post-processing.
+
+## Validation
+
+Validate generated specs before trying to create Figma output:
+
+```bash
+python3 scripts/validate_page_spec.py docs/ai/examples/auth-login.yaml
+```
+
+The validator checks two layers:
+
+- structural validity against `page-spec.schema.json`
+- semantic validity against `design-system-contract.yaml`
 
 ## External Principles Used
 
