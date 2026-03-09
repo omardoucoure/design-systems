@@ -75,6 +75,11 @@ struct PagesShowcaseView: View {
                     Profile4Page()
                         .navigationBarTitleDisplayMode(.inline)
                 }
+
+                NavigationLink("Profile 5 — Stats & progress circles") {
+                    Profile5Page()
+                        .navigationBarTitleDisplayMode(.inline)
+                }
             }
 
             Section("Alerts") {
