@@ -17,6 +17,8 @@ Its purpose is to make the system understandable to an LLM without requiring the
 - [`FIGMA_PLUGIN_WORKFLOW.md`](FIGMA_PLUGIN_WORKFLOW.md): end-to-end workflow from spec to Figma plugin bundle
 - [`FIGMA_PLAYGROUND_WORKFLOW.md`](FIGMA_PLAYGROUND_WORKFLOW.md): primary workflow when another AI is rendering inside Figma Playground
 
+The `examples` folder should be treated as the golden reference set for prompting and regression checks. It now covers auth login, auth verification, alert banner, alert dialog, profile hero, profile stats, and onboarding walkthrough flows.
+
 ## Why this exists
 
 The current repo is strong as an implementation system, but weaker as an AI contract:

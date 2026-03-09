@@ -1,0 +1,299 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1
+  },
+  "page": {
+    "id": "auth.verification.generated",
+    "name": "AI Generated Verification",
+    "type": "auth",
+    "description": "Verification screen using the auth.verification pattern with supporting legal copy.",
+    "theme": {
+      "brand": "seaLime",
+      "style": "lightRounded"
+    }
+  },
+  "figma": {
+    "rootPageNodeType": "PAGE",
+    "screenNodeType": "FRAME",
+    "screenFrame": {
+      "name": "AI Generated Verification",
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "FIXED"
+    },
+    "sections": [
+      {
+        "id": "auth.verify",
+        "patternId": "auth.verification",
+        "title": "Verify identity",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "auth.verify.card",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "section_card",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfaceNeutral2",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.appbar",
+            "nodeType": "INSTANCE",
+            "component": "DSTopAppBar",
+            "figmaComponent": "Top App Bar",
+            "role": "page_header",
+            "variantProperties": {},
+            "componentProperties": {
+              "Title": "Forgot password"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.heading",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "heading",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "Verify your identity",
+              "style_token": "h4",
+              "color_token": "textNeutral9"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.body",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "supporting_copy",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "An authentication code has been sent to hristov123@gmail.com",
+              "style_token": "caption",
+              "color_token": "textNeutral9"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.code",
+            "nodeType": "INSTANCE",
+            "component": "DSCodeInput",
+            "figmaComponent": "Code Input",
+            "role": "verification",
+            "variantProperties": {},
+            "componentProperties": {
+              "Digits": 4,
+              "Value": ""
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.resend",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "tertiary_action",
+            "variantProperties": {
+              "Variant": "text",
+              "Size": "medium",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "Label": "Resend Code"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.next",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "primary_cta",
+            "variantProperties": {
+              "Variant": "filledA",
+              "Size": "big",
+              "Content": "text+icon"
+            },
+            "componentProperties": {
+              "Label": "Next",
+              "Right icon": "arrow.right",
+              "Full width": true
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "auth.verify.terms",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "tertiary_action",
+            "variantProperties": {
+              "Variant": "text",
+              "Size": "medium",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "Label": "Terms and Conditions"
+            },
+            "accessibility": {}
+          }
+        ]
+      }
+    ],
+    "instances": [
+      {
+        "id": "auth.verify.card",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "section_card",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfaceNeutral2",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.appbar",
+        "nodeType": "INSTANCE",
+        "component": "DSTopAppBar",
+        "figmaComponent": "Top App Bar",
+        "role": "page_header",
+        "variantProperties": {},
+        "componentProperties": {
+          "Title": "Forgot password"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.heading",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "heading",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "Verify your identity",
+          "style_token": "h4",
+          "color_token": "textNeutral9"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.body",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "supporting_copy",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "An authentication code has been sent to hristov123@gmail.com",
+          "style_token": "caption",
+          "color_token": "textNeutral9"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.code",
+        "nodeType": "INSTANCE",
+        "component": "DSCodeInput",
+        "figmaComponent": "Code Input",
+        "role": "verification",
+        "variantProperties": {},
+        "componentProperties": {
+          "Digits": 4,
+          "Value": ""
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.resend",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "tertiary_action",
+        "variantProperties": {
+          "Variant": "text",
+          "Size": "medium",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "Label": "Resend Code"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.next",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "primary_cta",
+        "variantProperties": {
+          "Variant": "filledA",
+          "Size": "big",
+          "Content": "text+icon"
+        },
+        "componentProperties": {
+          "Label": "Next",
+          "Right icon": "arrow.right",
+          "Full width": true
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "auth.verify.terms",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "tertiary_action",
+        "variantProperties": {
+          "Variant": "text",
+          "Size": "medium",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "Label": "Terms and Conditions"
+        },
+        "accessibility": {}
+      }
+    ]
+  },
+  "copy": [
+    {
+      "id": "auth.verify.caption",
+      "text": "I didn't receive code?",
+      "style_token": "bodyRegular",
+      "color_token": "textNeutral9"
+    },
+    {
+      "id": "auth.verify.legal",
+      "text": "By Signing In, you agree to our",
+      "style_token": "bodyRegular",
+      "color_token": "textNeutral9"
+    }
+  ],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "The verification code input should expose each digit field in reading order.",
+      "The resend code action should remain discoverable as a secondary text action."
+    ]
+  },
+  "implementation_notes": [
+    "Keep the verification flow card-backed and vertically stacked.",
+    "Preserve the supporting legal copy below the primary CTA."
+  ]
+}

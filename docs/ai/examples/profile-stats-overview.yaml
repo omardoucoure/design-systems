@@ -1,0 +1,133 @@
+page_id: profile.stats.overview.generated
+page_name: AI Generated Profile Stats
+page_type: profile
+description: Profile analytics screen using the profile.stats pattern with summary cards and historical list items.
+theme:
+  brand: blueHaze
+  style: lightSharp
+sections:
+  - id: profile.header
+    pattern_id: profile.stats
+    title: Profile summary
+    component_refs:
+      - profile.header.card
+      - profile.header.appbar
+      - profile.header.name
+      - profile.header.bio
+      - profile.header.stats
+      - profile.header.follow
+  - id: profile.analytics
+    pattern_id: profile.stats
+    title: Performance summary
+    component_refs:
+      - profile.analytics.card
+      - profile.analytics.progress
+      - profile.analytics.metric
+  - id: profile.history
+    pattern_id: profile.stats
+    title: Historical entries
+    component_refs:
+      - profile.history.card
+      - profile.history.item1
+      - profile.history.divider1
+      - profile.history.item2
+components:
+  - id: profile.header.card
+    component: DSCard
+    role: section_card
+    props:
+      background: surfaceNeutral2
+      radius: radiusXl
+      padding: spacingXl
+  - id: profile.header.appbar
+    component: DSTopAppBar
+    role: page_header
+    props:
+      title: Profile
+  - id: profile.header.name
+    component: DSText
+    role: heading
+    props:
+      text: Hristo Hristov
+      style_token: h4
+      color_token: textNeutral9
+  - id: profile.header.bio
+    component: DSText
+    role: supporting_copy
+    props:
+      text: Sports superhero. Training for the office chair Olympics and holds the world record in sock throwing.
+      style_token: caption
+      color_token: textNeutral9
+  - id: profile.header.stats
+    component: DSStatRow
+    role: stats_summary
+    props:
+      items: "photos:1200|followers:2980|following:1600"
+  - id: profile.header.follow
+    component: DSButton
+    role: primary_cta
+    variant: filledA
+    size: medium
+    props:
+      label: Follow
+      iconRight: plus
+  - id: profile.analytics.card
+    component: DSCard
+    role: section_card
+    props:
+      background: surfacePrimary100
+      radius: radiusXl
+      padding: spacingXl
+  - id: profile.analytics.progress
+    component: DSProgressCircle
+    role: radial_metric
+    props:
+      progress: 0.65
+      size: 88
+      customLabel: "560"
+  - id: profile.analytics.metric
+    component: DSMetricCard
+    role: metric_summary
+    props:
+      title: 560 works done
+      value: "560"
+      unit: done
+      background: surfacePrimary120
+  - id: profile.history.card
+    component: DSCard
+    role: section_card
+    props:
+      background: surfaceNeutral2
+      radius: radiusXl
+      padding: spacingXl
+  - id: profile.history.item1
+    component: DSListItem
+    role: history_entry
+    props:
+      overline: April, 2030
+      headline: 12,380 reviews
+      metadata: 12K
+  - id: profile.history.divider1
+    component: DSDivider
+    role: separator
+    props:
+      label: ""
+  - id: profile.history.item2
+    component: DSListItem
+    role: history_entry
+    props:
+      overline: March, 2030
+      headline: 560 works done
+      metadata: "560"
+copy:
+  - id: profile.analytics.caption
+    text: 268 works in progress
+    style_token: smallRegular
+    color_token: textNeutral0_5
+accessibility:
+  notes:
+    - The stats summary should read as grouped profile metrics before the follow action.
+    - Historical entries should remain distinguishable as separate rows.
+implementation_notes:
+  - Keep the profile header, analytics summary, and history list as three separate card-backed sections.
+  - Preserve the sharp shape treatment implied by the selected style.

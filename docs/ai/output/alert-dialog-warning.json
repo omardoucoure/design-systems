@@ -1,0 +1,214 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1
+  },
+  "page": {
+    "id": "alerts.dialog.warning.generated",
+    "name": "AI Generated Warning Dialog",
+    "type": "alerts",
+    "description": "Warning dialog overlay with stacked actions using the alert.dialog pattern.",
+    "theme": {
+      "brand": "mistyRose",
+      "style": "darkRounded"
+    }
+  },
+  "figma": {
+    "rootPageNodeType": "PAGE",
+    "screenNodeType": "FRAME",
+    "screenFrame": {
+      "name": "AI Generated Warning Dialog",
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "FIXED"
+    },
+    "sections": [
+      {
+        "id": "alerts.dialog",
+        "patternId": "alert.dialog",
+        "title": "Warning dialog",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "alerts.dialog.surface",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "overlay_surface",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfaceNeutral2",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "alerts.dialog.modal",
+            "nodeType": "INSTANCE",
+            "component": "DSAlertDialog",
+            "figmaComponent": "Alert Dialog",
+            "role": "modal_alert",
+            "variantProperties": {},
+            "componentProperties": {
+              "Title": "HaHo's been a battery hog!",
+              "Message": "Keep going and risk a system tantrum, or take a break? Your call.",
+              "Severity": "warning",
+              "Icon": "batterySlash"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "alerts.dialog.primary",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "primary_cta",
+            "variantProperties": {
+              "Variant": "filledA",
+              "Size": "medium",
+              "Content": "text+icon"
+            },
+            "componentProperties": {
+              "Label": "Delete App",
+              "Right icon": "log.out",
+              "Full width": true
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "alerts.dialog.secondary",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "secondary_cta",
+            "variantProperties": {
+              "Variant": "neutral",
+              "Size": "medium",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "Label": "Disable Background Usage",
+              "Full width": true
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "alerts.dialog.cancel",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "dismiss_action",
+            "variantProperties": {
+              "Variant": "neutral",
+              "Size": "medium",
+              "Content": "text"
+            },
+            "componentProperties": {
+              "Label": "Cancel",
+              "Full width": true
+            },
+            "accessibility": {}
+          }
+        ]
+      }
+    ],
+    "instances": [
+      {
+        "id": "alerts.dialog.surface",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "overlay_surface",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfaceNeutral2",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "alerts.dialog.modal",
+        "nodeType": "INSTANCE",
+        "component": "DSAlertDialog",
+        "figmaComponent": "Alert Dialog",
+        "role": "modal_alert",
+        "variantProperties": {},
+        "componentProperties": {
+          "Title": "HaHo's been a battery hog!",
+          "Message": "Keep going and risk a system tantrum, or take a break? Your call.",
+          "Severity": "warning",
+          "Icon": "batterySlash"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "alerts.dialog.primary",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "primary_cta",
+        "variantProperties": {
+          "Variant": "filledA",
+          "Size": "medium",
+          "Content": "text+icon"
+        },
+        "componentProperties": {
+          "Label": "Delete App",
+          "Right icon": "log.out",
+          "Full width": true
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "alerts.dialog.secondary",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "secondary_cta",
+        "variantProperties": {
+          "Variant": "neutral",
+          "Size": "medium",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "Label": "Disable Background Usage",
+          "Full width": true
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "alerts.dialog.cancel",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "dismiss_action",
+        "variantProperties": {
+          "Variant": "neutral",
+          "Size": "medium",
+          "Content": "text"
+        },
+        "componentProperties": {
+          "Label": "Cancel",
+          "Full width": true
+        },
+        "accessibility": {}
+      }
+    ]
+  },
+  "copy": [],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "Focus should land on the dialog before the background content.",
+      "The stacked actions should read in destructive-to-safe order."
+    ]
+  },
+  "implementation_notes": [
+    "Treat the background surface as dimmed context and the dialog as the primary focus.",
+    "Keep all actions full width and vertically stacked."
+  ]
+}

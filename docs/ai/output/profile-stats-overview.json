@@ -1,0 +1,437 @@
+{
+  "meta": {
+    "generator": "HaHo AI page-spec transformer",
+    "contractVersion": 0.1,
+    "mappingVersion": 0.1
+  },
+  "page": {
+    "id": "profile.stats.overview.generated",
+    "name": "AI Generated Profile Stats",
+    "type": "profile",
+    "description": "Profile analytics screen using the profile.stats pattern with summary cards and historical list items.",
+    "theme": {
+      "brand": "blueHaze",
+      "style": "lightSharp"
+    }
+  },
+  "figma": {
+    "rootPageNodeType": "PAGE",
+    "screenNodeType": "FRAME",
+    "screenFrame": {
+      "name": "AI Generated Profile Stats",
+      "layoutMode": "VERTICAL",
+      "primaryAxisSizingMode": "AUTO",
+      "counterAxisSizingMode": "FIXED"
+    },
+    "sections": [
+      {
+        "id": "profile.header",
+        "patternId": "profile.stats",
+        "title": "Profile summary",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "profile.header.card",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "section_card",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfaceNeutral2",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.header.appbar",
+            "nodeType": "INSTANCE",
+            "component": "DSTopAppBar",
+            "figmaComponent": "Top App Bar",
+            "role": "page_header",
+            "variantProperties": {},
+            "componentProperties": {
+              "Title": "Profile"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.header.name",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "heading",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "Hristo Hristov",
+              "style_token": "h4",
+              "color_token": "textNeutral9"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.header.bio",
+            "nodeType": "INSTANCE",
+            "component": "DSText",
+            "figmaComponent": "Text Primitive",
+            "role": "supporting_copy",
+            "variantProperties": {},
+            "componentProperties": {
+              "Text": "Sports superhero. Training for the office chair Olympics and holds the world record in sock throwing.",
+              "style_token": "caption",
+              "color_token": "textNeutral9"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.header.stats",
+            "nodeType": "INSTANCE",
+            "component": "DSStatRow",
+            "figmaComponent": "Stat Row",
+            "role": "stats_summary",
+            "variantProperties": {},
+            "componentProperties": {
+              "Items": "photos:1200|followers:2980|following:1600"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.header.follow",
+            "nodeType": "INSTANCE",
+            "component": "DSButton",
+            "figmaComponent": "Button",
+            "role": "primary_cta",
+            "variantProperties": {
+              "Variant": "filledA",
+              "Size": "medium",
+              "Content": "text+icon"
+            },
+            "componentProperties": {
+              "Label": "Follow",
+              "Right icon": "plus"
+            },
+            "accessibility": {}
+          }
+        ]
+      },
+      {
+        "id": "profile.analytics",
+        "patternId": "profile.stats",
+        "title": "Performance summary",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "profile.analytics.card",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "section_card",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfacePrimary100",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.analytics.progress",
+            "nodeType": "INSTANCE",
+            "component": "DSProgressCircle",
+            "figmaComponent": "Progress Circle",
+            "role": "radial_metric",
+            "variantProperties": {},
+            "componentProperties": {
+              "Progress": 0.65,
+              "Size": 88,
+              "Label": "560"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.analytics.metric",
+            "nodeType": "INSTANCE",
+            "component": "DSMetricCard",
+            "figmaComponent": "Metric Card",
+            "role": "metric_summary",
+            "variantProperties": {},
+            "componentProperties": {
+              "Title": "560 works done",
+              "Value": "560",
+              "Unit": "done",
+              "Background": "surfacePrimary120"
+            },
+            "accessibility": {}
+          }
+        ]
+      },
+      {
+        "id": "profile.history",
+        "patternId": "profile.stats",
+        "title": "Historical entries",
+        "nodeType": "FRAME",
+        "layoutMode": "VERTICAL",
+        "children": [
+          {
+            "id": "profile.history.card",
+            "nodeType": "INSTANCE",
+            "component": "DSCard",
+            "figmaComponent": "Card",
+            "role": "section_card",
+            "variantProperties": {},
+            "componentProperties": {
+              "Background": "surfaceNeutral2",
+              "Radius": "radiusXl",
+              "Padding": "spacingXl"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.history.item1",
+            "nodeType": "INSTANCE",
+            "component": "DSListItem",
+            "figmaComponent": "List Item",
+            "role": "history_entry",
+            "variantProperties": {},
+            "componentProperties": {
+              "Overline": "April, 2030",
+              "Headline": "12,380 reviews",
+              "Metadata": "12K"
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.history.divider1",
+            "nodeType": "INSTANCE",
+            "component": "DSDivider",
+            "figmaComponent": "Divider",
+            "role": "separator",
+            "variantProperties": {},
+            "componentProperties": {
+              "Label": ""
+            },
+            "accessibility": {}
+          },
+          {
+            "id": "profile.history.item2",
+            "nodeType": "INSTANCE",
+            "component": "DSListItem",
+            "figmaComponent": "List Item",
+            "role": "history_entry",
+            "variantProperties": {},
+            "componentProperties": {
+              "Overline": "March, 2030",
+              "Headline": "560 works done",
+              "Metadata": "560"
+            },
+            "accessibility": {}
+          }
+        ]
+      }
+    ],
+    "instances": [
+      {
+        "id": "profile.header.card",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "section_card",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfaceNeutral2",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.header.appbar",
+        "nodeType": "INSTANCE",
+        "component": "DSTopAppBar",
+        "figmaComponent": "Top App Bar",
+        "role": "page_header",
+        "variantProperties": {},
+        "componentProperties": {
+          "Title": "Profile"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.header.name",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "heading",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "Hristo Hristov",
+          "style_token": "h4",
+          "color_token": "textNeutral9"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.header.bio",
+        "nodeType": "INSTANCE",
+        "component": "DSText",
+        "figmaComponent": "Text Primitive",
+        "role": "supporting_copy",
+        "variantProperties": {},
+        "componentProperties": {
+          "Text": "Sports superhero. Training for the office chair Olympics and holds the world record in sock throwing.",
+          "style_token": "caption",
+          "color_token": "textNeutral9"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.header.stats",
+        "nodeType": "INSTANCE",
+        "component": "DSStatRow",
+        "figmaComponent": "Stat Row",
+        "role": "stats_summary",
+        "variantProperties": {},
+        "componentProperties": {
+          "Items": "photos:1200|followers:2980|following:1600"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.header.follow",
+        "nodeType": "INSTANCE",
+        "component": "DSButton",
+        "figmaComponent": "Button",
+        "role": "primary_cta",
+        "variantProperties": {
+          "Variant": "filledA",
+          "Size": "medium",
+          "Content": "text+icon"
+        },
+        "componentProperties": {
+          "Label": "Follow",
+          "Right icon": "plus"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.analytics.card",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "section_card",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfacePrimary100",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.analytics.progress",
+        "nodeType": "INSTANCE",
+        "component": "DSProgressCircle",
+        "figmaComponent": "Progress Circle",
+        "role": "radial_metric",
+        "variantProperties": {},
+        "componentProperties": {
+          "Progress": 0.65,
+          "Size": 88,
+          "Label": "560"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.analytics.metric",
+        "nodeType": "INSTANCE",
+        "component": "DSMetricCard",
+        "figmaComponent": "Metric Card",
+        "role": "metric_summary",
+        "variantProperties": {},
+        "componentProperties": {
+          "Title": "560 works done",
+          "Value": "560",
+          "Unit": "done",
+          "Background": "surfacePrimary120"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.history.card",
+        "nodeType": "INSTANCE",
+        "component": "DSCard",
+        "figmaComponent": "Card",
+        "role": "section_card",
+        "variantProperties": {},
+        "componentProperties": {
+          "Background": "surfaceNeutral2",
+          "Radius": "radiusXl",
+          "Padding": "spacingXl"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.history.item1",
+        "nodeType": "INSTANCE",
+        "component": "DSListItem",
+        "figmaComponent": "List Item",
+        "role": "history_entry",
+        "variantProperties": {},
+        "componentProperties": {
+          "Overline": "April, 2030",
+          "Headline": "12,380 reviews",
+          "Metadata": "12K"
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.history.divider1",
+        "nodeType": "INSTANCE",
+        "component": "DSDivider",
+        "figmaComponent": "Divider",
+        "role": "separator",
+        "variantProperties": {},
+        "componentProperties": {
+          "Label": ""
+        },
+        "accessibility": {}
+      },
+      {
+        "id": "profile.history.item2",
+        "nodeType": "INSTANCE",
+        "component": "DSListItem",
+        "figmaComponent": "List Item",
+        "role": "history_entry",
+        "variantProperties": {},
+        "componentProperties": {
+          "Overline": "March, 2030",
+          "Headline": "560 works done",
+          "Metadata": "560"
+        },
+        "accessibility": {}
+      }
+    ]
+  },
+  "copy": [
+    {
+      "id": "profile.analytics.caption",
+      "text": "268 works in progress",
+      "style_token": "smallRegular",
+      "color_token": "textNeutral0_5"
+    }
+  ],
+  "assets": [],
+  "accessibility": {
+    "notes": [
+      "The stats summary should read as grouped profile metrics before the follow action.",
+      "Historical entries should remain distinguishable as separate rows."
+    ]
+  },
+  "implementation_notes": [
+    "Keep the profile header, analytics summary, and history list as three separate card-backed sections.",
+    "Preserve the sharp shape treatment implied by the selected style."
+  ]
+}
