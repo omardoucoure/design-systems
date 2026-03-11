@@ -52,6 +52,8 @@ public struct TypographyTokens: Sendable {
     public let smallSemiBold: TypographyStyle
     public let smallRegular: TypographyStyle
     public let tiny: TypographyStyle
+    public let tinySemiBold: TypographyStyle
+    public let tinyRegular: TypographyStyle
 
     public static let shared = TypographyTokens(
         display1: TypographyStyle(size: 56, weight: .medium, lineHeight: 1.2, letterSpacing: -5.0),
@@ -73,6 +75,8 @@ public struct TypographyTokens: Sendable {
         small: TypographyStyle(size: 12, weight: .medium, lineHeight: 1.5, letterSpacing: -2.0),
         smallSemiBold: TypographyStyle(size: 12, weight: .semibold, lineHeight: 1.5, letterSpacing: -2.0),
         smallRegular: TypographyStyle(size: 12, weight: .regular, lineHeight: 1.5, letterSpacing: -2.0),
-        tiny: TypographyStyle(size: 10, weight: .medium, lineHeight: 1.5, letterSpacing: -1.5)
+        tiny: TypographyStyle(size: 10, weight: .medium, lineHeight: 1.5, letterSpacing: -1.5),
+        tinySemiBold: TypographyStyle(size: 10, weight: .semibold, lineHeight: 1.5, letterSpacing: -1.5),
+        tinyRegular: TypographyStyle(size: 10, weight: .regular, lineHeight: 1.5, letterSpacing: -1.5)
     )
 }

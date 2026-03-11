@@ -128,6 +128,32 @@ struct PagesShowcaseView: View {
                 }
             }
 
+            Section("Stats") {
+                NavigationLink("[Stats] 2 — Transaction History") {
+                    LazyView(Stats2Page().navigationBarTitleDisplayMode(.inline))
+                }
+
+                NavigationLink("[Stats] 11 — Weather Dashboard") {
+                    LazyView(Stats11Page().navigationBarTitleDisplayMode(.inline))
+                }
+
+                NavigationLink("[Stats] 17 — Player Comparison") {
+                    LazyView(Stats17Page().navigationBarTitleDisplayMode(.inline))
+                }
+            }
+
+            Section("Navigation") {
+                NavigationLink("[Navigation] 8 — Side Menu & Carousel") {
+                    LazyView(Navigation8Page().navigationBarTitleDisplayMode(.inline))
+                }
+            }
+
+            Section("Shopping") {
+                NavigationLink("[Shopping] Start 5 — Product Grid") {
+                    LazyView(ShoppingStart5Page().navigationBarTitleDisplayMode(.inline))
+                }
+            }
+
             Section("Password Recovery") {
                 NavigationLink("Forgot Password") {
                     LazyView(ForgotPasswordPage().navigationBarTitleDisplayMode(.inline))
