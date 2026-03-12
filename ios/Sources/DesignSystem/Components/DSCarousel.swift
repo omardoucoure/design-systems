@@ -60,7 +60,7 @@ public struct DSCarousel: View {
                 ForEach(images.indices, id: \.self) { index in
                     let scale = cardScale(index: index, totalOffset: totalOffset, step: step)
 
-                    Image(images[index])
+                    Image(images[index], bundle: .main)
                         .resizable()
                         .scaledToFill()
                         .frame(width: cardWidth, height: geo.size.height)

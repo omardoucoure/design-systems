@@ -232,7 +232,7 @@ public struct DSButton: View {
                 .font(.system(size: iconSize, weight: .medium))
                 .frame(width: iconSize, height: iconSize)
         } else {
-            Image(name)
+            Image(name, bundle: .main)
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()

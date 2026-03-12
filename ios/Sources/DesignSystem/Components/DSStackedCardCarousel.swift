@@ -80,7 +80,7 @@ public struct DSStackedCardCarousel: View {
     @ViewBuilder
     private func cardView(_ item: DSStackedCardCarouselItem) -> some View {
         if let image = item.image {
-            Image(image)
+            Image(image, bundle: .main)
                 .resizable()
                 .scaledToFill()
                 .frame(width: cardWidth, height: item.height)

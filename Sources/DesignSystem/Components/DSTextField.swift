@@ -46,6 +46,8 @@ public struct DSTextField: View {
     private let isSecure: Bool
     private let actionLabel: LocalizedStringKey?
     private let onAction: (() -> Void)?
+    private let tintColor: Color?
+    private let fieldBackgroundColor: Color?
 
     @FocusState private var isFocused: Bool
     @State private var isTextHidden: Bool = true
@@ -65,7 +67,9 @@ public struct DSTextField: View {
         icon: DSIcon? = nil,
         iconPosition: IconPosition = .trailing,
         actionLabel: LocalizedStringKey? = nil,
-        onAction: (() -> Void)? = nil
+        onAction: (() -> Void)? = nil,
+        tintColor: Color? = nil,
+        fieldBackgroundColor: Color? = nil
     ) {
         self._text = text
         self.placeholder = placeholder
@@ -78,6 +82,8 @@ public struct DSTextField: View {
         self.iconPosition = iconPosition
         self.actionLabel = actionLabel
         self.onAction = onAction
+        self.tintColor = tintColor
+        self.fieldBackgroundColor = fieldBackgroundColor
     }
 
     public var body: some View {
@@ -102,7 +108,7 @@ public struct DSTextField: View {
                     Text(label ?? placeholder)
                         .font(theme.typography.small.font)
                         .tracking(theme.typography.small.tracking)
-                        .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
+                        .foregroundStyle(resolvedTint.opacity(0.75))
                 }
 
                 Group {
@@ -114,7 +120,7 @@ public struct DSTextField: View {
                 }
                 .font(theme.typography.body.font)
                 .tracking(theme.typography.body.tracking)
-                .foregroundStyle(theme.colors.textNeutral9.opacity(textOpacity))
+                .foregroundStyle(resolvedTint.opacity(textOpacity))
                 .focused($isFocused)
             }
 
@@ -182,7 +188,12 @@ public struct DSTextField: View {
         }
     }
 
+    private var resolvedTint: Color {
+        tintColor ?? theme.colors.textNeutral9
+    }
+
     private var backgroundColor: Color {
+        if let fieldBackgroundColor { return fieldBackgroundColor }
         switch variant {
         case .filled:
             return theme.colors.surfaceNeutral0_5
@@ -244,13 +255,13 @@ public struct DSTextField: View {
     }
 
     private var iconColor: Color {
-        theme.colors.textNeutral9.opacity(textOpacity)
+        resolvedTint.opacity(textOpacity)
     }
 
     private var helperTextColor: Color {
         switch state {
         case .error: return theme.colors.error
-        default: return theme.colors.textNeutral9.opacity(theme.opacity.md)
+        default: return resolvedTint.opacity(theme.opacity.md)
         }
     }
 }

@@ -125,7 +125,7 @@ public struct DSPhotoGrid: View {
         case .photo(let name):
             Color.clear
                 .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
-                .overlay(Image(name).resizable().scaledToFill())
+                .overlay(Image(name, bundle: .main).resizable().scaledToFill())
                 .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
         case .video(let urlString):
             DSVideoThumbnailCell(urlString: urlString, height: height, radius: theme.radius.md)

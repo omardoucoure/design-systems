@@ -86,7 +86,7 @@ public struct DSCarouselDeck: View {
     public var body: some View {
         TabView(selection: $currentIndex) {
             ForEach(images.indices, id: \.self) { index in
-                Image(images[index])
+                Image(images[index], bundle: .main)
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity)

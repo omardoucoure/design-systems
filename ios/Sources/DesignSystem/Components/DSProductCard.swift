@@ -53,7 +53,7 @@ public struct DSProductCard: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
             // Photo
-            Image(image)
+            Image(image, bundle: .main)
                 .resizable()
                 .scaledToFill()
                 .frame(width: photoWidth, height: photoHeight)

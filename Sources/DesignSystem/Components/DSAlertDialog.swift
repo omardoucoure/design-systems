@@ -98,7 +98,7 @@ public struct DSAlertDialog<Content: View, Actions: View>: View {
                             .frame(width: 24, height: 24)
                             .foregroundStyle(iconForeground)
                     } else if let assetIcon {
-                        Image(assetIcon)
+                        Image(assetIcon, bundle: .main)
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()

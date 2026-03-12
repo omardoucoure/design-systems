@@ -140,7 +140,7 @@ public struct DSNavigationMenu: View {
 
     private func profileRow(_ profile: DSNavigationMenuProfile) -> some View {
         HStack(spacing: theme.spacing.md) {
-            Image(profile.image)
+            Image(profile.image, bundle: .main)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 56, height: 48)

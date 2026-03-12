@@ -1382,8 +1382,8 @@ public enum DSIcon: String, CaseIterable, Sendable {
 // MARK: - Image Extension
 
 public extension Image {
-    /// Creates an Image from a DSIcon asset.
+    /// Creates an Image from a DSIcon asset stored in the app's main bundle asset catalog.
     init(dsIcon: DSIcon) {
-        self.init(dsIcon.imageName)
+        self.init(dsIcon.imageName, bundle: .main)
     }
 }
