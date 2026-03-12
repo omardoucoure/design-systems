@@ -10,28 +10,18 @@ import DesignSystem
 struct Profile9Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
+    @State private var isMenuOpen = false
     @State private var selectedTab = 0
     @State private var zoomedPhoto: String? = nil
 
     private let tabs: [DSIcon] = [.table2Columns, .movie, .play, .sparks, .hashtag]
 
     var body: some View {
-        VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, icon: .menuScale) {}
-            }
-
-            ScrollView {
-                VStack(spacing: theme.spacing.sm) {
-                    heroAndInfo
-                    iconTabBar
-                    tabContent
-                }
-                .padding(.horizontal, theme.spacing.sm)
-                .padding(.bottom, theme.spacing.sm)
-            }
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            mainContent
         }
-        .background(theme.colors.surfaceNeutral0_5)
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
         .overlay {
@@ -52,6 +42,48 @@ struct Profile9Page: View {
                     }
             }
         }
+    }
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: [
+                DSNavigationMenuItem(id: "profile", label: "Profile", icon: .user, isSelected: true),
+                DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
+                DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
+                DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
+                DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
+                DSNavigationMenuItem(id: "people", label: "People", icon: .group),
+            ],
+            profile: DSNavigationMenuProfile(
+                image: "p9_hero",
+                name: "Hristo Hristov",
+                subtitle: "Rockstar-in-training"
+            )
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
+    private var mainContent: some View {
+        VStack(spacing: theme.spacing.sm) {
+            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
+                DSButton(style: .text, size: .medium, icon: .menuScale) {
+                    withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+                }
+            }
+
+            ScrollView {
+                VStack(spacing: theme.spacing.sm) {
+                    heroAndInfo
+                    iconTabBar
+                    tabContent
+                }
+                .padding(.horizontal, theme.spacing.sm)
+                .padding(.bottom, theme.spacing.sm)
+            }
+        }
+        .background(theme.colors.surfaceNeutral0_5)
     }
 
     // MARK: - Hero + Info overlap

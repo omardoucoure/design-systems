@@ -5,6 +5,7 @@ import DesignSystem
 struct Alert6Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
+    @State private var isMenuOpen = false
     @State private var showBanner = false
     @State private var selectedTab = ""
 
@@ -25,10 +26,46 @@ struct Alert6Page: View {
     ]
 
     var body: some View {
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            mainContent
+        }
+        .navigationBarBackButtonHidden(true)
+        .dsTabBarHidden()
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) { showBanner = true }
+        }
+    }
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: [
+                DSNavigationMenuItem(id: "earnings", label: "Earnings", icon: .wallet, isSelected: true),
+                DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
+                DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
+                DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
+                DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
+                DSNavigationMenuItem(id: "people", label: "People", icon: .group),
+            ],
+            profile: DSNavigationMenuProfile(
+                image: "nav8_profile",
+                name: "Hristo Hristov",
+                subtitle: "Visual Designer"
+            )
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
+    private var mainContent: some View {
         ZStack(alignment: .top) {
             VStack(spacing: theme.spacing.sm) {
                 DSTopAppBar(title: "Total Earnings", style: .smallCentered, onBack: { dismiss() }) {
-                    DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+                    DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                        withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+                    }
                 }
                 ScrollView {
                     VStack(spacing: 0) {
@@ -56,10 +93,6 @@ struct Alert6Page: View {
             }
         }
         .background(theme.colors.surfaceNeutral0_5)
-        .navigationBarBackButtonHidden(true).dsTabBarHidden()
-        .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) { showBanner = true }
-        }
     }
 
     private var thisMonthCard: some View {

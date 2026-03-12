@@ -11,7 +11,41 @@ struct Stats17Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
 
+    @State private var isMenuOpen = false
+
     var body: some View {
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            mainContent
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
+        .dsTabBarHidden()
+    }
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: [
+                DSNavigationMenuItem(id: "statistics", label: "Statistics", icon: .activity, isSelected: true),
+                DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
+                DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
+                DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
+                DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
+                DSNavigationMenuItem(id: "people", label: "People", icon: .group),
+            ],
+            profile: DSNavigationMenuProfile(
+                image: "stats17_player1",
+                name: "Hristo Hristov",
+                subtitle: "Sports Fan"
+            )
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
+    private var mainContent: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: theme.spacing.sm) {
                 topAppBar
@@ -29,16 +63,15 @@ struct Stats17Page: View {
             fabButton
         }
         .background(theme.colors.surfaceNeutral0_5)
-        .navigationBarBackButtonHidden(true)
-        .toolbar(.hidden, for: .navigationBar)
-        .dsTabBarHidden()
     }
 
     // MARK: - Top App Bar
 
     private var topAppBar: some View {
         DSTopAppBar(title: "Statistics", style: .smallCentered, onBack: { dismiss() }) {
-            DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+            DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+            }
         }
     }
 

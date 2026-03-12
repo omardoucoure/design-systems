@@ -25,6 +25,7 @@ public enum DSSegmentedPickerStyle: Sendable {
 /// ```
 public struct DSSegmentedPicker: View {
     @Environment(\.theme) private var theme
+    @Namespace private var segmentAnimation
 
     private let items: [LocalizedStringKey]
     @Binding private var selectedIndex: Int
@@ -59,7 +60,7 @@ public struct DSSegmentedPicker: View {
                 let isSelected = index == selectedIndex
 
                 Button {
-                    withAnimation(.easeInOut(duration: 0.2)) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                         selectedIndex = index
                     }
                 } label: {
@@ -73,11 +74,13 @@ public struct DSSegmentedPicker: View {
                         )
                         .frame(maxWidth: .infinity)
                         .frame(height: 32)
-                        .background(
-                            isSelected
-                                ? theme.colors.surfacePrimary120
-                                : Color.clear
-                        )
+                        .background {
+                            if isSelected {
+                                Capsule()
+                                    .fill(theme.colors.surfacePrimary120)
+                                    .matchedGeometryEffect(id: "tabIndicator", in: segmentAnimation)
+                            }
+                        }
                         .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
@@ -96,7 +99,7 @@ public struct DSSegmentedPicker: View {
                 let isSelected = index == selectedIndex
 
                 Button {
-                    withAnimation(.easeInOut(duration: 0.2)) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                         selectedIndex = index
                     }
                 } label: {
@@ -111,11 +114,13 @@ public struct DSSegmentedPicker: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 32)
                         .padding(.horizontal, theme.spacing.sm)
-                        .background(
-                            isSelected
-                                ? theme.colors.surfacePrimary120
-                                : theme.colors.surfaceNeutral2
-                        )
+                        .background {
+                            if isSelected {
+                                Capsule()
+                                    .fill(theme.colors.surfacePrimary120)
+                                    .matchedGeometryEffect(id: "pillIndicator", in: segmentAnimation)
+                            }
+                        }
                         .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)

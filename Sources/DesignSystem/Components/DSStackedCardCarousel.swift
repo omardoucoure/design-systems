@@ -6,21 +6,24 @@ import SwiftUI
 public struct DSStackedCardCarouselItem: Identifiable {
     public let id = UUID()
     public let height: CGFloat
+    public let width: CGFloat?
     public let image: String?
     public let backgroundColor: Color?
     public let showGradientOverlay: Bool
 
     /// Image card.
-    public init(height: CGFloat, image: String) {
+    public init(height: CGFloat, width: CGFloat? = nil, image: String) {
         self.height = height
+        self.width = width
         self.image = image
         self.backgroundColor = nil
         self.showGradientOverlay = false
     }
 
     /// Solid color card with optional gradient darkening overlay.
-    public init(height: CGFloat, backgroundColor: Color, showGradientOverlay: Bool = false) {
+    public init(height: CGFloat, width: CGFloat? = nil, backgroundColor: Color, showGradientOverlay: Bool = false) {
         self.height = height
+        self.width = width
         self.image = nil
         self.backgroundColor = backgroundColor
         self.showGradientOverlay = showGradientOverlay
@@ -79,16 +82,17 @@ public struct DSStackedCardCarousel: View {
 
     @ViewBuilder
     private func cardView(_ item: DSStackedCardCarouselItem) -> some View {
+        let w = item.width ?? cardWidth
         if let image = item.image {
             Image(image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: cardWidth, height: item.height)
+                .frame(width: w, height: item.height)
                 .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
         } else {
             RoundedRectangle(cornerRadius: theme.radius.xl)
                 .fill(item.backgroundColor ?? theme.colors.surfaceNeutral3)
-                .frame(width: cardWidth, height: item.height)
+                .frame(width: w, height: item.height)
                 .overlay(
                     Group {
                         if item.showGradientOverlay {

@@ -11,16 +11,51 @@ struct Stats11Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
 
+    @State private var isMenuOpen = false
     @State private var selectedTab = 0
 
     var body: some View {
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            mainContent
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
+        .dsTabBarHidden()
+    }
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: [
+                DSNavigationMenuItem(id: "weather", label: "Weather", icon: .sunLight, isSelected: true),
+                DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
+                DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
+                DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
+                DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
+                DSNavigationMenuItem(id: "people", label: "People", icon: .group),
+            ],
+            profile: DSNavigationMenuProfile(
+                image: "nav8_profile",
+                name: "Hristo Hristov",
+                subtitle: "Weather Watcher"
+            )
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
+    private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
             DSTopAppBar(title: "Today", style: .smallCentered, onBack: nil) {
                 DSButton(style: .neutral, size: .medium, icon: .search) {}
             }
             .overlay(alignment: .leading) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
-                    .padding(.leading, theme.spacing.sm)
+                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                    withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+                }
+                .padding(.leading, theme.spacing.sm)
             }
 
             VStack(spacing: theme.spacing.sm) {
@@ -34,9 +69,6 @@ struct Stats11Page: View {
         }
         .padding(.horizontal, theme.spacing.sm)
         .background(theme.colors.surfaceNeutral0_5)
-        .navigationBarBackButtonHidden(true)
-        .toolbar(.hidden, for: .navigationBar)
-        .dsTabBarHidden()
     }
 
     // MARK: - Weather Graph Card

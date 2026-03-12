@@ -11,10 +11,45 @@ struct Profile7Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
 
+    @State private var isMenuOpen = false
+
     var body: some View {
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            mainContent
+        }
+        .navigationBarBackButtonHidden(true)
+        .dsTabBarHidden()
+    }
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: [
+                DSNavigationMenuItem(id: "profile", label: "Profile", icon: .user, isSelected: true),
+                DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
+                DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
+                DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
+                DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
+                DSNavigationMenuItem(id: "people", label: "People", icon: .group),
+            ],
+            profile: DSNavigationMenuProfile(
+                image: "profile5_avatar",
+                name: "Hristo Hristov",
+                subtitle: "Sports Enthusiast"
+            )
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
+    private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
             DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                    withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+                }
             }
 
             ScrollView {
@@ -28,8 +63,6 @@ struct Profile7Page: View {
             }
         }
         .background(theme.colors.surfaceNeutral0_5)
-        .navigationBarBackButtonHidden(true)
-        .dsTabBarHidden()
     }
 
     // MARK: - Profile Info

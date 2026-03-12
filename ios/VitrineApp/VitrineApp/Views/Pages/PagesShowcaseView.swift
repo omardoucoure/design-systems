@@ -137,12 +137,30 @@ struct PagesShowcaseView: View {
                     LazyView(Stats11Page().navigationBarTitleDisplayMode(.inline))
                 }
 
+                NavigationLink("[Stats] 16 — Transactions") {
+                    LazyView(Stats16Page().navigationBarTitleDisplayMode(.inline))
+                }
+
                 NavigationLink("[Stats] 17 — Player Comparison") {
                     LazyView(Stats17Page().navigationBarTitleDisplayMode(.inline))
                 }
             }
 
+            Section("Feed") {
+                NavigationLink("[Feed] 1 — Social Feed") {
+                    LazyView(Feed1Page().navigationBarTitleDisplayMode(.inline))
+                }
+            }
+
             Section("Navigation") {
+                NavigationLink("[Navigation] 3 — Icon Sidebar & Carousel") {
+                    LazyView(Navigation3Page().navigationBarTitleDisplayMode(.inline))
+                }
+
+                NavigationLink("[Navigation] 7 — Bottom Nav Overlay") {
+                    LazyView(Navigation7Page().navigationBarTitleDisplayMode(.inline))
+                }
+
                 NavigationLink("[Navigation] 8 — Side Menu & Carousel") {
                     LazyView(Navigation8Page().navigationBarTitleDisplayMode(.inline))
                 }

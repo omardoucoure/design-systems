@@ -27,7 +27,6 @@ public struct DSTabBarHiddenModifier: ViewModifier {
         content
             .onAppear { visibility?.isHidden = true }
             .onDisappear { visibility?.isHidden = false }
-            .toolbar(.hidden, for: .tabBar)
     }
 }
 
@@ -40,6 +39,9 @@ public extension View {
 
 // MARK: - DSTabView
 
+/// A custom tab container that avoids the native TabView entirely.
+/// Uses a ZStack with manual tab switching to prevent iOS 26's native
+/// tab bar from interfering with the custom DSBottomAppBar.
 public struct DSTabView<Content: View>: View {
     @Environment(\.theme) private var theme
     @Binding private var selection: String
@@ -61,11 +63,12 @@ public struct DSTabView<Content: View>: View {
     }
 
     public var body: some View {
-        TabView(selection: $selection) {
-            content
-        }
-        .toolbar(.hidden, for: .tabBar)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+        VStack(spacing: 0) {
+            ZStack {
+                content
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
             if !tabBarVisibility.isHidden {
                 barContent
             }

@@ -11,6 +11,7 @@ struct Alert2Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
 
+    @State private var isMenuOpen = false
     @State private var selectedTab = "user"
 
     private let bottomBarItems = [
@@ -21,15 +22,45 @@ struct Alert2Page: View {
     ]
 
     var body: some View {
-        // Page — Figma: bg surfaceNeutral0_5, gap-sm(12), px-sm(12), py-0
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            mainContent
+        }
+        .navigationBarBackButtonHidden(true)
+        .dsTabBarHidden()
+    }
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: [
+                DSNavigationMenuItem(id: "profile", label: "Profile", icon: .user, isSelected: true),
+                DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
+                DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
+                DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
+                DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
+                DSNavigationMenuItem(id: "people", label: "People", icon: .group),
+            ],
+            profile: DSNavigationMenuProfile(
+                image: "nav8_profile",
+                name: "Hristo Hristov",
+                subtitle: "Visual Designer"
+            )
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
+    private var mainContent: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: theme.spacing.sm) {
-                // Top App Bar — Figma: gap-none(0), status bar + nav bar
                 DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                    DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+                    DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                        withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+                    }
                 }
 
-                // Alert card — Figma: surfaceNeutral2, radius xl, p=xl(32), gap=xl(32)
                 ScrollView {
                     DSCard(
                         background: theme.colors.surfaceNeutral2,
@@ -37,26 +68,20 @@ struct Alert2Page: View {
                         padding: theme.spacing.xl
                     ) {
                         VStack(alignment: .leading, spacing: theme.spacing.xl) {
-                            // Icons row — Figma: HStack, justify-between
                             HStack {
                                 DSIconImage(.mediaImagePlus, size: 40, color: theme.colors.textNeutral9)
-
                                 Spacer()
-
-                                // Close button — Figma: surfaceNeutral0_5 bg → .neutralLight
                                 DSButton(style: .neutralLight, size: .medium, icon: .xmark) {}
                             }
 
                             DSText("Chase down that beloved snapshot!",
                                    style: theme.typography.display2, color: theme.colors.textNeutral9)
 
-                            // Divider — Figma: fullBleed, default color (dark on light bg)
                             DSDivider(style: .fullBleed)
 
                             DSText("With just a few taps, you can snap up and upload your star-studded profile pic.",
                                    style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
 
-                            // CTA bar — Figma: surfacePrimary120, radius xl, p=xl(32), h=104, gap=lg(24)
                             DSCard(
                                 background: theme.colors.surfacePrimary120,
                                 radius: theme.radius.xl,
@@ -67,7 +92,6 @@ struct Alert2Page: View {
                                            style: theme.typography.label, color: theme.colors.textNeutral0_5)
                                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                                    // Go button — Figma: surfacePrimary100 → .filledB, medium, camera icon right
                                     DSButton(
                                         "Go!",
                                         style: .filledB,
@@ -80,12 +104,10 @@ struct Alert2Page: View {
                         }
                     }
                     .padding(.horizontal, theme.spacing.sm)
-                    // Extra bottom padding so content doesn't hide behind bottom bar
                     .padding(.bottom, 100)
                 }
             }
 
-            // Bottom App Bar — Figma: absolute bottom, .full style, FAB plus, active=user(secondary100)
             DSBottomAppBar(
                 items: bottomBarItems,
                 selectedId: $selectedTab,
@@ -95,8 +117,6 @@ struct Alert2Page: View {
             )
         }
         .background(theme.colors.surfaceNeutral0_5)
-        .navigationBarBackButtonHidden(true)
-        .dsTabBarHidden()
     }
 }
 

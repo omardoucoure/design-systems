@@ -182,7 +182,7 @@ public struct DSTextField: View {
     private var backgroundColor: Color {
         switch variant {
         case .filled:
-            return theme.colors.surfaceNeutral2
+            return theme.colors.surfaceNeutral0_5
         case .lined:
             return .clear
         }
@@ -213,11 +213,17 @@ public struct DSTextField: View {
     }
 
     private var borderWidth: CGFloat {
-        switch state {
-        case .error, .active, .validated:
+        switch variant {
+        case .filled:
+            // Figma: filled variant always uses borderwidth-md (2px) for all states
             return theme.borders.widthMd
-        case .empty, .filled:
-            return theme.borders.widthSm
+        case .lined:
+            switch state {
+            case .active, .error, .validated:
+                return theme.borders.widthMd
+            case .empty, .filled:
+                return theme.borders.widthSm
+            }
         }
     }
 

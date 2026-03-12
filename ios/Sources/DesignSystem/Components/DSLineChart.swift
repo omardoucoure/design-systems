@@ -147,14 +147,23 @@ public struct DSLineChart: View {
             return path
         }
 
-        // Balanced tension — smooth curves without overshooting
-        let tension: CGFloat = 0.38
+        // Mirror endpoints to maintain tangent continuity at edges.
+        // Without this, the first/last segments go flat.
+        let first = mapped[0]
+        let second = mapped[1]
+        let mirror0 = CGPoint(x: 2 * first.x - second.x, y: 2 * first.y - second.y)
+
+        let last = mapped[mapped.count - 1]
+        let penult = mapped[mapped.count - 2]
+        let mirrorN = CGPoint(x: 2 * last.x - penult.x, y: 2 * last.y - penult.y)
+
+        let tension: CGFloat = 0.40
 
         for i in 0..<(mapped.count - 1) {
-            let p0 = i > 0 ? mapped[i - 1] : mapped[i]
+            let p0 = i > 0 ? mapped[i - 1] : mirror0
             let p1 = mapped[i]
             let p2 = mapped[i + 1]
-            let p3 = i + 2 < mapped.count ? mapped[i + 2] : mapped[i + 1]
+            let p3 = i + 2 < mapped.count ? mapped[i + 2] : mirrorN
 
             let cp1 = CGPoint(
                 x: p1.x + (p2.x - p0.x) * tension,

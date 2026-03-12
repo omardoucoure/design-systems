@@ -5,30 +5,30 @@ import DesignSystem
 
 /// Figma: [Navigation] 8 (node 481:14196)
 ///
-/// Side navigation menu with a stacked card carousel on the right.
-/// Menu shows icon+label rows with a profile row at the bottom.
-/// Carousel displays three overlapping cards of increasing height
-/// and overflows past the right screen edge.
+/// Demonstrates `DSSideMenuLayout` — a side drawer menu that reveals
+/// when the user taps the menu button in the top app bar.
+/// The current page content becomes the front card in a stacked
+/// carousel effect, with ghost cards appearing behind it.
 struct Navigation8Page: View {
     @Environment(\.theme) private var theme
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var isMenuOpen = false
 
     var body: some View {
-        HStack(alignment: .center, spacing: theme.spacing.md) {
-            menu
-
-            carousel
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            menuContent
+        } content: {
+            galleryContent
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(.leading, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
     }
 
-    // MARK: - Menu
+    // MARK: - Menu Content
 
-    private var menu: some View {
+    private var menuContent: some View {
         DSNavigationMenu(
             items: [
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
@@ -46,28 +46,46 @@ struct Navigation8Page: View {
                 subtitle: "Visual Designer"
             )
         )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
     }
 
-    // MARK: - Carousel
+    // MARK: - Gallery Content (the "front card")
 
-    private var carousel: some View {
-        DSStackedCardCarousel(
-            items: [
-                DSStackedCardCarouselItem(
-                    height: 320,
-                    backgroundColor: theme.colors.surfaceNeutral3,
-                    showGradientOverlay: true
-                ),
-                DSStackedCardCarouselItem(
-                    height: 420,
-                    backgroundColor: theme.colors.surfaceNeutral3
-                ),
-                DSStackedCardCarouselItem(
-                    height: 520,
-                    image: "nav8_carousel"
-                )
-            ]
-        )
+    private var galleryContent: some View {
+        VStack(spacing: 0) {
+            DSTopAppBar(title: "Gallery", style: .smallCentered, onBack: { dismiss() }) {
+                DSButton(style: .neutral, size: .medium, icon: .search) {}
+            }
+            .overlay(alignment: .leading) {
+                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        isMenuOpen.toggle()
+                    }
+                }
+                .padding(.leading, theme.spacing.sm)
+            }
+
+            // Gallery grid placeholder
+            ScrollView {
+                LazyVGrid(
+                    columns: [GridItem(.flexible(), spacing: theme.spacing.sm),
+                              GridItem(.flexible(), spacing: theme.spacing.sm)],
+                    spacing: theme.spacing.sm
+                ) {
+                    ForEach(0..<6, id: \.self) { _ in
+                        RoundedRectangle(cornerRadius: theme.radius.md)
+                            .fill(theme.colors.surfaceNeutral2)
+                            .aspectRatio(1, contentMode: .fit)
+                    }
+                }
+                .padding(.horizontal, theme.spacing.sm)
+                .padding(.top, theme.spacing.sm)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(theme.colors.surfaceNeutral0_5)
     }
 }
 

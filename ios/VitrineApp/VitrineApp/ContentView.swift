@@ -8,6 +8,7 @@ struct ContentView: View {
 
     @State private var selectedTab = "components"
     @State private var barStyle: DSBottomAppBarStyle = .labeled
+    @State private var isMenuOpen = false
 
     private let tabs: [DSBottomBarItem] = [
         DSBottomBarItem(id: "components", label: "Components", systemIcon: "cube"),
@@ -17,62 +18,103 @@ struct ContentView: View {
         DSBottomBarItem(id: "grid", label: "Grid", systemIcon: "square.grid.4x3.fill"),
     ]
 
+    private var menuItems: [DSNavigationMenuItem] {
+        [
+            DSNavigationMenuItem(id: "components", label: "Components", icon: .cube, isSelected: selectedTab == "components"),
+            DSNavigationMenuItem(id: "pages", label: "Pages", icon: .page, isSelected: selectedTab == "pages"),
+            DSNavigationMenuItem(id: "colors", label: "Colors", icon: .palette, isSelected: selectedTab == "colors"),
+            DSNavigationMenuItem(id: "tokens", label: "Tokens", icon: .settings, isSelected: selectedTab == "tokens"),
+            DSNavigationMenuItem(id: "grid", label: "Grid", icon: .viewGrid, isSelected: selectedTab == "grid"),
+        ]
+    }
+
     var body: some View {
-        DSTabView(selection: $selectedTab, tabs: tabs, style: barStyle) {
-            NavigationStack {
-                ComponentShowcaseView()
-                    .toolbar { brandStyleToolbar }
+        DSSideMenuLayout(isOpen: $isMenuOpen) {
+            sideMenuContent
+        } content: {
+            DSTabView(selection: $selectedTab, tabs: tabs, style: barStyle) {
+                switch selectedTab {
+                case "components":
+                    NavigationStack {
+                        ComponentShowcaseView()
+                            .toolbar { brandStyleToolbar }
+                    }
+                case "pages":
+                    NavigationStack {
+                        PagesShowcaseView()
+                            .toolbar { brandStyleToolbar }
+                    }
+                case "colors":
+                    NavigationStack {
+                        ColorPaletteView()
+                            .toolbar { brandStyleToolbar }
+                    }
+                case "tokens":
+                    NavigationStack {
+                        TokenBrowserView()
+                            .toolbar { brandStyleToolbar }
+                    }
+                case "grid":
+                    NavigationStack {
+                        CombinationGridView()
+                            .toolbar { brandStyleToolbar }
+                    }
+                default:
+                    EmptyView()
+                }
             }
-            .tag("components")
-
-            NavigationStack {
-                PagesShowcaseView()
-                    .toolbar { brandStyleToolbar }
-            }
-            .tag("pages")
-
-            NavigationStack {
-                ColorPaletteView()
-                    .toolbar { brandStyleToolbar }
-            }
-            .tag("colors")
-
-            NavigationStack {
-                TokenBrowserView()
-                    .toolbar { brandStyleToolbar }
-            }
-            .tag("tokens")
-
-            NavigationStack {
-                CombinationGridView()
-                    .toolbar { brandStyleToolbar }
-            }
-            .tag("grid")
         }
         .ignoresSafeArea(.keyboard)
         .preferredColorScheme(style.isDark ? .dark : .light)
     }
 
+    // MARK: - Side Menu
+
+    private var sideMenuContent: some View {
+        DSNavigationMenu(
+            items: menuItems,
+            onSelect: { id in
+                selectedTab = id
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        isMenuOpen = false
+                    }
+                }
+            }
+        )
+        .padding(.leading, theme.spacing.sm)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .background(theme.colors.surfaceNeutral0_5)
+    }
+
     @ToolbarContentBuilder
     private var brandStyleToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Menu {
-                ForEach(Brand.allCases) { b in
-                    Button {
-                        brand = b
-                    } label: {
-                        if b == brand {
-                            Label(b.displayName, systemImage: "checkmark")
-                        } else {
-                            Text(b.displayName)
+            HStack(spacing: 8) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+                } label: {
+                    Image(systemName: "line.3.horizontal")
+                }
+
+                Menu {
+                    ForEach(Brand.allCases) { b in
+                        Button {
+                            brand = b
+                        } label: {
+                            if b == brand {
+                                Label(b.displayName, systemImage: "checkmark")
+                            } else {
+                                Text(b.displayName)
+                            }
                         }
                     }
-                }
-            } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "paintbrush")
-                    Text(brand.displayName)
-                        .font(.subheadline.weight(.medium))
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "paintbrush")
+                        Text(brand.displayName)
+                            .font(.subheadline.weight(.medium))
+                    }
                 }
             }
         }

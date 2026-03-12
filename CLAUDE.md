@@ -156,6 +156,50 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 6. **Add `.toolbar(.hidden, for: .navigationBar)`** if the Figma design has no native navigation bar
 7. **Verify against Figma screenshot** after building
 
+### Page Layout Pattern — ScrollView with floating bottom elements (CRITICAL):
+
+Most pages follow this structure: a top app bar pinned at the top, scrollable content in the middle, and a floating element (bottom app bar, FAB button) at the bottom. **Always** use this pattern:
+
+```swift
+var body: some View {
+    ZStack(alignment: .bottom) {
+        VStack(spacing: 0) {
+            // 1. Top app bar — pinned, never scrolls
+            DSTopAppBar(title: "Title", style: .smallCentered, onBack: { dismiss() }) {
+                DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+            }
+
+            // 2. ScrollView — fills remaining space, NO outer horizontal padding
+            ScrollView {
+                VStack(spacing: theme.spacing.sm) {
+                    // Content goes here
+                }
+                // Horizontal padding goes INSIDE the ScrollView as content inset
+                .padding(.horizontal, theme.spacing.sm)
+                // Bottom padding to clear the floating element
+                .padding(.bottom, 100)
+            }
+            .scrollIndicators(.hidden)
+        }
+
+        // 3. Floating element — overlays at the bottom
+        DSBottomAppBar(items: items, selectedId: $tab, style: .floating)
+            .padding(.horizontal, theme.spacing.md)
+            .padding(.bottom, theme.spacing.lg)
+    }
+    .background(theme.colors.surfaceNeutral0_5)
+}
+```
+
+**Key rules:**
+- ❌ **NEVER** put `.padding(.horizontal)` on the outer VStack — it clips the ScrollView edges
+- ❌ **NEVER** use `Spacer()` to push content above a floating element — use `.padding(.bottom, 100)` inside ScrollView
+- ✅ **ALWAYS** put horizontal padding INSIDE the ScrollView on the content VStack (`.padding(.horizontal, theme.spacing.sm)`)
+- ✅ **ALWAYS** add `.padding(.bottom, 100)` (or appropriate value) inside ScrollView content to prevent overlap with floating elements
+- ✅ **ALWAYS** use `ZStack(alignment: .bottom)` to layer floating elements over the ScrollView
+- ✅ The VStack wrapping top bar + ScrollView uses `spacing: 0` — gaps between top bar and content come from content padding, not VStack spacing
+- For pages with `DSSideMenuLayout`, the same pattern applies inside the `content:` closure
+
 ## Figma File Reference
 
 - **File key**: `4kcXyu53LWpUMVyhPvA4hY`

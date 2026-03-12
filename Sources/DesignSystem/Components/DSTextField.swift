@@ -192,7 +192,7 @@ public struct DSTextField: View {
     private var backgroundColor: Color {
         switch variant {
         case .filled:
-            return theme.colors.surfaceNeutral2
+            return theme.colors.surfaceNeutral0_5
         case .lined:
             return .clear
         }
