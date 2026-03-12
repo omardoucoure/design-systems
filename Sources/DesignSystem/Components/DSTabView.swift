@@ -63,50 +63,19 @@ public struct DSTabView<Content: View>: View {
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
-            ZStack {
-                content
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+        ZStack {
+            content
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             if !tabBarVisibility.isHidden {
-                barContent
+                DSBottomAppBar(
+                    items: tabs,
+                    selectedId: $selection,
+                    style: style
+                )
             }
         }
         .environment(\.dsTabBarVisibility, tabBarVisibility)
-    }
-
-    @ViewBuilder
-    private var barContent: some View {
-        switch style {
-        case .floating:
-            DSBottomAppBar(
-                items: tabs,
-                selectedId: $selection,
-                style: .floating
-            )
-
-        case .full, .labeled:
-            DSBottomAppBar(
-                items: tabs,
-                selectedId: $selection,
-                style: style,
-                embedded: true
-            )
-            .background(
-                theme.colors.surfaceNeutral2
-                    .clipShape(
-                        UnevenRoundedRectangle(
-                            topLeadingRadius: theme.radius.xl,
-                            bottomLeadingRadius: 0,
-                            bottomTrailingRadius: 0,
-                            topTrailingRadius: theme.radius.xl
-                        )
-                    )
-                    .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
-                    .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
-                    .ignoresSafeArea(.container, edges: .bottom)
-            )
-        }
     }
 }

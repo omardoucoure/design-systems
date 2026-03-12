@@ -81,6 +81,14 @@ public struct DSBottomAppBar: View {
     private let onFabTap: (() -> Void)?
     private let embedded: Bool
 
+    private var bottomSafeAreaInset: CGFloat {
+        (UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first(where: \.isKeyWindow)?
+            .safeAreaInsets.bottom) ?? 0
+    }
+
     /// - Parameter embedded: When `true`, removes the container background, clip shape, and shadow.
     ///   Use this when the bar is embedded in a parent that already provides the background.
     public init(
@@ -170,18 +178,7 @@ public struct DSBottomAppBar: View {
         if embedded {
             content
         } else {
-            content
-                .background(theme.colors.surfaceNeutral2)
-                .clipShape(
-                    UnevenRoundedRectangle(
-                        topLeadingRadius: theme.radius.xl,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: theme.radius.xl
-                    )
-                )
-                .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
-                .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
+            dockedContainer(content: content)
         }
     }
 
@@ -231,24 +228,32 @@ public struct DSBottomAppBar: View {
         if embedded {
             content
         } else {
-            content
-                .background(theme.colors.surfaceNeutral2)
-                .clipShape(
-                    UnevenRoundedRectangle(
-                        topLeadingRadius: theme.radius.xl,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: theme.radius.xl
-                    )
-                )
-                .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
-                .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
+            dockedContainer(content: content)
         }
     }
 
-    // MARK: - Shared Components
+    // MARK: - Docked Container
 
-    @Namespace private var tabHighlight
+    /// Wraps bar content with background that extends into the bottom safe area.
+    private func dockedContainer<C: View>(content: C) -> some View {
+        content
+            .padding(.bottom, bottomSafeAreaInset)
+            .background(
+                theme.colors.surfaceNeutral2
+                    .clipShape(
+                        UnevenRoundedRectangle(
+                            topLeadingRadius: theme.radius.xl,
+                            bottomLeadingRadius: 0,
+                            bottomTrailingRadius: 0,
+                            topTrailingRadius: theme.radius.xl
+                        )
+                    )
+                    .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
+                    .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
+            )
+    }
+
+    // MARK: - Shared Components
 
     private func iconButton(_ item: DSBottomBarItem) -> some View {
         let isSelected = item.id == selectedId
@@ -265,13 +270,8 @@ public struct DSBottomAppBar: View {
                 .frame(height: 40)
                 .padding(.horizontal, theme.spacing.md)
                 .background(
-                    Group {
-                        if isSelected {
-                            Capsule()
-                                .fill(theme.colors.surfaceSecondary100)
-                                .matchedGeometryEffect(id: "highlight", in: tabHighlight)
-                        }
-                    }
+                    Capsule()
+                        .fill(isSelected ? theme.colors.surfaceSecondary100 : Color.clear)
                 )
                 .clipShape(Capsule())
         }
@@ -295,13 +295,8 @@ public struct DSBottomAppBar: View {
                         .frame(height: 40)
                         .padding(.horizontal, theme.spacing.md)
                         .background(
-                            Group {
-                                if isSelected {
-                                    Capsule()
-                                        .fill(theme.colors.surfaceSecondary100)
-                                        .matchedGeometryEffect(id: "highlight", in: tabHighlight)
-                                }
-                            }
+                            Capsule()
+                                .fill(isSelected ? theme.colors.surfaceSecondary100 : Color.clear)
                         )
                         .clipShape(Capsule())
 
