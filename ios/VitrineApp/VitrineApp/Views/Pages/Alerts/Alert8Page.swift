@@ -64,7 +64,7 @@ struct Alert8Page: View {
                 DSTextField(text: $country, placeholder: "Country", label: "Country*",
                             variant: .filled, state: .filled)
                 DSTextField(text: $fullName, placeholder: "Full Name", label: "Full Name*",
-                            variant: .filled, state: .filled, iconRight: "person")
+                            variant: .filled, state: .filled, icon: .user)
                 DSTextField(text: $street, placeholder: "Street Address", label: "Street Address*",
                             variant: .filled, state: .filled)
                 HStack(spacing: theme.spacing.sm) {
@@ -76,7 +76,7 @@ struct Alert8Page: View {
                 DSTextField(text: $phone, placeholder: "Phone Number", label: "Phone Number*",
                             variant: .filled, state: .filled)
                 DSTextField(text: $email, placeholder: "Email", label: "Your Email",
-                            variant: .filled, state: .filled, iconRight: "envelope")
+                            variant: .filled, state: .filled, icon: .mail)
                 DSButton("Change Address", style: .filledA, size: .big,
                          iconRight: "arrow.right", isFullWidth: true) {}
             }

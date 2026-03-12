@@ -32,7 +32,7 @@ struct Alert1Page: View {
                         label: "Label",
                         variant: .filled,
                         state: .error,
-                        iconLeft: "magnifyingglass"
+                        icon: .search, iconPosition: .leading
                     )
 
                     // Trailing bell-notification icon (no bg, 40h container)

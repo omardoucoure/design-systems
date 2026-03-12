@@ -45,7 +45,7 @@ struct Login6ErrorPage: View {
                 }
 
                 DSTextField(text: $email, placeholder: "Enter your email", label: "Your Email",
-                            variant: .filled, state: .filled, iconRight: "envelope")
+                            variant: .filled, state: .filled, icon: .mail)
 
                 DSTextField(text: $password, placeholder: "Enter your password", label: "Your Password",
                             helperText: "Oops! Wrong password. Try again.",

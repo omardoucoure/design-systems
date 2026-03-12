@@ -41,14 +41,18 @@ public struct DSTextField: View {
     private let helperText: LocalizedStringKey?
     private let variant: InputVariant
     private let state: InputState
-    private let iconLeft: String?
+    private let icon: DSIcon?
+    private let iconPosition: IconPosition
     private let isSecure: Bool
-    private let iconRight: String?
     private let actionLabel: LocalizedStringKey?
     private let onAction: (() -> Void)?
 
     @FocusState private var isFocused: Bool
     @State private var isTextHidden: Bool = true
+
+    public enum IconPosition {
+        case leading, trailing
+    }
 
     public init(
         text: Binding<String>,
@@ -58,8 +62,8 @@ public struct DSTextField: View {
         variant: InputVariant = .filled,
         state: InputState = .empty,
         isSecure: Bool = false,
-        iconLeft: String? = nil,
-        iconRight: String? = nil,
+        icon: DSIcon? = nil,
+        iconPosition: IconPosition = .trailing,
         actionLabel: LocalizedStringKey? = nil,
         onAction: (() -> Void)? = nil
     ) {
@@ -70,8 +74,8 @@ public struct DSTextField: View {
         self.variant = variant
         self.state = state
         self.isSecure = isSecure
-        self.iconLeft = iconLeft
-        self.iconRight = iconRight
+        self.icon = icon
+        self.iconPosition = iconPosition
         self.actionLabel = actionLabel
         self.onAction = onAction
     }
@@ -86,13 +90,10 @@ public struct DSTextField: View {
     // MARK: - Input Container
 
     private var inputContainer: some View {
-        HStack(spacing: 12) {
-            // Left icon
-            if let iconLeft {
-                Image(systemName: iconLeft)
-                    .font(.system(size: 20))
-                    .foregroundStyle(iconColor)
-                    .frame(width: 24, height: 24)
+        HStack(spacing: theme.components.textField.contentGap) {
+            // Leading icon
+            if let icon, iconPosition == .leading {
+                iconView(icon)
             }
 
             // Text field + floating label
@@ -117,45 +118,37 @@ public struct DSTextField: View {
                 .focused($isFocused)
             }
 
-            // Right icon (tappable toggle when secure)
+            // Trailing: secure toggle or trailing icon
             if isSecure {
                 Button {
                     isTextHidden.toggle()
                 } label: {
-                    Image(systemName: isTextHidden ? "eye.slash" : "eye")
-                        .font(.system(size: 20))
-                        .foregroundStyle(iconColor)
-                        .frame(width: 24, height: 24)
+                    iconView(isTextHidden ? .eyeClosed : .eye)
                 }
                 .buttonStyle(.plain)
-            } else if let iconRight {
-                Image(systemName: iconRight)
-                    .font(.system(size: 20))
-                    .foregroundStyle(iconColor)
-                    .frame(width: 24, height: 24)
+            } else if let icon, iconPosition == .trailing {
+                iconView(icon)
             }
 
             // Action button
             if let actionLabel, let onAction {
-                Button(action: onAction) {
-                    Text(actionLabel)
-                        .font(theme.typography.label.font)
-                        .tracking(theme.typography.label.tracking)
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, theme.spacing.sm)
-                        .frame(height: 32)
-                        .background(theme.colors.surfaceSecondary100)
-                        .clipShape(Capsule())
-                }
-                .buttonStyle(.plain)
+                DSButton(actionLabel, style: .filledA, size: .small, action: onAction)
             }
         }
         .padding(.horizontal, theme.spacing.md)
         .padding(.vertical, theme.spacing.md)
-        .frame(height: 56)
+        .frame(height: theme.components.textField.fieldHeight)
         .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: containerRadius))
         .overlay(borderOverlay)
+    }
+
+    private func iconView(_ dsIcon: DSIcon) -> some View {
+        Image(dsIcon: dsIcon)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .foregroundStyle(iconColor)
+            .frame(width: theme.components.textField.iconFrame, height: theme.components.textField.iconFrame)
     }
 
     // MARK: - Helper Text
@@ -223,11 +216,17 @@ public struct DSTextField: View {
     }
 
     private var borderWidth: CGFloat {
-        switch state {
-        case .error, .active, .validated:
+        switch variant {
+        case .filled:
+            // Figma: filled variant always uses borderwidth-md (2px) for all states
             return theme.borders.widthMd
-        case .empty, .filled:
-            return theme.borders.widthSm
+        case .lined:
+            switch state {
+            case .active, .error, .validated:
+                return theme.borders.widthMd
+            case .empty, .filled:
+                return theme.borders.widthSm
+            }
         }
     }
 
@@ -251,7 +250,7 @@ public struct DSTextField: View {
     private var helperTextColor: Color {
         switch state {
         case .error: return theme.colors.error
-        default: return theme.colors.textNeutral9.opacity(0.5)
+        default: return theme.colors.textNeutral9.opacity(theme.opacity.md)
         }
     }
 }

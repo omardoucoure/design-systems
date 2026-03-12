@@ -21,7 +21,11 @@ struct LoginPage: View {
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
         }
+        .scrollDismissesKeyboard(.interactively)
         .background(theme.colors.surfaceNeutral0_5)
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
     }
 
     // MARK: - Forms Card
@@ -44,10 +48,10 @@ struct LoginPage: View {
                 }
 
                 DSTextField(text: $email, placeholder: "Enter your email", label: "Your Email",
-                            variant: .filled, state: .filled, iconRight: "envelope")
+                            variant: .filled, state: .filled, icon: .mail)
 
                 DSTextField(text: $password, placeholder: "Enter your password", label: "Your Password",
-                            variant: .filled, state: .filled, iconRight: "eye.slash")
+                            variant: .filled, state: .filled, isSecure: true)
 
                 HStack {
                     DSCheckbox(isOn: $rememberMe, label: "Remember me")

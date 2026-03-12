@@ -115,7 +115,7 @@ public struct DSDatePicker: View {
                 label: "Start",
                 variant: .filled,
                 state: .active,
-                iconLeft: "calendar"
+                icon: .calendar, iconPosition: .leading
             )
             .disabled(true)
 
@@ -126,7 +126,7 @@ public struct DSDatePicker: View {
                     label: "End",
                     variant: .filled,
                     state: .active,
-                    iconLeft: "calendar"
+                    icon: .calendar, iconPosition: .leading
                 )
                 .disabled(true)
             }

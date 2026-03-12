@@ -60,10 +60,10 @@ struct Login4Page: View {
                 }
 
                 DSTextField(text: $email, placeholder: "Enter your email", label: "Your Email",
-                            variant: .filled, state: .filled, iconRight: "envelope")
+                            variant: .filled, state: .filled, icon: .mail)
 
                 DSTextField(text: $password, placeholder: "Enter your password", label: "Your Password",
-                            variant: .filled, state: .filled, iconRight: "eye.slash")
+                            variant: .filled, state: .filled, isSecure: true)
 
                 HStack {
                     DSCheckbox(isOn: $rememberMe, label: "Remember me")

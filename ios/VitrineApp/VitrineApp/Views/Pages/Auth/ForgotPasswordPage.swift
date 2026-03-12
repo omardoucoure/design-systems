@@ -22,7 +22,7 @@ struct ForgotPasswordPage: View {
                                style: theme.typography.caption, color: theme.colors.textNeutral9.opacity(0.75))
 
                         DSTextField(text: $email, placeholder: "Your Email",
-                                    variant: .filled, state: email.isEmpty ? .empty : .filled, iconRight: "envelope")
+                                    variant: .filled, state: email.isEmpty ? .empty : .filled, icon: .mail)
 
                         DSButton("Send Code", style: .filledA, size: .big,
                                  iconRight: "arrow.right", isFullWidth: true) {}
