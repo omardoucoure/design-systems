@@ -46,6 +46,7 @@ DSTabView(selection: $activeTab, tabs: appTabs, style: .labeled) { tabId in
 > |----------|------|---------|
 > | CLAUDE.md | [`CLAUDE.md`](../../CLAUDE.md) | Component rules, layout patterns, anti-patterns, token mapping |
 > | Contract | [`docs/ai/design-system-contract.yaml`](../ai/design-system-contract.yaml) | Machine-readable component registry, variants, ai_roles |
+> | Component YAML | [`docs/ai/components/DSTabView.yaml`](../ai/components/DSTabView.yaml) | AI decision guide: use_when, variants, padding, color mapping, rules |
 > | Theming | [`docs/theming.md`](../theming.md) | Theme system, custom color overrides, all token tables |
 
 ### Contract entry
