@@ -129,6 +129,7 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 - `DSDivider` — styles: `.fullBleed`, `.inset`, `.middle`, `.subheader(...)`
 - `DSProgressCircle` — circular progress indicator; supports `customLabel`, `progressColor`, `labelColor`
 - `DSCarousel` — horizontal image carousel; styles: `.spotlight` (zoom focus), `.standard` (flat)
+- `DSUserCard` — profile card with avatar, name, bio, stat, and sign-out/edit actions
 - `DSChip`, `DSBadge`, `DSAvatar`, `DSToggle`, `DSRadio`, `DSDropdown`, `DSSearchField`, `DSTextArea`, `DSTooltip`, `DSTopAppBar`, `DSBottomAppBar`, `DSSegmentedPicker`, `DSDatePicker`, `DSPageControl`
 
 ### Typography quick reference (NEVER use .font(.system(...)) or .font(.custom(...))):
@@ -199,6 +200,53 @@ var body: some View {
 - ✅ **ALWAYS** use `ZStack(alignment: .bottom)` to layer floating elements over the ScrollView
 - ✅ The VStack wrapping top bar + ScrollView uses `spacing: 0` — gaps between top bar and content come from content padding, not VStack spacing
 - For pages with `DSSideMenuLayout`, the same pattern applies inside the `content:` closure
+
+## Theming System
+
+### Applying the theme (app entry point)
+
+```swift
+// Standard — uses a built-in brand palette
+ContentView()
+    .designSystem(brand: .coralCamo, style: .lightRounded)
+
+// With custom brand colors — overrides primary and/or secondary everywhere
+ContentView()
+    .designSystem(
+        brand: .coralCamo,          // neutral scale comes from the brand
+        style: .lightRounded,
+        primaryColor: Color(hex: "#1A73E8"),
+        secondaryColor: Color(hex: "#EA4335")
+    )
+```
+
+### Built-in brands
+| Brand | Primary | Secondary | Neutral |
+|-------|---------|-----------|---------|
+| `.coralCamo` | Forest green | Coral red | Warm |
+| `.seaLime` | Navy blue | Lime green | Cool |
+| `.mistyRose` | Slate blue | Pink | Cool blue |
+| `.blueHaze` | Royal blue | Beige | Warm grey |
+
+### Custom color derivation
+
+When `primaryColor` or `secondaryColor` is provided, all shades are auto-derived:
+
+- `primary80` → `color.opacity(0.7)`
+- `primary100` → exact color
+- `primary120` → color darkened 15% in HSB
+- `secondary10` → `color.opacity(0.08)`
+- `secondary40` → `color.opacity(0.35)`
+- `secondary100` → exact color
+- `secondary120` → color darkened 10% in HSB
+
+Every component using `surfacePrimary*`, `surfaceSecondary*`, `textPrimary100`, `textSecondary100`, `borderPrimary100`, `borderSecondary100` updates automatically — no component changes needed.
+
+### Rules
+- **NEVER** pass `primaryColor`/`secondaryColor` inside component files — only at the app root `.designSystem()` call
+- **NEVER** override individual component colors to match a brand color — the theme propagates it everywhere
+- The neutral scale always comes from the `Brand` enum — custom colors only affect primary/secondary shades
+- Full theming reference: `docs/theming.md`
 
 ## Figma File Reference
 
