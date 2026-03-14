@@ -15,8 +15,8 @@ public struct ThemeConfiguration: Sendable {
     public let isDark: Bool
     public let isSharp: Bool
 
-    public init(brand: Brand, style: Style) {
-        let primitives = brand.primitives
+    public init(brand: Brand, style: Style, primaryColor: Color? = nil, secondaryColor: Color? = nil) {
+        let primitives = brand.primitives.withOverrides(primary: primaryColor, secondary: secondaryColor)
 
         self.brand = brand
         self.style = style

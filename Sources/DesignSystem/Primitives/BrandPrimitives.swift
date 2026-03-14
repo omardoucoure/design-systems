@@ -25,4 +25,22 @@ public struct BrandPrimitives: Sendable {
         self.secondary120 = secondary120
         self.neutrals = neutrals
     }
+
+    /// Returns a copy of these primitives with custom primary and/or secondary colors applied.
+    ///
+    /// - Parameters:
+    ///   - primary: Replaces all primary shades. `80` is lightened, `120` is darkened automatically.
+    ///   - secondary: Replaces all secondary shades. `10`/`40` tints and `120` are derived automatically.
+    public func withOverrides(primary: Color? = nil, secondary: Color? = nil) -> BrandPrimitives {
+        BrandPrimitives(
+            primary80:     primary.map { $0.opacity(0.7) } ?? primary80,
+            primary100:    primary ?? primary100,
+            primary120:    primary.map { $0.brightness(-0.15) } ?? primary120,
+            secondary10:   secondary.map { $0.opacity(0.08) } ?? secondary10,
+            secondary40:   secondary.map { $0.opacity(0.35) } ?? secondary40,
+            secondary100:  secondary ?? secondary100,
+            secondary120:  secondary.map { $0.brightness(-0.1) } ?? secondary120,
+            neutrals: neutrals
+        )
+    }
 }

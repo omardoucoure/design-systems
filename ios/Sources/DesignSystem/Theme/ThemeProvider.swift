@@ -19,16 +19,25 @@ extension EnvironmentValues {
 private struct DesignSystemModifier: ViewModifier {
     let brand: Brand
     let style: Style
+    let primaryColor: Color?
+    let secondaryColor: Color?
 
-    init(brand: Brand, style: Style) {
+    init(brand: Brand, style: Style, primaryColor: Color? = nil, secondaryColor: Color? = nil) {
         FontRegistration.registerFonts()
         self.brand = brand
         self.style = style
+        self.primaryColor = primaryColor
+        self.secondaryColor = secondaryColor
     }
 
     func body(content: Content) -> some View {
         content
-            .environment(\.theme, ThemeConfiguration(brand: brand, style: style))
+            .environment(\.theme, ThemeConfiguration(
+                brand: brand,
+                style: style,
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor
+            ))
     }
 }
 
@@ -37,11 +46,23 @@ extension View {
     ///
     /// Usage:
     /// ```swift
+    /// // Use a predefined brand
     /// ContentView()
     ///     .designSystem(brand: .coralCamo, style: .lightRounded)
+    ///
+    /// // Override with custom brand colors
+    /// ContentView()
+    ///     .designSystem(brand: .coralCamo, style: .lightRounded,
+    ///                   primaryColor: Color(hex: "#1A73E8"),
+    ///                   secondaryColor: Color(hex: "#EA4335"))
     /// ```
-    public func designSystem(brand: Brand, style: Style) -> some View {
-        modifier(DesignSystemModifier(brand: brand, style: style))
+    public func designSystem(
+        brand: Brand,
+        style: Style,
+        primaryColor: Color? = nil,
+        secondaryColor: Color? = nil
+    ) -> some View {
+        modifier(DesignSystemModifier(brand: brand, style: style, primaryColor: primaryColor, secondaryColor: secondaryColor))
     }
 }
 
@@ -51,17 +72,27 @@ extension View {
 public struct ThemeProvider<Content: View>: View {
     private let brand: Brand
     private let style: Style
+    private let primaryColor: Color?
+    private let secondaryColor: Color?
     private let content: Content
 
-    public init(brand: Brand, style: Style, @ViewBuilder content: () -> Content) {
+    public init(
+        brand: Brand,
+        style: Style,
+        primaryColor: Color? = nil,
+        secondaryColor: Color? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         FontRegistration.registerFonts()
         self.brand = brand
         self.style = style
+        self.primaryColor = primaryColor
+        self.secondaryColor = secondaryColor
         self.content = content()
     }
 
     public var body: some View {
         content
-            .designSystem(brand: brand, style: style)
+            .designSystem(brand: brand, style: style, primaryColor: primaryColor, secondaryColor: secondaryColor)
     }
 }
