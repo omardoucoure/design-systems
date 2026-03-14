@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 system:
   name: HaHo Design System
   platforms:
@@ -8,10 +8,43 @@ system:
   theme_axes:
     brand:
       values: [coralCamo, seaLime, mistyRose, blueHaze]
-      meaning: selects primitive palette
+      meaning: selects primitive palette (primary color family, secondary accent, neutral scale undertone)
     style:
       values: [lightRounded, darkRounded, lightSharp, darkSharp]
-      meaning: selects color mode and shape treatment
+      meaning: selects color mode (light/dark) and shape treatment (rounded/sharp)
+  custom_color_overrides:
+    description: >
+      Any app importing the design system can replace primary and/or secondary colors at init time.
+      Pass optional Color values to .designSystem() or ThemeProvider — all semantic tokens update automatically.
+    usage: |
+      // Both overrides
+      ContentView()
+          .designSystem(brand: .coralCamo, style: .lightRounded,
+                        primaryColor: Color(hex: "#1A73E8"),
+                        secondaryColor: Color(hex: "#EA4335"))
+
+      // Primary only
+      ContentView()
+          .designSystem(brand: .seaLime, style: .lightRounded,
+                        primaryColor: Color(hex: "#6750A4"))
+    derivation:
+      primary80: "primaryColor.opacity(0.7)"
+      primary100: "primaryColor (exact)"
+      primary120: "primaryColor darkened 15% in HSB"
+      secondary10: "secondaryColor.opacity(0.08)"
+      secondary40: "secondaryColor.opacity(0.35)"
+      secondary100: "secondaryColor (exact)"
+      secondary120: "secondaryColor darkened 10% in HSB"
+    affected_tokens:
+      - surfacePrimary100
+      - surfacePrimary120
+      - surfaceSecondary100
+      - textPrimary100
+      - textSecondary100
+      - borderPrimary100
+      - borderSecondary100
+    rule: "Never pass primaryColor/secondaryColor inside component files — only at the app root .designSystem() call."
+    doc: ../theming.md
   token_layers:
     - primitives
     - semantic
@@ -24,6 +57,8 @@ system:
       - ../../ios/Sources/DesignSystem/Theme/ThemeConfiguration.swift
       - ../../ios/Sources/DesignSystem/Theme/Brand.swift
       - ../../ios/Sources/DesignSystem/Theme/Style.swift
+    theming_doc: ../theming.md
+    claude_rules: ../../CLAUDE.md
   ai_generation_goal:
     generate_new_pages_in_figma_from_registered_components_and_patterns
 
@@ -34,11 +69,16 @@ generation_rules:
     - use semantic or component tokens for sizing, spacing, radius, and color
     - attach accessibility labels to icon-only actions
     - compose from page patterns when a matching pattern exists
+    - read docs/theming.md before using any color, spacing, or radius token
+    - read each component's doc (field: doc) before implementing it
   forbidden:
     - raw custom button visuals when DSButton covers the need
     - unregistered spacing scales
     - unregistered colors or radii
     - page structures that bypass DSCard when a DS container exists
+    - hardcoded Color(hex:) values in page or component files (only in theme primitives)
+    - Image("icon_name") string literals — always use Image(dsIcon:) with DSIcon enum
+    - .font(.system(size:)) or .font(.custom(...)) — always use theme.typography tokens
   output_expectations:
     - page spec must cite used components
     - page spec must cite used page patterns
@@ -95,7 +135,7 @@ page_patterns:
       - message
       - stacked DSButton actions
   - id: dashboard.metrics-grid
-    family: alerts
+    family: dashboard
     source_examples: [Alert4Page]
     structure:
       - DSMetricCard
@@ -109,6 +149,13 @@ page_patterns:
       - hero media or carousel
       - DSCard summary block
       - CTA or stat row
+  - id: profile.user-card
+    family: profile
+    source_examples: [ProfilePage, Profile3Page]
+    structure:
+      - DSUserCard
+      - DSUserCardStat
+      - sign-out + edit DSButton actions
   - id: profile.stats
     family: profile
     source_examples: [Profile2Page, Profile7Page]
@@ -124,205 +171,411 @@ page_patterns:
       - DSText heading/body
       - DSPageControl or carousel progress
       - primary/secondary CTA row
+  - id: shell.tab-layout
+    family: shell
+    source_examples: [ContentView]
+    structure:
+      - DSTabView (wraps all tab content)
+      - ZStack with opacity switching (keep all tabs alive)
+      - DSBottomAppBar (labeled, full, or floating style)
+    rules:
+      - never use NavigationStack switching between tabs
+      - all tab NavigationStacks must coexist via opacity, not conditional rendering
 
 components:
+  # ── Actions ──────────────────────────────────────────────────────────────────
   - name: DSButton
     category: actions
+    doc: ../docs/components/DSButton.md
     path: ../../ios/Sources/DesignSystem/Components/DSButton.swift
     variants: [filledA, filledB, filledC, neutral, neutralLight, outlined, outlinedLight, text]
     sizes: [big, medium, small]
     content_modes: [text, icon_only_system, icon_only_asset, text_with_left_icon, text_with_right_icon]
     ai_roles: [primary_cta, secondary_cta, tertiary_action, social_action, dismiss_action, toolbar_action]
+    style_mapping:
+      filledA: surfaceSecondary100 background
+      filledB: surfacePrimary100 background
+      filledC: surfacePrimary120 background
+      neutral: surfaceNeutral2 background
+      neutralLight: surfaceNeutral0_5 background (for dark surfaces)
     figma_mapping: button component variants
+
   - name: DSChip
     category: actions
+    doc: ../docs/components/DSChip.md
     path: ../../ios/Sources/DesignSystem/Components/DSChip.swift
     variants: [filledA, filledB, filledC, neutral, outlined]
     ai_roles: [filter_chip, status_chip, tag]
-  - name: DSBadge
-    category: feedback
-    path: ../../ios/Sources/DesignSystem/Components/DSBadge.swift
-    variants: [dot, numberBrand, numberSemantic, tagBrand, tagSemantic]
-    ai_roles: [count_badge, status_badge, dot_indicator]
+
+  # ── Selection ─────────────────────────────────────────────────────────────────
   - name: DSCheckbox
     category: selection
+    doc: ../docs/components/DSCheckbox.md
     path: ../../ios/Sources/DesignSystem/Components/DSCheckbox.swift
     states: [selected, unselected, disabled]
     ai_roles: [remember_me, checklist, consent]
+
   - name: DSRadio
     category: selection
+    doc: ../docs/components/DSRadio.md
     path: ../../ios/Sources/DesignSystem/Components/DSRadio.swift
     states: [selected, unselected, disabled]
     ai_roles: [single_select_choice]
+
   - name: DSToggle
     category: selection
+    doc: ../docs/components/DSToggle.md
     path: ../../ios/Sources/DesignSystem/Components/DSToggle.swift
     states: [on, off, disabled]
     ai_roles: [settings_toggle]
+
   - name: DSSegmentedPicker
     category: selection
+    doc: ../docs/components/DSSegmentedPicker.md
     path: ../../ios/Sources/DesignSystem/Components/DSSegmentedPicker.swift
     variants: [tabs, pills, underline]
     ai_roles: [mode_switcher, auth_tab_switcher, category_switcher]
+
+  - name: DSIconSegmentedPicker
+    category: selection
+    doc: ../docs/components/DSIconSegmentedPicker.md
+    path: ../../ios/Sources/DesignSystem/Components/DSIconSegmentedPicker.swift
+    ai_roles: [icon_tab_switcher]
+
   - name: DSPageControl
     category: navigation
+    doc: ../docs/components/DSSegmentedPicker.md
     path: ../../ios/Sources/DesignSystem/Components/DSSegmentedPicker.swift
     ai_roles: [carousel_progress, onboarding_progress]
+
+  # ── Forms ─────────────────────────────────────────────────────────────────────
   - name: DSTextField
     category: forms
+    doc: ../docs/components/DSTextField.md
     path: ../../ios/Sources/DesignSystem/Components/DSTextField.swift
     variants: [filled, lined]
     states: [empty, filled, active, error, validated]
     ai_roles: [text_input, email_input, password_input, validated_field]
+    notes: use isSecure:true when Figma shows dots (••••••••)
+
   - name: DSSearchField
     category: forms
+    doc: ../docs/components/DSSearchField.md
     path: ../../ios/Sources/DesignSystem/Components/DSSearchField.swift
     ai_roles: [search_input]
+
   - name: DSTextArea
     category: forms
+    doc: ../docs/components/DSTextArea.md
     path: ../../ios/Sources/DesignSystem/Components/DSTextArea.swift
     ai_roles: [multiline_input, notes_field]
+
   - name: DSDropdown
     category: forms
+    doc: ../docs/components/DSDropdown.md
     path: ../../ios/Sources/DesignSystem/Components/DSDropdown.swift
     ai_roles: [single_select_menu]
+
   - name: DSCodeInput
     category: forms
+    doc: ../docs/components/DSCodeInput.md
     path: ../../ios/Sources/DesignSystem/Components/DSCodeInput.swift
     ai_roles: [otp, passcode, verification]
+
+  # ── Calendar ──────────────────────────────────────────────────────────────────
   - name: DSDatePicker
     category: calendar
+    doc: ../docs/components/DSDatePicker.md
     path: ../../ios/Sources/DesignSystem/Components/DSDatePicker.swift
     variants: [single, range]
     ai_roles: [date_selection, range_selection]
+
   - name: DSCalendarGrid
     category: calendar
+    doc: ../docs/components/DSCalendarGrid.md
     path: ../../ios/Sources/DesignSystem/Components/DSCalendarGrid.swift
     variants: [single, range]
     ai_roles: [calendar_surface]
+
   - name: DSDayPicker
     category: calendar
+    doc: ../docs/components/DSDayPicker.md
     path: ../../ios/Sources/DesignSystem/Components/DSDayPicker.swift
     ai_roles: [day_selector]
+
   - name: DSWeekStrip
     category: calendar
+    doc: ../docs/components/DSWeekStrip.md
     path: ../../ios/Sources/DesignSystem/Components/DSWeekStrip.swift
     ai_roles: [compact_week_selector]
+
   - name: DSTimelineGrid
     category: calendar
+    doc: ../docs/components/DSTimelineGrid.md
     path: ../../ios/Sources/DesignSystem/Components/DSTimelineGrid.swift
     ai_roles: [schedule_grid, availability_grid]
+
+  # ── Feedback ──────────────────────────────────────────────────────────────────
   - name: DSAlert
     category: feedback
+    doc: ../docs/components/DSAlert.md
     path: ../../ios/Sources/DesignSystem/Components/DSAlert.swift
     variants: [error, warning, success, info, neutral]
     ai_roles: [inline_alert]
+
   - name: DSAlertDialog
     category: feedback
+    doc: ../docs/components/DSAlertDialog.md
     path: ../../ios/Sources/DesignSystem/Components/DSAlertDialog.swift
     ai_roles: [modal_alert, destructive_confirmation, permission_prompt]
+
   - name: DSBanner
     category: feedback
+    doc: ../docs/components/DSBanner.md
     path: ../../ios/Sources/DesignSystem/Components/DSBanner.swift
     ai_roles: [banner_notice, warning_banner, success_banner]
+
   - name: DSTooltip
     category: feedback
+    doc: ../docs/components/DSTooltip.md
     path: ../../ios/Sources/DesignSystem/Components/DSTooltip.swift
     variants: [simple, rich]
     directions: [top, bottom, left, right]
     ai_roles: [context_help, hint]
+
+  - name: DSBadge
+    category: feedback
+    doc: ../docs/components/DSBadge.md
+    path: ../../ios/Sources/DesignSystem/Components/DSBadge.swift
+    variants: [dot, numberBrand, numberSemantic, tagBrand, tagSemantic]
+    ai_roles: [count_badge, status_badge, dot_indicator]
+
+  # ── Data Visualisation ────────────────────────────────────────────────────────
   - name: DSProgressCircle
     category: data_viz
+    doc: ../docs/components/DSProgressCircle.md
     path: ../../ios/Sources/DesignSystem/Components/DSProgressCircle.swift
     ai_roles: [progress_indicator, radial_metric]
+
   - name: DSSemiCircularGauge
     category: data_viz
+    doc: ../docs/components/DSSemiCircularGauge.md
     path: ../../ios/Sources/DesignSystem/Components/DSSemiCircularGauge.swift
     ai_roles: [gauge, score_summary]
+
   - name: DSBarChart
     category: data_viz
+    doc: ../docs/components/DSBarChart.md
     path: ../../ios/Sources/DesignSystem/Components/DSBarChart.swift
     ai_roles: [simple_bar_chart]
+
   - name: DSLineChart
     category: data_viz
+    doc: ../docs/components/DSLineChart.md
     path: ../../ios/Sources/DesignSystem/Components/DSLineChart.swift
     ai_roles: [trend_chart]
+
   - name: DSLollipopChart
     category: data_viz
+    doc: ../docs/components/DSLollipopChart.md
     path: ../../ios/Sources/DesignSystem/Components/DSLollipopChart.swift
     ai_roles: [lightweight_comparison_chart]
+
   - name: DSStackedBarChart
     category: data_viz
+    doc: ../docs/components/DSStackedBarChart.md
     path: ../../ios/Sources/DesignSystem/Components/DSStackedBarChart.swift
     ai_roles: [stacked_comparison_chart]
+
+  - name: DSHorizontalBarChart
+    category: data_viz
+    doc: ../docs/components/DSHorizontalBarChart.md
+    path: ../../ios/Sources/DesignSystem/Components/DSHorizontalBarChart.swift
+    ai_roles: [dual_bar_comparison]
+
+  - name: DSStatsChart
+    category: data_viz
+    doc: ../docs/components/DSStatsChart.md
+    path: ../../ios/Sources/DesignSystem/Components/DSStatsChart.swift
+    ai_roles: [combined_bar_line_chart]
+
+  - name: DSWeatherChart
+    category: data_viz
+    doc: ../docs/components/DSWeatherChart.md
+    path: ../../ios/Sources/DesignSystem/Components/DSWeatherChart.swift
+    ai_roles: [thin_capsule_bar_chart]
+
   - name: DSMetricCard
     category: data_viz
+    doc: ../docs/components/DSMetricCard.md
     path: ../../ios/Sources/DesignSystem/Components/DSMetricCard.swift
     ai_roles: [dashboard_metric, summary_card]
+
   - name: DSStatRow
     category: data_viz
+    doc: ../docs/components/DSStatRow.md
     path: ../../ios/Sources/DesignSystem/Components/DSStatRow.swift
     ai_roles: [equal_width_stats, summary_strip]
+
+  # ── Content ───────────────────────────────────────────────────────────────────
   - name: DSEventCard
     category: content
+    doc: ../docs/components/DSEventCard.md
     path: ../../ios/Sources/DesignSystem/Components/DSEventCard.swift
     ai_roles: [event_summary, schedule_card]
+
+  - name: DSProductCard
+    category: content
+    doc: ../docs/components/DSProductCard.md
+    path: ../../ios/Sources/DesignSystem/Components/DSProductCard.swift
+    ai_roles: [product_listing_card]
+
+  - name: DSProductTeaser
+    category: content
+    doc: ../docs/components/DSProductTeaser.md
+    path: ../../ios/Sources/DesignSystem/Components/DSProductTeaser.swift
+    ai_roles: [horizontal_product_carousel]
+
+  # ── Layout ────────────────────────────────────────────────────────────────────
   - name: DSCard
     category: layout
+    doc: ../docs/components/DSCard.md
     path: ../../ios/Sources/DesignSystem/Components/DSCard.swift
     ai_roles: [surface_container, section_card]
+    notes: use padding:0 for asymmetric padding, then apply .padding(.horizontal/.vertical) manually
+
   - name: DSCarousel
     category: layout
+    doc: ../docs/components/DSCarousel.md
     path: ../../ios/Sources/DesignSystem/Components/DSCarousel.swift
     variants: [spotlight, standard]
     ai_roles: [image_carousel, hero_carousel]
+
   - name: DSCarouselDeck
     category: layout
+    doc: ../docs/components/DSCarouselDeck.md
     path: ../../ios/Sources/DesignSystem/Components/DSCarouselDeck.swift
     ai_roles: [stacked_card_carousel]
+
+  - name: DSPhotoGrid
+    category: layout
+    doc: ../docs/components/DSPhotoGrid.md
+    path: ../../ios/Sources/DesignSystem/Components/DSPhotoGrid.swift
+    ai_roles: [photo_video_grid]
+
+  - name: DSVideoPlayer
+    category: layout
+    doc: ../docs/components/DSVideoPlayer.md
+    path: ../../ios/Sources/DesignSystem/Components/DSVideoPlayer.swift
+    ai_roles: [fullscreen_video_overlay]
+
+  - name: DSStackedCard
+    category: layout
+    doc: ../docs/components/DSStackedCard.md
+    path: ../../ios/Sources/DesignSystem/Components/DSStackedCard.swift
+    ai_roles: [depth_card]
+
+  - name: DSStackedCardCarousel
+    category: layout
+    doc: ../docs/components/DSStackedCardCarousel.md
+    path: ../../ios/Sources/DesignSystem/Components/DSStackedCardCarousel.swift
+    ai_roles: [overlapping_card_stack]
+
+  # ── Navigation ────────────────────────────────────────────────────────────────
   - name: DSTopAppBar
     category: navigation
+    doc: ../docs/components/DSTopAppBar.md
     path: ../../ios/Sources/DesignSystem/Components/DSTopAppBar.swift
     variants: [small, smallCentered, medium, large, logo, search, imageTitle]
     ai_roles: [screen_header, search_header, brand_header]
+    notes: always ultraThinMaterial blur background with progressive bottom fade — never add opaque background on top
+
   - name: DSBottomAppBar
     category: navigation
+    doc: ../docs/components/DSBottomAppBar.md
     path: ../../ios/Sources/DesignSystem/Components/DSBottomAppBar.swift
     variants: [full, floating, labeled]
     ai_roles: [bottom_navigation, fab_navigation]
+    notes: always use inside DSTabView for tab navigation — never place standalone
+
   - name: DSTabView
     category: navigation
+    doc: ../docs/components/DSTabView.md
     path: ../../ios/Sources/DesignSystem/Components/DSTabView.swift
     ai_roles: [multi_tab_shell]
+    notes: use ZStack+opacity inside content closure to keep all tabs alive
+
+  - name: DSNavigationMenu
+    category: navigation
+    doc: ../docs/components/DSNavigationMenu.md
+    path: ../../ios/Sources/DesignSystem/Components/DSNavigationMenu.swift
+    ai_roles: [side_menu_content]
+    notes: always used inside DSSideMenuLayout — never standalone
+
+  - name: DSSideMenuLayout
+    category: navigation
+    doc: ../docs/components/DSSideMenuLayout.md
+    path: ../../ios/Sources/DesignSystem/Components/DSSideMenuLayout.swift
+    ai_roles: [side_drawer_layout]
+
+  - name: DSBottomNavOverlay
+    category: navigation
+    doc: ../docs/components/DSBottomNavOverlay.md
+    path: ../../ios/Sources/DesignSystem/Components/DSBottomNavOverlay.swift
+    ai_roles: [fullscreen_nav_overlay]
+
   - name: DSListItem
     category: navigation
+    doc: ../docs/components/DSListItem.md
     path: ../../ios/Sources/DesignSystem/Components/DSListItem.swift
     slots: [leading, text_block, metadata, trailing]
     ai_roles: [list_row, settings_row, actionable_row]
+
   - name: DSDivider
     category: navigation
+    doc: ../docs/components/DSDivider.md
     path: ../../ios/Sources/DesignSystem/Components/DSDivider.swift
     variants: [fullBleed, inset, middle, subheader]
     ai_roles: [content_separator, section_label]
+
+  # ── Media ─────────────────────────────────────────────────────────────────────
   - name: DSAvatar
     category: media
+    doc: ../docs/components/DSAvatar.md
     path: ../../ios/Sources/DesignSystem/Components/DSAvatar.swift
     variants: [monogram, icon, image]
     shapes: [circle, roundedRect]
     ai_roles: [user_avatar, contact_avatar]
+
   - name: DSIconImage
     category: media
+    doc: ../docs/components/DSIconImage.md
     path: ../../ios/Sources/DesignSystem/Components/DSIconImage.swift
     ai_roles: [themed_icon_render]
+
   - name: DSIcon
     category: media
+    doc: ../docs/components/DSIcon.md
     path: ../../ios/Sources/DesignSystem/Components/DSIcon.swift
-    notes: large asset-backed icon catalog; use icon enum values rather than raw image names when possible
+    notes: >
+      1364-entry asset-backed icon catalog. Always use Image(dsIcon:) — never Image("icon_name").
+      Icons load from .module bundle (SPM). Use DSIconImage for the common resizable+template+scaledToFit pattern.
     ai_roles: [icon_reference_catalog]
+
+  # ── Typography ────────────────────────────────────────────────────────────────
   - name: DSText
     category: typography
+    doc: ../docs/components/DSText.md
     path: ../../ios/Sources/DesignSystem/Components/DSText.swift
     ai_roles: [tokenized_text]
+
+  # ── Profile ───────────────────────────────────────────────────────────────────
+  - name: DSUserCard
+    category: profile
+    doc: ../docs/components/DSUserCard.md
+    path: ../../ios/Sources/DesignSystem/Components/DSUserCard.swift
+    ai_roles: [user_profile_card]
+    notes: stat row and action buttons always present — not optional; use DSUserCardStat for stat data
 
 sample_page_families:
   walkthrough:

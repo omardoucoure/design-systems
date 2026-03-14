@@ -45,3 +45,33 @@ DSTextField(
     isSecure: true
 )
 ```
+
+---
+
+## AI Reference
+
+> **For AI agents implementing this component:** Always consult these files before writing code.
+>
+> | Resource | Path | Purpose |
+> |----------|------|---------|
+> | CLAUDE.md | [`CLAUDE.md`](../../CLAUDE.md) | Component rules, layout patterns, anti-patterns, token mapping |
+> | Contract | [`docs/ai/design-system-contract.yaml`](../ai/design-system-contract.yaml) | Machine-readable component registry, variants, ai_roles |
+> | Theming | [`docs/theming.md`](../theming.md) | Theme system, custom color overrides, all token tables |
+
+### Contract entry
+
+```yaml
+- name: DSTextField
+  category: forms
+  path: ../../ios/Sources/DesignSystem/Components/DSTextField.swift
+  variants: [filled, lined]
+  states: [empty, filled, active, error, validated]
+  ai_roles: [text_input, email_input, password_input, validated_field]
+```
+
+### Key rules
+
+- Use `isSecure: true` when Figma shows dots (`••••`) — never show plaintext for password fields.
+- Error state must include `helperText`, not just a color change.
+- Read variant and state directly from Figma — never default to `.empty` when content is shown.
+- `.filled` variant background is `surfaceNeutral0_5` (white/cream) to contrast against a `surfaceNeutral2` card background.

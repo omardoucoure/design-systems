@@ -52,3 +52,32 @@ DSTopAppBar(
     DSButton(style: .neutral, size: .medium, systemIcon: "bell") {}
 }
 ```
+
+---
+
+## AI Reference
+
+> **For AI agents implementing this component:** Always consult these files before writing code.
+>
+> | Resource | Path | Purpose |
+> |----------|------|---------|
+> | CLAUDE.md | [`CLAUDE.md`](../../CLAUDE.md) | Component rules, layout patterns, anti-patterns, token mapping |
+> | Contract | [`docs/ai/design-system-contract.yaml`](../ai/design-system-contract.yaml) | Machine-readable component registry, variants, ai_roles |
+> | Theming | [`docs/theming.md`](../theming.md) | Theme system, custom color overrides, all token tables |
+
+### Contract entry
+
+```yaml
+- name: DSTopAppBar
+  category: navigation
+  path: ../../ios/Sources/DesignSystem/Components/DSTopAppBar.swift
+  variants: [small, smallCentered, medium, large, logo, search, imageTitle]
+  ai_roles: [screen_header, search_header, brand_header]
+```
+
+### Key rules
+
+- Add `.toolbar(.hidden, for: .navigationBar)` when Figma shows no native navigation bar — always check every page.
+- Never hardcode a back button in the page — use the `onBack` parameter; `DSTopAppBar` renders it automatically.
+- Always transparent with `ultraThinMaterial` blur — never add a background color on top of it.
+- Read the style variant from Figma: centered title → `.smallCentered`, left title → `.small`, large hero title → `.large`.

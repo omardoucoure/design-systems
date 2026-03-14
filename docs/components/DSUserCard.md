@@ -73,3 +73,30 @@ DSUserCardStat(value: "98%", label: "done")
 | Stat label font | `theme.typography.smallRegular` |
 | Sign-out button | `DSButton(style: .neutralLight, size: .medium, icon: .logOut)` |
 | Edit button | `DSButton(style: .filledA, size: .medium, icon: .editPencil)` |
+
+---
+
+## AI Reference
+
+> **For AI agents implementing this component:** Always consult these files before writing code.
+>
+> | Resource | Path | Purpose |
+> |----------|------|---------|
+> | CLAUDE.md | [`CLAUDE.md`](../../CLAUDE.md) | Component rules, layout patterns, anti-patterns, token mapping |
+> | Contract | [`docs/ai/design-system-contract.yaml`](../ai/design-system-contract.yaml) | Machine-readable component registry, variants, ai_roles |
+> | Theming | [`docs/theming.md`](../theming.md) | Theme system, custom color overrides, all token tables |
+
+### Contract entry
+
+```yaml
+- name: DSUserCard
+  category: profile
+  path: ../../ios/Sources/DesignSystem/Components/DSUserCard.swift
+  ai_roles: [user_profile_card]
+```
+
+### Key rules
+
+- Stat row and action buttons are always present — not optional in the layout; use `DSUserCardStat` for the stat data model.
+- Never build a profile header card manually with `ZStack` + `VStack`; always use `DSUserCard`.
+- Read avatar, name, username, stats, and action buttons from Figma.
