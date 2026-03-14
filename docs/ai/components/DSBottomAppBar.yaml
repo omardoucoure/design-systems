@@ -1,0 +1,135 @@
+component: DSBottomAppBar
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSBottomAppBar.swift
+
+description: >
+  Themed bottom navigation bar with 3 layout styles and optional FAB center button.
+  Tab selection highlight uses surfaceSecondary100 (brand accent capsule).
+  Always use DSBottomAppBar for bottom tab navigation — never build custom tab bars.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Main app shell navigation between top-level sections (Home, Explore, Profile, etc.)
+  - Any screen that Figma shows a bottom navigation bar
+
+never_use_when:
+  - In-page navigation between sections → use DSSegmentedPicker
+  - Single-screen action buttons → use DSButton
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  full:
+    description: Docked bar, top corners rounded (radius.xl), icon-only items with center FAB
+    background: theme.colors.surfaceNeutral2
+    top_radius: theme.radius.xl (32px), bottom radius 0 (flush to screen edge)
+    padding_h: theme.spacing.lg (24px)
+    padding_top: theme.spacing.md (16px)
+    padding_bottom: theme.spacing.xs (8px) + safe area bottom
+    shadow: y:-8 blur:4 opacity:0.02 | y:-11 blur:32 opacity:0.18
+    fab_size: 56px tall container, inner 24px icon
+    use_when:
+      - App with 4 tabs + FAB (e.g., Home, Search, [+], Favorites, Profile)
+      - Any full-width docked tab bar where FAB is part of the tab row
+    figma_signal: Bar spans full width, stuck to bottom edge, FAB in center
+
+  floating:
+    description: Pill-shaped floating capsule, not full-width
+    background: theme.colors.surfaceNeutral2
+    shape: Capsule
+    padding: theme.spacing.md (16px) all sides
+    shadow: y:8 blur:4 opacity:0.03 | y:20 blur:12 opacity:0.08
+    outer_padding: 20px on each side (applied by the bar itself)
+    fab_size: 40px tall container
+    use_when:
+      - Modern, minimal app shell where the content should show behind/around the bar
+      - Pair with ZStack(alignment: .bottom) layout and .padding(.horizontal, ...).padding(.bottom, ...)
+    figma_signal: Bar floats above content, capsule shape, visible page background on sides
+
+  labeled:
+    description: Docked bar with icon + text label + optional badge per tab
+    background: theme.colors.surfaceNeutral2
+    top_radius: theme.radius.xl (32px)
+    padding_h: theme.spacing.md (16px)
+    padding_top: theme.spacing.md (16px)
+    padding_bottom: theme.spacing.xs (8px) + safe area bottom
+    label_font: 12px semibold (hardcoded — part of component design)
+    label_opacity: selected=1.0, unselected=0.6
+    badge: numberSemantic (infoFocus background) at top-right of icon
+    use_when:
+      - Apps where tab labels are needed for clarity (less icon-fluent users)
+      - 4–5 tabs with labels ("Home", "Shop", "Orders", "Profile")
+      - When Figma explicitly shows text labels under each tab icon
+    figma_signal: Each tab has text label visible below the icon
+
+# ─── SELECTION HIGHLIGHT ─────────────────────────────────────────────────────────
+selection_highlight:
+  background: theme.colors.surfaceSecondary100 (brand accent capsule)
+  icon_scale: 1.12x when selected
+  animation: .spring(response: 0.35, dampingFraction: 0.7)
+  note: Selection color automatically reflects custom secondaryColor overrides
+
+# ─── FAB BUTTON ─────────────────────────────────────────────────────────────────
+fab:
+  description: Center action button placed between left and right tab groups
+  default_background: theme.colors.surfacePrimary120
+  default_foreground: theme.colors.textNeutral0_5
+  custom_background: fabColor parameter for brand-specific FAB colors
+  badge: fabBadgeCount — shows numberSemantic badge at top-right
+  use_when:
+    - Primary creation action (new post, new order, compose, camera)
+    - When Figma shows a distinctly colored center button larger than regular tabs
+  icon_sources:
+    dsIcon: fabIcon: DSIcon — preferred (custom asset)
+    system: fabIcon: String — SF Symbol name
+
+# ─── ITEMS ──────────────────────────────────────────────────────────────────────
+items:
+  type: "[DSBottomBarItem]"
+  count: "3–5 items (even number for FAB layouts since FAB occupies center slot)"
+  creation:
+    dsIcon: DSBottomBarItem(id: "home", label: "Home", icon: DSIcon.home)
+    system: DSBottomBarItem(id: "home", label: "Home", systemIcon: "house")
+  badge: badgeCount: Int? — shows a small numberSemantic badge on the tab icon
+
+# ─── EMBEDDED MODE ───────────────────────────────────────────────────────────────
+embedded:
+  parameter: embedded: Bool = false
+  use_when: >
+    When DSBottomAppBar is placed inside a parent that already provides the background
+    (e.g., inside DSTabView or a custom container). Removes the bar's own background,
+    clip shape, and shadow so the parent's styling shows through.
+
+# ─── LAYOUT INTEGRATION ──────────────────────────────────────────────────────────
+layout_integration:
+  full_and_labeled:
+    note: >
+      Use ZStack(alignment: .bottom) with the bar outside the ScrollView.
+      The bar handles its own safe area bottom inset — do NOT add extra bottom padding.
+    pattern: |
+      ZStack(alignment: .bottom) {
+          VStack(spacing: 0) {
+              DSTopAppBar(...)
+              ScrollView {
+                  content.padding(.bottom, 100)  // clear the floating bar
+              }
+          }
+          DSBottomAppBar(items: items, selectedId: $tab, style: .labeled)
+      }
+
+  floating:
+    note: >
+      Same ZStack pattern but add .padding(.horizontal, theme.spacing.md) and
+      .padding(.bottom, theme.spacing.lg) to position the floating bar from edges.
+    pattern: |
+      DSBottomAppBar(items: items, selectedId: $tab, style: .floating)
+          .padding(.horizontal, theme.spacing.md)
+          .padding(.bottom, theme.spacing.lg)
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER build custom tab bars — always use DSBottomAppBar
+  - Selection highlight uses surfaceSecondary100 automatically — do not override per-item
+  - .full and .labeled styles handle safe area insets — do not add extra .safeAreaInset
+  - For FAB bars, split items evenly: [2 left, FAB center, 2 right]
+  - Read Figma tab labels: if visible → .labeled style; icon only → .full or .floating
+  - Use DSIcon enum for tab icons — prefer custom SVG icons over SF Symbols

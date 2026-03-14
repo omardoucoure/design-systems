@@ -59,6 +59,13 @@ system:
       - ../../ios/Sources/DesignSystem/Theme/Style.swift
     theming_doc: ../theming.md
     claude_rules: ../../CLAUDE.md
+    component_yaml_dir: ./components/
+    component_yaml_index: ./components/INDEX.yaml
+    component_yaml_note: >
+      Each component has a dedicated YAML in docs/ai/components/ with
+      use_when, never_use_when, per-variant context, exact padding/spacing,
+      Figma color mappings, and hard rules. Always read the component YAML
+      before implementing that component.
   ai_generation_goal:
     generate_new_pages_in_figma_from_registered_components_and_patterns
 

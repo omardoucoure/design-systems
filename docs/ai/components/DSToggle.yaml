@@ -1,0 +1,67 @@
+component: DSToggle
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSToggle.swift
+
+description: >
+  Themed toggle switch (48×28pt capsule, 22pt thumb). ON color: surfacePrimary100.
+  OFF color: surfaceNeutral3. Thumb: surfaceNeutral0_5 (white/cream).
+  Optional label + description text to the left of the switch.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Binary on/off settings ("Dark Mode", "Notifications", "Push Alerts")
+  - Single preference toggles on settings pages
+  - Inside DSListItem trailing slot for feature toggles
+
+never_use_when:
+  - Multi-select options → use DSCheckbox
+  - Mutually exclusive radio options → use DSRadio
+
+# ─── VISUAL STATES ───────────────────────────────────────────────────────────────
+visual_states:
+  on:
+    track_color: surfacePrimary100 (brand primary)
+    thumb: surfaceNeutral0_5, aligned .trailing
+    animation: .easeInOut(duration: 0.2)
+
+  off:
+    track_color: surfaceNeutral3 (grey)
+    thumb: surfaceNeutral0_5, aligned .leading
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  isOn:
+    type: "Binding<Bool>"
+
+  label:
+    type: LocalizedStringKey?
+    font: theme.typography.body (16px medium)
+    color: textNeutral9
+
+  description:
+    type: LocalizedStringKey?
+    font: theme.typography.caption (14px medium)
+    color: textNeutral8
+    use_when: Extra context below the label ("Changes require restart", etc.)
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  track_size: 48×28pt, Capsule shape
+  thumb_size: 22×22pt, Circle shape, 3pt padding inside track
+  thumb_shadow: y:1 blur:2 opacity:0.15
+  with_label: HStack(alignment: .top, spacing: sm) — text block left, Spacer, toggle right
+  label_description_gap: 2px
+
+# ─── DSListItem TRAILING PATTERN ─────────────────────────────────────────────────
+in_list_item: |
+  DSListItem(headline: "Dark Mode") {
+      EmptyView()
+  } trailing: {
+      DSToggle(isOn: $darkMode)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - ON color is surfacePrimary100 — it automatically reflects custom primaryColor overrides
+  - When used inside DSListItem, use the standalone toggle (no label) and put text in headline
+  - Initialize isOn based on actual default state — do not always default to false

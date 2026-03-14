@@ -1,0 +1,101 @@
+component: DSUserCard
+category: profile
+swift_path: ios/Sources/DesignSystem/Components/DSUserCard.swift
+figma_node: "1017:70585"
+
+description: >
+  Profile card with avatar, name, bio with "read more" inline link, a stat column,
+  and sign-out + edit action buttons. Uses DSCard internally with surfaceNeutral2 background,
+  radius.xl, zero padding. Divided into top section and bottom row by a DSDivider.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - User profile page header card
+  - Profile tab top card with user identity + quick stats + actions
+
+never_use_when:
+  - Simple user list row → use DSListItem with DSAvatar leading
+  - Compact profile summary → use DSAvatar + DSText manually
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout: |
+  ┌──────────────────────────────────────┐
+  │  Name                    [Avatar]    │  ← top section
+  │  Bio text… read more                 │
+  ├──────────────────────────────────────┤  ← DSDivider .fullBleed
+  │  98%          [Sign Out]  [Edit]     │  ← bottom row
+  │  done                                │
+  └──────────────────────────────────────┘
+  Background: DSCard(surfaceNeutral2, radius.xl, padding: 0)
+  Top padding: theme.spacing.xl (32px)
+  Inner horizontal padding: theme.spacing.xl (32px)
+  Section gap: theme.spacing.lg (24px)
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  name:
+    type: LocalizedStringKey
+    font: theme.typography.h4 (24px medium)
+    color: textNeutral9
+
+  bio:
+    type: LocalizedStringKey
+    font: theme.typography.bodyRegular (16px regular)
+    color: textNeutral9
+
+  readMoreLabel:
+    type: LocalizedStringKey
+    default: "read more"
+    font: theme.typography.label (14px semibold) — inline after bio text
+
+  avatarImage:
+    type: Image?
+    size: 61×64pt, shape: roundedRect(radius.md)
+    position: top-right of name
+
+  stat:
+    type: DSUserCardStat
+    structure:
+      value: LocalizedStringKey — large stat value (font: largeSemiBold)
+      label: LocalizedStringKey — small label below (font: smallRegular)
+    position: bottom-left of bottom row
+
+  signOutLabel:
+    type: LocalizedStringKey
+    default: "Sign Out"
+    renders: DSButton(style: .neutralLight, size: .medium, icon: .logOut)
+
+  editLabel:
+    type: LocalizedStringKey
+    default: "Edit"
+    renders: DSButton(style: .filledA, size: .medium, icon: .editPencil)
+
+  onSignOut:
+    type: "() -> Void"
+    required: true
+
+  onEdit:
+    type: "() -> Void"
+    required: true
+
+# ─── TOKEN USAGE ─────────────────────────────────────────────────────────────────
+token_usage:
+  card_background: theme.colors.surfaceNeutral2
+  card_radius: theme.radius.xl (32px)
+  inner_padding: theme.spacing.xl (32px)
+  section_gap: theme.spacing.lg (24px)
+  name_font: theme.typography.h4
+  bio_font: theme.typography.bodyRegular
+  read_more_font: theme.typography.label
+  stat_value_font: theme.typography.largeSemiBold
+  stat_label_font: theme.typography.smallRegular
+  sign_out: DSButton(style: .neutralLight, size: .medium, icon: .logOut)
+  edit: DSButton(style: .filledA, size: .medium, icon: .editPencil)
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER build a profile header manually with ZStack + VStack — always use DSUserCard
+  - The stat, sign-out, and edit are always present — not optional in the layout
+  - avatarImage is optional (nil shows no avatar) — if Figma shows one, provide it
+  - Sign-out button uses .neutralLight style (cream/white on surfaceNeutral2 background)
+  - Edit button uses .filledA style (brand accent)

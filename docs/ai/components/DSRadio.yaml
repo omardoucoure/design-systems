@@ -1,0 +1,68 @@
+component: DSRadio
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSRadio.swift
+
+description: >
+  Themed radio button with label and optional description.
+  Single-select from a group. Selection: surfacePrimary100 filled circle with white dot.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Mutually exclusive single-selection from 2–5 options (gender, payment method, size)
+  - Onboarding preference selection ("What's your goal?")
+  - Settings options where only one can be active
+
+never_use_when:
+  - Independent multi-select → use DSCheckbox
+  - On/off toggle → use DSToggle
+  - More than 5 options → use DSDropdown
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  isSelected:
+    type: Bool (not a Binding — caller compares value to selection)
+    note: >
+      Typically used as: DSRadio(isSelected: selectedOption == .option1, ...)
+
+  label:
+    type: LocalizedStringKey?
+    font: theme.typography.body (16px medium)
+
+  description:
+    type: LocalizedStringKey?
+    font: theme.typography.caption (14px medium)
+    color: textNeutral8
+
+  onSelect:
+    type: "() -> Void"
+    note: Called when radio tapped — set selectedOption in the action
+
+# ─── VISUAL STATES ───────────────────────────────────────────────────────────────
+visual_states:
+  unselected:
+    outer_ring: 20×20pt, borderNeutral9_5 stroke, widthMd
+    fill: transparent
+
+  selected:
+    outer_ring: surfacePrimary100 fill + stroke
+    inner_dot: ~8×8pt white circle centered
+
+# ─── GROUPING PATTERN ────────────────────────────────────────────────────────────
+grouping_pattern: |
+  enum PlanOption { case monthly, yearly }
+  @State private var selectedPlan: PlanOption = .monthly
+
+  VStack(spacing: theme.spacing.sm) {
+      DSRadio(isSelected: selectedPlan == .monthly, label: "Monthly") {
+          selectedPlan = .monthly
+      }
+      DSRadio(isSelected: selectedPlan == .yearly, label: "Yearly", description: "Save 20%") {
+          selectedPlan = .yearly
+      }
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Always group DSRadio buttons for the same selection — they share @State
+  - Only one should have isSelected: true at a time
+  - The onSelect closure sets the shared state variable — never toggle isSelected directly

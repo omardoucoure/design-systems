@@ -1,0 +1,81 @@
+component: DSEventCard
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSEventCard.swift
+
+description: >
+  Compact horizontal card: title (bodySemiBold, 16px) + subtitle (tiny, very small, 75% opacity)
+  on the left, trailing DSIcon on the right. Background and foreground are caller-specified.
+  Padding: lg (24px). Radius: theme.radius.lg (20px).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Event listings, activity items, scheduled sessions
+  - Feature announcement cards in feeds
+  - Any compact two-line text card with a trailing icon
+  - Horizontal pill-shaped content items in a list
+
+never_use_when:
+  - Cards with images → use DSProductCard or DSStackedCard
+  - Settings rows → use DSListItem
+  - Stat widgets → use DSMetricCard
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  title:
+    type: LocalizedStringKey
+    font: theme.typography.bodySemiBold (16px semibold)
+    color: foreground
+
+  subtitle:
+    type: LocalizedStringKey
+    font: theme.typography.tiny (very small)
+    color: foreground.opacity(0.75)
+
+  icon:
+    type: DSIcon (required)
+    size: 24×24pt, renderingMode: .template
+    color: foreground
+
+  background:
+    type: Color (required)
+    common_values:
+      theme.colors.surfaceSecondary100: Brand accent card
+      theme.colors.surfaceNeutral2: Standard neutral card
+      theme.colors.surfacePrimary100: Primary-colored card
+
+  foreground:
+    type: Color (required)
+    common_values:
+      theme.colors.textNeutral9: For light backgrounds
+      theme.colors.textNeutral0_5: For dark/primary backgrounds
+
+# ─── INTERNAL LAYOUT ─────────────────────────────────────────────────────────────
+internal_layout:
+  outer: HStack(alignment: .top, spacing: theme.spacing.md)
+  text: VStack(alignment: .leading, spacing: theme.spacing.xxs) + Spacer
+  icon: trailing, 24×24pt
+  padding: theme.spacing.lg (24px) all sides
+  radius: theme.radius.lg (20px)
+  shape: RoundedRectangle
+
+# ─── BACKGROUND + FOREGROUND COMBINATIONS ────────────────────────────────────────
+combinations:
+  accent:
+    background: theme.colors.surfaceSecondary100
+    foreground: theme.colors.textNeutral9
+  neutral:
+    background: theme.colors.surfaceNeutral2
+    foreground: theme.colors.textNeutral9
+  primary:
+    background: theme.colors.surfacePrimary100
+    foreground: theme.colors.textNeutral0_5
+  dark_primary:
+    background: theme.colors.surfacePrimary120
+    foreground: theme.colors.textNeutral0_5
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - ALWAYS read background and foreground from Figma — both are required
+  - icon is DSIcon enum — never a raw string
+  - subtitle is at 75% foreground opacity automatically — do not apply .opacity() externally
+  - Radius is lg (20px) not xl (32px) — this is smaller than DSCard default

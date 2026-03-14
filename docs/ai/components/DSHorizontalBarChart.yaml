@@ -1,0 +1,26 @@
+component: DSHorizontalBarChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSHorizontalBarChart.swift
+
+description: >
+  Dual horizontal bar comparison chart. Shows two values side by side as horizontal bars
+  growing from a center axis — used for comparing two groups (e.g., male vs female, team A vs B).
+
+use_when:
+  - Dual-series comparison (gender split, A/B split, before/after)
+  - When Figma shows horizontal bars going both left and right from a center
+
+never_use_when:
+  - Single metric → use DSBarChart
+  - Stacked → use DSStackedBarChart
+
+visual:
+  left_bar: grows left from center axis
+  right_bar: grows right from center axis
+  colors: two distinct colors (read from Figma — often primary vs secondary)
+  label: category label in center
+
+rules:
+  - Read both bar colors from Figma
+  - Always set .frame(height:) matching Figma dimensions
+  - Data passes as pairs of (leftValue, rightValue, label) tuples

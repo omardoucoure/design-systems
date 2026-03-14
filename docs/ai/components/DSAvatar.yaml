@@ -1,0 +1,81 @@
+component: DSAvatar
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSAvatar.swift
+
+description: >
+  Themed avatar component with three content styles (monogram, icon, image)
+  and two shape options (circle, roundedRect). Background is always surfaceNeutral0_5.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - User profile picture in headers, list items, comments, cards
+  - Contact or participant representation in feeds
+  - Fallback when no photo is available (monogram or icon style)
+
+never_use_when:
+  - Product or content thumbnails → use Image directly or DSProductCard
+  - Brand logos → use Image with specific dimensions
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  monogram:
+    description: Displays initials text (1–2 characters)
+    font: theme.typography.body (scales with avatar size)
+    use_when:
+      - User has no profile photo
+      - Contact list where initials are preferred over a generic icon
+    example: DSAvatar(style: .monogram("JD"), size: 40)
+
+  icon:
+    description: Displays an SF Symbol
+    icon_scale: ~45% of avatar width
+    use_when:
+      - Generic user placeholder when no initials are available
+      - Non-person entities (bots, teams, groups)
+    example: DSAvatar(style: .icon("person.fill"), size: 48)
+
+  image:
+    description: Displays a photo (resizable, scaledToFill)
+    use_when:
+      - Actual user profile photo is available
+      - Content thumbnails that need the avatar shape applied
+    example: DSAvatar(style: .image(Image("avatar")), size: 56)
+
+# ─── SHAPES ─────────────────────────────────────────────────────────────────────
+shapes:
+  circle:
+    use_when: Standard user avatars (profile photos, contact lists)
+    default: true
+
+  roundedRect:
+    parameter: shape: .roundedRect(radius)
+    use_when:
+      - Team or channel thumbnails
+      - Non-person entity avatars
+      - When Figma shows a rectangular avatar with rounded corners
+    common_radius: theme.radius.sm (8px) or theme.radius.md (16px)
+
+# ─── SIZES ──────────────────────────────────────────────────────────────────────
+sizes:
+  note: Size is a CGFloat — read exact pixel dimensions from Figma
+  common_sizes:
+    24: Compact list items, dense feeds
+    32: Card headers, comment rows
+    40: Standard (default) — profile lists, top bar avatars
+    48: Feature cards, user profile sections
+    56: Profile header, large feature areas
+    61x64: DSUserCard avatar (non-square — use CGSize init)
+  non_square: >
+    DSAvatar(style: .image(img), size: CGSize(width: 61, height: 64), shape: .roundedRect(theme.radius.md))
+
+# ─── BACKGROUND ─────────────────────────────────────────────────────────────────
+background:
+  color: theme.colors.surfaceNeutral0_5 (always, cannot be overridden)
+  note: Provides visible background for monogram/icon styles; hidden by image for .image style
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use Image(...).clipShape(Circle()) for user avatars — always use DSAvatar
+  - Read exact size from Figma — do not default to 40 if Figma shows a different dimension
+  - For non-square avatars, use the CGSize init with shape: .roundedRect(radius)
+  - .monogram takes the initials string — derive from user name (e.g., "John Doe" → "JD")

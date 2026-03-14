@@ -1,0 +1,29 @@
+component: DSCalendarGrid
+category: date_time
+swift_path: ios/Sources/DesignSystem/Components/DSCalendarGrid.swift
+
+description: >
+  Interactive calendar grid with month navigation (prev/next buttons).
+  Shows day-of-week headers + date cells. Selected date highlighted with primary color.
+
+use_when:
+  - Full calendar grid showing a month at a time
+  - Date selection with month navigation
+  - Scheduling or event management screens with a grid calendar
+
+never_use_when:
+  - Date picker with start/end selection → use DSDatePicker
+  - Horizontal week strip → use DSWeekStrip
+  - Horizontal day scroller → use DSDayPicker
+
+visual:
+  grid: 7 columns (days of week) × ~5 rows
+  header: day-of-week abbreviations (M, T, W, T, F, S, S)
+  selected_cell: filled circle, surfacePrimary100
+  today: outlined or subtle highlight
+  navigation: prev/next month arrows
+
+rules:
+  - DSCalendarGrid fills its container width
+  - Provide selectedDate: Binding<Date?> for selection state
+  - Month navigation is built-in — no need to manage month state manually

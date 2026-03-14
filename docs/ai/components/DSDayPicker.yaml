@@ -1,0 +1,35 @@
+component: DSDayPicker
+category: date_time
+swift_path: ios/Sources/DesignSystem/Components/DSDayPicker.swift
+
+description: >
+  Horizontal scrollable day picker with fade-out effect at edges.
+  Each day shows day-of-week letter + date number. Selected day: primary color filled circle.
+
+use_when:
+  - Scheduling app day selector (swipeable horizontal strip)
+  - Workout, habit, or task tracking with daily view switching
+  - When Figma shows a horizontal date scroller with fade edges
+
+never_use_when:
+  - Full calendar grid → use DSCalendarGrid
+  - Week strip (Mon-Sun, no scroll) → use DSWeekStrip
+
+visual:
+  layout: HStack of day cells, horizontally scrollable
+  fade_effect: gradient fade at left/right edges (masked)
+  selected_day:
+    background: surfacePrimary100 filled circle
+    text_color: textNeutral0_5
+  unselected_day:
+    text_color: textNeutral9
+
+day_cell:
+  day_letter: theme.typography.small (M, T, W, etc.)
+  date_number: theme.typography.bodySemiBold or h5
+  cell_size: ~40×56pt typically
+
+rules:
+  - DSDayPicker is horizontally scrollable — do NOT set a fixed count of visible days
+  - Selected date uses primaryColor (reflects custom color overrides)
+  - Fade edges are rendered via mask — do not add extra gradients externally

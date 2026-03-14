@@ -1,0 +1,70 @@
+component: DSCodeInput
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSCodeInput.swift
+
+description: >
+  OTP/verification code input with individual digit boxes (height: 88px each).
+  Background: surfaceNeutral0_5. Active box border: borderNeutral8. Default border: borderNeutral2.
+  Hidden underlying TextField captures numeric keyboard input automatically.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - SMS verification code entry (4 or 6 digits)
+  - OTP authentication screens
+  - PIN entry
+
+never_use_when:
+  - Regular text input → use DSTextField
+  - Non-numeric input → DSCodeInput only accepts digits
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  code:
+    type: "Binding<String>"
+    note: Receives only digits — non-digit characters are filtered automatically
+
+  digitCount:
+    type: Int
+    default: 4
+    common_values:
+      4: PIN or short code
+      6: SMS verification code
+
+# ─── VISUAL PROPERTIES ────────────────────────────────────────────────────────────
+visual:
+  box_background: theme.colors.surfaceNeutral0_5
+  box_radius: theme.radius.md (16px)
+  box_height: 88px
+  box_width: equal share of available width (maxWidth: .infinity)
+  spacing_between_boxes: theme.spacing.sm (12px)
+  border_width: theme.borders.widthMd (2px)
+  border_active: theme.colors.borderNeutral8
+  border_inactive: theme.colors.borderNeutral2
+  placeholder_text: "---" (3 dashes at 50% opacity when empty)
+  digit_font: theme.typography.body (16px medium)
+
+# ─── BEHAVIOR ────────────────────────────────────────────────────────────────────
+behavior:
+  keyboard: .numberPad (automatically — numeric only)
+  text_content_type: .oneTimeCode (enables SMS autofill on iOS)
+  tap_activates: tapping any box focuses the hidden TextField
+  auto_advance: The binding receives all digits — boxes auto-fill left to right
+  max_digits: capped at digitCount
+
+# ─── INTEGRATION ─────────────────────────────────────────────────────────────────
+integration: |
+  @State private var verificationCode = ""
+
+  DSCodeInput(code: $verificationCode, digitCount: 6)
+
+  // Check completion
+  .onChange(of: verificationCode) { code in
+      if code.count == 6 { submitCode(code) }
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Read digitCount from Figma — do not always default to 4
+  - .textContentType(.oneTimeCode) is set automatically — iOS will offer SMS autofill
+  - Always use DSCodeInput for OTP screens — never build individual digit boxes manually
+  - code binding receives the full string — check .count == digitCount for completion

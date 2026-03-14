@@ -1,0 +1,87 @@
+component: DSBadge
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSBadge.swift
+
+description: >
+  Small status indicator in three visual forms: dot, numbered capsule, or text tag.
+  Two color tracks: brand (surfaceSecondary100) and semantic (infoFocus / system blue).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Notification count on tab bar items
+  - Unread message indicators
+  - "New" or status tags on list items or cards
+  - Status dots on user presence indicators
+
+never_use_when:
+  - Interactive filter tags → use DSChip
+  - Status messages in forms → use DSTextField helperText
+
+# ─── VARIANTS ───────────────────────────────────────────────────────────────────
+variants:
+  dot:
+    size: 6×6pt circle
+    color: theme.colors.surfaceSecondary100 (brand accent)
+    use_when:
+      - Presence indicator (online status)
+      - Unread indicator without a count (just "something new")
+    example: DSBadge(variant: .dot)
+
+  numberBrand:
+    background: theme.colors.surfaceSecondary100
+    foreground: theme.colors.textNeutral9
+    size: min 16×16pt capsule, font 10px semibold
+    padding_h: theme.spacing.xxs (4px)
+    padding_v: 2px
+    use_when:
+      - Notification counts on tab bar items (messages, alerts)
+      - Cart item count with brand color
+    example: DSBadge(variant: .numberBrand, count: 5)
+
+  numberSemantic:
+    background: theme.colors.infoFocus (info blue)
+    foreground: theme.colors.textNeutral9
+    size: same as numberBrand
+    use_when:
+      - System/neutral notification counts
+      - Info-level indicators not tied to brand accent
+      - FAB badge count (DSBottomAppBar.fabBadgeCount)
+    example: DSBadge(variant: .numberSemantic, count: 12)
+
+  tagBrand:
+    background: theme.colors.surfaceSecondary100
+    foreground: theme.colors.textNeutral9
+    padding_h: theme.spacing.xs (8px)
+    padding_v: theme.spacing.xxs (4px)
+    font: 10px semibold
+    use_when:
+      - "New" label on product cards or list items
+      - Feature availability tags
+    example: DSBadge(variant: .tagBrand, text: "New")
+
+  tagSemantic:
+    background: theme.colors.infoFocus
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - System status tags ("Beta", "Preview")
+      - Neutral informational labels not requiring brand color
+    example: DSBadge(variant: .tagSemantic, text: "Beta")
+
+# ─── POSITIONING ─────────────────────────────────────────────────────────────────
+positioning:
+  overlay: >
+    Badges are typically overlaid on an icon using ZStack(alignment: .topTrailing),
+    then offset slightly: .offset(x: 2, y: 0) or similar to appear at the top-right corner.
+  example: |
+    ZStack(alignment: .topTrailing) {
+        Image(dsIcon: .bell).frame(width: 24, height: 24)
+        DSBadge(variant: .numberBrand, count: 3)
+            .offset(x: 4, y: -4)
+    }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Read Figma badge color to pick brand vs semantic variant
+  - dot variant has no text — only use for pure presence/status indicators
+  - For tab bar badges, use DSBottomBarItem.badgeCount — DSBottomAppBar renders it internally
+  - tagBrand/tagSemantic take a LocalizedStringKey — always localize

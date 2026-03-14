@@ -1,0 +1,67 @@
+component: DSDivider
+category: core
+swift_path: ios/Sources/DesignSystem/Components/DSDivider.swift
+
+description: >
+  Themed 1px horizontal separator line with optional subheader label.
+  Default color: theme.colors.borderNeutral9_5. Accepts optional color override.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Separating sections within a card or list
+  - Between stat row and action row in DSUserCard-style layouts
+  - Between form sections
+
+never_use_when:
+  - Between list items in a DSListItem group → use showDivider: true on DSListItem instead
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  fullBleed:
+    description: Edge-to-edge line (no horizontal padding)
+    use_when:
+      - Inside DSCard containers — the card's own padding provides the inset
+      - Full-width section separators
+      - Between stat row and button row in cards (DSUserCard uses this)
+    figma_signal: Line spans full width of the parent container
+
+  inset:
+    description: Leading-inset line (16pt padding on leading edge only)
+    padding_leading: theme.spacing.md (16px)
+    use_when:
+      - List item dividers where the leading icon aligns with the content start
+      - Figma shows a divider that starts at text alignment, not edge
+
+  middle:
+    description: Both sides inset (16pt padding each side)
+    padding_h: theme.spacing.md (16px)
+    use_when:
+      - Dividers that float within card content, not touching edges
+      - Content sections with breathing room from the card walls
+
+  subheader:
+    description: Full-bleed line + label text below
+    label_font: theme.typography.caption (14px medium)
+    label_color: theme.colors.textNeutral9
+    label_padding_h: theme.spacing.md (16px)
+    label_padding_bottom: theme.spacing.sm (12px)
+    gap_between_line_and_label: theme.spacing.xs (8px)
+    use_when:
+      - Section headers within a grouped list ("Today", "Yesterday", "This Week")
+      - Category labels that separate content groups
+
+# ─── COLOR OVERRIDE ──────────────────────────────────────────────────────────────
+color_override:
+  parameter: color: Color?
+  default: theme.colors.borderNeutral9_5
+  use_when: >
+    Figma shows a divider on a colored (non-neutral) background where the default
+    neutral color would be invisible. Example: divider on a primary-colored card
+    → use a lighter opacity of textNeutral0_5.
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use SwiftUI Divider() — always use DSDivider
+  - Default color is borderNeutral9_5 — only override if Figma shows a different divider color
+  - .fullBleed inside a DSCard with xl padding will appear inset by the card's padding — this is correct
+  - subheader label is always left-aligned with md horizontal padding

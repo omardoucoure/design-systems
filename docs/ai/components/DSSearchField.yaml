@@ -1,0 +1,75 @@
+component: DSSearchField
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSSearchField.swift
+
+description: >
+  Search input field with leading magnifying glass icon and trailing clear (×) button.
+  Height: 56px. Two variants: filled (box with background) and lined (bottom border only).
+  Background transitions from surfaceNeutral2 (unfocused) to surfaceNeutral0_5 (focused).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Standalone search page input (not in top bar — that uses DSTopAppBar search style)
+  - Inline search within a page (e.g., search within a list)
+  - Filter/search bar above content feeds
+
+never_use_when:
+  - Top app bar search tap target → use DSTopAppBar style: .search
+  - Simple text input → use DSTextField
+
+# ─── VARIANTS ───────────────────────────────────────────────────────────────────
+variants:
+  filled:
+    background_unfocused: theme.colors.surfaceNeutral2
+    background_focused: theme.colors.surfaceNeutral0_5
+    border_unfocused: theme.colors.borderNeutral2, widthSm (1px)
+    border_focused: theme.colors.infoFocus (blue), widthSm
+    radius: theme.radius.md (16px)
+    use_when: Most standalone search fields
+
+  lined:
+    background: .clear (transparent)
+    border: bottom line only
+    border_unfocused: borderNeutral9_5, widthSm
+    border_focused: infoFocus (blue), widthSm
+    radius: 0
+    use_when: Minimal search fields on colored backgrounds
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  text:
+    type: "Binding<String>"
+    required: true
+
+  placeholder:
+    type: LocalizedStringKey
+    default: "Search"
+
+  variant:
+    type: InputVariant
+    default: .filled
+
+  onSubmit:
+    type: "(() -> Void)?"
+    use_when: Trigger search action when user hits return key
+
+# ─── CLEAR BUTTON ────────────────────────────────────────────────────────────────
+clear_button:
+  shows_when: text is non-empty
+  icon: "xmark.circle.fill" (SF Symbol), 18px
+  action: clears text
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  height: 56px (fixed)
+  padding_h: theme.spacing.md (16px)
+  padding_v: theme.spacing.md (16px)
+  gap_between_icon_and_field: 12pt
+  magnifying_glass_size: 24×24pt, opacity: 0.5 unfocused / 1.0 focused
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use DSTextField for search — use DSSearchField
+  - Height is always 56px
+  - Clear button appears automatically when text is non-empty — do not add manually
+  - DSTopAppBar(.search) is a different component for top bar search taps — not DSSearchField

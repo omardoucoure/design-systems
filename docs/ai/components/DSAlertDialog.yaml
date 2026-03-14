@@ -1,0 +1,102 @@
+component: DSAlertDialog
+category: feedback
+swift_path: ios/Sources/DesignSystem/Components/DSAlertDialog.swift
+
+description: >
+  Modal dialog overlay with dimmed background + centered card. Tap outside to dismiss.
+  Card width: 305pt fixed. Severity drives the card background color.
+  Special: .neutral severity → surfacePrimary120 (dark) background, light text.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Permission request dialogs ("Allow access to contacts?")
+  - Destructive action confirmations ("Delete this post?")
+  - Informational pop-ups that require acknowledgment
+  - Any scenario where Figma shows a centered modal card over a dimmed page
+
+never_use_when:
+  - Full-page empty states → use DSAlert
+  - Toast/notification banners → use DSBanner
+
+# ─── SEVERITY → BACKGROUND COLOR ────────────────────────────────────────────────
+severity_background_mapping:
+  error: theme.colors.error (red background, dark text)
+  warning: theme.colors.warning (orange/yellow, dark text)
+  success: theme.colors.validated (green, dark text)
+  info: theme.colors.infoFocus (blue, dark text)
+  neutral: theme.colors.surfacePrimary120 (dark primary — LIGHT text, white icons)
+  note: >
+    For .neutral severity, text and icons use textNeutral0_5 (light).
+    For all other severities, text uses textNeutral9 (dark).
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  card_width: 305pt (fixed, centered on screen)
+  card_padding: theme.spacing.xl (32px) all sides
+  card_radius: theme.radius.xl (32px)
+  card_shadow: y:4 blur:4 opacity:0.02 + y:24 blur:24 opacity:0.18
+  direction: VStack, alignment: .leading, spacing: theme.spacing.md (16px)
+  actions_gap: theme.spacing.sm (12px) between action buttons
+
+  dimming_overlay:
+    color: surfaceNeutral0_5.opacity(0.5)
+    tap_to_dismiss: true
+
+  animation:
+    appear: .scale(0.85) + .opacity, spring(response:0.4, dampingFraction:0.8)
+    dismiss: reverse
+
+# ─── ICON ───────────────────────────────────────────────────────────────────────
+icon:
+  size: 24×24pt
+  options:
+    dsIcon: icon: DSIcon (preferred — uses asset catalog)
+    assetIcon: assetIcon: String (image name from bundle)
+    systemIcon: systemIcon: String (SF Symbol)
+  color: severity-appropriate (dark for most, light for .neutral)
+
+# ─── TEXT ───────────────────────────────────────────────────────────────────────
+text:
+  title_font: theme.typography.h5 (20px medium)
+  message_font: theme.typography.caption (14px medium)
+  colors:
+    neutral_severity: textNeutral0_5 (light)
+    other_severity: textNeutral9 (dark)
+
+# ─── ACTIONS SLOT ────────────────────────────────────────────────────────────────
+actions:
+  description: VStack(spacing: sm) of DSButton — typically 2 actions (primary + dismiss)
+  common_patterns:
+    info_dialog: |
+      DSButton("Allow", style: .filledA, size: .small, isFullWidth: true) { isPresented = false }
+      DSButton("Don't Allow", style: .neutral, size: .small, isFullWidth: true) { isPresented = false }
+    destructive: |
+      DSButton("Delete", style: .filledA, size: .small, isFullWidth: true) { delete(); isPresented = false }
+      DSButton("Cancel", style: .neutralLight, size: .small, isFullWidth: true) { isPresented = false }
+  note: Use size: .small for dialog buttons — .big is too tall for the 305pt card
+
+# ─── STATE MANAGEMENT ────────────────────────────────────────────────────────────
+state:
+  binding: "isPresented: Binding<Bool>"
+  pattern: |
+    @State private var showDialog = false
+    // Place DSAlertDialog at root ZStack level (not inside ScrollView)
+    ZStack {
+        pageContent
+        DSAlertDialog(isPresented: $showDialog, title: "...", severity: .info, ...) {
+            // actions
+        }
+    }
+
+# ─── CONTENT SLOT ────────────────────────────────────────────────────────────────
+content_slot:
+  description: Optional @ViewBuilder between message and actions
+  use_when: Extra content needed (code input, checkbox agreement, etc.)
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Place DSAlertDialog in the root ZStack — never inside a ScrollView
+  - .neutral severity → dark card (surfacePrimary120), use neutralLight buttons for actions
+  - Card width is fixed at 305pt — do not wrap in a frame or modifier that changes width
+  - Use size: .small for action buttons (not .big)
+  - The dialog auto-dismisses on tap outside — no extra dismiss handling needed

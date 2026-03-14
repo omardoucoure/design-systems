@@ -1,0 +1,84 @@
+component: DSProductCard
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSProductCard.swift
+
+description: >
+  Vertical product card with photo, brand name, subtitle, price, optional
+  original price (strikethrough), and optional discount badge (tagSemantic).
+  Used in shopping carousels and grids.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - E-commerce product listings (vertical card with photo + info)
+  - Inside horizontal product carousels (DSProductTeaser)
+  - Shopping grid pages
+
+never_use_when:
+  - Horizontal product row → use DSProductTeaser
+  - Event listing → use DSEventCard
+  - Generic content card → use DSCard + custom content
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  image:
+    type: String (asset catalog image name)
+    size: photoWidth × photoHeight
+    radius: theme.radius.xl (32px)
+    background: surfaceNeutral2 (visible while image loads)
+
+  brand:
+    type: LocalizedStringKey
+    font: theme.typography.label (14px semibold)
+    description: Primary product name / brand
+
+  subtitle:
+    type: LocalizedStringKey
+    font: theme.typography.tiny (very small)
+    description: Product variant / short description
+
+  price:
+    type: LocalizedStringKey
+    font: theme.typography.label (14px semibold)
+
+  originalPrice:
+    type: LocalizedStringKey? (optional)
+    font: theme.typography.tinyRegular, opacity 75%, strikethrough
+    use_when: Product is on sale — show original price struck through
+
+  discount:
+    type: LocalizedStringKey? (optional)
+    renders: DSBadge(variant: .tagSemantic, text: discount)
+    use_when: Sale percentage or discount label to highlight alongside the price
+
+  photoWidth:
+    default: 240px
+    note: Read from Figma — product cards in carousels may vary
+
+  photoHeight:
+    default: 311px
+    note: Read from Figma — aspect ratio matters for image framing
+
+# ─── INTERNAL LAYOUT ─────────────────────────────────────────────────────────────
+internal_layout:
+  outer: VStack(alignment: .leading, spacing: theme.spacing.sm) + .padding(.bottom, sm)
+  photo: Image, scaledToFill, clipped with radius.xl
+  text_area:
+    gap: theme.spacing.xxs (4px) between brand/subtitle block and price block
+    brand_subtitle: VStack(spacing: 0) — brand + subtitle stacked
+    price_row: HStack(spacing: xs) — price + optionalOriginalPrice + optionalBadge
+    padding_leading: theme.spacing.sm (12px)
+    padding_top: theme.spacing.xxs (4px)
+
+# ─── DISCOUNT BADGE ───────────────────────────────────────────────────────────────
+discount_badge:
+  variant: DSBadge.tagSemantic (infoFocus blue)
+  position: Right of price in HStack
+  note: For brand-accent discounts, consider tagBrand variant (use custom implementation)
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - image is an asset catalog name — download from Figma and add to Assets.xcassets
+  - photoWidth and photoHeight must match Figma exactly — do not use defaults if Figma differs
+  - originalPrice shows strikethrough automatically — do not apply strikethrough modifier outside
+  - discount renders as tagSemantic badge — always provide as a percentage string ("10%")
+  - All text parameters are LocalizedStringKey — format numbers before passing

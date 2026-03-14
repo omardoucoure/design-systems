@@ -1,0 +1,49 @@
+component: DSBarChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSBarChart.swift
+
+description: >
+  Simple vertical bar chart with configurable bar color and optional highlight bar.
+  Each bar has a value label above and a category label below.
+  Use for single-metric time series or category comparisons.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Single-series bar chart (weekly activity, monthly sales)
+  - Histogram-style data with one highlighted bar
+  - Dashboard stat cards with a small bar chart
+
+never_use_when:
+  - Dual-series comparison → use DSHorizontalBarChart
+  - Stacked segments → use DSStackedBarChart
+  - Line trend → use DSLineChart
+  - Lollipop (circle top) → use DSLollipopChart
+
+# ─── DATA ────────────────────────────────────────────────────────────────────────
+data_model:
+  note: Read the DSBarChart Swift source for exact data model type
+  typical_pattern:
+    items: Array of (value: Double, label: String) pairs
+    highlighted_index: Int? — index of the bar to highlight with primary color
+
+# ─── VISUAL ──────────────────────────────────────────────────────────────────────
+visual:
+  bar_color: typically surfaceNeutral3 (inactive) / surfacePrimary100 or secondary (active)
+  label_above_bar: value as formatted string
+  label_below_bar: category/time label
+  animation: bars grow from bottom on appear
+
+# ─── COMMON USAGE ────────────────────────────────────────────────────────────────
+common_usage: |
+  // Inside a DSMetricCard content slot
+  DSMetricCard(title: "Steps", icon: .walking, background: theme.colors.surfaceNeutral2, foreground: theme.colors.textNeutral9) {
+      DSBarChart(data: weeklySteps, highlightedIndex: 4)
+          .frame(height: 80)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Always set .frame(height:) on DSBarChart — it needs explicit height
+  - Read bar colors from Figma — highlighted bar typically uses brand primary or secondary
+  - Chart components should only be used inside DSMetricCard or DSCard content containers
+  - For time labels (Mon/Tue/Wed), use abbreviated strings

@@ -1,0 +1,79 @@
+component: DSCarousel
+category: media
+swift_path: ios/Sources/DesignSystem/Components/DSCarousel.swift
+
+description: >
+  Horizontal swipeable image carousel with peek effect (48pt). Two styles:
+  spotlight (focused card full-height, others scaled to 85%) and standard (all same size).
+  Radius: theme.radius.xl. Spacing between cards: theme.spacing.sm (12px).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Photo galleries (profile photos, product images, travel content)
+  - Featured content carousels ("Today's picks", onboarding slides)
+  - Any horizontal swipeable image collection
+
+never_use_when:
+  - Stacked overlapping cards with depth effect → use DSStackedCardCarousel
+  - Product-focused horizontal scroll → use DSProductTeaser
+  - Photo grid (non-swipeable) → use DSPhotoGrid
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  spotlight:
+    description: Focused card fills full height; adjacent cards scale down to 85% vertically
+    inactive_scale: 0.85 (y-axis)
+    use_when:
+      - Profile photo galleries where active photo should dominate
+      - Onboarding / intro screens
+      - Featured article carousels with depth feel
+    figma_signal: Off-center cards visibly shorter than the center card
+
+  standard:
+    description: All cards same size, no scaling effect
+    use_when:
+      - Product image carousels (all images equally important)
+      - Horizontal news/article paging
+    figma_signal: All cards same height, peeking of adjacent card only
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  images:
+    type: "[String]" — image names from asset catalog
+    note: Download images from Figma URLs and add to Assets.xcassets before referencing
+
+  currentIndex:
+    type: "Binding<Int>"
+    note: Pair with DSPageControl to show dot indicators below the carousel
+
+  style:
+    default: .spotlight
+
+# ─── LAYOUT & DIMENSIONS ─────────────────────────────────────────────────────────
+layout:
+  peek_width: 48pt (the amount the next card peeks out from the edge)
+  card_width: container_width - 48pt (auto-calculated via GeometryReader)
+  spacing: theme.spacing.sm (12px) between cards
+  radius: theme.radius.xl (32px)
+  height: set by parent frame (use .frame(height: X) on DSCarousel)
+  common_heights:
+    300: Standard photo gallery
+    400: Hero/featured cards
+    240: Compact carousels in cards
+
+# ─── WITH PAGE CONTROL ────────────────────────────────────────────────────────────
+with_page_control: |
+  @State private var page = 0
+  VStack(spacing: theme.spacing.md) {
+      DSCarousel(images: photos, currentIndex: $page, style: .spotlight)
+          .frame(height: 300)
+      DSPageControl(count: photos.count, currentIndex: $page)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - ALWAYS set a height on DSCarousel via .frame(height:) — it uses GeometryReader
+  - Image names must match asset catalog exactly — download from Figma, create .imageset
+  - Pair with DSPageControl to show progress dots below
+  - Do NOT add horizontal padding on DSCarousel — the peek effect handles edge spacing
+  - .spotlight is the default and most visually engaging choice; use .standard for flat catalogs

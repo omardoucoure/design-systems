@@ -1,0 +1,183 @@
+component: DSButton
+category: core
+swift_path: ios/Sources/DesignSystem/Components/DSButton.swift
+figma_node: "button"
+
+description: >
+  Primary action primitive. Every interactive tap target on a page must use DSButton.
+  Never use SwiftUI's native Button{} directly on a page — always wrap it in DSButton.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Any button the user can tap to trigger an action
+  - Form submit, navigation forward, destructive confirm, modal dismiss
+
+never_use_when:
+  - Tab bar items → use DSBottomAppBar
+  - Segmented control options → use DSSegmentedPicker
+  - Toggle/checkbox/radio → use DSToggle, DSCheckbox, DSRadio
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  filledA:
+    background: theme.colors.surfaceSecondary100   # brand accent / secondary color
+    foreground: theme.colors.textNeutral9           # dark text
+    use_when:
+      - Primary CTA when the screen uses a dark/primary background (the button needs to pop with accent color)
+      - "Sign In", "Continue", "Pay Now" on authentication or checkout screens
+      - Highlighted action inside an already-colored card
+    figma_signal: background hex matches surfaceSecondary100 (coral, lime, pink, beige — depends on brand)
+
+  filledB:
+    background: theme.colors.surfacePrimary100
+    foreground: theme.colors.textNeutral0_5        # light text
+    use_when:
+      - Standard primary CTA on neutral / white backgrounds
+      - "Save", "Confirm", "Next" buttons at the bottom of forms
+    figma_signal: background hex matches surfacePrimary100
+
+  filledC:
+    background: theme.colors.surfacePrimary120     # deeper / darker primary
+    foreground: theme.colors.textNeutral0_5
+    use_when:
+      - Strongest emphasis — hero CTA, only one per screen
+      - "Get Started", "Join Now" on landing/onboarding screens
+      - When Figma shows the darkest primary shade on the button
+    figma_signal: background hex matches surfacePrimary120
+
+  neutral:
+    background: theme.colors.surfaceNeutral2       # subtle grey
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - Secondary / ghost-like action on neutral backgrounds
+      - Icon-only buttons in top app bar (menu, notification, search icon)
+      - Actions alongside a strong CTA ("Cancel", "Skip")
+    figma_signal: background is surfaceNeutral2 (light grey card color)
+
+  neutralLight:
+    background: theme.colors.surfaceNeutral0_5     # white/cream
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - Buttons placed ON a dark or colored background card
+      - "Sign Out" button inside DSUserCard (which has surfaceNeutral2 background)
+      - Any button that needs to appear as a light capsule over a medium-grey or primary surface
+    figma_signal: button has white/cream background inside a darker parent
+
+  outlined:
+    background: transparent
+    border: theme.colors.surfacePrimary120
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - Equal-weight alternate to a filled button ("Cancel" vs "Confirm")
+      - Secondary CTA on a white background
+      - Filter/sort toggle buttons that can be selected
+    figma_signal: transparent background + primary border stroke
+
+  outlinedLight:
+    background: transparent
+    border: theme.colors.surfaceNeutral0_5         # white border
+    foreground: theme.colors.textNeutral0_5        # light text
+    use_when:
+      - Outlined button placed ON a dark/primary surface
+      - Secondary action inside hero cards or dark overlays
+    figma_signal: white border + white text on colored background
+
+  text:
+    background: transparent
+    foreground: theme.colors.textNeutral9
+    padding_h_note: reduced (md for big, xs for medium, xxs for small)
+    use_when:
+      - Low-emphasis tertiary actions ("Forgot password?", "read more", inline links)
+      - Actions inside text flows that should look like links
+      - Cancel buttons in dialogs when a strong cancel is not needed
+    figma_signal: no background, no border, text only
+
+# ─── SIZES ──────────────────────────────────────────────────────────────────────
+sizes:
+  big:
+    height: 56px
+    icon_size: 24px
+    font: theme.typography.bodySemiBold   # 16px semibold
+    padding_h: theme.spacing.lg           # 24px (non-text styles)
+    padding_v: theme.spacing.md           # 16px
+    icon_text_gap: theme.spacing.sm       # 12px
+    use_when:
+      - Hero CTAs at the bottom of a page ("Get Started", "Sign Up")
+      - Primary action at the bottom of a form screen
+      - Any button that should dominate the screen visually
+      - isFullWidth: true for full-width bottom-of-screen CTAs
+
+  medium:
+    height: 40px
+    icon_size: 24px
+    font: theme.typography.label          # 14px semibold
+    padding_h: theme.spacing.md           # 16px (non-text styles)
+    padding_v: theme.spacing.xs           # 8px
+    icon_text_gap: theme.spacing.sm       # 12px
+    use_when:
+      - Buttons inside cards, list items, or top app bar action slots
+      - Secondary action alongside a big primary button
+      - Filter chips, tag-like buttons
+
+  small:
+    height: 32px
+    icon_size: 20px
+    font: theme.typography.label          # 14px semibold
+    padding_h: theme.spacing.sm           # 12px (non-text styles)
+    padding_v: theme.spacing.xxs          # 4px
+    icon_text_gap: theme.spacing.xs       # 8px
+    use_when:
+      - Compact inline actions (inside a text field via actionLabel)
+      - Tag dismissal, inline search clear
+      - Dense table/list row actions
+
+# ─── ICON USAGE ──────────────────────────────────────────────────────────────────
+icons:
+  icon_only:
+    use_when: App bar actions (menu, bell, search), FAB-like circular buttons
+    init: DSButton(style:size:icon:) or DSButton(style:size:systemIcon:)
+
+  text_plus_icon:
+    use_when: Calls to action that need directional affordance ("Continue →", "← Back")
+    init: DSButton("Label", style:size:icon:iconPosition:)
+    positions:
+      left: icon before text — use for leading contextual icons (logOut, editPencil, etc.)
+      right: icon after text — use for forward navigation arrows
+
+  asset_vs_system:
+    asset: Use DSIcon enum (assetIcon:icon:) for all HaHo design system icons (1364 custom SVGs)
+    system: Use systemIcon: only for SF Symbols not available in the DSIcon catalog
+
+# ─── FULL WIDTH ──────────────────────────────────────────────────────────────────
+full_width:
+  use_when: >
+    Bottom-of-screen CTA that should span the full available width.
+    Common pattern: `DSButton("Sign Up", style: .filledC, size: .big, isFullWidth: true) {}`
+    Always pair with `.padding(.horizontal, theme.spacing.md)` on the parent.
+
+# ─── DISABLED STATE ──────────────────────────────────────────────────────────────
+disabled:
+  mechanism: SwiftUI `.disabled(true)` environment — button renders at 50% opacity automatically
+  use_when: Form submit before required fields are filled, insufficient permissions
+
+# ─── PADDING & SPACING CONTEXT ───────────────────────────────────────────────────
+padding_context:
+  inside_card:
+    note: >
+      When DSButton is inside a DSCard, the card provides padding. Do not add extra padding
+      to the button itself unless it is a full-width button that should span the card.
+  inside_top_app_bar:
+    size: medium
+    style: neutral (light background bar) or neutralLight (dark backgrounds)
+  action_row:
+    note: >
+      Multiple buttons in an HStack — use HStack(spacing: theme.spacing.xs) between them.
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use Button{} SwiftUI primitive directly on pages — always use DSButton
+  - NEVER hardcode colors, corner radius, or font — these come from style + size
+  - ALWAYS use DSIcon enum for custom icons, never pass raw image names as strings to systemIcon
+  - Read the Figma button background color to map to the correct style
+  - Text style has reduced horizontal padding — do not add extra .padding() on a .text style button
+  - isFullWidth pushes the button to .infinity width — only use for bottom-of-screen CTAs

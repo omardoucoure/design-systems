@@ -1,0 +1,37 @@
+component: DSVideoPlayer
+category: media
+swift_path: ios/Sources/DesignSystem/Components/DSVideoPlayer.swift
+
+description: >
+  Full-screen video player overlay with playback controls. Shown modally over content.
+  Controls include: play/pause, progress scrubber, time remaining, close button.
+
+use_when:
+  - Playing a video in a full-screen overlay when user taps a video thumbnail
+  - Content articles or courses with embedded video
+
+never_use_when:
+  - Inline video (non-fullscreen) — DSVideoPlayer is a full-screen overlay
+  - Static image display → use Image
+
+visual:
+  background: .black
+  controls: play/pause (center), progress bar (bottom), close button (top-right)
+  controls_color: textNeutral0_5 (white/cream)
+  progress: thin capsule scrubber, primary or secondary color
+
+presentation_pattern: |
+  @State private var showVideo = false
+
+  // Thumbnail tap
+  Button { showVideo = true } label: {
+      // thumbnail view
+  }
+  .fullScreenCover(isPresented: $showVideo) {
+      DSVideoPlayer(videoURL: url, onClose: { showVideo = false })
+  }
+
+rules:
+  - Use .fullScreenCover for presentation — not .sheet (video needs edge-to-edge)
+  - Provide an onClose closure — player does not auto-dismiss
+  - videoURL can be a local URL or remote URL (streaming)

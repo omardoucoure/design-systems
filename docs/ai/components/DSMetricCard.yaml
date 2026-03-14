@@ -1,0 +1,104 @@
+component: DSMetricCard
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSMetricCard.swift
+
+description: >
+  Dashboard/fitness stat card built on DSCard. Shows title + icon row at top,
+  optional chart/progress content in the middle, optional value + unit at bottom.
+  Background and foreground colors are caller-provided — no defaults.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Dashboard or health/fitness metric widgets ("Calories", "Steps", "Heart Rate")
+  - Stats overview cards in a 2-column grid
+  - Any small card with a title + icon header and an optional data visualization
+
+never_use_when:
+  - Summary stat rows → use DSStatRow
+  - Profile stat columns → use DSUserCard stat area
+  - Full-width feature cards → use DSStackedCard
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  title:
+    type: String
+    font: theme.typography.largeSemiBold (18px semibold)
+    position: left of icon row
+
+  icon:
+    type: DSIcon
+    size: 24×24pt, renderingMode: .template
+    position: right of title (Spacer pushes it right)
+
+  background:
+    type: Color (required)
+    note: Must be explicitly provided — no default
+    common_values:
+      theme.colors.surfaceNeutral2: Standard light grey card
+      theme.colors.surfaceNeutral3: Slightly darker neutral card
+      theme.colors.surfacePrimary100: Brand primary colored card
+      theme.colors.surfaceSecondary100: Accent colored card
+
+  foreground:
+    type: Color (required)
+    note: Applied to title, icon, value, and unit
+    common_values:
+      theme.colors.textNeutral9: For light backgrounds
+      theme.colors.textNeutral0_5: For dark/primary backgrounds
+
+  value:
+    type: String?
+    font: theme.typography.largeSemiBold (18px semibold)
+    use_when: Card shows a primary metric value (number)
+
+  unit:
+    type: String?
+    font: theme.typography.tiny (very small)
+    use_when: Value needs a unit label ("kcal", "bpm", "km")
+
+  content:
+    type: "@ViewBuilder Content"
+    use_when: >
+      Card embeds a chart or progress circle. Content appears between title row and value row.
+    common_patterns:
+      line_chart: DSLineChart(...)
+      bar_chart: DSBarChart(...)
+      progress_circle: DSProgressCircle(progress: 0.7, size: 56)
+
+# ─── INTERNAL LAYOUT ─────────────────────────────────────────────────────────────
+internal_layout:
+  outer: DSCard(background:, radius: theme.radius.xl, padding: theme.spacing.xl)
+  inner: VStack(alignment: .leading, spacing: theme.spacing.lg)
+  title_row: HStack — title left, Spacer, icon right
+  content_row: optional — only shown when Content != EmptyView
+  value_row: VStack(alignment: .leading, spacing: 0) — value text + unit text
+
+# ─── BACKGROUND + FOREGROUND COMBINATIONS ────────────────────────────────────────
+background_foreground_combinations:
+  light_neutral:
+    background: theme.colors.surfaceNeutral2
+    foreground: theme.colors.textNeutral9
+    use_when: Standard metric card on white page background
+
+  medium_neutral:
+    background: theme.colors.surfaceNeutral3
+    foreground: theme.colors.textNeutral9
+    use_when: Slightly differentiated card in a group
+
+  primary_colored:
+    background: theme.colors.surfacePrimary100
+    foreground: theme.colors.textNeutral0_5
+    use_when: Featured/hero metric card
+
+  accent_colored:
+    background: theme.colors.surfaceSecondary100
+    foreground: theme.colors.textNeutral9
+    use_when: Highlighted accent metric
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - ALWAYS read background and foreground from Figma — never default to neutral
+  - icon must be a DSIcon enum value — never a raw image name string
+  - title and value are plain String (not LocalizedStringKey) — format numbers before passing
+  - If content contains a chart/progress, omit value parameter (embed value in content instead)
+  - Card uses xl padding internally — do NOT add extra padding outside DSMetricCard

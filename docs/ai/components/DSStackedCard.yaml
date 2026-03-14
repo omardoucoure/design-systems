@@ -1,0 +1,32 @@
+component: DSStackedCard
+category: media
+swift_path: ios/Sources/DesignSystem/Components/DSStackedCard.swift
+
+description: >
+  Depth-effect card with layered background cards slightly offset behind.
+  Creates a 3D-stack visual. Use for featured content with visual depth/richness.
+
+use_when:
+  - Featured content cards with a premium/depth aesthetic
+  - Hero cards on landing or home screens
+  - When Figma shows a card with visible shadow-cards behind it
+
+never_use_when:
+  - Simple flat card → use DSCard
+  - Swipeable deck → use DSCarouselDeck
+
+visual:
+  layers: 2–3 background rectangles offset behind the front card
+  front_card: primary content (image + text + actions)
+  shadow_cards: scaled and offset, often in a slightly different shade
+  radius: typically theme.radius.xl (32px)
+
+background_layers:
+  layer_1_offset: y: 8–12pt, scale: 0.94
+  layer_2_offset: y: 16–24pt, scale: 0.88
+  colors: slightly lighter or darker variant of main card color
+
+rules:
+  - Do NOT manually build layered cards with ZStack — use DSStackedCard
+  - Background card colors read from Figma
+  - Content area follows same rules as DSCard padding

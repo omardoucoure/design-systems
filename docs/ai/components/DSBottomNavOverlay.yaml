@@ -1,0 +1,38 @@
+component: DSBottomNavOverlay
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSBottomNavOverlay.swift
+
+description: >
+  Full-screen navigation overlay that slides up from the bottom (sheet-like).
+  Contains a scrollable list of navigation options with icons and labels.
+  Background dims the page underneath.
+
+use_when:
+  - "More" or "All categories" overlay triggered from the bottom
+  - Navigation option picker that slides up as a full-screen sheet
+  - When Figma shows a full-screen overlay with a list of nav items
+
+never_use_when:
+  - Standard bottom tab bar → use DSBottomAppBar
+  - Small action sheet → use native .confirmationDialog or custom sheet
+
+visual:
+  background: dark dimming overlay
+  sheet_background: surfaceNeutral0_5 or surfaceNeutral2
+  handle: top capsule drag handle
+  items: DSListItem rows with icon + label
+
+presentation_pattern: |
+  @State private var showOverlay = false
+  ZStack {
+      pageContent
+      if showOverlay {
+          DSBottomNavOverlay(isPresented: $showOverlay, items: navItems)
+              .transition(.move(edge: .bottom))
+      }
+  }
+
+rules:
+  - Use ZStack at root level — not inside a ScrollView
+  - Always add .transition(.move(edge: .bottom)) + .animation
+  - Items use DSIcon enum for icons

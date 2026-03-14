@@ -1,0 +1,42 @@
+component: DSTooltip
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSTooltip.swift
+
+description: >
+  Tooltip with arrow pointer. Two styles: simple (text only) and rich (icon + title + message).
+  Background: surfaceNeutral9 (dark). Text: textNeutral0_5 (light). Arrow points toward the trigger.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Contextual help text that appears on long-press or tap
+  - Chart data point labels
+  - Feature explanation overlays
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  simple:
+    content: Single text label
+    use_when: Brief value or label on a chart bar/data point
+
+  rich:
+    content: Icon + title + message
+    use_when: Feature explanation, onboarding hints with more context
+
+# ─── VISUAL ──────────────────────────────────────────────────────────────────────
+visual:
+  background: theme.colors.surfaceNeutral9 (dark)
+  text_color: theme.colors.textNeutral0_5 (light)
+  arrow: triangular pointer toward trigger element
+  radius: theme.radius.md
+
+# ─── POSITIONING ─────────────────────────────────────────────────────────────────
+positioning:
+  note: >
+    DSTooltip is overlaid using ZStack — position it relative to the trigger element.
+    Use .offset() or .position() based on the Figma layout.
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Background is always surfaceNeutral9 (dark) — do not use light backgrounds for tooltips
+  - Control visibility with @State var showTooltip — toggle on tap/long-press
+  - Arrow direction is configured by the arrow parameter — read from Figma

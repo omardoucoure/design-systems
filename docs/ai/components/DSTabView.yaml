@@ -1,0 +1,54 @@
+component: DSTabView
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSTabView.swift
+
+description: >
+  Full app shell TabView-like container that integrates DSBottomAppBar.
+  Maintains all tab NavigationStacks alive (using .opacity() pattern, not conditional).
+  State sharing through DSTabBarState ObservableObject.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Top-level app navigation shell with DSBottomAppBar
+  - When each tab has its own NavigationStack
+  - Replacing native SwiftUI TabView with the themed bar
+
+never_use_when:
+  - Single-screen apps with no tab navigation
+  - Pages within a tab (each tab manages its own navigation stack)
+
+# ─── USAGE PATTERN ───────────────────────────────────────────────────────────────
+usage_pattern: |
+  struct ContentView: View {
+      @State private var selectedTab = "home"
+
+      var body: some View {
+          DSTabView(items: [
+              DSBottomBarItem(id: "home", label: "Home", icon: .home),
+              DSBottomBarItem(id: "explore", label: "Explore", icon: .search),
+              DSBottomBarItem(id: "profile", label: "Profile", icon: .person),
+          ], selectedId: $selectedTab, style: .labeled) {
+              // Tab content — matched to item ids
+              switch selectedTab {
+              case "home": HomeView()
+              case "explore": ExploreView()
+              default: ProfileView()
+              }
+          }
+      }
+  }
+
+# ─── KEY BEHAVIOR ────────────────────────────────────────────────────────────────
+key_behavior:
+  keep_alive: >
+    All tab views coexist via .opacity() — not conditional rendering.
+    This prevents rebuild animations and maintains scroll position when switching tabs.
+  safe_area: >
+    DSBottomAppBar is positioned with ZStack inside DSTabView.
+    Each tab's content needs .padding(.bottom, appropriate_value) to clear the bar.
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Each tab view must have its own NavigationStack for independent navigation
+  - Do NOT use native SwiftUI TabView — use DSTabView for theming
+  - selectedId is a String matching DSBottomBarItem ids — not an Int index

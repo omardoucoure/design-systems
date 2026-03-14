@@ -1,0 +1,44 @@
+component: DSIconSegmentedPicker
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSIconSegmentedPicker.swift
+
+description: >
+  Compact segmented picker using icon-only buttons instead of text labels.
+  Selected icon: surfacePrimary120 filled capsule. Unselected: transparent.
+  More compact than DSSegmentedPicker — use when icons alone communicate the options.
+
+use_when:
+  - View-mode switchers (grid vs list icons, map vs list icons)
+  - Layout toggle (2-col vs 3-col vs list)
+  - When Figma shows icon-only segmented control (no text labels)
+
+never_use_when:
+  - Text-labeled tabs → use DSSegmentedPicker
+  - Main app tabs → use DSBottomAppBar
+
+visual:
+  container: same as DSSegmentedPicker .tabs (surfaceNeutral0_5 background, radius.xl)
+  selected_icon: surfacePrimary120 capsule background
+  unselected_icon: no background
+  icon_size: 20×20pt
+  cell_height: 32px
+  padding: theme.spacing.xs (8px)
+
+parameters:
+  items:
+    type: "[DSIcon]" — array of icon cases
+    note: Each position corresponds to an index in selectedIndex
+
+  selectedIndex:
+    type: "Binding<Int>"
+
+example: |
+  DSIconSegmentedPicker(
+      items: [.grid, .list, .map],
+      selectedIndex: $viewMode
+  )
+
+rules:
+  - Use DSIcon enum cases — never raw strings
+  - Typically 2–4 icons — more than 4 is too cramped
+  - Container width is determined by icon count — do not force a wider frame

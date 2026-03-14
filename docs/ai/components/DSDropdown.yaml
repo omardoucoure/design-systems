@@ -1,0 +1,40 @@
+component: DSDropdown
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSDropdown.swift
+
+description: >
+  Dropdown select field extending DSTextField visual style. Shows a chevron trailing icon.
+  Tapping opens a selection sheet or menu. Use for single-option selection from a list.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Select from a predefined list (country, currency, category, language)
+  - Any Figma field with a downward chevron/arrow indicating a dropdown
+  - Form field where options are too numerous for radio buttons
+
+never_use_when:
+  - Free text input → use DSTextField
+  - 2–4 mutually exclusive options → use DSRadio
+  - Segmented control → use DSSegmentedPicker
+
+# ─── VISUAL ──────────────────────────────────────────────────────────────────────
+visual:
+  extends: DSTextField visual style (.filled or .lined)
+  trailing_icon: chevron.down or similar — indicates dropdown
+  selected_value: shows in the text field area
+  state: empty (no selection) or filled (has value)
+
+# ─── USAGE PATTERN ───────────────────────────────────────────────────────────────
+usage_pattern: |
+  @State private var selectedCountry = ""
+  DSDropdown(
+      selection: $selectedCountry,
+      options: ["France", "USA", "Japan"],
+      placeholder: "Select country"
+  )
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Use DSDropdown whenever Figma shows a text field with a chevron/arrow trailing icon
+  - Never build a raw Picker or Menu without using DSDropdown styling
+  - Variant (filled/lined) matches the surrounding DSTextField variant

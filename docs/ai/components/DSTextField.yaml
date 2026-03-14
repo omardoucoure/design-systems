@@ -1,0 +1,134 @@
+component: DSTextField
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSTextField.swift
+
+description: >
+  Themed single-line text input. Two visual variants × five states × optional secure mode.
+  Always use DSTextField for any user text input — never SwiftUI TextField directly.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Single-line user text input (name, email, phone, username, password)
+  - Form fields in auth, profile, settings, checkout screens
+
+never_use_when:
+  - Multi-line input → use DSTextArea
+  - Search bar → use DSSearchField
+  - OTP / verification code → use DSCodeInput
+  - Dropdown selection → use DSDropdown
+
+# ─── VARIANTS ───────────────────────────────────────────────────────────────────
+variants:
+  filled:
+    background: theme.colors.surfaceNeutral0_5   # white/cream fill
+    border: all sides, theme.borders.widthMd (2px) for ALL states
+    radius: theme.radius.md (16px)
+    use_when:
+      - Standard form fields on any background
+      - Fields placed inside cards (the cream background contrasts with surfaceNeutral2 card)
+      - Auth screens, profile forms, checkout
+    figma_signal: field has a visible filled background rectangle
+
+  lined:
+    background: .clear (transparent)
+    border: bottom line only
+    border_width:
+      empty: theme.borders.widthSm (1px)
+      filled: theme.borders.widthSm (1px)
+      active: theme.borders.widthMd (2px)
+      error: theme.borders.widthMd (2px)
+      validated: theme.borders.widthMd (2px)
+    radius: 0 (no rounded corners — line only)
+    use_when:
+      - Minimal UI, editorial-style forms
+      - Fields on colored backgrounds where a box would be too heavy
+      - Inline editing within content areas
+    figma_signal: only a bottom border visible, transparent field background
+
+# ─── STATES ─────────────────────────────────────────────────────────────────────
+states:
+  empty:
+    description: No text entered, field not focused
+    border_color: theme.colors.borderNeutral2 (filled) / borderNeutral9_5 (lined)
+    text_opacity: 0.5 (placeholder-like)
+    floating_label: hidden
+    use_when: Initial render before user interacts
+
+  filled:
+    description: Has text but is not currently focused
+    border_color: theme.colors.borderNeutral2 (filled) / borderNeutral9_5 (lined)
+    text_opacity: 1.0
+    floating_label: visible (if label provided or text non-empty)
+    use_when: After user typed something and moved to next field
+
+  active:
+    description: Currently focused / being edited
+    border_color: theme.colors.infoFocus        # blue focus ring
+    text_opacity: 1.0
+    floating_label: visible
+    use_when: Driven by @FocusState — the field is focused
+
+  error:
+    description: Invalid input detected
+    border_color: theme.colors.error            # red
+    helper_text_color: theme.colors.error
+    use_when: After validation fails (bad email format, password too short, etc.)
+    note: Show helperText with the error message
+
+  validated:
+    description: Input confirmed valid
+    border_color: theme.colors.validated        # green
+    use_when: After successful inline validation (email available, code accepted)
+
+# ─── SECURE MODE ────────────────────────────────────────────────────────────────
+secure_mode:
+  parameter: isSecure: true
+  use_when: Password fields — Figma shows "••••••••" dots as placeholder text
+  behavior: Shows SecureField, trailing eye icon toggles visibility
+  rule: ALWAYS use isSecure:true when Figma shows dots — never show plain password text
+
+# ─── ICON USAGE ──────────────────────────────────────────────────────────────────
+icon:
+  leading: icon displayed left of text, use for field type context (lock for password, envelope for email)
+  trailing: icon displayed right of text (default position), use for clear/search/etc
+  parameter: icon: DSIcon, iconPosition: .leading or .trailing
+
+# ─── OPTIONAL ELEMENTS ───────────────────────────────────────────────────────────
+optional_elements:
+  label:
+    description: Floating label that appears above text when field is filled/active
+    use_when: Multi-field forms where each field needs a persistent label for clarity
+
+  helperText:
+    description: Small text below the field
+    color_in_error: theme.colors.error
+    color_other: textNeutral9.opacity(0.5)
+    use_when: Hints (password requirements), error messages, field descriptions
+
+  actionLabel + onAction:
+    description: A small .filledA button appended inside the field (right side)
+    use_when: "Send code" button inside a code-entry field, "Apply" for inline coupons
+
+# ─── LAYOUT & SPACING ────────────────────────────────────────────────────────────
+layout:
+  field_height: theme.components.textField.fieldHeight  # from component tokens
+  internal_padding_h: theme.spacing.md (16px)
+  internal_padding_v: theme.spacing.md (16px)
+  helper_text_padding_left: theme.spacing.md (16px)
+  gap_between_field_and_helper: theme.spacing.xxs (4px)
+  icon_frame: theme.components.textField.iconFrame
+
+background_on_cards:
+  note: >
+    When DSTextField is placed inside a DSCard with surfaceNeutral2 background,
+    the .filled variant's surfaceNeutral0_5 (cream/white) creates natural contrast.
+    Do NOT set fieldBackgroundColor manually unless Figma explicitly shows a different color.
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use SwiftUI TextField{} directly — always use DSTextField
+  - ALWAYS use isSecure:true when Figma text shows "••••" — never show plain password text
+  - Read the Figma variant from the border style — filled box = .filled, bottom line only = .lined
+  - State is caller-managed (@State var fieldState: InputState) — update it based on focus/validation
+  - Do NOT add extra padding around DSTextField — it manages its own internal padding
+  - fieldBackgroundColor override: only use if Figma shows a non-standard field background

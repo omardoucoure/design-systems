@@ -1,0 +1,82 @@
+component: DSProgressCircle
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSProgressCircle.swift
+
+description: >
+  Circular progress ring with a thin track + thick progress arc + center label.
+  Default progress color: surfaceSecondary100 (brand accent).
+  Center label defaults to percentage integer (e.g., "75").
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Completion percentage indicators (tasks, fitness goals, courses)
+  - Storage or quota usage displays
+  - Timer or time-remaining visual
+
+never_use_when:
+  - Multi-step linear progress → use a custom ProgressView or linear bar
+  - Semi-circular gauge → use DSSemiCircularGauge
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  progress:
+    type: Double (0.0–1.0)
+    required: true
+    note: Clamped to [0, 1] automatically
+
+  size:
+    type: CGFloat
+    default: 40px
+    common_values:
+      40: Default — stat cards, list items
+      56: Medium — dashboard metric widgets
+      80: Large — featured progress displays
+      100+: Hero progress indicators
+    note: Read exact px value from Figma
+
+  lineWidth:
+    type: CGFloat
+    default: 8.6px (thick progress arc)
+    note: >
+      Controls the thickness of the progress arc.
+      The track ring is always 1px thin (trackLineWidth default).
+      Only override if Figma shows a noticeably thinner or thicker arc.
+
+  customLabel:
+    type: String?
+    default: percentage integer (e.g., "75" for 0.75 progress)
+    use_when:
+      - Figma shows a unit label ("75%", "3/5", "7h")
+      - Figma shows a non-numeric center label
+
+  progressColor:
+    type: Color?
+    default: theme.colors.surfaceSecondary100 (brand accent)
+    use_when: Figma shows a different progress arc color (e.g., error red, success green)
+    common_overrides:
+      error: theme.colors.error
+      success: theme.colors.validated
+      info: theme.colors.infoFocus
+
+  trackColor:
+    type: Color?
+    default: theme.colors.surfaceNeutral3
+    note: Usually keep default — only override if Figma shows a visible colored track
+
+  labelColor:
+    type: Color?
+    default: textNeutral9.opacity(0.75)
+
+# ─── VISUAL STRUCTURE ────────────────────────────────────────────────────────────
+visual_structure:
+  layers:
+    1_track: "1px thin full-circle ring, surfaceNeutral3, inset by lineWidth/2"
+    2_arc: "Thick arc (lineWidth), rounded caps, rotated -90° (starts at top)"
+    3_label: "Center text — percentage or customLabel"
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - progress value must be 0.0–1.0 (divide your percentage by 100)
+  - Read size from Figma exactly — do not default to 40 if Figma shows 56 or 80
+  - customLabel must be a String (not LocalizedStringKey) — format it before passing
+  - Default progress color is surfaceSecondary100 — only override when Figma shows a semantic color

@@ -1,0 +1,46 @@
+component: DSIconImage
+category: core
+swift_path: ios/Sources/DesignSystem/Components/DSIconImage.swift
+
+description: >
+  Themed icon renderer for DSIcon enum. Wraps Image(dsIcon:) with automatic
+  foreground color and size from theme. Preferred way to render standalone icons
+  that are not inside a DSButton.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Standalone icon display (decorative or informational)
+  - Inside DSListItem leading slot
+  - Inside DSCard or page content where an icon is needed but not as a button
+
+never_use_when:
+  - Tappable icon → use DSButton(style:, icon:)
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  icon:
+    type: DSIcon
+    required: true
+
+  size:
+    type: CGFloat
+    default: 24px
+    common_values: [16, 20, 24, 32, 40]
+    note: Read from Figma
+
+  color:
+    type: Color?
+    default: theme.colors.textNeutral9
+    override_when: Figma shows a specific icon color (accent, primary, error, etc.)
+
+# ─── EXAMPLE ────────────────────────────────────────────────────────────────────
+example: |
+  DSIconImage(icon: .bell, size: 24)
+  DSIconImage(icon: .alertCircle, size: 20, color: theme.colors.error)
+  DSIconImage(icon: .checkCircle, size: 24, color: theme.colors.validated)
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Prefer DSIconImage over raw Image(dsIcon:) for consistent sizing and color handling
+  - Color defaults to textNeutral9 — read Figma for any color that differs from neutral dark
+  - For tappable icons, use DSButton with icon: parameter instead

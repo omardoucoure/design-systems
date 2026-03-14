@@ -1,0 +1,41 @@
+component: DSLineChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSLineChart.swift
+
+description: >
+  Smooth line chart using Catmull-Rom spline interpolation. Can include a filled area
+  under the curve. Use for trends over time (weight, mood, revenue, etc.).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Time-series trend data (weight over weeks, revenue over months)
+  - Smooth continuous metrics that change gradually
+  - Inside DSMetricCard content slot for inline trend visualization
+
+never_use_when:
+  - Categorical bar comparison → use DSBarChart
+  - Bar + line combined → use DSStatsChart
+  - Multi-axis or complex dashboard → use DSStatsChart
+
+# ─── VISUAL ──────────────────────────────────────────────────────────────────────
+visual:
+  line: smooth Catmull-Rom spline, 2–3pt stroke
+  line_color: typically surfacePrimary100 or surfaceSecondary100 — read from Figma
+  fill_area: optional gradient fill under curve
+  data_points: array of Double values
+  animation: line draws in on appear
+
+# ─── COMMON USAGE ────────────────────────────────────────────────────────────────
+common_usage: |
+  DSMetricCard(title: "Heart Rate", icon: .heart, value: "86", unit: "bpm",
+               background: theme.colors.surfaceNeutral2,
+               foreground: theme.colors.textNeutral9) {
+      DSLineChart(data: [72, 78, 85, 82, 86, 90, 86])
+          .frame(height: 60)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Always set .frame(height:) on DSLineChart
+  - Line color should match Figma — use theme color tokens, not raw hex
+  - Catmull-Rom smoothing is automatic — do not pass pre-smoothed data

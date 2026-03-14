@@ -1,0 +1,30 @@
+component: DSProductTeaser
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSProductTeaser.swift
+
+description: >
+  Horizontal scrollable product card carousel. Contains DSProductCard instances
+  in a ScrollView(.horizontal). Shows 1.5–2 cards at once with peek effect.
+
+use_when:
+  - "You may also like" product recommendations
+  - Category product shelf rows in a shopping feed
+  - Any horizontal product scroll section in Figma
+
+never_use_when:
+  - Single product detail → use DSProductCard directly
+  - Photo gallery → use DSCarousel
+
+visual:
+  layout: ScrollView(.horizontal, showsIndicators: false) containing DSProductCard instances
+  peek: partial next card visible (typically 20–40pt peek)
+  leading_padding: theme.spacing.md or lg — read from Figma
+  spacing_between_cards: theme.spacing.md or sm
+
+rules: |
+  Use DSProductTeaser to wrap multiple DSProductCards in a horizontal scroll:
+  DSProductTeaser {
+      DSProductCard(image: "p1", brand: "Nike", subtitle: "Air Max", price: "$120")
+      DSProductCard(image: "p2", brand: "Adidas", subtitle: "Ultra Boost", price: "$180")
+  }
+  Read leading padding and card spacing from Figma exactly.

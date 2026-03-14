@@ -1,0 +1,144 @@
+component: DSTopAppBar
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSTopAppBar.swift
+
+description: >
+  Themed top navigation bar with 7 layout styles. Always transparent with ultraThinMaterial
+  blur — never add a background color to it. A 24pt progressive gradient fade extends below
+  the bar, mimicking the iOS 26 scroll-edge effect.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Every page that has a top bar in Figma
+  - Page headers with or without back button
+  - Search entry points (tap on search bar opens search)
+  - Brand/logo headers on home screens
+
+never_use_when:
+  - Native NavigationStack title — always hide native bar with .toolbar(.hidden, for: .navigationBar)
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  small:
+    layout: Left-aligned title, optional back button left, actions right
+    height: 64px
+    title_font: theme.typography.bodySemiBold (16px semibold)
+    padding_h: theme.spacing.sm (12px)
+    use_when:
+      - Detail / inner page with a left-aligned title
+      - Screen pushed onto NavigationStack (has back button)
+    figma_signal: Title text is left-aligned in the bar
+
+  smallCentered:
+    layout: Centered title, back button left, actions right
+    height: 64px
+    title_font: theme.typography.h5 (20px medium)
+    padding_h: theme.spacing.sm (12px)
+    use_when:
+      - Modal sheets, settings pages, profile pages where title needs balance
+      - Any page where Figma shows the title centered in the bar
+    figma_signal: Title text appears centered between back button and action buttons
+
+  medium:
+    layout: Action row top (64px) + left-aligned large title below
+    title_font: theme.typography.h5 (20px medium)
+    title_padding_h: theme.spacing.md (16px)
+    title_padding_bottom: theme.spacing.sm (12px)
+    use_when:
+      - Section list pages where the title needs more weight than bodySemiBold
+      - Dashboard-style pages with a prominent section label
+    figma_signal: Title appears on a second row below the action/back row
+
+  large:
+    layout: Action row top (64px) + left-aligned hero title below
+    title_font: theme.typography.h3 (30px medium)
+    title_padding_h: theme.spacing.md (16px)
+    title_padding_bottom: theme.spacing.sm (12px)
+    use_when:
+      - Home / main section screens with a prominent header title
+      - Feed, explore, or landing pages
+    figma_signal: Very large title text on its own row beneath action bar
+
+  logo:
+    layout: Leading icon-capsule button | centered custom content | trailing actions
+    height: 64px
+    leading_icon: SF Symbol name, displays in a capsule button
+    center: @ViewBuilder — place Image("logo") or any logo view here
+    use_when:
+      - Home screen / root tab with brand logo centered
+      - Social/content feed pages with a brand identity header
+    figma_signal: Center of bar shows a logo image/brand mark, leading is a profile/avatar
+
+  search:
+    layout: Menu icon left | search field (tappable, not editable inline) | trailing actions
+    height: 64px
+    search_background: theme.colors.surfaceNeutral2
+    search_border: theme.colors.borderNeutral2, widthMd
+    search_radius: theme.radius.md (16px)
+    use_when:
+      - Pages with search as the primary discovery action (marketplace, explore, catalog)
+      - The search field is a tap target that opens a search screen (not inline editing)
+    figma_signal: Bar shows a rounded search pill/field in the center
+
+  imageTitle:
+    layout: Leading rectangular image (56×40, radius.sm) | title beside it | trailing actions
+    height: 64px
+    title_font: theme.typography.h5
+    use_when:
+      - Channel, playlist, or brand page header with a thumbnail + name
+      - Category pages that identify themselves with an image + title
+    figma_signal: Small rectangular image appears left of the title text
+
+# ─── BACK BUTTON ────────────────────────────────────────────────────────────────
+back_button:
+  rendered_by: DSTopAppBar automatically when onBack is non-nil
+  icon: DSIcon.arrowLeftLong
+  style: DSButtonStyle.neutral, size: .medium
+  rule: NEVER build a manual back button — pass onBack closure and DSTopAppBar renders it
+
+# ─── BACKGROUND / BLUR ───────────────────────────────────────────────────────────
+background:
+  type: .ultraThinMaterial (always)
+  note: >
+    The bar is always transparent with system blur. The page background color shows through.
+    ALWAYS set .background(theme.colors.surfaceNeutral0_5) (or your page color) on the
+    outermost page container — not on the top bar.
+  gradient_fade:
+    height: 24pt
+    colors: [surfaceNeutral0_5.opacity(0.6), surfaceNeutral0_5.opacity(0.0)]
+    direction: top → bottom, offset 24pt below bar
+    note: Extends below the bar, fades content as it scrolls under. allowsHitTesting(false).
+
+# ─── TOOLBAR RULE ────────────────────────────────────────────────────────────────
+toolbar:
+  rule: >
+    ALWAYS add .toolbar(.hidden, for: .navigationBar) when Figma shows no native iOS nav bar.
+    Check EVERY page — if DSTopAppBar is present, the native bar should be hidden.
+
+# ─── ACTIONS SLOT ────────────────────────────────────────────────────────────────
+actions_slot:
+  description: Trailing @ViewBuilder slot — typically 1–3 DSButton(style:.neutral, size:.medium)
+  icon_buttons: DSButton(style: .neutral, size: .medium, icon: DSIcon.xxx) {}
+  system_icon_buttons: DSButton(style: .neutral, size: .medium, systemIcon: "bell") {}
+  max_actions: 3 (beyond 3 the bar becomes cramped — split to a menu)
+
+# ─── LAYOUT INTEGRATION ──────────────────────────────────────────────────────────
+layout_integration:
+  pattern: |
+    VStack(spacing: 0) {
+        DSTopAppBar(title: "Title", style: .smallCentered, onBack: { dismiss() }) {
+            DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
+        }
+        ScrollView { content.padding(.horizontal, theme.spacing.md) }
+    }
+  note: DSTopAppBar is always first in the VStack, not inside the ScrollView
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - ALWAYS add .toolbar(.hidden, for: .navigationBar) — check every page
+  - NEVER hardcode a back button manually — use onBack parameter
+  - NEVER set a background color on DSTopAppBar — it is always ultraThinMaterial
+  - Read Figma title alignment to pick .small vs .smallCentered
+  - Read Figma title size: h3 → .large, h5 → .smallCentered or .medium, bodySemiBold → .small
+  - For logo pages, use the logo init (leadingIcon:center:actions:)
+  - For search pages, use the search init (searchPlaceholder:onSearchTap:leadingIcon:actions:)

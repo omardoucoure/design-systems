@@ -1,0 +1,59 @@
+component: DSSideMenuLayout
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSSideMenuLayout.swift
+
+description: >
+  Full-screen layout with a slide-in side drawer animation. Content view slides right
+  when menu opens, revealing the menu underneath. Dim overlay closes the menu on tap.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - App shell when the primary navigation is a hamburger/side menu
+  - Screens where DSTopAppBar shows a menu icon that opens a drawer
+
+never_use_when:
+  - Tab-based navigation → use DSTabView or DSBottomAppBar
+  - Overlay that appears from the bottom → use a sheet
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  isOpen:
+    type: "Binding<Bool>"
+    note: Set true when hamburger button is tapped
+
+  content:
+    type: "@ViewBuilder" — the main page content
+
+  menu:
+    type: "@ViewBuilder" — the side menu content (typically DSNavigationMenu)
+
+# ─── ANIMATION ───────────────────────────────────────────────────────────────────
+animation:
+  type: Slide content right, reveal menu underneath
+  dim_overlay: semi-transparent overlay over content when open — tap to close
+
+# ─── LAYOUT INTEGRATION ──────────────────────────────────────────────────────────
+layout_integration: |
+  DSSideMenuLayout(isOpen: $isMenuOpen) {
+      // Main content — same page layout pattern applies inside here
+      ZStack(alignment: .bottom) {
+          VStack(spacing: 0) {
+              DSTopAppBar(title: "Home") {
+                  DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                      withAnimation { isMenuOpen.toggle() }
+                  }
+              }
+              ScrollView { content.padding(.bottom, 100) }
+          }
+          DSBottomAppBar(...)
+      }
+      .background(theme.colors.surfaceNeutral0_5)
+  } menu: {
+      DSNavigationMenu(...)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - The full page layout (DSTopAppBar + ScrollView + DSBottomAppBar) goes inside the content closure
+  - Always add .background() on the content's outermost container
+  - Toggle isMenuOpen from the DSTopAppBar menu button action

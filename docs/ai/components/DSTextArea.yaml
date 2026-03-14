@@ -1,0 +1,58 @@
+component: DSTextArea
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSTextArea.swift
+
+description: >
+  Multi-line themed text editor. Background: surfaceNeutral2. Radius: theme.radius.lg (20px).
+  Padding: theme.spacing.md (16px). Optional title above. Min height configurable.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Free-text multi-line inputs (bio, notes, comments, feedback)
+  - Any Figma input that shows a rectangular multi-line text area
+  - Message composition fields
+
+never_use_when:
+  - Single-line input → use DSTextField
+  - Search → use DSSearchField
+  - Code/OTP → use DSCodeInput
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  text:
+    type: "Binding<String>"
+    required: true
+
+  title:
+    type: LocalizedStringKey?
+    font: theme.typography.bodySemiBold (16px semibold)
+    color: textNeutral9
+    position: above the text area container
+    gap_below: theme.spacing.xs (8px)
+    use_when: Figma shows a label above the textarea box
+
+  placeholder:
+    type: LocalizedStringKey
+    default: "Enter text..."
+    color: textNeutral9.opacity(0.5)
+    note: Custom ZStack overlay — shows when text is empty
+
+  minHeight:
+    type: CGFloat
+    default: 120px
+    note: Read from Figma — adjust based on the intended text area height
+
+# ─── VISUAL PROPERTIES ────────────────────────────────────────────────────────────
+visual:
+  background: theme.colors.surfaceNeutral2
+  radius: theme.radius.lg (20px)
+  padding: theme.spacing.md (16px) all sides
+  text_font: theme.typography.bodyRegular (16px regular)
+  text_opacity: 0.75
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use SwiftUI TextEditor directly — always use DSTextArea
+  - Read minHeight from Figma exactly
+  - title is shown above the container, not inside it — do not set placeholder as the "title"
+  - Background is always surfaceNeutral2 — do not override unless explicitly different in Figma

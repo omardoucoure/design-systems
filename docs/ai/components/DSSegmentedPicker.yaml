@@ -1,0 +1,115 @@
+component: DSSegmentedPicker
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSSegmentedPicker.swift
+
+description: >
+  Themed segmented control for switching between views or filters.
+  Three styles: tabs (capsule container), pills (loose pills), underline (tab bar underline).
+  Always read Figma carefully to pick the right style.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Switching between content views on the same screen (Day/Week/Month, All/Active/Done)
+  - Filter toggles at the top of a list
+  - In-page sub-navigation that is NOT a main tab bar
+
+never_use_when:
+  - Main app tab navigation → use DSBottomAppBar
+  - Removable filter tags → use DSChip
+  - Icon-based compact picker → use DSIconSegmentedPicker
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  tabs:
+    description: Full-width equal segments in a capsule-shaped container
+    container_background: theme.colors.surfaceNeutral0_5 (cream/white)
+    container_radius: theme.radius.xl (32px)
+    container_padding: theme.spacing.xs (8px)
+    selected_background: theme.colors.surfacePrimary120 (dark primary capsule)
+    selected_text_color: theme.colors.textNeutral0_5 (light)
+    unselected_text_color: theme.colors.textNeutral9 (dark)
+    segment_height: 32px
+    font: theme.typography.label (14px semibold)
+    animation: .spring(response: 0.35, dampingFraction: 0.8) with matchedGeometryEffect
+    use_when:
+      - Most common — date range pickers (Day/Week/Month), filter selectors
+      - When Figma shows a container pill with inner selected pill animation
+    figma_signal: All segments in a rounded white/cream box, selected = dark filled capsule
+
+  pills:
+    description: Loose pill buttons in a neutral container (no inner fill visible for unselected)
+    container_background: theme.colors.surfaceNeutral2 (light grey)
+    container_radius: theme.radius.xl
+    container_padding: theme.spacing.xs (8px)
+    selected_background: theme.colors.surfacePrimary120
+    selected_text_color: theme.colors.textNeutral0_5
+    unselected_text_color: theme.colors.textNeutral9
+    segment_height: 32px
+    segment_padding_h: theme.spacing.sm (12px)
+    font: theme.typography.label
+    use_when:
+      - Filter rows where grey container distinguishes from white page
+      - Category pickers inside cards
+    figma_signal: Segments in a grey-background container vs white for .tabs
+
+  underline:
+    description: Flat text tabs with bottom border indicator
+    no_container_background: true
+    selected_indicator: full-width underline, widthMd (2px), color borderNeutral9_5
+    unselected_indicator: 1px, widthSm, same color at lower opacity (0.5 text opacity)
+    height_per_segment: 48px
+    font: theme.typography.label
+    animation: .easeInOut(duration: 0.2)
+    use_when:
+      - Tab-bar-style navigation within a page (News / Topics / Trending)
+      - When Figma shows text tabs with only a bottom underline indicator
+      - Used at the top of a scrollable content page (pinned below DSTopAppBar)
+    figma_signal: Flat text row, bottom border only, no capsule or container background
+
+# ─── ITEMS ──────────────────────────────────────────────────────────────────────
+items:
+  type: "[LocalizedStringKey]"
+  note: All labels are localized. Count: 2–5 items (more than 5 → consider scroll or icons)
+  example: |
+    DSSegmentedPicker(
+        items: ["Day", "Week", "Month"],
+        selectedIndex: $selectedIndex,
+        style: .tabs
+    )
+
+# ─── STATE MANAGEMENT ────────────────────────────────────────────────────────────
+state_management:
+  binding: "selectedIndex: Binding<Int>"
+  pattern: |
+    @State private var pickerIndex = 0
+    DSSegmentedPicker(items: tabs, selectedIndex: $pickerIndex, style: .tabs)
+    // Then show different content based on pickerIndex
+
+# ─── LAYOUT INTEGRATION ──────────────────────────────────────────────────────────
+layout_integration:
+  inside_card: |
+    DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.md) {
+        DSSegmentedPicker(items: ["All", "Active"], selectedIndex: $idx, style: .pills)
+    }
+  pinned_below_top_bar: |
+    VStack(spacing: 0) {
+        DSTopAppBar(...)
+        DSSegmentedPicker(items: tabs, selectedIndex: $idx, style: .underline)
+            .padding(.horizontal, theme.spacing.md)
+        ScrollView { ... }
+    }
+
+# ─── DSPageControl (same file) ───────────────────────────────────────────────────
+DSPageControl:
+  description: Carousel/page dot indicator
+  selected: 32×8pt capsule (surfacePrimary120)
+  unselected: 8×8pt circle (borderNeutral9_5)
+  gap: theme.spacing.xs (8px)
+  use_when: Below a DSCarousel or any paged scroll view
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Read Figma container background: white/cream = .tabs, grey = .pills, none = .underline
+  - Selected indicator always uses surfacePrimary120 — do not override
+  - Items must be LocalizedStringKey — never pass plain String (use "Text" as LocalizedStringKey literal)
+  - selectedIndex is Int 0-based — initialize @State var to the Figma-shown default tab

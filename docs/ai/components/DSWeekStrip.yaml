@@ -1,0 +1,31 @@
+component: DSWeekStrip
+category: date_time
+swift_path: ios/Sources/DesignSystem/Components/DSWeekStrip.swift
+
+description: >
+  Compact horizontal strip showing Mon–Sun with day letter + date number.
+  Non-scrolling, full-width. Selected day highlighted with primary color.
+
+use_when:
+  - Weekly view header (fitness tracker, habit tracker)
+  - Static 7-day strip at the top of a schedule page
+  - When Figma shows all 7 days visible at once in a row
+
+never_use_when:
+  - Scrollable/long-range day selector → use DSDayPicker
+  - Full calendar month → use DSCalendarGrid
+
+visual:
+  layout: 7 equal-width columns, full available width
+  cell:
+    day_letter: theme.typography.small (M, T, W, T, F, S, S)
+    date_number: theme.typography.label or bodySemiBold
+  selected:
+    background: surfacePrimary100 circle
+    text_color: textNeutral0_5
+  today: optional subtle indicator
+
+rules:
+  - DSWeekStrip fills full container width — do not constrain width
+  - Provides selectedDay: Binding<Int> (0=Mon, 6=Sun) or Binding<Date>
+  - All 7 days always visible — not scrollable

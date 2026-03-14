@@ -1,0 +1,60 @@
+component: DSCheckbox
+category: inputs
+swift_path: ios/Sources/DesignSystem/Components/DSCheckbox.swift
+
+description: >
+  Themed checkbox with label and optional description.
+  Checkbox: 20×20pt, radius.xs, surfacePrimary100 fill + white checkmark when checked.
+  Label: body (16px medium). Description: caption (14px medium).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Multi-select forms (terms acceptance, preferences, filters)
+  - Settings options that can be independently enabled
+  - "Accept terms and conditions" rows
+
+never_use_when:
+  - Single on/off toggle → use DSToggle
+  - Mutually exclusive single choice → use DSRadio
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  isOn:
+    type: "Binding<Bool>"
+    note: Initialize to true if Figma shows the checkbox in checked state
+
+  label:
+    type: LocalizedStringKey?
+    font: theme.typography.body (16px medium)
+    color: theme.colors.textNeutral9
+
+  description:
+    type: LocalizedStringKey?
+    font: theme.typography.caption (14px medium)
+    color: theme.colors.textNeutral8
+    use_when: Additional context needed below the label
+
+# ─── VISUAL STATES ───────────────────────────────────────────────────────────────
+visual_states:
+  unchecked:
+    border: borderNeutral9_5, widthMd (2px)
+    fill: transparent
+
+  checked:
+    background: surfacePrimary100
+    border: surfacePrimary100
+    icon: checkmark (SF Symbol, 12px bold, textNeutral0_5)
+    animation: .easeInOut(duration: 0.15)
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  checkbox_size: 20×20pt
+  checkbox_radius: theme.radius.xs (4px)
+  gap_to_label: theme.spacing.sm (12px)
+  label_description_gap: 2px
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Initialize isOn to true if Figma shows a checked checkbox
+  - Whole button is tappable (the label area also toggles the checkbox)
+  - Use DSRadio for mutually exclusive options, DSCheckbox for independent options

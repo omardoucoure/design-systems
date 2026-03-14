@@ -1,0 +1,94 @@
+component: DSChip
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSChip.swift
+
+description: >
+  Compact pill-shaped label with optional dismiss (×) button.
+  Height: 32px. Font: theme.typography.label (14px semibold).
+  Use for filterable tags, selected categories, and removable selection items.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Filter tags (Category, Price range, Status)
+  - Selected items in a multi-select input (tags field)
+  - Topic labels on content cards
+  - Removable selections in forms
+
+never_use_when:
+  - Notification counts → use DSBadge
+  - Tab-style navigation → use DSSegmentedPicker
+
+# ─── STYLES ─────────────────────────────────────────────────────────────────────
+styles:
+  filledA:
+    background: theme.colors.surfaceSecondary100 (brand accent)
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - Selected/active filter chip
+      - Highlighted tag that should stand out with brand accent color
+    figma_signal: Chip background matches brand secondary / accent color
+
+  filledB:
+    background: theme.colors.surfacePrimary100
+    foreground: theme.colors.textNeutral0_5
+    use_when: Active state in primary-colored context (rare)
+
+  filledC:
+    background: theme.colors.surfacePrimary120
+    foreground: theme.colors.textNeutral0_5
+    use_when: Strong emphasis chip (very rare — check Figma carefully)
+
+  neutral:
+    background: theme.colors.surfaceNeutral2
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - Unselected/inactive filter chip (default state)
+      - Non-interactive topic label on cards
+    figma_signal: Chip background is surfaceNeutral2 light grey
+
+  outlined:
+    background: transparent
+    border: theme.colors.surfacePrimary120, widthSm (1px)
+    foreground: theme.colors.textNeutral9
+    use_when:
+      - Toggleable filter chips (tap to select changes to filledA)
+      - Secondary category tags alongside a selected filledA chip
+    figma_signal: Chip has only a border outline, no fill
+
+# ─── DISMISS / TAP ───────────────────────────────────────────────────────────────
+interactions:
+  onDismiss:
+    description: Renders an × icon button inside the chip
+    use_when: Chip is a removable selection (tag, filter item that can be cleared)
+    icon: "xmark", 10px bold
+
+  onTap:
+    description: Makes the whole chip tappable
+    use_when: Chip is a toggleable filter that changes state when tapped
+
+# ─── LAYOUT & SPACING ────────────────────────────────────────────────────────────
+layout:
+  height: 32px (fixed)
+  padding_h: theme.spacing.sm (12px)
+  padding_v: theme.spacing.xxs (4px)
+  gap_between_label_and_dismiss: theme.spacing.xs (8px)
+  font: theme.typography.label (14px semibold)
+  shape: Capsule
+
+# ─── FILTER ROW PATTERN ──────────────────────────────────────────────────────────
+filter_row_pattern: |
+  ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: theme.spacing.xs) {
+          DSChip("All", style: isAllSelected ? .filledA : .neutral, onTap: { selectAll() })
+          DSChip("Running", style: isRunning ? .filledA : .neutral, onTap: { toggle(.running) })
+          DSChip("Cycling", style: isCycling ? .filledA : .neutral, onTap: { toggle(.cycling) })
+      }
+      .padding(.horizontal, theme.spacing.md)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Height is always 32px — do not override
+  - Selected state = filledA, unselected = neutral or outlined — check Figma
+  - Always use .disabled(true) via SwiftUI environment for disabled chips (50% opacity automatic)
+  - Text must be LocalizedStringKey — never hardcode non-localizable strings

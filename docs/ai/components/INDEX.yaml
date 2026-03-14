@@ -1,0 +1,155 @@
+version: "1.0"
+description: >
+  Per-component AI reference YAMLs for the HaHo Design System.
+  Each file contains: use_when, never_use_when, all variants/styles/sizes with
+  when-to-use context, exact padding/spacing from source, Figma color mappings,
+  and hard rules for AI code generation.
+
+meta:
+  source_root: ios/Sources/DesignSystem/Components/
+  theme_doc: docs/theming.md
+  claude_rules: CLAUDE.md
+  contract: docs/ai/design-system-contract.yaml
+  figma_file_key: 4kcXyu53LWpUMVyhPvA4hY
+
+# ─── HOW TO USE THESE FILES ──────────────────────────────────────────────────────
+ai_instructions: |
+  1. Read the component YAML for each component you plan to use on the page.
+  2. Use `use_when` / `never_use_when` to confirm you are using the right component.
+  3. Read `variants`/`styles`/`sizes` to pick the correct variant based on Figma.
+  4. Read `padding_context` and `layout` for exact spacing values.
+  5. Follow `rules` — these are hard constraints from the design system.
+  6. Consult docs/theming.md for all token tables (colors, spacing, radius, typography).
+  7. Consult CLAUDE.md for page-level patterns (ScrollView layout, toolbar hiding, etc.)
+
+# ─── COMPONENT INDEX ─────────────────────────────────────────────────────────────
+
+core:
+  - file: DSButton.yaml
+    description: "Primary action primitive — 8 styles × 3 sizes, icon support"
+  - file: DSCard.yaml
+    description: "Container card — background, radius, padding; every visual panel"
+  - file: DSText.yaml
+    description: "Themed text with typography token + optional color"
+  - file: DSIcon.yaml
+    description: "Type-safe enum for 1364 custom SVG icons"
+  - file: DSIconImage.yaml
+    description: "Standalone themed icon renderer"
+  - file: DSDivider.yaml
+    description: "1px separator — fullBleed, inset, middle, subheader"
+
+inputs:
+  - file: DSTextField.yaml
+    description: "Single-line text input — 2 variants × 5 states × secure mode"
+  - file: DSTextArea.yaml
+    description: "Multi-line text editor with optional title"
+  - file: DSSearchField.yaml
+    description: "Search input with magnifying glass + clear button"
+  - file: DSCodeInput.yaml
+    description: "OTP/verification code input with digit boxes"
+  - file: DSDropdown.yaml
+    description: "Dropdown select extending DSTextField style"
+  - file: DSCheckbox.yaml
+    description: "Checkbox with label and description"
+  - file: DSRadio.yaml
+    description: "Radio button with label and description"
+  - file: DSToggle.yaml
+    description: "Toggle switch with label and description"
+
+navigation:
+  - file: DSTopAppBar.yaml
+    description: "Top navigation bar — 7 layout styles, always ultraThinMaterial"
+  - file: DSBottomAppBar.yaml
+    description: "Bottom tab bar — full/floating/labeled styles + FAB"
+  - file: DSTabView.yaml
+    description: "Full app shell TabView with DSBottomAppBar integration"
+  - file: DSSegmentedPicker.yaml
+    description: "Segmented control — tabs/pills/underline styles"
+  - file: DSIconSegmentedPicker.yaml
+    description: "Icon-only segmented picker (compact)"
+  - file: DSListItem.yaml
+    description: "Themed list row with leading/trailing generic slots"
+  - file: DSNavigationMenu.yaml
+    description: "Side drawer menu with icon rows and profile"
+  - file: DSSideMenuLayout.yaml
+    description: "Side drawer layout with slide animation"
+  - file: DSBottomNavOverlay.yaml
+    description: "Full-screen navigation overlay sliding from bottom"
+
+data_display:
+  - file: DSBadge.yaml
+    description: "Status dot, number, or text tag badge"
+  - file: DSChip.yaml
+    description: "Chip/tag with tap and dismiss support"
+  - file: DSAvatar.yaml
+    description: "Avatar — monogram, icon, or image; circle or roundedRect"
+  - file: DSTooltip.yaml
+    description: "Tooltip with arrow — simple or rich"
+  - file: DSProgressCircle.yaml
+    description: "Circular progress ring with center label"
+  - file: DSStatRow.yaml
+    description: "Row of equal-width stat columns with vertical dividers"
+  - file: DSMetricCard.yaml
+    description: "Dashboard metric card with icon, value, optional chart"
+  - file: DSEventCard.yaml
+    description: "Compact event/activity card with title, subtitle, trailing icon"
+  - file: DSProductCard.yaml
+    description: "Product card with photo, price, optional discount badge"
+  - file: DSProductTeaser.yaml
+    description: "Horizontal product card carousel"
+
+profile:
+  - file: DSUserCard.yaml
+    description: "Profile card — avatar, name, bio, stat, sign-out/edit actions"
+
+feedback:
+  - file: DSAlert.yaml
+    description: "Full-page alert with icon, large title, actions"
+  - file: DSAlertDialog.yaml
+    description: "Modal alert dialog overlay — severity-colored card"
+  - file: DSBanner.yaml
+    description: "Floating toast/banner notification"
+
+charts:
+  - file: DSBarChart.yaml
+    description: "Simple vertical bar chart with optional highlight"
+  - file: DSLineChart.yaml
+    description: "Smooth Catmull-Rom line chart"
+  - file: DSStatsChart.yaml
+    description: "Combined bar + line chart with floating value badge"
+  - file: DSHorizontalBarChart.yaml
+    description: "Dual horizontal comparison bar chart"
+  - file: DSStackedBarChart.yaml
+    description: "Stacked vertical bar chart with segment colors"
+  - file: DSLollipopChart.yaml
+    description: "Circle-top lollipop bar chart"
+  - file: DSWeatherChart.yaml
+    description: "Thin capsule bar weather-style chart"
+  - file: DSSemiCircularGauge.yaml
+    description: "Semi-circular arc gauge"
+
+media:
+  - file: DSCarousel.yaml
+    description: "Horizontal image carousel — spotlight/standard styles"
+  - file: DSCarouselDeck.yaml
+    description: "Stacked card deck carousel with swipe-to-dismiss"
+  - file: DSPhotoGrid.yaml
+    description: "Photo/video grid — dynamic or compact layout"
+  - file: DSVideoPlayer.yaml
+    description: "Full-screen video player overlay"
+  - file: DSStackedCard.yaml
+    description: "Depth-effect card with layered background"
+  - file: DSStackedCardCarousel.yaml
+    description: "Overlapping card stack carousel"
+
+date_time:
+  - file: DSDatePicker.yaml
+    description: "Date picker — single or range mode"
+  - file: DSCalendarGrid.yaml
+    description: "Interactive calendar grid with month navigation"
+  - file: DSDayPicker.yaml
+    description: "Horizontal scrollable day picker with fade edges"
+  - file: DSWeekStrip.yaml
+    description: "Compact 7-day week strip (non-scrolling)"
+  - file: DSTimelineGrid.yaml
+    description: "Scrollable timeline grid with event slots"

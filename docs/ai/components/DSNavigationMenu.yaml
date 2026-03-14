@@ -1,0 +1,42 @@
+component: DSNavigationMenu
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSNavigationMenu.swift
+
+description: >
+  Side navigation menu with icon rows, section titles, and a user profile row at bottom.
+  Typically used inside DSSideMenuLayout as the drawer content. Background: surfaceNeutral2.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Side drawer/hamburger menu navigation
+  - App-wide navigation menu that slides in from the side
+
+never_use_when:
+  - Bottom tab navigation → use DSBottomAppBar
+  - In-page navigation → use DSSegmentedPicker
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  top: App logo or title
+  middle: Scrollable list of DSListItem rows grouped by section with DSDivider.subheader
+  bottom: User profile row with sign-out action
+
+# ─── USAGE PATTERN ───────────────────────────────────────────────────────────────
+with_side_menu_layout: |
+  DSSideMenuLayout(isOpen: $menuOpen) {
+      // main content
+      VStack {
+          DSTopAppBar(title: "Home", ...) {
+              DSButton(style: .neutral, size: .medium, icon: .menuScale) { menuOpen.toggle() }
+          }
+          // page content
+      }
+  } menu: {
+      DSNavigationMenu(...)
+  }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Always pair DSNavigationMenu with DSSideMenuLayout
+  - Menu items should use DSIcon enum for icons
+  - Selected state highlights the active menu item

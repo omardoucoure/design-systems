@@ -1,0 +1,22 @@
+component: DSWeatherChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSWeatherChart.swift
+
+description: >
+  Weather-style chart with thin capsule bars. Used for temperature, precipitation,
+  or any metric displayed in a weather-app aesthetic with capsule-shaped bars.
+
+use_when:
+  - Weather data visualization (temperature range, precipitation)
+  - Thin capsule bar aesthetic matching Figma design
+  - Time-of-day or hourly data charts
+
+visual:
+  bars: thin rounded capsules (not rectangular)
+  color_gradient: often two-tone gradient (high temp = warm, low = cool)
+  labels: below bars (time or day labels)
+
+rules:
+  - Always set .frame(height:)
+  - Read gradient colors from Figma — typically warm/cool or primary/secondary gradient
+  - Capsule style is fixed — do not use DSWeatherChart for standard rectangular bars

@@ -1,0 +1,27 @@
+component: DSStatsChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSStatsChart.swift
+
+description: >
+  Combined bar chart + line chart with a floating badge showing a highlighted value.
+  Used for performance dashboards where trend + volume need to be shown together.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Dashboard stats showing bar volume + trend line overlay
+  - "This week vs average" visualizations
+  - Performance/fitness dashboards with a highlighted metric badge
+
+# ─── VISUAL ──────────────────────────────────────────────────────────────────────
+visual:
+  bars: vertical bars (muted color, typically surfaceNeutral3)
+  line: trend line overlay (Catmull-Rom, primaryColor)
+  badge: floating rounded pill showing highlighted value (e.g., "+12%")
+  badge_position: above the highlighted bar or line peak
+  x_labels: time labels below bars
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Always set .frame(height:) — chart needs explicit height
+  - Badge text and position come from the highlighted data point
+  - Read bar and line colors from Figma

@@ -1,0 +1,22 @@
+component: DSStackedBarChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSStackedBarChart.swift
+
+description: >
+  Stacked vertical bar chart where each bar has multiple color segments.
+  Used for showing part-to-whole relationships over time.
+
+use_when:
+  - Budget breakdown by category over months
+  - Activity breakdown (cardio vs strength vs flexibility) over weeks
+  - Any stacked proportion chart in Figma
+
+visual:
+  bars: stacked segments, each segment a different color
+  time_labels: below each bar
+  legend: optional color key for segments
+
+rules:
+  - Each segment needs a distinct color — read all colors from Figma
+  - Always set .frame(height:)
+  - segment colors should use theme color tokens (primary, secondary, neutral variants)

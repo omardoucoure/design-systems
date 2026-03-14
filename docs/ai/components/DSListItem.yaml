@@ -1,0 +1,118 @@
+component: DSListItem
+category: navigation
+swift_path: ios/Sources/DesignSystem/Components/DSListItem.swift
+
+description: >
+  Themed list row with optional leading/trailing generic slots, overline, headline,
+  supporting text, and metadata. Background is always surfaceNeutral2.
+  Use for settings rows, menu items, notification rows, content feeds.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Settings / preferences rows (Privacy, Notifications, Account)
+  - Menu / navigation lists
+  - Notification feed items
+  - Any Figma element that looks like a horizontal row with icon + text + trailing element
+  - Inside DSCard containers for grouped list sections
+
+never_use_when:
+  - Product cards with images → use DSProductCard
+  - Event cards → use DSEventCard
+  - Profile header → use DSUserCard
+  - Tab navigation → use DSBottomAppBar
+
+# ─── TEXT STRUCTURE ─────────────────────────────────────────────────────────────
+text_structure:
+  overline:
+    font: theme.typography.small (12px medium)
+    color: textNeutral9.opacity(0.75)
+    use_when: Category label or section identifier above the headline (e.g., "Today", "Push")
+
+  headline:
+    font: theme.typography.bodySemiBold (16px semibold)
+    color: theme.colors.textNeutral9
+    required: true
+
+  supportingText:
+    font: theme.typography.body (16px medium)
+    color: textNeutral8.opacity(0.75)
+    use_when: Secondary description below the headline
+
+  metadata:
+    font: theme.typography.body (16px medium)
+    color: textNeutral8.opacity(0.75)
+    position: right of headline (after text block)
+    use_when: Timestamps, counts, or status values ("2 min ago", "3")
+
+# ─── LEADING SLOT ────────────────────────────────────────────────────────────────
+leading_slot:
+  description: Generic @ViewBuilder — typically icon, avatar, or image
+  common_patterns:
+    icon_button:
+      use_when: Settings rows with category icons (lock, bell, person)
+      example: |
+        DSListItem(headline: "Privacy", leadingIcon: "lock", showTrailingArrow: true)
+    avatar:
+      use_when: Contact lists, friend feeds
+      example: |
+        DSListItem(headline: "John") { DSAvatar(style: .image(img)) } trailing: { ... }
+    dsicon_image:
+      use_when: DS catalog icons (prefer over SF Symbols)
+      example: |
+        DSListItem(headline: "Notifications") {
+            DSIconImage(icon: .bell, size: 24)
+        } trailing: { ... }
+
+# ─── TRAILING SLOT ───────────────────────────────────────────────────────────────
+trailing_slot:
+  description: Generic @ViewBuilder — typically arrow, toggle, badge, or metadata
+  common_patterns:
+    arrow: showTrailingArrow: true (convenience init) — navigation destination
+    toggle: DSToggle(isOn: $enabled)
+    badge: DSBadge(variant: .numberBrand, count: 3)
+    button: DSButton(style: .text, size: .small) { }
+    text: DSText("Active", style: .caption, color: .validated)
+
+# ─── DIVIDER ─────────────────────────────────────────────────────────────────────
+divider:
+  parameter: showDivider: Bool = false
+  color: theme.colors.borderNeutral3
+  position: bottom of the row (1px line)
+  use_when: Between rows in a list where Figma shows separator lines
+
+# ─── LAYOUT & SPACING ────────────────────────────────────────────────────────────
+layout:
+  padding: theme.spacing.md (16px) all sides
+  row_gap: theme.components.listItem.rowGap (between leading and text block)
+  background: theme.colors.surfaceNeutral2
+  action: Wrap in Button if action is provided — the entire row becomes tappable
+
+# ─── GROUPING PATTERN ────────────────────────────────────────────────────────────
+grouping:
+  pattern: |
+    DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+        VStack(spacing: 0) {
+            DSListItem(headline: "Privacy", leadingIcon: "lock", showTrailingArrow: true, showDivider: true)
+            DSListItem(headline: "Notifications", leadingIcon: "bell", showTrailingArrow: true, showDivider: true)
+            DSListItem(headline: "Appearance", leadingIcon: "paintbrush", showTrailingArrow: true)
+        }
+    }
+  note: >
+    Wrap a group of DSListItems in a DSCard with padding: 0, then let each item
+    manage its own padding. Use showDivider: true for all but the last item.
+
+# ─── CONVENIENCE INIT ────────────────────────────────────────────────────────────
+convenience_init:
+  parameters:
+    leadingIcon: String?  # SF Symbol name
+    showTrailingArrow: Bool  # shows right arrow
+  use_when: Simple icon + headline + arrow pattern (most settings rows)
+  note: For DSIcon catalog icons, use the full generic init with leading ViewBuilder
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - DSListItem background is always surfaceNeutral2 — do not override
+  - Wrap multiple list items in DSCard(padding: 0) to get the rounded group container
+  - showDivider on all items except the last in a group
+  - If the row navigates somewhere, provide action: closure (makes row tappable)
+  - Prefer DSIcon enum for leading icons over SF Symbol strings

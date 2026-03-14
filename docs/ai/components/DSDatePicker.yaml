@@ -1,0 +1,42 @@
+component: DSDatePicker
+category: date_time
+swift_path: ios/Sources/DesignSystem/Components/DSDatePicker.swift
+
+description: >
+  Themed date picker supporting single date selection and date range selection modes.
+  Shows a month calendar grid with navigation. Uses theme colors for selection highlight.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Date selection in booking, scheduling, or filter screens
+  - Travel / event date range selection
+  - Any Figma screen showing a full calendar picker
+
+never_use_when:
+  - Week day strip strip without full calendar → use DSWeekStrip or DSDayPicker
+  - Time selection → use native DatePicker with displayedComponents: .hourAndMinute
+
+# ─── MODES ───────────────────────────────────────────────────────────────────────
+modes:
+  single:
+    description: Select one date
+    use_when: Single appointment or deadline selection
+
+  range:
+    description: Select start + end date (highlights range between them)
+    use_when: Travel, hotel, or event date range selection
+    figma_signal: Two date indicators showing "Check-in" and "Check-out" or similar
+
+# ─── VISUAL ──────────────────────────────────────────────────────────────────────
+visual:
+  selected_date_background: surfacePrimary100 or surfaceSecondary100 — read from Figma
+  range_highlight_background: surfacePrimary100 at reduced opacity
+  navigation_arrows: previous/next month
+  month_label_font: theme.typography.h5 or h6 — read from Figma
+  day_font: theme.typography.label or caption
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - Read selection highlight color from Figma
+  - For range mode, selection state requires two Date? bindings (startDate + endDate)
+  - DSDatePicker fills its container width — no need to set explicit width

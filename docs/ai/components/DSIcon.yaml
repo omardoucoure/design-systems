@@ -1,0 +1,85 @@
+component: DSIcon
+category: core
+swift_path: ios/Sources/DesignSystem/Components/DSIcon.swift
+
+description: >
+  Type-safe enum for all 1364 custom SVG icons in the HaHo design system asset catalog.
+  Use DSIcon enum cases everywhere an icon is needed — never hardcode asset name strings.
+  All icons are 24×24pt viewBox, vector-based, template-rendered (tintable).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Any icon visible in Figma that matches a DSIcon case
+  - DSButton icons, DSTopAppBar action buttons, DSListItem leading icons
+  - Any custom icon from the HaHo icon catalog
+
+never_use_when:
+  - SF Symbol icons not in the DSIcon catalog → use systemIcon: "name" parameter
+  - Images that are not icons (photos, illustrations) → use Image directly
+
+# ─── USAGE PATTERNS ──────────────────────────────────────────────────────────────
+usage_patterns:
+  in_dsbutton: |
+    DSButton(style: .neutral, size: .medium, icon: .bell) { }
+    DSButton("Edit", style: .filledA, size: .medium, icon: .editPencil, iconPosition: .left) { }
+
+  in_dsiconimage: |
+    DSIconImage(icon: .bell, size: 24)
+
+  raw_image: |
+    Image(dsIcon: .heart)
+        .resizable()
+        .renderingMode(.template)
+        .scaledToFit()
+        .frame(width: 24, height: 24)
+        .foregroundStyle(theme.colors.textNeutral9)
+
+# ─── COMMON ICON NAMES ────────────────────────────────────────────────────────────
+common_icons:
+  navigation:
+    - arrowLeftLong (back button)
+    - chevronRight
+    - menuScale (hamburger menu)
+    - xmark (close/dismiss)
+  actions:
+    - editPencil (edit)
+    - logOut (sign out)
+    - plus (add)
+    - trash (delete)
+    - share (share)
+  feedback:
+    - bell (notifications)
+    - alertCircle (error/alert)
+    - checkCircle (success)
+    - infoCircle (info)
+  content:
+    - heart (like/favorite)
+    - eye (visibility)
+    - search (magnifying glass)
+    - lock (security/password)
+    - calendar (date)
+  media:
+    - camera
+    - image
+    - play
+    - pause
+  user:
+    - person (user/profile)
+    - people (group)
+    - walking (activity)
+    - halfCookie (calories/food)
+
+# ─── SWIFT KEYWORD CASES ─────────────────────────────────────────────────────────
+swift_keyword_escaping:
+  note: Some DSIcon cases are Swift keywords — they are escaped with backticks
+  examples:
+    "`import`": the import icon
+    "`repeat`": the repeat icon
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - ALWAYS use DSIcon enum — never pass raw asset name strings like "ic_heart" or "bell_icon"
+  - Read the Figma icon name and find the matching DSIcon case
+  - All icons are 24×24pt unless the container specifies a different size
+  - Use .renderingMode(.template) when coloring icons with foregroundStyle
+  - If the Figma icon does not match any DSIcon case, use SF Symbol as fallback with systemIcon:

@@ -1,0 +1,69 @@
+component: DSStatRow
+category: data_display
+swift_path: ios/Sources/DesignSystem/Components/DSStatRow.swift
+
+description: >
+  A horizontal row of equal-width stat columns with 1px vertical dividers between them.
+  Each column shows a custom value view (provided via @ViewBuilder) above a label.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Dashboard/profile stats section ("1,268 Posts | 4.2k Followers | 312 Following")
+  - Summary metrics rows at the bottom of cards
+  - Any Figma section showing 2–4 horizontally divided stat columns
+
+# ─── STRUCTURE ───────────────────────────────────────────────────────────────────
+structure:
+  items: "[DSStatItem]" — each item has an id and label
+  value_builder: "@ViewBuilder (DSStatItem) -> ValueContent" — the top value view per column
+  divider: 1px vertical rectangle (borderNeutral9 or custom dividerColor)
+  layout_per_column:
+    top: valueContent (custom — typically Text with largeSemiBold or h4 font)
+    bottom: item.label in tiny font, opacity 50%
+    padding: theme.spacing.md (16px) all sides
+    width: .infinity (equal width split)
+  label_font: theme.typography.tiny (very small — component token)
+  label_opacity: 50% (textOpacity50)
+
+# ─── DIVIDER COLOR ────────────────────────────────────────────────────────────────
+divider_color:
+  default: theme.colors.textNeutral9
+  override: >
+    When DSStatRow is on a dark/colored background (e.g., primary card),
+    pass dividerColor: theme.colors.textNeutral0_5.opacity(0.3) to make dividers visible.
+
+# ─── COMMON USAGE PATTERNS ───────────────────────────────────────────────────────
+patterns:
+  standard_stats: |
+    let stats = [
+        DSStatItem(id: "posts", label: "Posts"),
+        DSStatItem(id: "followers", label: "Followers"),
+        DSStatItem(id: "following", label: "Following"),
+    ]
+    DSStatRow(items: stats) { item in
+        Text(value(for: item.id))
+            .font(theme.typography.largeSemiBold.font)
+            .foregroundStyle(theme.colors.textNeutral9)
+    }
+
+  inside_card: |
+    DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+        DSStatRow(items: stats) { item in
+            Text(item.value)
+                .font(theme.typography.h4.font)
+        }
+    }
+
+  on_dark_background: |
+    DSStatRow(items: stats, dividerColor: theme.colors.textNeutral0_5.opacity(0.3)) { item in
+        Text(item.value)
+            .font(theme.typography.largeSemiBold.font)
+            .foregroundStyle(theme.colors.textNeutral0_5)
+    }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - DSStatRow manages its own equal-width layout — do not use .frame(width:) on columns
+  - Value font should be largeSemiBold (18px semibold) or h4 (24px) — read from Figma
+  - Label font is theme.typography.tiny (managed internally) — do not add label text in valueContent
+  - For dark card backgrounds, always pass a lighter dividerColor

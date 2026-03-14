@@ -1,0 +1,27 @@
+component: DSStackedCardCarousel
+category: media
+swift_path: ios/Sources/DesignSystem/Components/DSStackedCardCarousel.swift
+
+description: >
+  Overlapping card stack carousel — cards are partially overlapping horizontally,
+  creating a fanned/stacked horizontal scroll. Each card is a DSStackedCard.
+
+use_when:
+  - Premium featured content with overlapping card aesthetic
+  - Recommendation carousels with a rich visual style
+  - When Figma shows horizontally offset overlapping cards in a row
+
+never_use_when:
+  - Standard non-overlapping carousel → use DSCarousel
+  - Deck swipe → use DSCarouselDeck
+
+visual:
+  overlap: cards overlap each other horizontally by ~60–80pt
+  scale: off-center cards slightly smaller
+  shadow: each card has shadow creating depth between cards
+  radius: theme.radius.xl
+
+rules:
+  - Read overlap amount and card dimensions from Figma
+  - Each card follows DSStackedCard visual rules
+  - Do NOT set equal spacing between cards — overlap is intentional

@@ -1,0 +1,22 @@
+component: DSLollipopChart
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSLollipopChart.swift
+
+description: >
+  Circle-top bar chart with thin stems and circle caps. Labels are rotated or shortened.
+  More decorative than standard bars — used in lifestyle/wellness dashboards.
+
+use_when:
+  - Stylized stat charts where lollipop aesthetic matches Figma design
+  - Weekly or daily data with compact labels
+  - Fitness/wellness app charts with a distinctive visual style
+
+visual:
+  stem: thin vertical line (1–2pt)
+  cap: filled circle at top of stem
+  label: below, often rotated or abbreviated
+
+rules:
+  - Always set .frame(height:)
+  - Circle cap color reads from Figma — typically primary or secondary color
+  - Highlighted item uses a different cap color

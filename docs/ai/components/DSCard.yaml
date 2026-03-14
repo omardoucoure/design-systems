@@ -1,0 +1,107 @@
+component: DSCard
+category: core
+swift_path: ios/Sources/DesignSystem/Components/DSCard.swift
+
+description: >
+  Generic container with configurable background, corner radius, and padding.
+  Every visual "box" or "panel" on a page should be a DSCard — never build raw
+  containers with .background().clipShape() in page files.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Any panel, section card, or content container visible in Figma with a background color
+  - Profile cards, stat cards, list section wrappers, onboarding step containers
+  - Wrapping multiple components in a visual group with a rounded background
+
+never_use_when:
+  - The "card" is actually a list item row → use DSListItem
+  - The container is a product card with image → use DSProductCard
+  - The container is a metric widget → use DSMetricCard
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  background:
+    type: Color?
+    default: theme.colors.surfaceNeutral2    # light grey
+    options:
+      surfaceNeutral2: Standard card on white/cream page backgrounds
+      surfacePrimary100: Primary-colored card (e.g., hero cards, highlighted sections)
+      surfacePrimary120: Deep primary card
+      surfaceSecondary100: Accent-colored card
+      custom: Any Color value from theme — read from Figma
+    use_when:
+      surfaceNeutral2: Most cards on pages — settings, form containers, stat sections
+      surfacePrimary100: "Hero" or "feature" card with brand primary fill
+      custom/clear: Glass or transparent containers (rare — check Figma)
+
+  radius:
+    type: CGFloat?
+    default: theme.radius.xl    # 32px
+    options:
+      theme.radius.sm: 8px — compact or dense card contexts
+      theme.radius.md: 16px — medium containers, form sections
+      theme.radius.lg: 20px — mid-size cards
+      theme.radius.xl: 32px — default, most full-width section cards
+    use_when:
+      xl: Standard full-width page sections, user profile cards
+      md: Inner nested cards, input container wrappers
+
+  padding:
+    type: CGFloat?
+    default: theme.spacing.xl    # 32px
+    asymmetric_note: >
+      When Figma shows different horizontal vs vertical padding (e.g., px=32, py=40),
+      set `padding: 0` and apply manually:
+        DSCard(background: ..., radius: ..., padding: 0) {
+            content
+                .padding(.horizontal, theme.spacing.xl)
+                .padding(.vertical, theme.spacing.xxl)
+        }
+
+  clipsContent:
+    type: Bool
+    default: true
+    use_when_false: >
+      Set false when child views (like bottom tab bar) intentionally overflow the card bounds.
+      Example: a card with a floating action button that sticks out past the card edge.
+
+# ─── COMMON PADDING PATTERNS FROM FIGMA ─────────────────────────────────────────
+common_padding_patterns:
+  uniform_xl: >
+    padding: theme.spacing.xl (32px) — standard card content padding
+  uniform_lg: >
+    padding: theme.spacing.lg (24px) — compact card content padding
+  asymmetric_xl_xxl: >
+    DSCard(padding: 0) + .padding(.horizontal, theme.spacing.xl).padding(.vertical, theme.spacing.xxl)
+    → xl horizontal (32px), xxl vertical (40px)
+  zero_then_manual: >
+    Use when Figma shows different top/bottom padding (e.g., hero section with large top padding
+    to compensate for overlap from the card above)
+
+# ─── OVERLAP / NEGATIVE MARGIN PATTERN ──────────────────────────────────────────
+overlap_pattern:
+  description: >
+    When Figma shows `mb-[-50px]` on a card (the next card overlaps this one),
+    implement with .padding(.top, -50) on the NEXT card in the VStack.
+  example: |
+    VStack(spacing: 0) {
+        DSCard(background: .primary100, ...) { ... }          // top card
+        DSCard(background: .neutral2, ...) { ... }
+            .padding(.top, -50)                               // overlaps 50px
+    }
+
+# ─── BACKGROUND COLOR → FIGMA MAPPING ───────────────────────────────────────────
+figma_color_mapping:
+  "var(--surface/surface-neutral-(2),#ebebe6)": theme.colors.surfaceNeutral2
+  "var(--surface/surface-neutral-(1),...)":      theme.colors.surfaceNeutral1
+  "var(--surface/surface-primary-(100),...)":    theme.colors.surfacePrimary100
+  "var(--surface/surface-primary-(120),...)":    theme.colors.surfacePrimary120
+  "var(--surface/surface-secondary-(100),...)" : theme.colors.surfaceSecondary100
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER build `RoundedRectangle(...).fill(color)` containers in page files — use DSCard
+  - NEVER add .background().clipShape() inline in pages — that is what DSCard is for
+  - Default radius is xl (32px) — only override if Figma shows a different radius
+  - Default padding is xl (32px) — read Figma padding values carefully for asymmetry
+  - When padding differs horizontally vs vertically, use padding: 0 + manual .padding() on content

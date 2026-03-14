@@ -1,0 +1,23 @@
+component: DSSemiCircularGauge
+category: charts
+swift_path: ios/Sources/DesignSystem/Components/DSSemiCircularGauge.swift
+
+description: >
+  Semi-circular arc gauge with colored segments and a needle or fill indicator.
+  Used for speedometers, health score gauges, and performance meters.
+
+use_when:
+  - Circular/arc performance gauges (health score, performance rating)
+  - Dashboard widgets where a half-circle visual shows a range/level
+  - Any Figma component showing a semi-circular arc chart
+
+visual:
+  arc: half circle (180°), divided into segments or gradient
+  indicator: needle or filled arc up to the value
+  center_label: value text in center/bottom of arc
+  colors: typically gradient or multi-segment (green→yellow→red for health)
+
+rules:
+  - Always set .frame() matching Figma dimensions
+  - Read segment colors and count from Figma
+  - value is 0.0–1.0 (proportion of the gauge)

@@ -1,0 +1,37 @@
+component: DSPhotoGrid
+category: media
+swift_path: ios/Sources/DesignSystem/Components/DSPhotoGrid.swift
+
+description: >
+  Photo/video thumbnail grid. Two layouts: dynamic (varying cell sizes, editorial feel)
+  and compact (uniform 3-column grid). All cells clip to radius.md.
+
+use_when:
+  - Social profile photo gallery grid
+  - Media library browser
+  - Content feed with mixed image/video thumbnails
+
+never_use_when:
+  - Horizontal swipeable carousel → use DSCarousel
+  - Single large feature image → use Image directly
+
+layouts:
+  dynamic:
+    description: Mixed cell sizes — some large (featured), some small
+    use_when: Instagram-style editorial grid, featured content layout
+    figma_signal: Grid cells have different heights/widths
+
+  compact:
+    description: Uniform 3-column equal-size grid
+    use_when: Photo album, portfolio grid, uniform content
+    figma_signal: Regular grid with all cells the same size
+
+visual:
+  cell_radius: theme.radius.md (16px)
+  gap: theme.spacing.xxs (4px) or sm (12px) — read from Figma
+  video_indicator: play icon overlay for video items
+
+rules:
+  - Always set .frame(height:) if using a fixed-height grid
+  - Cell images must be in asset catalog
+  - Gap between cells comes from Figma — do not default to 0

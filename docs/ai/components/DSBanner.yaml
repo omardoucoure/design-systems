@@ -1,0 +1,88 @@
+component: DSBanner
+category: feedback
+swift_path: ios/Sources/DesignSystem/Components/DSBanner.swift
+
+description: >
+  Floating toast/banner notification with severity-colored background, optional title,
+  message, optional leading content (icon chip), and optional dismiss button.
+  Not self-positioned — parent's ZStack/VStack controls placement.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Transient feedback after an action ("Saved!", "Connection lost")
+  - Non-blocking notification that auto-dismisses or user can dismiss
+  - System status updates visible over page content
+
+never_use_when:
+  - Permanent alerts → use DSAlert (full page)
+  - Modal confirmations → use DSAlertDialog
+
+# ─── SEVERITY → BACKGROUND ───────────────────────────────────────────────────────
+severity_background_mapping:
+  error: theme.colors.error (red)
+  warning: theme.colors.warning (orange/yellow)
+  success: theme.colors.validated (green)
+  info: theme.colors.infoFocus (blue)
+  neutral: theme.colors.surfaceNeutral2 (grey)
+  note: All text (title, message, dismiss icon) uses textNeutral9 regardless of severity
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  direction: HStack, alignment: .top, spacing: theme.spacing.md (16px)
+  padding: theme.spacing.xl (32px) all sides
+  radius: theme.radius.lg (20px)
+  shadow: y:4 blur:8 opacity:0.02 + y:24 blur:48 opacity:0.18
+  title_font: theme.typography.h5 (20px medium)
+  message_font: theme.typography.caption (14px medium)
+  text_gap: theme.spacing.xxs (4px)
+  dismiss_icon: DSIcon.xmark, 20×20pt
+
+# ─── LEADING SLOT ────────────────────────────────────────────────────────────────
+leading_slot:
+  description: Optional @ViewBuilder placed before the text content
+  use_when: >
+    Figma shows an icon chip or badge at the left of the banner (color dot, custom icon).
+  common_patterns:
+    severity_chip: |
+      DSBanner(title: "Error", message: "...", severity: .error) {
+          DSBadge(variant: .dot)
+      } onDismiss: { showBanner = false }
+
+# ─── DISMISS ─────────────────────────────────────────────────────────────────────
+dismiss:
+  parameter: onDismiss: (() -> Void)?
+  use_when: Banner should be manually dismissable (shows × button)
+  auto_dismiss: Implement in parent with DispatchQueue.main.asyncAfter or withAnimation
+
+# ─── POSITIONING PATTERNS ────────────────────────────────────────────────────────
+positioning:
+  top_banner: |
+    ZStack(alignment: .top) {
+        pageContent
+        if showBanner {
+            DSBanner(title: "Saved!", severity: .success, onDismiss: { showBanner = false })
+                .padding(.horizontal, theme.spacing.md)
+                .padding(.top, theme.spacing.md)
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .animation(.spring(), value: showBanner)
+        }
+    }
+
+  bottom_banner: |
+    ZStack(alignment: .bottom) {
+        pageContent
+        if showBanner {
+            DSBanner(message: "Connection lost", severity: .error)
+                .padding(.horizontal, theme.spacing.md)
+                .padding(.bottom, 100)  // above bottom bar
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - DSBanner is NOT self-positioned — always wrap it in a ZStack with alignment
+  - Always add .transition() and .animation() for appear/disappear
+  - Add horizontal padding (.padding(.horizontal, theme.spacing.md)) to the banner
+  - Text color is always textNeutral9 regardless of severity background
+  - title is optional — some banners show only message (or vice versa)

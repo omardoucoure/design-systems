@@ -1,0 +1,28 @@
+component: DSCarouselDeck
+category: media
+swift_path: ios/Sources/DesignSystem/Components/DSCarouselDeck.swift
+
+description: >
+  Photo carousel with a stacked deck effect — cards appear layered behind each other.
+  Swiping reveals the next card from underneath, creating a depth/stack visual.
+
+use_when:
+  - Profile photo gallery with a Tinder-like swipe deck
+  - Onboarding card stacks
+  - Content discovery with a card-deck reveal animation
+  - When Figma shows layered/stacked cards with visible edges behind
+
+never_use_when:
+  - Standard horizontal swipe → use DSCarousel
+  - Non-overlapping content → use DSStackedCardCarousel
+
+visual:
+  stack_depth: 2–3 visible cards behind the front card
+  scale: back cards slightly smaller (0.92, 0.85)
+  offset: back cards offset down/behind
+  swipe: drag to dismiss front card, next card animates forward
+
+rules:
+  - Always set .frame(height:) — deck needs explicit height
+  - Images must be in asset catalog — download from Figma
+  - Swipe direction and dismiss threshold read from source

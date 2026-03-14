@@ -1,0 +1,53 @@
+component: DSText
+category: core
+swift_path: ios/Sources/DesignSystem/Components/DSText.swift
+
+description: >
+  Convenience wrapper for themed text — applies typography token + optional color + optional
+  multiline settings in one component. Use when a single Text needs a theme token applied
+  without the boilerplate of accessing @Environment(\.theme).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Standalone text views that need a typography token applied concisely
+  - When you would otherwise write: Text("...").font(theme.typography.X.font).foregroundStyle(Y)
+
+never_use_when:
+  - Inside components — use @Environment(\.theme) and apply tokens directly
+  - Rich/mixed-style text (different font in same line) — use attributed string or HStack
+
+# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
+parameters:
+  content:
+    type: LocalizedStringKey
+    required: true
+
+  style:
+    type: TypographyToken (from theme.typography.*)
+    required: true
+    examples:
+      .h4: 24px medium
+      .bodySemiBold: 16px semibold
+      .caption: 14px medium
+      .smallRegular: 12px regular
+
+  color:
+    type: Color?
+    default: theme.colors.textNeutral9
+    common_overrides:
+      textNeutral8: Secondary text
+      textNeutral0_5: Text on dark backgrounds
+      textPrimary100: Brand primary colored text
+      textSecondary100: Accent colored text
+
+# ─── USAGE ───────────────────────────────────────────────────────────────────────
+example: |
+  DSText("Welcome back", style: .h4)
+  DSText("3,421 steps", style: .largeSemiBold, color: theme.colors.textNeutral9)
+  DSText("Tap to continue", style: .caption, color: theme.colors.textNeutral8)
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - NEVER use .font(.system(size:)) — use DSText with the correct style token
+  - NEVER use .font(.custom("DMSans-...", size:)) — always use theme tokens
+  - Color defaults to textNeutral9 — only override when Figma shows a different text color

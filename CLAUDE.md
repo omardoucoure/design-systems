@@ -248,6 +248,19 @@ Every component using `surfacePrimary*`, `surfaceSecondary*`, `textPrimary100`, 
 - The neutral scale always comes from the `Brand` enum — custom colors only affect primary/secondary shades
 - Full theming reference: `docs/theming.md`
 
+## Per-Component AI Reference YAMLs
+
+Each DS component has a dedicated YAML in `docs/ai/components/` with:
+- `use_when` / `never_use_when`
+- Per-variant/size/style context (when to use each variant)
+- Exact padding/spacing values from source code
+- Figma CSS variable → Swift token mappings
+- Hard implementation rules
+
+**ALWAYS read the component YAML before implementing any component.**
+- Index: `docs/ai/components/INDEX.yaml`
+- Examples: `docs/ai/components/DSButton.yaml`, `docs/ai/components/DSCard.yaml`, etc.
+
 ## Figma File Reference
 
 - **File key**: `4kcXyu53LWpUMVyhPvA4hY`

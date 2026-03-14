@@ -1,0 +1,79 @@
+component: DSAlert
+category: feedback
+swift_path: ios/Sources/DesignSystem/Components/DSAlert.swift
+
+description: >
+  Full-page alert layout with icon, large title (display2 font), optional divider,
+  optional message, and action buttons. Used as the main content of an empty-state
+  or error screen — not as a modal overlay (use DSAlertDialog for overlays).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Full-screen empty state (no internet, server error, empty search results)
+  - Onboarding permission request screens (full-page, not modal)
+  - Success screens after completing a flow
+
+never_use_when:
+  - Modal dialogs that appear over content → use DSAlertDialog
+  - Inline form validation errors → use DSTextField state: .error + helperText
+  - Toast notifications → use DSBanner
+
+# ─── SEVERITY ────────────────────────────────────────────────────────────────────
+severity_colors:
+  error: theme.colors.error (red)
+  warning: theme.colors.warning (orange/yellow)
+  success: theme.colors.validated (green)
+  info: theme.colors.infoFocus (blue)
+  neutral: theme.colors.surfaceNeutral2 (grey — icon will be neutral tone)
+  note: >
+    Severity affects the icon color context — DSAlert itself uses neutral text colors.
+    The icon view you provide should be colored matching the severity.
+
+# ─── LAYOUT ──────────────────────────────────────────────────────────────────────
+layout:
+  direction: VStack, alignment: .leading, spacing: theme.spacing.xl (32px)
+  title_font: theme.typography.display2 (large display — NOT h4 or h5)
+  message_font: theme.typography.bodyRegular
+  divider: DSDivider(style: .fullBleed) between title and message when showDivider: true
+
+# ─── ICON SLOT ───────────────────────────────────────────────────────────────────
+icon_slot:
+  description: @ViewBuilder — any view placed above the title
+  common_patterns:
+    asset_image: Image("icon_name").resizable().frame(width: 40, height: 40)
+    dsicon_image: DSIconImage(icon: .alertCircle, size: 40)
+  note: >
+    The icon is displayed as-is — no automatic sizing or coloring.
+    Read exact size from Figma.
+
+# ─── ACTIONS SLOT ────────────────────────────────────────────────────────────────
+actions_slot:
+  description: @ViewBuilder — typically 1–2 DSButton(isFullWidth: true) stacked vertically
+  common_patterns:
+    primary_only: DSButton("Try Again", style: .filledB, size: .big, isFullWidth: true) {}
+    primary_secondary: |
+      DSButton("Try Again", style: .filledB, size: .big, isFullWidth: true) {}
+      DSButton("Go Back", style: .outlined, size: .big, isFullWidth: true) {}
+
+# ─── PAGE INTEGRATION ────────────────────────────────────────────────────────────
+page_integration:
+  note: >
+    DSAlert is just content — wrap it in a ZStack or VStack with padding to position
+    it on the screen. Typically centered vertically on an otherwise empty page.
+  example: |
+    ZStack {
+        theme.colors.surfaceNeutral0_5.ignoresSafeArea()
+        DSAlert(title: "Oops!", message: "Something went wrong.", severity: .error) {
+            Image("error_icon").resizable().frame(width: 40, height: 40)
+        } actions: {
+            DSButton("Try Again", style: .filledB, size: .big, isFullWidth: true) {}
+        }
+        .padding(theme.spacing.xl)
+    }
+
+# ─── HARD RULES ──────────────────────────────────────────────────────────────────
+rules:
+  - DSAlert is NOT a modal — it is page content. Use DSAlertDialog for modals.
+  - title uses display2 typography — never override to h4/h5 unless Figma clearly shows it
+  - showDivider: true is the default — only set false if Figma shows no separator line
+  - Provide buttons with isFullWidth: true for the actions slot

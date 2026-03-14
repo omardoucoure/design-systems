@@ -1,0 +1,26 @@
+component: DSTimelineGrid
+category: date_time
+swift_path: ios/Sources/DesignSystem/Components/DSTimelineGrid.swift
+
+description: >
+  Scrollable vertical timeline grid with hour slots and draggable event blocks.
+  Used in scheduling and calendar day-view screens.
+
+use_when:
+  - Day-view calendar with time slots (08:00–22:00)
+  - Appointment scheduling or time blocking
+  - Timetable or schedule pages in Figma
+
+visual:
+  left_column: hour labels (8:00, 9:00, etc.)
+  right_area: event blocks colored by type
+  current_time: optional horizontal line indicator
+  event_block:
+    background: surfacePrimary100 or surfaceSecondary100 — read from Figma
+    radius: theme.radius.sm or md
+    content: event title + duration
+
+rules:
+  - DSTimelineGrid needs a fixed .frame(height:) or fills a scrollable container
+  - Events are positioned by startHour and duration — no absolute y positioning in calling code
+  - Read event colors from Figma — different event types get different colors
