@@ -21,6 +21,10 @@ struct PagesShowcaseView: View {
                 NavigationLink("Walkthrough 3 — Side-by-side") {
                     LazyView(Walkthrough3Page().navigationBarTitleDisplayMode(.inline))
                 }
+
+                NavigationLink("Walkthrough 18 — Dark carousel") {
+                    LazyView(Walkthrough18Page())
+                }
             }
 
             Section("Authentication") {

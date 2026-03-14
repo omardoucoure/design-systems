@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - DSDayPickerItem
 
+/// A single selectable item in a ``DSDayPicker``.
 public struct DSDayPickerItem: Identifiable {
     public let id: String
     public let label: LocalizedStringKey
@@ -14,6 +15,16 @@ public struct DSDayPickerItem: Identifiable {
 
 // MARK: - DSDayPicker
 
+/// Horizontal scrolling day picker with capsule-shaped selections and opacity-based distance fading.
+///
+/// Items further from the current selection fade out to draw focus to the active day.
+///
+/// ```swift
+/// DSDayPicker(
+///     items: days,
+///     selectedId: $selectedDay
+/// )
+/// ```
 public struct DSDayPicker: View {
     @Environment(\.theme) private var theme
 

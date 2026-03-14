@@ -32,35 +32,37 @@ struct ContentView: View {
         DSSideMenuLayout(isOpen: $isMenuOpen) {
             sideMenuContent
         } content: {
-            DSTabView(selection: $selectedTab, tabs: tabs, style: barStyle) {
-                switch selectedTab {
-                case "components":
+            DSTabView(selection: $selectedTab, tabs: tabs, styleBinding: $barStyle) {
+                ZStack {
                     NavigationStack {
                         ComponentShowcaseView()
                             .toolbar { brandStyleToolbar }
                     }
-                case "pages":
+                    .opacity(selectedTab == "components" ? 1 : 0)
+
                     NavigationStack {
                         PagesShowcaseView()
                             .toolbar { brandStyleToolbar }
                     }
-                case "colors":
+                    .opacity(selectedTab == "pages" ? 1 : 0)
+
                     NavigationStack {
                         ColorPaletteView()
                             .toolbar { brandStyleToolbar }
                     }
-                case "tokens":
+                    .opacity(selectedTab == "colors" ? 1 : 0)
+
                     NavigationStack {
                         TokenBrowserView()
                             .toolbar { brandStyleToolbar }
                     }
-                case "grid":
+                    .opacity(selectedTab == "tokens" ? 1 : 0)
+
                     NavigationStack {
                         CombinationGridView()
                             .toolbar { brandStyleToolbar }
                     }
-                default:
-                    EmptyView()
+                    .opacity(selectedTab == "grid" ? 1 : 0)
                 }
             }
         }

@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - DSStackedBarChartSegment
 
+/// A single colored segment within a ``DSStackedBarChart`` column.
 public struct DSStackedBarChartSegment {
     public let height: CGFloat
     public let color: Color
@@ -14,6 +15,7 @@ public struct DSStackedBarChartSegment {
 
 // MARK: - DSStackedBarChartColumn
 
+/// A column of stacked segments in a ``DSStackedBarChart``.
 public struct DSStackedBarChartColumn {
     public let segments: [DSStackedBarChartSegment]
 
@@ -24,6 +26,22 @@ public struct DSStackedBarChartColumn {
 
 // MARK: - DSStackedBarChart
 
+/// Stacked vertical bar chart with optional time labels beneath each column.
+///
+/// Each column is composed of multiple colored segments stacked bottom-to-top
+/// with a configurable gap between them.
+///
+/// ```swift
+/// DSStackedBarChart(
+///     columns: [
+///         DSStackedBarChartColumn(segments: [
+///             DSStackedBarChartSegment(height: 40, color: .red),
+///             DSStackedBarChartSegment(height: 60, color: .blue)
+///         ])
+///     ],
+///     timeLabels: ["6am", "12pm", "6pm"]
+/// )
+/// ```
 public struct DSStackedBarChart: View {
     @Environment(\.theme) private var theme
 

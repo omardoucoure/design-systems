@@ -206,8 +206,8 @@ public struct DSBottomAppBar: View {
         .frame(maxWidth: .infinity)
         .background(theme.colors.surfaceNeutral2)
         .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 8)
-        .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 20)
+        .shadow(color: .black.opacity(0.03), radius: 8, x: 0, y: 8)
+        .shadow(color: .black.opacity(0.08), radius: 24, x: 0, y: 20)
         .padding(.horizontal, 20)
     }
 
@@ -248,8 +248,8 @@ public struct DSBottomAppBar: View {
                             topTrailingRadius: theme.radius.xl
                         )
                     )
-                    .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
-                    .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
+                    .shadow(color: .black.opacity(0.02), radius: 8, x: 0, y: -8)
+                    .shadow(color: .black.opacity(0.18), radius: 64, x: 0, y: -11)
             )
     }
 
@@ -260,6 +260,7 @@ public struct DSBottomAppBar: View {
 
         return Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                selectedId = item.id
                 selectedId = item.id
             }
         } label: {
@@ -283,6 +284,7 @@ public struct DSBottomAppBar: View {
 
         return Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                selectedId = item.id
                 selectedId = item.id
             }
         } label: {

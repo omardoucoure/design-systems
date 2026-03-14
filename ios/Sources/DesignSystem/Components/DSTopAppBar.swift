@@ -154,7 +154,22 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
                 imageTitleBar
             }
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(.ultraThinMaterial)
+        // Progressive fade extending below the bar — mimics the iOS 26 scroll edge
+        // effect where content blurs/fades out as it scrolls under the top bar.
+        .overlay(alignment: .bottom) {
+            LinearGradient(
+                colors: [
+                    theme.colors.surfaceNeutral0_5.opacity(0.6),
+                    theme.colors.surfaceNeutral0_5.opacity(0)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 24)
+            .offset(y: 24)
+            .allowsHitTesting(false)
+        }
     }
 
     // MARK: - Small (left-aligned)
