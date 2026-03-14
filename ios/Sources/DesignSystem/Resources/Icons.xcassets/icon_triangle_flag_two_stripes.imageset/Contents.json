@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_triangle_flag_two_stripes.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

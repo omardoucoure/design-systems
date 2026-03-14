@@ -1,0 +1,7 @@
+{
+  "images" : [
+    { "filename" : "icon_home_alt_slim.svg", "idiom" : "universal" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 },
+  "properties" : { "preserves-vector-representation" : true }
+}
