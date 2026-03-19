@@ -32,38 +32,46 @@ struct ContentView: View {
         DSSideMenuLayout(isOpen: $isMenuOpen) {
             sideMenuContent
         } content: {
-            DSTabView(selection: $selectedTab, tabs: tabs, styleBinding: $barStyle) {
-                ZStack {
+            ZStack(alignment: .bottom) {
+                TabView(selection: $selectedTab) {
                     NavigationStack {
                         ComponentShowcaseView()
                             .toolbar { brandStyleToolbar }
                     }
-                    .opacity(selectedTab == "components" ? 1 : 0)
+                    .tag("components")
 
                     NavigationStack {
                         PagesShowcaseView()
                             .toolbar { brandStyleToolbar }
                     }
-                    .opacity(selectedTab == "pages" ? 1 : 0)
+                    .tag("pages")
 
                     NavigationStack {
                         ColorPaletteView()
                             .toolbar { brandStyleToolbar }
                     }
-                    .opacity(selectedTab == "colors" ? 1 : 0)
+                    .tag("colors")
 
                     NavigationStack {
                         TokenBrowserView()
                             .toolbar { brandStyleToolbar }
                     }
-                    .opacity(selectedTab == "tokens" ? 1 : 0)
+                    .tag("tokens")
 
                     NavigationStack {
                         CombinationGridView()
                             .toolbar { brandStyleToolbar }
                     }
-                    .opacity(selectedTab == "grid" ? 1 : 0)
+                    .tag("grid")
                 }
+                .toolbar(.hidden, for: .tabBar)
+
+                DSBottomAppBar(
+                    items: tabs,
+                    selectedId: $selectedTab,
+                    style: barStyle
+                )
+                .ignoresSafeArea(.container, edges: .bottom)
             }
         }
         .ignoresSafeArea(.keyboard)

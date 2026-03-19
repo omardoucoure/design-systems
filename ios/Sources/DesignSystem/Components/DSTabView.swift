@@ -101,31 +101,32 @@ public struct DSTabView<Content: View>: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            if !tabBarVisibility.isHidden {
-                DSTabBarView(tabs: tabs, tabBarState: tabBarState)
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if !tabBarVisibility.isHidden {
+                    DSTabBarView(tabs: tabs, tabBarState: tabBarState)
+                } else {
+                    Color.clear.frame(height: 0)
+                }
             }
-        }
-        .environment(\.dsTabBarVisibility, tabBarVisibility)
-        .environment(\.dsTabBarState, tabBarState)
-        .onChange(of: selection) { newValue in
+            .environment(\.dsTabBarVisibility, tabBarVisibility)
+            .environment(\.dsTabBarState, tabBarState)
+            .onChange(of: selection) { newValue in
             if tabBarState.selectedId != newValue {
                 tabBarState.selectedId = newValue
             }
-        }
-        .onChange(of: style) { newValue in
-            if tabBarState.style != newValue {
-                tabBarState.style = newValue
             }
-        }
-        .onChange(of: tabBarState.selectedId) { newValue in
-            if selection != newValue {
-                selection = newValue
+            .onChange(of: style) { newValue in
+                if tabBarState.style != newValue {
+                    tabBarState.style = newValue
+                }
             }
-        }
+            .onChange(of: tabBarState.selectedId) { newValue in
+                if selection != newValue {
+                    selection = newValue
+                }
+            }
     }
 }
 
@@ -146,6 +147,6 @@ private struct DSTabBarView: View {
             ),
             style: tabBarState.style
         )
-        .ignoresSafeArea(edges: .bottom)
     }
 }
+
