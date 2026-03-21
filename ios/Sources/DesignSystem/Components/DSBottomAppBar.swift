@@ -69,6 +69,7 @@ public struct DSBottomBarItem: Identifiable {
 /// ```
 public struct DSBottomAppBar: View {
     @Environment(\.theme) private var theme
+    @Namespace private var tabNamespace
 
     private let items: [DSBottomBarItem]
     @Binding private var selectedId: String
@@ -80,14 +81,6 @@ public struct DSBottomAppBar: View {
     private let fabBadgeCount: Int?
     private let onFabTap: (() -> Void)?
     private let embedded: Bool
-
-    private var bottomSafeAreaInset: CGFloat {
-        (UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap(\.windows)
-            .first(where: \.isKeyWindow)?
-            .safeAreaInsets.bottom) ?? 0
-    }
 
     /// - Parameter embedded: When `true`, removes the container background, clip shape, and shadow.
     ///   Use this when the bar is embedded in a parent that already provides the background.
@@ -151,9 +144,17 @@ public struct DSBottomAppBar: View {
 
     // MARK: - Full Style
 
-    @ViewBuilder
     private var fullBar: some View {
-        let content = HStack {
+        fullBarContent
+            .padding(.horizontal, theme.spacing.lg)
+            .padding(.top, theme.spacing.md)
+            .padding(.bottom, theme.spacing.xs)
+            .frame(maxWidth: .infinity)
+            .modifier(DockedContainerModifier(embedded: embedded))
+    }
+
+    private var fullBarContent: some View {
+        HStack {
             let halfCount = items.count / 2
             let leftItems = Array(items.prefix(halfCount))
             let rightItems = Array(items.suffix(items.count - halfCount))
@@ -169,16 +170,6 @@ public struct DSBottomAppBar: View {
             ForEach(rightItems) { item in
                 iconButton(item)
             }
-        }
-        .padding(.horizontal, theme.spacing.lg)
-        .padding(.top, theme.spacing.md)
-        .padding(.bottom, theme.spacing.xs)
-        .frame(maxWidth: .infinity)
-
-        if embedded {
-            content
-        } else {
-            dockedContainer(content: content)
         }
     }
 
@@ -213,44 +204,17 @@ public struct DSBottomAppBar: View {
 
     // MARK: - Labeled Style
 
-    @ViewBuilder
     private var labeledBar: some View {
-        let content = HStack {
+        HStack {
             ForEach(items) { item in
                 labeledButton(item)
             }
         }
         .padding(.horizontal, theme.spacing.md)
         .padding(.top, theme.spacing.md)
-        .padding(.bottom, theme.spacing.xs)
+        .padding(.bottom, theme.spacing.md)
         .frame(maxWidth: .infinity)
-
-        if embedded {
-            content
-        } else {
-            dockedContainer(content: content)
-        }
-    }
-
-    // MARK: - Docked Container
-
-    /// Wraps bar content with background that extends into the bottom safe area.
-    private func dockedContainer<C: View>(content: C) -> some View {
-        content
-            .padding(.bottom, bottomSafeAreaInset)
-            .background(
-                theme.colors.surfaceNeutral2
-                    .clipShape(
-                        UnevenRoundedRectangle(
-                            topLeadingRadius: theme.radius.xl,
-                            bottomLeadingRadius: 0,
-                            bottomTrailingRadius: 0,
-                            topTrailingRadius: theme.radius.xl
-                        )
-                    )
-                    .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
-                    .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
-            )
+        .modifier(DockedContainerModifier(embedded: embedded))
     }
 
     // MARK: - Shared Components
@@ -259,7 +223,7 @@ public struct DSBottomAppBar: View {
         let isSelected = item.id == selectedId
 
         return Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 selectedId = item.id
             }
         } label: {
@@ -269,10 +233,13 @@ public struct DSBottomAppBar: View {
                 .foregroundStyle(theme.colors.textNeutral9)
                 .frame(height: 40)
                 .padding(.horizontal, theme.spacing.md)
-                .background(
-                    Capsule()
-                        .fill(isSelected ? theme.colors.surfaceSecondary100 : Color.clear)
-                )
+                .background {
+                    if isSelected {
+                        Capsule()
+                            .fill(theme.colors.surfaceSecondary100)
+                            .matchedGeometryEffect(id: "tabPill", in: tabNamespace)
+                    }
+                }
                 .clipShape(Capsule())
         }
         .buttonStyle(TabBarButtonStyle())
@@ -282,7 +249,7 @@ public struct DSBottomAppBar: View {
         let isSelected = item.id == selectedId
 
         return Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 selectedId = item.id
             }
         } label: {
@@ -294,10 +261,13 @@ public struct DSBottomAppBar: View {
                         .foregroundStyle(theme.colors.textNeutral9)
                         .frame(height: 40)
                         .padding(.horizontal, theme.spacing.md)
-                        .background(
-                            Capsule()
-                                .fill(isSelected ? theme.colors.surfaceSecondary100 : Color.clear)
-                        )
+                        .background {
+                            if isSelected {
+                                Capsule()
+                                    .fill(theme.colors.surfaceSecondary100)
+                                    .matchedGeometryEffect(id: "tabPill", in: tabNamespace)
+                            }
+                        }
                         .clipShape(Capsule())
 
                     if let count = item.badgeCount {
@@ -324,9 +294,6 @@ public struct DSBottomAppBar: View {
     }
 
     private func fabButton(size: CGFloat) -> some View {
-        // Figma: BIG container is `size` tall, inner button padding depends on fabColor presence
-        // Default FAB: h=size, px=lg(24) — e.g. plus icon FAB
-        // Custom color FAB: natural height from padding, px=md(16) — e.g. cart icon FAB
         let isCustom = fabColor != nil
         let hPadding = isCustom ? theme.spacing.md : (size == 56 ? theme.spacing.lg : theme.spacing.md)
         let vPadding = isCustom ? theme.spacing.xs : (size == 56 ? theme.spacing.md : theme.spacing.xs)
@@ -386,6 +353,175 @@ public struct DSBottomAppBar: View {
             .padding(.vertical, 2)
             .background(theme.colors.infoFocus)
             .clipShape(Capsule())
+    }
+}
+
+// MARK: - Docked Container Modifier
+
+/// Applies docked background when not embedded.
+private struct DockedContainerModifier: ViewModifier {
+    let embedded: Bool
+    @Environment(\.theme) private var theme
+
+    func body(content: Content) -> some View {
+        content
+            .background(
+                theme.colors.surfaceNeutral2
+                    .clipShape(
+                        UnevenRoundedRectangle(
+                            topLeadingRadius: theme.radius.xl,
+                            bottomLeadingRadius: 0,
+                            bottomTrailingRadius: 0,
+                            topTrailingRadius: theme.radius.xl
+                        )
+                    )
+                    .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: -8)
+                    .shadow(color: .black.opacity(0.18), radius: 32, x: 0, y: -11)
+                    .opacity(embedded ? 0 : 1)
+            )
+    }
+}
+
+// MARK: - Bottom Bar Inset Environment
+
+private struct DSBottomBarInsetKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+
+public extension EnvironmentValues {
+    /// The height of the DSBottomBarLayout bar.
+    var dsBottomBarInset: CGFloat {
+        get { self[DSBottomBarInsetKey.self] }
+        set { self[DSBottomBarInsetKey.self] = newValue }
+    }
+}
+
+/// Adds a bottom safe area inset matching the DSBottomBarLayout bar height.
+/// Apply on each NavigationStack inside a DSBottomBarLayout when using
+/// ZStack-based tab switching.
+public struct DSBottomBarContentInset: ViewModifier {
+    @Environment(\.dsBottomBarInset) private var inset
+
+    public func body(content: Content) -> some View {
+        content
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Color.clear.frame(height: inset)
+            }
+    }
+}
+
+public extension View {
+    /// Adds bottom safe area inset matching the DSBottomBarLayout bar height.
+    func dsBottomBarContentInset() -> some View {
+        modifier(DSBottomBarContentInset())
+    }
+}
+
+// MARK: - DSBottomBarLayout
+
+/// A container that pairs content with a DSBottomAppBar.
+/// Uses `.safeAreaInset(edge: .bottom)` to push content above the bar.
+///
+/// Usage:
+/// ```swift
+/// DSBottomBarLayout(
+///     items: tabs,
+///     selectedId: $selectedTab,
+///     style: .labeled
+/// ) {
+///     MyPageView()
+/// }
+/// ```
+public struct DSBottomBarLayout<Content: View>: View {
+    private let items: [DSBottomBarItem]
+    @Binding private var selectedId: String
+    private let style: DSBottomAppBarStyle
+    private let fabSystemIcon: String?
+    private let fabDSIcon: DSIcon?
+    private let fabColor: Color?
+    private let fabForegroundColor: Color?
+    private let fabBadgeCount: Int?
+    private let onFabTap: (() -> Void)?
+    private let content: Content
+
+    @State private var barHeight: CGFloat = 140
+
+    public init(
+        items: [DSBottomBarItem],
+        selectedId: Binding<String>,
+        style: DSBottomAppBarStyle = .labeled,
+        fabIcon: String? = nil,
+        fabColor: Color? = nil,
+        fabForegroundColor: Color? = nil,
+        fabBadgeCount: Int? = nil,
+        onFabTap: (() -> Void)? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.items = items
+        self._selectedId = selectedId
+        self.style = style
+        self.fabSystemIcon = fabIcon
+        self.fabDSIcon = nil
+        self.fabColor = fabColor
+        self.fabForegroundColor = fabForegroundColor
+        self.fabBadgeCount = fabBadgeCount
+        self.onFabTap = onFabTap
+        self.content = content()
+    }
+
+    public init(
+        items: [DSBottomBarItem],
+        selectedId: Binding<String>,
+        style: DSBottomAppBarStyle = .labeled,
+        fabIcon: DSIcon,
+        fabColor: Color? = nil,
+        fabForegroundColor: Color? = nil,
+        fabBadgeCount: Int? = nil,
+        onFabTap: (() -> Void)? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.items = items
+        self._selectedId = selectedId
+        self.style = style
+        self.fabSystemIcon = nil
+        self.fabDSIcon = fabIcon
+        self.fabColor = fabColor
+        self.fabForegroundColor = fabForegroundColor
+        self.fabBadgeCount = fabBadgeCount
+        self.onFabTap = onFabTap
+        self.content = content()
+    }
+
+    public var body: some View {
+        content
+            .environment(\.dsBottomBarInset, barHeight)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                DSBottomAppBar(
+                    items: items,
+                    selectedId: $selectedId,
+                    style: style,
+                    fabIcon: fabSystemIcon,
+                    fabColor: fabColor,
+                    fabForegroundColor: fabForegroundColor,
+                    fabBadgeCount: fabBadgeCount,
+                    onFabTap: onFabTap
+                )
+                .background(
+                    GeometryReader { geo in
+                        Color.clear.preference(key: BottomBarHeightKey.self, value: geo.size.height)
+                    }
+                )
+            }
+            .onPreferenceChange(BottomBarHeightKey.self) { barHeight = $0 }
+    }
+}
+
+// MARK: - Bar Height Preference Key
+
+private struct BottomBarHeightKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 

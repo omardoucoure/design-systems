@@ -40,7 +40,7 @@ struct Profile3Page: View {
                 .padding(.bottom, theme.spacing.lg)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }

@@ -14,6 +14,7 @@ struct ColorPaletteView: View {
         }
         .background(theme.colors.surfaceNeutral0_5)
         .navigationTitle("Color Palette")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - Active Theme Resolved Colors

@@ -18,6 +18,7 @@ struct TokenBrowserView: View {
         }
         .background(theme.colors.surfaceNeutral0_5)
         .navigationTitle("Token Browser")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - Spacing

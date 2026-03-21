@@ -27,7 +27,7 @@ struct Alert7Page: View {
                     .padding(.horizontal, theme.spacing.sm)
                 }
             }
-            .background(theme.colors.surfaceNeutral0_5)
+            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
 
             VStack {
                 Spacer()
@@ -57,6 +57,7 @@ struct Alert7Page: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) { showDialog = true }

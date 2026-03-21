@@ -19,7 +19,8 @@ struct PasscodeLoginPage: View {
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .navigationBarBackButtonHidden(false)
     }
 
     // MARK: - PIN Entry Card

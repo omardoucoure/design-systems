@@ -35,7 +35,7 @@ struct Profile5Page: View {
                     .padding(.bottom, theme.spacing.sm)
                 }
             }
-            .background(theme.colors.surfaceNeutral0_5)
+            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
 
             if let videoURL = playingVideoURL {
                 DSVideoPlayer(urlString: videoURL) {

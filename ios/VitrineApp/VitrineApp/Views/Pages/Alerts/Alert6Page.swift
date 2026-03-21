@@ -7,14 +7,6 @@ struct Alert6Page: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isMenuOpen = false
     @State private var showBanner = false
-    @State private var selectedTab = ""
-
-    private let bottomBarItems = [
-        DSBottomBarItem(id: "home", label: "Home", icon: .home),
-        DSBottomBarItem(id: "wallet", label: "Wallet", icon: .wallet),
-        DSBottomBarItem(id: "stats", label: "Stats", icon: .statsUpSquare),
-        DSBottomBarItem(id: "grid", label: "Grid", icon: .viewGrid),
-    ]
 
     private let monthlyData: [DSLollipopChartItem] = [
         .init(label: "Jan", height: 25), .init(label: "Feb", height: 37),
@@ -32,6 +24,7 @@ struct Alert6Page: View {
             mainContent
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) { showBanner = true }
@@ -56,7 +49,7 @@ struct Alert6Page: View {
         )
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     private var mainContent: some View {
@@ -73,14 +66,8 @@ struct Alert6Page: View {
                         thisYearCard.padding(.top, -85)
                     }
                     .padding(.horizontal, theme.spacing.sm)
-                    .padding(.bottom, 100)
                 }
                 .scrollIndicators(.hidden)
-            }
-            VStack {
-                Spacer()
-                DSBottomAppBar(items: bottomBarItems, selectedId: $selectedTab,
-                               style: .floating, fabIcon: .arrowUp, onFabTap: {})
             }
             if showBanner {
                 DSBanner(title: "Keep going!", message: "Just so you know: You're doing great!",
@@ -92,7 +79,7 @@ struct Alert6Page: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     private var thisMonthCard: some View {

@@ -48,7 +48,7 @@ struct Navigation8Page: View {
         )
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     // MARK: - Gallery Content (the "front card")
@@ -85,7 +85,7 @@ struct Navigation8Page: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 }
 

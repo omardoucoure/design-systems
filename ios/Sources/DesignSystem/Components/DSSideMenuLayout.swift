@@ -75,11 +75,9 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
                 theme.colors.surfaceNeutral0_5
                     .ignoresSafeArea()
 
-                // 1. Menu
+                // 1. Menu — always rendered, revealed as content slides right
                 menu()
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    .opacity(isOpen ? 1.0 : 0.0)
-                    .animation(.easeInOut(duration: 0.3), value: isOpen)
 
                 // 2. Ghost cards behind content
                 if showBackgroundCards {
@@ -90,6 +88,7 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
                 contentCard
             }
         }
+        .animation(.easeInOut(duration: 0.3), value: isOpen)
         .ignoresSafeArea(.container, edges: .bottom)
     }
 
@@ -132,7 +131,6 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
                 .offset(x: centerX - gap)
         }
         .opacity(Double(progress))
-        .animation(.easeInOut(duration: 0.3), value: isOpen)
     }
 
     // MARK: - Content Card
@@ -153,7 +151,6 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
             )
             .gesture(dragGesture)
             .overlay(dimmerOverlay)
-            .animation(.easeInOut(duration: 0.3), value: isOpen)
     }
 
     // MARK: - Dimmer Overlay

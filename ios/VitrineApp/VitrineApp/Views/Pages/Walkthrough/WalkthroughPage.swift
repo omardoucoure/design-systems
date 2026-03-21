@@ -61,7 +61,8 @@ struct WalkthroughPage: View {
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .navigationBarBackButtonHidden(false)
         .animation(.easeInOut(duration: 0.3), value: currentPage)
     }
 

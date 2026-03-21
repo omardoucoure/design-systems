@@ -27,7 +27,7 @@ struct Stats2Page: View {
             }
         }
         .padding(.horizontal, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()

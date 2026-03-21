@@ -22,7 +22,8 @@ struct LoginPage: View {
             .padding(.bottom, theme.spacing.sm)
         }
         .scrollDismissesKeyboard(.interactively)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .navigationBarBackButtonHidden(false)
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }

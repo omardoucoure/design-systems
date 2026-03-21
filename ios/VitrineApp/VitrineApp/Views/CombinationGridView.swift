@@ -49,6 +49,7 @@ struct CombinationGridView: View {
         }
         .background(theme.colors.surfaceNeutral0_5)
         .navigationTitle("Combination Grid")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func miniPreviewCard(brand: Brand, style: Style) -> some View {

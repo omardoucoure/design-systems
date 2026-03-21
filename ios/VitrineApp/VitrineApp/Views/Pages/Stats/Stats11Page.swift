@@ -43,12 +43,12 @@ struct Stats11Page: View {
         )
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Today", style: .smallCentered, onBack: nil) {
+            DSTopAppBar(title: "Today", style: .smallCentered, onBack: { dismiss() }) {
                 DSButton(style: .neutral, size: .medium, icon: .search) {}
             }
             .overlay(alignment: .leading) {
@@ -68,7 +68,7 @@ struct Stats11Page: View {
             segmentedPicker
         }
         .padding(.horizontal, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     // MARK: - Weather Graph Card

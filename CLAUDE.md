@@ -157,6 +157,9 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 6. **Add `.toolbar(.hidden, for: .navigationBar)`** if the Figma design has no native navigation bar
 7. **Verify against Figma screenshot** after building
 
+### Bottom Navigation Rule (CRITICAL):
+**NEVER add DSBottomAppBar in page implementations.** The app already has its own bottom navigation in ContentView. Figma designs show the bottom bar for context only — it is NOT part of the page. Pages must only contain their own content (top bar + scrollable content). Do NOT add ZStack patterns for floating bottom bars in pages.
+
 ### Page Layout Pattern — ScrollView with floating bottom elements (CRITICAL):
 
 Most pages follow this structure: a top app bar pinned at the top, scrollable content in the middle, and a floating element (bottom app bar, FAB button) at the bottom. **Always** use this pattern:

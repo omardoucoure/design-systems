@@ -73,7 +73,7 @@ struct Navigation7Page: View {
             }
             .padding(.bottom, theme.spacing.xl)
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     // MARK: - Carousel

@@ -12,27 +12,23 @@ struct ShoppingStart5Page: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedGender = 1
-    @State private var selectedTab = "home"
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack(spacing: 0) {
+            topAppBar
+
             ScrollView(showsIndicators: false) {
                 VStack(spacing: theme.spacing.sm) {
-                    topAppBar
-
                     picker
 
                     DSProductTeaser(products: teaserRow1)
 
                     DSProductTeaser(products: teaserRow2)
                 }
-                .padding(.bottom, 100)
             }
             .padding(.horizontal, theme.spacing.sm)
-
-            bottomBar
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -61,26 +57,6 @@ struct ShoppingStart5Page: View {
             Spacer()
         }
         .padding(.bottom, theme.spacing.sm)
-    }
-
-    // MARK: - Bottom App Bar
-
-    private var bottomBar: some View {
-        DSBottomAppBar(
-            items: [
-                DSBottomBarItem(id: "home", label: "Home", icon: .home),
-                DSBottomBarItem(id: "search", label: "Search", icon: .search),
-                DSBottomBarItem(id: "cart", label: "Cart", icon: .cart),
-                DSBottomBarItem(id: "profile", label: "Profile", icon: .user)
-            ],
-            selectedId: $selectedTab,
-            style: .full,
-            fabIcon: .heart,
-            fabColor: theme.colors.surfaceNeutral2,
-            fabForegroundColor: theme.colors.textNeutral9,
-            fabBadgeCount: 26,
-            onFabTap: {}
-        )
     }
 
     // MARK: - Data

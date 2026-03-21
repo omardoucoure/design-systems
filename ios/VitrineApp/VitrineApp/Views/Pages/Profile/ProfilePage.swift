@@ -6,13 +6,14 @@ import DesignSystem
 /// Profile screen (Figma node 338-8541).
 struct ProfilePage: View {
     @Environment(\.theme) private var theme
+    @Environment(\.dismiss) private var dismiss
     @State private var currentPage = 0
 
     private let photos = ["profile-photo-1", "profile-photo-2"]
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: {}) {
+            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
                 DSButton(style: .text, size: .medium, systemIcon: "plus.circle") {}
                 DSButton(style: .text, size: .medium, systemIcon: "ellipsis") {}
             }
@@ -28,8 +29,9 @@ struct ProfilePage: View {
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
     }
 

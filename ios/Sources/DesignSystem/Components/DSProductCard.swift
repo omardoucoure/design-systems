@@ -52,13 +52,15 @@ public struct DSProductCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
-            // Photo
+            // Photo container with background (Figma: surfaceNeutral3 behind product image)
             Image(image, bundle: .main)
                 .resizable()
-                .scaledToFill()
+                .scaledToFit()
+                .padding(theme.spacing.sm)
                 .frame(width: photoWidth, height: photoHeight)
-                .background(theme.colors.surfaceNeutral2)
-                .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
+                .background(theme.colors.surfaceNeutral3)
+                .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
+                .blendMode(.multiply)
 
             // Name & Price
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {

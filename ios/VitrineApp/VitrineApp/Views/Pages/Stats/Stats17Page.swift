@@ -42,7 +42,7 @@ struct Stats17Page: View {
         )
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     private var mainContent: some View {
@@ -62,7 +62,7 @@ struct Stats17Page: View {
 
             fabButton
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
     }
 
     // MARK: - Top App Bar

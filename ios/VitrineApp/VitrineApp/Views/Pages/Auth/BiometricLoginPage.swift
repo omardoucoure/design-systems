@@ -21,7 +21,8 @@ struct BiometricLoginPage: View {
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .navigationBarBackButtonHidden(false)
     }
 
     // MARK: - Touch ID Card
@@ -32,7 +33,7 @@ struct BiometricLoginPage: View {
                 DSText("Tap to verify identity", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
 
                 Image(systemName: "touchid")
-                    .font(.system(size: 80, weight: .thin))
+                    .font(theme.typography.display1.font)
                     .foregroundStyle(theme.colors.textNeutral0_5)
                     .frame(width: 80, height: 80)
             }

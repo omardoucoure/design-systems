@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_text_arrows_up_down.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

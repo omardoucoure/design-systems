@@ -36,7 +36,8 @@ struct Walkthrough3Page: View {
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .navigationBarBackButtonHidden(false)
         .gesture(
             DragGesture(minimumDistance: 50)
                 .onEnded { value in

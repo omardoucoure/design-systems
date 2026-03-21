@@ -6,7 +6,6 @@ struct Alert3Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
     @State private var selectedDay = "26"
-    @State private var selectedTab = ""
     @State private var showError = false
 
     private let dayPickerItems: [DSDayPickerItem] = [
@@ -14,13 +13,6 @@ struct Alert3Page: View {
         .init(id: "24", label: "24"), .init(id: "25", label: "25"),
         .init(id: "26", label: "Today, 26 Mar"),
         .init(id: "27", label: "27"), .init(id: "28", label: "28"), .init(id: "29", label: "29"),
-    ]
-
-    private let bottomBarItems = [
-        DSBottomBarItem(id: "home", label: "Home", icon: .home),
-        DSBottomBarItem(id: "search", label: "Search", icon: .search),
-        DSBottomBarItem(id: "heart", label: "Wishlist", icon: .heart),
-        DSBottomBarItem(id: "user", label: "Profile", icon: .user),
     ]
 
     private let statItems = [
@@ -38,17 +30,22 @@ struct Alert3Page: View {
                 }
                 DSDayPicker(items: dayPickerItems, selectedId: $selectedDay)
                 ScrollView {
-                    stepsGraphCard.padding(.bottom, showError ? 280 : 100)
+                    stepsGraphCard.padding(.bottom, showError ? 200 : 20)
                 }
             }
             .onTapGesture {
                 guard showError else { return }
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { showError = false }
             }
-            errorBottomSheet
+
+            if showError {
+                errorBannerContent
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) { showError = true }
@@ -86,20 +83,6 @@ struct Alert3Page: View {
         text.tracking(theme.typography.largeSemiBold.tracking)
             .foregroundStyle(theme.colors.textNeutral9)
             .frame(height: 27)
-    }
-
-    private var errorBottomSheet: some View {
-        VStack(spacing: 0) {
-            if showError {
-                errorBannerContent.transition(.move(edge: .bottom).combined(with: .opacity))
-            }
-            ZStack(alignment: .top) {
-                if showError { theme.colors.error.frame(height: theme.radius.xl) }
-                DSBottomAppBar(items: bottomBarItems, selectedId: $selectedTab, style: .full,
-                               fabIcon: .cart, fabColor: theme.colors.surfaceSecondary100,
-                               fabForegroundColor: theme.colors.textNeutral9, fabBadgeCount: 3, onFabTap: {})
-            }
-        }
     }
 
     private var errorBannerContent: some View {

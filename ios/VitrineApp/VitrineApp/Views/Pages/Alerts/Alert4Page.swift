@@ -6,14 +6,6 @@ struct Alert4Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
     @State private var showBanner = false
-    @State private var selectedTab = ""
-
-    private let bottomBarItems = [
-        DSBottomBarItem(id: "home", label: "Home", icon: .home),
-        DSBottomBarItem(id: "user", label: "Profile", icon: .user),
-        DSBottomBarItem(id: "calendar", label: "Calendar", icon: .calendar),
-        DSBottomBarItem(id: "bell", label: "Notifications", icon: .bell),
-    ]
 
     private let heartRatePoints: [DSLineChartPoint] = [
         .init(x: 0.0, y: 0.25), .init(x: 0.18, y: 0.65), .init(x: 0.35, y: 0.25),
@@ -33,7 +25,7 @@ struct Alert4Page: View {
                         row2Cards
                     }
                         .padding(.horizontal, theme.spacing.sm)
-                        .padding(.bottom, showBanner ? 260 : 120)
+                        .padding(.bottom, showBanner ? 200 : 20)
                 }
                 .scrollIndicators(.hidden)
             }
@@ -41,15 +33,13 @@ struct Alert4Page: View {
             if showBanner {
                 warningBanner
                     .padding(.horizontal, theme.spacing.sm)
-                    .padding(.bottom, 80)
+                    .padding(.bottom, theme.spacing.sm)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
-
-            DSBottomAppBar(items: bottomBarItems, selectedId: $selectedTab,
-                           style: .floating, fabIcon: .plus, onFabTap: {})
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) { showBanner = true }

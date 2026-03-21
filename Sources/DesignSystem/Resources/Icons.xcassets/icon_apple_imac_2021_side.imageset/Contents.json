@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_apple_imac_2021_side.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

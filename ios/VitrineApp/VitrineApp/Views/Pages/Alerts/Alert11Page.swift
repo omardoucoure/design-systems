@@ -36,7 +36,7 @@ struct Alert11Page: View {
                 .padding(.horizontal, theme.spacing.sm)
                 .padding(.bottom, theme.spacing.sm)
             }
-            .background(theme.colors.surfaceNeutral0_5)
+            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
 
             // Dialog overlay
             DSAlertDialog(
@@ -60,6 +60,7 @@ struct Alert11Page: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) {

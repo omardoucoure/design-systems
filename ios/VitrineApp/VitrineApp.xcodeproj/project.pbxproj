@@ -16,6 +16,7 @@
 		AA11BB22CC33DD44EE55FF01 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF02 /* LoginPage.swift */; };
 		AA11BB22CC33DD44EE55FF03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF04 /* Assets.xcassets */; };
 		AFCE615B0367843A48F18956 /* CombinationGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FF54034A29ADC0DE3E085B /* CombinationGridView.swift */; };
+		A1B2C3D4E5F6789012345601 /* IconBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6789012345602 /* IconBrowserView.swift */; };
 		BB22CC33DD44EE55FF660011 /* Login2Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB22CC33DD44EE55FF660012 /* Login2Page.swift */; };
 		C3D4E5F6A1B0123456789CDE /* WalkthroughPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60123456789AB /* WalkthroughPage.swift */; };
 		CC33DD44EE55FF66001122AB /* Login4Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC33DD44EE55FF66001122AC /* Login4Page.swift */; };
@@ -57,6 +58,7 @@
 		ST0011AA00112233445567D1 /* Stats17Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = ST0011AA00112233445567D2 /* Stats17Page.swift */; };
 		ST0011AA00112233445567E1 /* Stats16Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = ST0011AA00112233445567E2 /* Stats16Page.swift */; };
 		SH0011AA00112233445567E1 /* ShoppingStart5Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = SH0011AA00112233445567E2 /* ShoppingStart5Page.swift */; };
+		SH0011AA00112233445567F1 /* ShoppingStart4Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = SH0011AA00112233445567F2 /* ShoppingStart4Page.swift */; };
 		NV0011AA00112233445567F1 /* Navigation8Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = NV0011AA00112233445567F2 /* Navigation8Page.swift */; };
 		NV0011AA00112233445567G1 /* Navigation3Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = NV0011AA00112233445567G2 /* Navigation3Page.swift */; };
 		NV0011AA00112233445567J1 /* Navigation7Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = NV0011AA00112233445567J2 /* Navigation7Page.swift */; };
@@ -85,6 +87,7 @@
 		DD44EE55FF6600112233440C /* PasscodeLoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeLoginPage.swift; sourceTree = "<group>"; };
 		DFB3C57EDC9C095315C7EB85 /* PreviewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewHelpers.swift; sourceTree = "<group>"; };
 		E8FF54034A29ADC0DE3E085B /* CombinationGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationGridView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6789012345602 /* IconBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconBrowserView.swift; sourceTree = "<group>"; };
 		F1A2B3C4D5E6012345678902 /* Walkthrough2Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Walkthrough2Page.swift; sourceTree = "<group>"; };
 		F1A2B3C4D5E6012345678904 /* Walkthrough3Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Walkthrough3Page.swift; sourceTree = "<group>"; };
 		F1A2B3C4D5E601234567AA02 /* Walkthrough18Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Walkthrough18Page.swift; sourceTree = "<group>"; };
@@ -115,6 +118,7 @@
 		ST0011AA00112233445567D2 /* Stats17Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats17Page.swift; sourceTree = "<group>"; };
 		ST0011AA00112233445567E2 /* Stats16Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats16Page.swift; sourceTree = "<group>"; };
 		SH0011AA00112233445567E2 /* ShoppingStart5Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingStart5Page.swift; sourceTree = "<group>"; };
+		SH0011AA00112233445567F2 /* ShoppingStart4Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingStart4Page.swift; sourceTree = "<group>"; };
 		NV0011AA00112233445567F2 /* Navigation8Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation8Page.swift; sourceTree = "<group>"; };
 		NV0011AA00112233445567G2 /* Navigation3Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation3Page.swift; sourceTree = "<group>"; };
 		NV0011AA00112233445567J2 /* Navigation7Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation7Page.swift; sourceTree = "<group>"; };
@@ -164,6 +168,7 @@
 				CCFC9CA8EC856614E5599E60 /* ColorPaletteView.swift */,
 				E8FF54034A29ADC0DE3E085B /* CombinationGridView.swift */,
 				3AF142772ACE9BC20EC1079F /* ComponentShowcaseView.swift */,
+				A1B2C3D4E5F6789012345602 /* IconBrowserView.swift */,
 				0E5CF402BBDCE950096418E3 /* TokenBrowserView.swift */,
 				FA0102030405060708090AB2 /* LazyView.swift */,
 				E5F6A1B2C3D01234567890EF /* Pages */,
@@ -293,6 +298,7 @@
 		FA01020304050607080900A6 /* Shopping */ = {
 			isa = PBXGroup;
 			children = (
+				SH0011AA00112233445567F2 /* ShoppingStart4Page.swift */,
 				SH0011AA00112233445567E2 /* ShoppingStart5Page.swift */,
 			);
 			path = Shopping;
@@ -377,6 +383,7 @@
 				6360EB9241FBF323543716A6 /* ColorPaletteView.swift in Sources */,
 				AFCE615B0367843A48F18956 /* CombinationGridView.swift in Sources */,
 				1F108CFD46CE379E6FB5AECB /* ComponentShowcaseView.swift in Sources */,
+				A1B2C3D4E5F6789012345601 /* IconBrowserView.swift in Sources */,
 				11A316CFBA52186C4797652D /* ContentView.swift in Sources */,
 				8F1D10F8DA22B4A9DBC376D8 /* PreviewHelpers.swift in Sources */,
 				D28BA0B2D3C25D518A808D8D /* TokenBrowserView.swift in Sources */,
@@ -422,6 +429,7 @@
 				ST0011AA00112233445567E1 /* Stats16Page.swift in Sources */,
 				ST0011AA00112233445567D1 /* Stats17Page.swift in Sources */,
 				SH0011AA00112233445567E1 /* ShoppingStart5Page.swift in Sources */,
+				SH0011AA00112233445567F1 /* ShoppingStart4Page.swift in Sources */,
 				NV0011AA00112233445567F1 /* Navigation8Page.swift in Sources */,
 				NV0011AA00112233445567G1 /* Navigation3Page.swift in Sources */,
 				NV0011AA00112233445567J1 /* Navigation7Page.swift in Sources */,

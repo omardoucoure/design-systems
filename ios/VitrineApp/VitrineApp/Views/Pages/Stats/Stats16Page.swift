@@ -11,41 +11,28 @@ struct Stats16Page: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedTab = "stats"
     @State private var selectedPeriod = 1 // "Month" selected by default
     @State private var showChart = true
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            VStack(spacing: 0) {
-                // Top App Bar
-                DSTopAppBar(title: "Transactions", style: .small, onBack: { dismiss() }) {
-                    DSButton(style: .text, size: .medium, icon: .bellOff) {}
-                }
-
-                // Scrollable content
-                ScrollView {
-                    VStack(spacing: theme.spacing.sm) {
-                        chartCard
-                        periodPicker
-                        transactionList
-                    }
-                    .padding(.horizontal, theme.spacing.sm)
-                    .padding(.bottom, 100)
-                }
-                .scrollIndicators(.hidden)
+        VStack(spacing: 0) {
+            // Top App Bar
+            DSTopAppBar(title: "Transactions", style: .small, onBack: { dismiss() }) {
+                DSButton(style: .text, size: .medium, icon: .bellOff) {}
             }
 
-            // Bottom App Bar
-            DSBottomAppBar(
-                items: bottomBarItems,
-                selectedId: $selectedTab,
-                style: .full,
-                fabIcon: .plus,
-                onFabTap: {}
-            )
+            // Scrollable content
+            ScrollView {
+                VStack(spacing: theme.spacing.sm) {
+                    chartCard
+                    periodPicker
+                    transactionList
+                }
+                .padding(.horizontal, theme.spacing.sm)
+            }
+            .scrollIndicators(.hidden)
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -285,14 +272,6 @@ struct Stats16Page: View {
         ]
     }
 
-    private var bottomBarItems: [DSBottomBarItem] {
-        [
-            DSBottomBarItem(id: "home", label: "Home", icon: .home),
-            DSBottomBarItem(id: "profile", label: "Profile", icon: .user),
-            DSBottomBarItem(id: "calendar", label: "Calendar", icon: .calendar),
-            DSBottomBarItem(id: "stats", label: "Stats", icon: .graphUp),
-        ]
-    }
 }
 
 #Preview {

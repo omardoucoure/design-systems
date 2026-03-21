@@ -7,16 +7,7 @@ struct ContentView: View {
     @Environment(\.theme) private var theme
 
     @State private var selectedTab = "components"
-    @State private var barStyle: DSBottomAppBarStyle = .labeled
     @State private var isMenuOpen = false
-
-    private let tabs: [DSBottomBarItem] = [
-        DSBottomBarItem(id: "components", label: "Components", systemIcon: "cube"),
-        DSBottomBarItem(id: "pages", label: "Pages", systemIcon: "doc.richtext"),
-        DSBottomBarItem(id: "colors", label: "Colors", systemIcon: "paintpalette"),
-        DSBottomBarItem(id: "tokens", label: "Tokens", systemIcon: "slider.horizontal.3"),
-        DSBottomBarItem(id: "grid", label: "Grid", systemIcon: "square.grid.4x3.fill"),
-    ]
 
     private var menuItems: [DSNavigationMenuItem] {
         [
@@ -24,7 +15,7 @@ struct ContentView: View {
             DSNavigationMenuItem(id: "pages", label: "Pages", icon: .page, isSelected: selectedTab == "pages"),
             DSNavigationMenuItem(id: "colors", label: "Colors", icon: .palette, isSelected: selectedTab == "colors"),
             DSNavigationMenuItem(id: "tokens", label: "Tokens", icon: .settings, isSelected: selectedTab == "tokens"),
-            DSNavigationMenuItem(id: "grid", label: "Grid", icon: .viewGrid, isSelected: selectedTab == "grid"),
+            DSNavigationMenuItem(id: "icons", label: "Icons", icon: .star, isSelected: selectedTab == "icons"),
         ]
     }
 
@@ -32,50 +23,95 @@ struct ContentView: View {
         DSSideMenuLayout(isOpen: $isMenuOpen) {
             sideMenuContent
         } content: {
-            ZStack(alignment: .bottom) {
-                TabView(selection: $selectedTab) {
-                    NavigationStack {
-                        ComponentShowcaseView()
-                            .toolbar { brandStyleToolbar }
-                    }
-                    .tag("components")
-
-                    NavigationStack {
-                        PagesShowcaseView()
-                            .toolbar { brandStyleToolbar }
-                    }
-                    .tag("pages")
-
-                    NavigationStack {
-                        ColorPaletteView()
-                            .toolbar { brandStyleToolbar }
-                    }
-                    .tag("colors")
-
-                    NavigationStack {
-                        TokenBrowserView()
-                            .toolbar { brandStyleToolbar }
-                    }
-                    .tag("tokens")
-
-                    NavigationStack {
-                        CombinationGridView()
-                            .toolbar { brandStyleToolbar }
-                    }
-                    .tag("grid")
+            TabView(selection: $selectedTab) {
+                NavigationStack {
+                    ComponentShowcaseView()
+                        .toolbar { toolbarContent }
                 }
-                .toolbar(.hidden, for: .tabBar)
+                .tabItem { Label("Components", systemImage: "cube") }
+                .tag("components")
 
-                DSBottomAppBar(
-                    items: tabs,
-                    selectedId: $selectedTab,
-                    style: barStyle
-                )
-                .ignoresSafeArea(.container, edges: .bottom)
+                NavigationStack {
+                    PagesShowcaseView()
+                        .toolbar { toolbarContent }
+                }
+                .tabItem { Label("Pages", systemImage: "doc.richtext") }
+                .tag("pages")
+
+                NavigationStack {
+                    ColorPaletteView()
+                        .toolbar { toolbarContent }
+                }
+                .tabItem { Label("Colors", systemImage: "paintpalette") }
+                .tag("colors")
+
+                NavigationStack {
+                    TokenBrowserView()
+                        .toolbar { toolbarContent }
+                }
+                .tabItem { Label("Tokens", systemImage: "slider.horizontal.3") }
+                .tag("tokens")
+
+                NavigationStack {
+                    IconBrowserView()
+                        .toolbar { toolbarContent }
+                }
+                .tabItem { Label("Icons", systemImage: "square.grid.3x3") }
+                .tag("icons")
             }
         }
         .ignoresSafeArea(.keyboard)
         .preferredColorScheme(style.isDark ? .dark : .light)
+    }
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
+            } label: {
+                Image(systemName: "line.3.horizontal")
+            }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            HStack(spacing: 12) {
+                Menu {
+                    ForEach(Brand.allCases) { b in
+                        Button {
+                            brand = b
+                        } label: {
+                            if b == brand {
+                                Label(b.displayName, systemImage: "checkmark")
+                            } else {
+                                Text(b.displayName)
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "paintbrush")
+                }
+
+                Menu {
+                    Button {
+                        style = Style(isDark: !style.isDark, isSharp: style.isSharp)
+                    } label: {
+                        Label(style.isDark ? "Light Mode" : "Dark Mode",
+                              systemImage: style.isDark ? "sun.max.fill" : "moon.fill")
+                    }
+                    Button {
+                        style = Style(isDark: style.isDark, isSharp: !style.isSharp)
+                    } label: {
+                        Label(style.isSharp ? "Rounded" : "Sharp",
+                              systemImage: style.isSharp ? "square.on.circle" : "square")
+                    }
+                } label: {
+                    Image(systemName: "gearshape")
+                }
+            }
+        }
     }
 
     // MARK: - Side Menu
@@ -95,86 +131,6 @@ struct ContentView: View {
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
         .background(theme.colors.surfaceNeutral0_5)
-    }
-
-    @ToolbarContentBuilder
-    private var brandStyleToolbar: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            HStack(spacing: 8) {
-                Button {
-                    withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                } label: {
-                    Image(systemName: "line.3.horizontal")
-                }
-
-                Menu {
-                    ForEach(Brand.allCases) { b in
-                        Button {
-                            brand = b
-                        } label: {
-                            if b == brand {
-                                Label(b.displayName, systemImage: "checkmark")
-                            } else {
-                                Text(b.displayName)
-                            }
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "paintbrush")
-                        Text(brand.displayName)
-                            .font(.subheadline.weight(.medium))
-                    }
-                }
-            }
-        }
-
-        ToolbarItem(placement: .topBarTrailing) {
-            HStack(spacing: 12) {
-                Menu {
-                    ForEach(DSBottomAppBarStyle.allCases, id: \.self) { s in
-                        Button {
-                            barStyle = s
-                        } label: {
-                            if s == barStyle {
-                                Label(barStyleName(s), systemImage: "checkmark")
-                            } else {
-                                Text(barStyleName(s))
-                            }
-                        }
-                    }
-                } label: {
-                    Image(systemName: barStyleIcon)
-                }
-
-                Button {
-                    style = Style(isDark: !style.isDark, isSharp: style.isSharp)
-                } label: {
-                    Image(systemName: style.isDark ? "moon.fill" : "sun.max.fill")
-                }
-
-                Button {
-                    style = Style(isDark: style.isDark, isSharp: !style.isSharp)
-                } label: {
-                    Image(systemName: style.isSharp ? "square" : "square.on.circle")
-                }
-            }
-        }
-    }
-    private var barStyleIcon: String {
-        switch barStyle {
-        case .labeled: return "dock.rectangle"
-        case .full: return "dock.arrow.up.rectangle"
-        case .floating: return "capsule"
-        }
-    }
-
-    private func barStyleName(_ s: DSBottomAppBarStyle) -> String {
-        switch s {
-        case .labeled: return "Labeled"
-        case .full: return "Full"
-        case .floating: return "Floating"
-        }
     }
 }
 

@@ -101,6 +101,7 @@ struct ComponentShowcaseView: View {
             }
         }
         .navigationTitle("Components")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

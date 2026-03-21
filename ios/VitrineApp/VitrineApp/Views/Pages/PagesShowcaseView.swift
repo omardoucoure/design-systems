@@ -171,6 +171,10 @@ struct PagesShowcaseView: View {
             }
 
             Section("Shopping") {
+                NavigationLink("[Shopping] Start 4 — New Arrivals & Sale") {
+                    LazyView(ShoppingStart4Page().navigationBarTitleDisplayMode(.inline))
+                }
+
                 NavigationLink("[Shopping] Start 5 — Product Grid") {
                     LazyView(ShoppingStart5Page().navigationBarTitleDisplayMode(.inline))
                 }
@@ -191,6 +195,7 @@ struct PagesShowcaseView: View {
             }
         }
         .navigationTitle("Pages")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

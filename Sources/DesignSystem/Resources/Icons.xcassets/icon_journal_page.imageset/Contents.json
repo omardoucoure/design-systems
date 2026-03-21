@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_journal_page.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
