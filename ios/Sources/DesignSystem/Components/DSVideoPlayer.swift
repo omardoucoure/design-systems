@@ -4,20 +4,30 @@ import AVKit
 // MARK: - DSVideoPlayer
 
 /// Full-screen video player overlay with dismiss button.
+///
+/// Both `urlString` and `onDismiss` are core — this component is minimal
+/// and does not need modifier methods.
+///
+/// Usage:
+/// ```swift
+/// DSVideoPlayer(urlString: "https://example.com/video.mp4") {
+///     dismiss()
+/// }
+/// ```
 public struct DSVideoPlayer: View {
-    public let urlString: String
-    public let onDismiss: () -> Void
+    private let _urlString: String
+    private let _onDismiss: () -> Void
 
     public init(urlString: String, onDismiss: @escaping () -> Void) {
-        self.urlString = urlString
-        self.onDismiss = onDismiss
+        self._urlString = urlString
+        self._onDismiss = onDismiss
     }
 
     public var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             #if canImport(UIKit)
-            if let url = URL(string: urlString) {
+            if let url = URL(string: _urlString) {
                 AVPlayerView(url: url)
                     .ignoresSafeArea()
             }
@@ -25,7 +35,7 @@ public struct DSVideoPlayer: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button(action: onDismiss) {
+                    Button(action: _onDismiss) {
                         ZStack {
                             Circle().fill(Color.black.opacity(0.5)).frame(width: 36, height: 36)
                             Image(systemName: "xmark")

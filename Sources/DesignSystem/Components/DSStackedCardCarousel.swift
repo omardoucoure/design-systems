@@ -36,26 +36,35 @@ public struct DSStackedCardCarouselItem: Identifiable {
 /// Cards overlap horizontally by `overlap` points. The last item in the array
 /// is the front (tallest) card.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSStackedCardCarousel(
-///     items: [
-///         DSStackedCardCarouselItem(height: 320, backgroundColor: theme.colors.surfaceNeutral3, showGradientOverlay: true),
-///         DSStackedCardCarouselItem(height: 420, backgroundColor: theme.colors.surfaceNeutral3),
-///         DSStackedCardCarouselItem(height: 520, image: "carousel_front"),
-///     ],
-///     cardWidth: 220,
-///     overlap: 190
-/// )
+/// DSStackedCardCarousel(items: [
+///     DSStackedCardCarouselItem(height: 320, backgroundColor: theme.colors.surfaceNeutral3, showGradientOverlay: true),
+///     DSStackedCardCarouselItem(height: 420, backgroundColor: theme.colors.surfaceNeutral3),
+///     DSStackedCardCarouselItem(height: 520, image: "carousel_front"),
+/// ])
+/// .carouselCardWidth(220)
+/// .carouselOverlap(190)
+/// .carouselContainerHeight(730)
 /// ```
 public struct DSStackedCardCarousel: View {
     @Environment(\.theme) private var theme
 
+    // Core (init-only)
     private let items: [DSStackedCardCarouselItem]
-    private let cardWidth: CGFloat
-    private let overlap: CGFloat
-    private let containerHeight: CGFloat
 
+    // Modifier-based visual customization
+    private var _cardWidth: CGFloat = 220
+    private var _overlap: CGFloat = 190
+    private var _containerHeight: CGFloat = 730
+
+    public init(items: [DSStackedCardCarouselItem]) {
+        self.items = items
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSStackedCardCarousel(items:) with .carouselCardWidth(), .carouselOverlap(), .carouselContainerHeight() modifiers instead")
     public init(
         items: [DSStackedCardCarouselItem],
         cardWidth: CGFloat = 220,
@@ -63,18 +72,40 @@ public struct DSStackedCardCarousel: View {
         containerHeight: CGFloat = 730
     ) {
         self.items = items
-        self.cardWidth = cardWidth
-        self.overlap = overlap
-        self.containerHeight = containerHeight
+        self._cardWidth = cardWidth
+        self._overlap = overlap
+        self._containerHeight = containerHeight
     }
 
+    // MARK: - Modifiers
+
+    public func carouselCardWidth(_ width: CGFloat) -> Self {
+        var copy = self
+        copy._cardWidth = width
+        return copy
+    }
+
+    public func carouselOverlap(_ overlap: CGFloat) -> Self {
+        var copy = self
+        copy._overlap = overlap
+        return copy
+    }
+
+    public func carouselContainerHeight(_ height: CGFloat) -> Self {
+        var copy = self
+        copy._containerHeight = height
+        return copy
+    }
+
+    // MARK: - Body
+
     public var body: some View {
-        HStack(spacing: -overlap) {
+        HStack(spacing: -_overlap) {
             ForEach(items) { item in
                 cardView(item)
             }
         }
-        .frame(height: containerHeight)
+        .frame(height: _containerHeight)
     }
 
     @ViewBuilder
@@ -83,12 +114,12 @@ public struct DSStackedCardCarousel: View {
             Image(image, bundle: .main)
                 .resizable()
                 .scaledToFill()
-                .frame(width: cardWidth, height: item.height)
+                .frame(width: _cardWidth, height: item.height)
                 .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
         } else {
             RoundedRectangle(cornerRadius: theme.radius.xl)
                 .fill(item.backgroundColor ?? theme.colors.surfaceNeutral3)
-                .frame(width: cardWidth, height: item.height)
+                .frame(width: _cardWidth, height: item.height)
                 .overlay(
                     Group {
                         if item.showGradientOverlay {

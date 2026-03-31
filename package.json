@@ -1,0 +1,26 @@
+{
+  "name": "design-systems",
+  "version": "1.0.0",
+  "description": "HaHo is an iOS-first design system packaged as a Swift Package and previewed through a local showcase app.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omardoucoure/design-systems.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omardoucoure/design-systems/issues"
+  },
+  "homepage": "https://github.com/omardoucoure/design-systems#readme",
+  "devDependencies": {
+    "js-yaml": "^4.1.1"
+  }
+}

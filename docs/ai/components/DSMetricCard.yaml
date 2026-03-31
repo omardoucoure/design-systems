@@ -63,7 +63,7 @@ parameters:
     common_patterns:
       line_chart: DSLineChart(...)
       bar_chart: DSBarChart(...)
-      progress_circle: DSProgressCircle(progress: 0.7, size: 56)
+      progress_circle: DSProgressCircle(progress: 0.7).circleSize(56)
 
 # ─── INTERNAL LAYOUT ─────────────────────────────────────────────────────────────
 internal_layout:

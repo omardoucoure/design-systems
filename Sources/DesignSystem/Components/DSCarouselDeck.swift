@@ -61,18 +61,33 @@ extension View {
 
 /// A swipeable photo carousel with the double-container deck effect applied.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
 /// @State private var page = 0
 /// DSCarouselDeck(images: ["photo-1", "photo-2"], currentIndex: $page)
+///     .deckCardHeight(300)
 /// ```
 public struct DSCarouselDeck: View {
     @Environment(\.theme) private var theme
 
+    // Core (init-only)
     private let images: [String]
     @Binding private var currentIndex: Int
-    private let cardHeight: CGFloat
 
+    // Modifier-based visual customization
+    private var _cardHeight: CGFloat = 260
+
+    public init(
+        images: [String],
+        currentIndex: Binding<Int>
+    ) {
+        self.images = images
+        self._currentIndex = currentIndex
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSCarouselDeck(images:currentIndex:) with .deckCardHeight() modifier instead")
     public init(
         images: [String],
         currentIndex: Binding<Int>,
@@ -80,8 +95,18 @@ public struct DSCarouselDeck: View {
     ) {
         self.images = images
         self._currentIndex = currentIndex
-        self.cardHeight = cardHeight
+        self._cardHeight = cardHeight
     }
+
+    // MARK: - Modifiers
+
+    public func deckCardHeight(_ height: CGFloat) -> Self {
+        var copy = self
+        copy._cardHeight = height
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         TabView(selection: $currentIndex) {
@@ -90,13 +115,13 @@ public struct DSCarouselDeck: View {
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity)
-                    .frame(height: cardHeight)
+                    .frame(height: _cardHeight)
                     .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
                     .tag(index)
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
-        .frame(height: cardHeight)
-        .applyDoubleContainer(height: cardHeight)
+        .frame(height: _cardHeight)
+        .applyDoubleContainer(height: _cardHeight)
     }
 }

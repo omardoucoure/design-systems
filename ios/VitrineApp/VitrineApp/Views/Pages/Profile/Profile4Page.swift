@@ -12,9 +12,9 @@ struct Profile4Page: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, systemIcon: "ellipsis") {}
-            }
+            DSTopAppBar(title: "Profile") {
+                DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("ellipsis")
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
 
             ScrollView {
                 VStack(spacing: theme.spacing.sm) {
@@ -38,7 +38,7 @@ struct Profile4Page: View {
             }
             .padding(.horizontal, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }
@@ -46,16 +46,16 @@ struct Profile4Page: View {
     // MARK: - Social Info Card
 
     private var socialInfoCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: theme.spacing.sm) {
-                    DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                    DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral05)
                     DSText("Rockstar-in-training. Plays air guitar solos that even virtual fans cheer for.",
-                           style: theme.typography.captionRegular, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.captionRegular, color: theme.colors.textNeutral05)
                 }
 
                 Rectangle()
-                    .fill(theme.colors.textNeutral0_5.opacity(0.2))
+                    .fill(theme.colors.textNeutral05.opacity(0.2))
                     .frame(height: 1)
 
                 socialStatsRow
@@ -63,6 +63,8 @@ struct Profile4Page: View {
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxl)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardPadding(0)
     }
 
     // MARK: - Social Stats Row
@@ -76,34 +78,36 @@ struct Profile4Page: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             statColumn(value: "1,600", label: "following")
                 .frame(maxWidth: .infinity, alignment: .leading)
-            DSButton(style: .filledA, size: .medium, icon: .messageText) {}
+            DSButton {}.buttonStyle(.filledA).buttonSize(.medium).icon(.messageText)
         }
     }
 
     private func statColumn(value: String, label: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
-            DSText(label, style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5.opacity(0.75))
+            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral05)
+            DSText(label, style: theme.typography.smallRegular, color: theme.colors.textNeutral05.opacity(0.75))
         }
     }
 
     // MARK: - CTA Card
 
     private var ctaCard: some View {
-        DSCard(background: theme.colors.surfaceSecondary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             HStack(alignment: .bottom) {
-                DSButton("Follow", style: .filledB, size: .medium, iconRight: "plus") {}
+                DSButton("Follow") {}.buttonSize(.medium).systemIcon("plus", position: .right)
                 Spacer()
                 HStack(spacing: theme.spacing.md) {
-                    DSButton(style: .text, size: .medium, icon: .instagram) {}
-                    DSButton(style: .text, size: .medium, icon: .facebook) {}
-                    DSButton(style: .text, size: .medium, icon: .x) {}
+                    DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.instagram)
+                    DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.facebook)
+                    DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.x)
                 }
             }
             .padding(.top, 80)
             .padding(.bottom, theme.spacing.lg)
             .padding(.horizontal, theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfaceSecondary100)
+        .cardPadding(0)
     }
 
     // MARK: - Photo Grid

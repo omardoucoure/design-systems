@@ -24,24 +24,32 @@ public struct DSHorizontalBarChartData: Identifiable {
 /// A dual horizontal bar chart with left bars (right-aligned), center labels,
 /// and right bars (left-aligned). Used for comparing two data sets side by side.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSHorizontalBarChart(
-///     data: comparisonRows,
-///     leftColor: theme.brand.primitives.secondary120,
-///     rightColor: theme.colors.borderNeutral9_5
-/// )
+/// DSHorizontalBarChart(data: comparisonRows)
+///     .leftColor(theme.brand.primitives.secondary120)
+///     .rightColor(theme.colors.borderNeutral95)
+///     .rightOpacity(0.75)
 /// ```
 public struct DSHorizontalBarChart: View {
     @Environment(\.theme) private var theme
 
     private let data: [DSHorizontalBarChartData]
-    private let leftColor: Color?
-    private let rightColor: Color?
-    private let rightOpacity: Double
-    private let barHeight: CGFloat
-    private let labelWidth: CGFloat
+    var _leftColor: Color?
+    var _rightColor: Color?
+    var _rightOpacity: Double = 0.75
+    var _barHeight: CGFloat = 8
+    var _labelWidth: CGFloat = 19
 
+    // MARK: - New Minimal Init
+
+    public init(data: [DSHorizontalBarChartData]) {
+        self.data = data
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use DSHorizontalBarChart(data:) with modifier methods instead")
     public init(
         data: [DSHorizontalBarChartData],
         leftColor: Color? = nil,
@@ -51,22 +59,41 @@ public struct DSHorizontalBarChart: View {
         labelWidth: CGFloat = 19
     ) {
         self.data = data
-        self.leftColor = leftColor
-        self.rightColor = rightColor
-        self.rightOpacity = rightOpacity
-        self.barHeight = barHeight
-        self.labelWidth = labelWidth
+        self._leftColor = leftColor
+        self._rightColor = rightColor
+        self._rightOpacity = rightOpacity
+        self._barHeight = barHeight
+        self._labelWidth = labelWidth
     }
+
+    // MARK: - Modifiers
+
+    public func leftColor(_ color: Color) -> DSHorizontalBarChart {
+        var copy = self; copy._leftColor = color; return copy
+    }
+
+    public func rightColor(_ color: Color) -> DSHorizontalBarChart {
+        var copy = self; copy._rightColor = color; return copy
+    }
+
+    public func rightOpacity(_ opacity: Double) -> DSHorizontalBarChart {
+        var copy = self; copy._rightOpacity = opacity; return copy
+    }
+
+    public func barHeight(_ height: CGFloat) -> DSHorizontalBarChart {
+        var copy = self; copy._barHeight = height; return copy
+    }
+
+    public func labelWidth(_ width: CGFloat) -> DSHorizontalBarChart {
+        var copy = self; copy._labelWidth = width; return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         HStack(alignment: .top, spacing: theme.spacing.xs) {
-            // Left bars (right-aligned, grow from right to left)
             leftColumn
-
-            // Center labels
             centerLabels
-
-            // Right bars (left-aligned, grow from left to right)
             rightColumn
         }
     }
@@ -77,8 +104,8 @@ public struct DSHorizontalBarChart: View {
         VStack(alignment: .trailing, spacing: theme.spacing.lg) {
             ForEach(data) { item in
                 Capsule()
-                    .fill(leftColor ?? theme.brand.primitives.secondary120)
-                    .frame(height: barHeight)
+                    .fill(_leftColor ?? theme.brand.primitives.secondary120)
+                    .frame(height: _barHeight)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .scaleEffect(x: item.leftValue, anchor: .trailing)
             }
@@ -95,7 +122,7 @@ public struct DSHorizontalBarChart: View {
                     .font(.system(size: 10, weight: .semibold))
                     .tracking(-0.2)
                     .foregroundStyle(theme.colors.textNeutral9)
-                    .frame(width: labelWidth, height: barHeight)
+                    .frame(width: _labelWidth, height: _barHeight)
             }
         }
     }
@@ -106,9 +133,9 @@ public struct DSHorizontalBarChart: View {
         VStack(alignment: .leading, spacing: theme.spacing.lg) {
             ForEach(data) { item in
                 Capsule()
-                    .fill(rightColor ?? theme.colors.borderNeutral9_5)
-                    .opacity(rightOpacity)
-                    .frame(height: barHeight)
+                    .fill(_rightColor ?? theme.colors.borderNeutral95)
+                    .opacity(_rightOpacity)
+                    .frame(height: _barHeight)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .scaleEffect(x: item.rightValue, anchor: .leading)
             }

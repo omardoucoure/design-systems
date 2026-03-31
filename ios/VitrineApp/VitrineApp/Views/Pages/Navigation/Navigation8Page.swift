@@ -29,8 +29,7 @@ struct Navigation8Page: View {
     // MARK: - Menu Content
 
     private var menuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "trending", label: "Trending", icon: .activity),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
@@ -39,31 +38,30 @@ struct Navigation8Page: View {
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
                 DSNavigationMenuItem(id: "places", label: "Places", icon: .mapPin)
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "nav8_profile",
                 name: "Hristo Hristov",
                 subtitle: "Visual Designer"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Gallery Content (the "front card")
 
     private var galleryContent: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Gallery", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .search) {}
-            }
+            DSTopAppBar(title: "Gallery") {
+                DSButton {}.buttonStyle(.neutral).buttonSize(.medium).icon(.search)
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
             .overlay(alignment: .leading) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) {
                         isMenuOpen.toggle()
                     }
-                }
+                }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
                 .padding(.leading, theme.spacing.sm)
             }
 
@@ -85,7 +83,7 @@ struct Navigation8Page: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 }
 

@@ -12,7 +12,7 @@ struct ColorPaletteView: View {
             }
             .padding()
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral05)
         .navigationTitle("Color Palette")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -26,7 +26,7 @@ struct ColorPaletteView: View {
                 .foregroundStyle(theme.colors.textNeutral9)
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 8) {
-                colorSwatch("Surface 0.5", theme.colors.surfaceNeutral0_5)
+                colorSwatch("Surface 0.5", theme.colors.surfaceNeutral05)
                 colorSwatch("Surface 2", theme.colors.surfaceNeutral2)
                 colorSwatch("Surface 3", theme.colors.surfaceNeutral3)
                 colorSwatch("Surface 9", theme.colors.surfaceNeutral9)
@@ -39,7 +39,7 @@ struct ColorPaletteView: View {
                 colorSwatch("Text 9", theme.colors.textNeutral9)
                 colorSwatch("Text 8", theme.colors.textNeutral8)
                 colorSwatch("Text 3", theme.colors.textNeutral3)
-                colorSwatch("Text 0.5", theme.colors.textNeutral0_5)
+                colorSwatch("Text 0.5", theme.colors.textNeutral05)
                 colorSwatch("Text Pri", theme.colors.textPrimary100)
                 colorSwatch("Text Sec", theme.colors.textSecondary100)
             }
@@ -81,7 +81,7 @@ struct ColorPaletteView: View {
 
                     HStack(spacing: 1) {
                         neutralBar(p.neutrals.n0)
-                        neutralBar(p.neutrals.n0_5)
+                        neutralBar(p.neutrals.n05)
                         neutralBar(p.neutrals.n1)
                         neutralBar(p.neutrals.n2)
                         neutralBar(p.neutrals.n3)
@@ -90,9 +90,9 @@ struct ColorPaletteView: View {
                         neutralBar(p.neutrals.n6)
                         neutralBar(p.neutrals.n7)
                         neutralBar(p.neutrals.n8)
-                        neutralBar(p.neutrals.n8_5)
+                        neutralBar(p.neutrals.n85)
                         neutralBar(p.neutrals.n9)
-                        neutralBar(p.neutrals.n9_5)
+                        neutralBar(p.neutrals.n95)
                         neutralBar(p.neutrals.n10)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: theme.radius.xs))

@@ -13,10 +13,10 @@ struct ProfilePage: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, systemIcon: "plus.circle") {}
-                DSButton(style: .text, size: .medium, systemIcon: "ellipsis") {}
-            }
+            DSTopAppBar(title: "Profile") {
+                DSButton {}.buttonStyle(.text).buttonSize(.medium).systemIcon("plus.circle")
+                DSButton {}.buttonStyle(.text).buttonSize(.medium).systemIcon("ellipsis")
+            }.onBack { dismiss() }
 
             VStack(spacing: theme.spacing.sm) {
                 carousel
@@ -29,7 +29,7 @@ struct ProfilePage: View {
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -42,13 +42,13 @@ struct ProfilePage: View {
     // MARK: - Profile Info Card
 
     private var profileInfoCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: theme.spacing.sm) {
-                    DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                    DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral05)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     DSText("Rockstar-in-training. Plays air guitar solos that even virtual fans cheer for.",
-                           style: theme.typography.caption, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.caption, color: theme.colors.textNeutral05)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
@@ -57,18 +57,19 @@ struct ProfilePage: View {
                     statColumn(value: "2,980", label: "followers")
                     statColumn(value: "1,600", label: "following")
                     Spacer()
-                    DSButton(style: .filledA, size: .medium, systemIcon: "plus") {}
+                    DSButton {}.buttonStyle(.filledA).buttonSize(.medium).systemIcon("plus")
                 }
             }
         }
+        .cardBackground(theme.colors.surfacePrimary100)
     }
 
     // MARK: - Stat Column
 
     private func statColumn(value: String, label: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
-            DSText(label, style: theme.typography.small, color: theme.colors.textNeutral0_5.opacity(0.75))
+            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral05)
+            DSText(label, style: theme.typography.small, color: theme.colors.textNeutral05.opacity(0.75))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

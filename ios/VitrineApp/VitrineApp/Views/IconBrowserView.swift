@@ -19,7 +19,8 @@ struct IconBrowserView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSSearchField(text: $searchText, placeholder: "Search 1364 icons...")
+            DSSearchField(text: $searchText)
+                .placeholder("Search 1364 icons...")
                 .padding(.horizontal, theme.spacing.sm)
                 .padding(.vertical, theme.spacing.xs)
 
@@ -34,7 +35,7 @@ struct IconBrowserView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral05)
         .navigationTitle("Icons (\(filteredIcons.count))")
         .navigationBarTitleDisplayMode(.inline)
     }

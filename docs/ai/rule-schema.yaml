@@ -1,0 +1,151 @@
+# Figma DS Rule Schema
+# Machine-readable rules that both builders and checkers enforce identically.
+# Each component YAML may contain a `figma_rules` list of typed rule objects.
+
+schema_version: "1.0"
+
+# ─── RULE OBJECT ────────────────────────────────────────────────────────────────
+# Each rule in a component's figma_rules list must conform to this shape.
+
+rule:
+  id:
+    type: string
+    required: true
+    description: Unique identifier across all components (e.g., "checkbox_stroke_fix")
+
+  trigger:
+    type: enum
+    required: true
+    values:
+      - after_instantiate    # runs right after component instance is created
+      - before_instantiate   # decides which variant/nodeId to use
+      - after_append         # runs after instance is appended to a parent
+      - after_set_property   # runs after a variant/property change
+      - after_detach         # runs after an instance is detached to a frame
+    description: When this rule fires during the build pipeline
+
+  condition:
+    type: object
+    required: true
+    description: When to apply the rule. Use { type: always } for unconditional.
+    variants:
+      always:
+        type: always
+      parent_fill_is:
+        type: parent_fill_is
+        token: string          # e.g., "surfaceNeutral2"
+        rgb: [r, g, b]        # e.g., [235, 235, 230]
+        tolerance: number      # per-channel, default 5
+      parent_fill_dark:
+        type: parent_fill_dark # parent fill r < 100
+      parent_fill_light:
+        type: parent_fill_light # parent fill r > 200
+      variant_in:
+        type: variant_in
+        property: string       # e.g., "Style"
+        values: [string]       # e.g., ["filledB", "filledC", "outlinedLight"]
+      item_count_lte:
+        type: item_count_lte
+        count: number          # e.g., 2
+
+  action:
+    type: object
+    required: true
+    description: What the builder does to enforce the rule
+    variants:
+      set_property:
+        type: set_property
+        target: string         # "self" | "child:<name>" | "child_type:<TYPE>"
+        property: string       # Figma node property (e.g., "strokeAlign", "opacity")
+        value: any             # value to set
+      set_fill:
+        type: set_fill
+        target: string         # "self" | "child:<name>"
+        token: string          # e.g., "surfaceNeutral0_5"
+        rgb: [r, g, b]        # e.g., [250, 250, 249]
+      set_component_property:
+        type: set_component_property
+        properties: object     # key-value pairs for setProperties()
+      swap_component:
+        type: swap_component
+        target: string         # child instance path
+        node_id: string        # target component nodeId
+      use_node_id:
+        type: use_node_id
+        node_id: string        # which variant/set to instantiate
+        reject_ids: [string]   # nodeIds that are WRONG (for validation)
+      match_fill_to_parent:
+        type: match_fill_to_parent
+        target: string         # which child to match
+
+  check:
+    type: object
+    required: true
+    description: How the checker validates this rule was applied
+    fields:
+      assertion:
+        type: enum
+        values:
+          - equals             # target property === expected
+          - not_equals         # target property !== expected
+          - fill_matches_rgb   # fill color within tolerance of expected RGB
+          - fill_contrasts     # fill color differs from parent by > tolerance
+          - component_id_in   # mainComponent id is in allowed list
+          - component_id_not_in # mainComponent id is NOT in rejected list
+          - property_is_false  # boolean component property is false
+      target: string           # dot path to check (e.g., "child:Checkbox.strokeAlign")
+      expected: any            # expected value
+      tolerance: number        # for RGB comparisons, default 5
+    fail_message:
+      type: string
+      required: true
+      description: Human-readable error shown when check fails
+
+  severity:
+    type: enum
+    values: [critical, error, warning]
+    default: error
+    description: critical = non-dismissable, error = must fix, warning = advisory
+
+  auto_fixable:
+    type: boolean
+    default: false
+    description: Whether the builder/checker can auto-apply the fix
+
+# ─── COLOR TOKENS ───────────────────────────────────────────────────────────────
+# Standard RGB values for use in rules. Builders embed these as constants.
+
+color_tokens:
+  surfaceNeutral0_5: [250, 250, 249]
+  surfaceNeutral2: [235, 235, 230]
+  surfacePrimary100: [70, 90, 84]
+  surfacePrimary120: [37, 47, 44]
+  surfaceSecondary100: [255, 106, 95]
+  textNeutral9: [41, 41, 39]
+  textNeutral0_5: [250, 250, 249]
+  borderNeutral2: [235, 235, 230]
+  borderNeutral9_5: [41, 41, 39]
+
+# ─── COMPONENT NODE IDS ────────────────────────────────────────────────────────
+# Stable component set / variant IDs referenced by rules.
+
+component_ids:
+  checkbox_set_correct: "85:24849"
+  checkbox_set_wrong: "85:24367"
+  checkbox_unchecked: "85:24850"
+  checkbox_checked: "85:24858"
+  input_filled_empty: "85:22931"
+  input_filled_filled: "85:22942"
+  segmented_picker_pills: "85:25962"
+  segmented_picker_tabs: "85:25957"
+  button_filled_a_big: "85:23698"
+  button_neutral_big: "85:23702"
+  button_filled_c_big: "85:23710"
+  button_text_medium: "85:23870"
+  top_app_bar_status: "85:24923"
+  container_card_default: "88:137854"
+  icon_mail_open: "85:33084"
+  icon_eye_closed: "85:33088"
+  icon_google: "85:34182"
+  icon_facebook: "85:35004"
+  icon_x: "85:35009"

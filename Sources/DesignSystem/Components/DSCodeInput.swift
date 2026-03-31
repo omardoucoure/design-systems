@@ -9,20 +9,40 @@ import SwiftUI
 ///
 /// Usage:
 /// ```swift
-/// DSCodeInput(code: $code, digitCount: 4)
+/// DSCodeInput(code: $code)
+///     .digitCount(6)
 /// ```
 public struct DSCodeInput: View {
     @Environment(\.theme) private var theme
 
     @Binding private var code: String
-    private let digitCount: Int
+    private var _digitCount: Int = 4
 
     @FocusState private var isFocused: Bool
 
-    public init(code: Binding<String>, digitCount: Int = 4) {
+    // MARK: - New minimal init
+
+    public init(code: Binding<String>) {
         self._code = code
-        self.digitCount = digitCount
     }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSCodeInput(code:) with .digitCount() modifier instead")
+    public init(code: Binding<String>, digitCount: Int) {
+        self._code = code
+        self._digitCount = digitCount
+    }
+
+    // MARK: - Modifier
+
+    public func digitCount(_ count: Int) -> DSCodeInput {
+        var copy = self
+        copy._digitCount = count
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         ZStack {
@@ -35,7 +55,7 @@ public struct DSCodeInput: View {
                 .allowsHitTesting(false)
                 .onChange(of: code) { newValue in
                     // Filter non-digits and limit length
-                    let filtered = String(newValue.filter(\.isNumber).prefix(digitCount))
+                    let filtered = String(newValue.filter(\.isNumber).prefix(_digitCount))
                     if filtered != newValue {
                         code = filtered
                     }
@@ -43,7 +63,7 @@ public struct DSCodeInput: View {
 
             // Visible digit boxes
             HStack(spacing: theme.spacing.sm) {
-                ForEach(0..<digitCount, id: \.self) { index in
+                ForEach(0..<_digitCount, id: \.self) { index in
                     digitBox(at: index)
                 }
             }
@@ -70,7 +90,7 @@ public struct DSCodeInput: View {
             )
             .frame(maxWidth: .infinity)
             .frame(height: 88)
-            .background(theme.colors.surfaceNeutral0_5)
+            .background(theme.colors.surfaceNeutral05)
             .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
             .overlay(
                 RoundedRectangle(cornerRadius: theme.radius.md)

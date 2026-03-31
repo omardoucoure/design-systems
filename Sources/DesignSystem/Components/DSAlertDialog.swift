@@ -4,33 +4,56 @@ import SwiftUI
 
 /// A modal dialog overlay with dimming background and centered alert card.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
 /// DSAlertDialog(
 ///     isPresented: $showDialog,
 ///     title: "Access to Your Contacts",
-///     message: "HaHo wants to explore your contacts.",
-///     severity: .info,
-///     assetIcon: "group_icon"
+///     severity: .info
 /// ) {
-///     DSButton("Allow", style: .filledA, size: .small, isFullWidth: true) {}
-///     DSButton("Don't Allow", style: .neutral, size: .small, isFullWidth: true) {}
+///     // optional extra content
+/// } actions: {
+///     DSButton("Allow") {}.buttonStyle(.filledA).buttonSize(.small).fullWidth()
+///     DSButton("Don't Allow") {}.buttonStyle(.neutral).buttonSize(.small).fullWidth()
 /// }
+/// .message("HaHo wants to explore your contacts.")
+/// .assetIcon("group_icon")
 /// ```
 public struct DSAlertDialog<Content: View, Actions: View>: View {
     @Environment(\.theme) private var theme
 
-    @Binding private var isPresented: Bool
-    private let title: LocalizedStringKey
-    private let message: LocalizedStringKey?
-    private let severity: DSAlertSeverity
-    private let icon: DSIcon?
-    private let assetIcon: String?
-    private let systemIcon: String?
-    private let content: Content
-    private let actions: Actions
+    // Core params (init)
+    @Binding private var _isPresented: Bool
+    private let _title: LocalizedStringKey
+    private let _severity: DSAlertSeverity
+    private let _content: Content
+    private let _actions: Actions
 
-    /// Dialog with type-safe DSIcon.
+    // Modifier params
+    private var _message: LocalizedStringKey?
+    private var _icon: DSIcon?
+    private var _assetIcon: String?
+    private var _systemIcon: String?
+
+    /// Creates a dialog with core parameters. Use modifiers for optional configuration.
+    public init(
+        isPresented: Binding<Bool>,
+        title: LocalizedStringKey,
+        severity: DSAlertSeverity,
+        @ViewBuilder content: () -> Content = { EmptyView() },
+        @ViewBuilder actions: () -> Actions
+    ) {
+        self.__isPresented = isPresented
+        self._title = title
+        self._severity = severity
+        self._content = content()
+        self._actions = actions()
+    }
+
+    // MARK: - Deprecated Inits
+
+    /// Deprecated: Use the modifier-based API instead.
+    @available(*, deprecated, message: "Use init(isPresented:title:severity:content:actions:) with .message(), .icon(), .assetIcon(), .systemIcon() modifiers")
     public init(
         isPresented: Binding<Bool>,
         title: LocalizedStringKey,
@@ -40,18 +63,17 @@ public struct DSAlertDialog<Content: View, Actions: View>: View {
         @ViewBuilder content: () -> Content = { EmptyView() },
         @ViewBuilder actions: () -> Actions
     ) {
-        self._isPresented = isPresented
-        self.title = title
-        self.message = message
-        self.severity = severity
-        self.icon = icon
-        self.assetIcon = nil
-        self.systemIcon = nil
-        self.content = content()
-        self.actions = actions()
+        self.__isPresented = isPresented
+        self._title = title
+        self._severity = severity
+        self._content = content()
+        self._actions = actions()
+        self._message = message
+        self._icon = icon
     }
 
-    /// Dialog with optional extra content between message and actions.
+    /// Deprecated: Use the modifier-based API instead.
+    @available(*, deprecated, message: "Use init(isPresented:title:severity:content:actions:) with .message(), .assetIcon(), .systemIcon() modifiers")
     public init(
         isPresented: Binding<Bool>,
         title: LocalizedStringKey,
@@ -62,27 +84,64 @@ public struct DSAlertDialog<Content: View, Actions: View>: View {
         @ViewBuilder content: () -> Content = { EmptyView() },
         @ViewBuilder actions: () -> Actions
     ) {
-        self._isPresented = isPresented
-        self.title = title
-        self.message = message
-        self.severity = severity
-        self.icon = nil
-        self.assetIcon = assetIcon
-        self.systemIcon = systemIcon
-        self.content = content()
-        self.actions = actions()
+        self.__isPresented = isPresented
+        self._title = title
+        self._severity = severity
+        self._content = content()
+        self._actions = actions()
+        self._message = message
+        self._assetIcon = assetIcon
+        self._systemIcon = systemIcon
     }
+
+    // MARK: - Modifiers
+
+    /// Sets the dialog message text displayed below the title.
+    public func message(_ message: LocalizedStringKey) -> Self {
+        var copy = self
+        copy._message = message
+        return copy
+    }
+
+    /// Sets a type-safe DSIcon for the dialog header.
+    public func icon(_ icon: DSIcon) -> Self {
+        var copy = self
+        copy._icon = icon
+        copy._assetIcon = nil
+        copy._systemIcon = nil
+        return copy
+    }
+
+    /// Sets a custom asset image icon for the dialog header.
+    public func assetIcon(_ name: String) -> Self {
+        var copy = self
+        copy._assetIcon = name
+        copy._icon = nil
+        copy._systemIcon = nil
+        return copy
+    }
+
+    /// Sets an SF Symbol icon for the dialog header.
+    public func systemIcon(_ name: String) -> Self {
+        var copy = self
+        copy._systemIcon = name
+        copy._icon = nil
+        copy._assetIcon = nil
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         ZStack {
-            if isPresented {
+            if _isPresented {
                 // Dimming overlay
-                theme.colors.surfaceNeutral0_5
+                theme.colors.surfaceNeutral05
                     .opacity(0.5)
                     .ignoresSafeArea()
                     .onTapGesture {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            isPresented = false
+                            _isPresented = false
                         }
                     }
                     .transition(.opacity)
@@ -90,48 +149,48 @@ public struct DSAlertDialog<Content: View, Actions: View>: View {
                 // Dialog card
                 VStack(alignment: .leading, spacing: theme.spacing.md) {
                     // Icon
-                    if let icon {
-                        Image(dsIcon: icon)
+                    if let _icon {
+                        Image(dsIcon: _icon)
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()
                             .frame(width: 24, height: 24)
                             .foregroundStyle(iconForeground)
-                    } else if let assetIcon {
-                        Image(assetIcon, bundle: .main)
+                    } else if let _assetIcon {
+                        Image(_assetIcon, bundle: .main)
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()
                             .frame(width: 24, height: 24)
                             .foregroundStyle(iconForeground)
-                    } else if let systemIcon {
-                        Image(systemName: systemIcon)
+                    } else if let _systemIcon {
+                        Image(systemName: _systemIcon)
                             .font(.system(size: 20, weight: .medium))
                             .frame(width: 24, height: 24)
                             .foregroundStyle(iconForeground)
                     }
 
                     // Title
-                    Text(title)
+                    Text(_title)
                         .font(theme.typography.h5.font)
                         .tracking(theme.typography.h5.tracking)
                         .lineSpacing(theme.typography.h5.lineSpacing)
                         .foregroundStyle(textForeground)
 
                     // Message
-                    if let message {
-                        Text(message)
+                    if let _message {
+                        Text(_message)
                             .font(theme.typography.caption.font)
                             .tracking(theme.typography.caption.tracking)
                             .foregroundStyle(textForeground)
                     }
 
                     // Extra content
-                    content
+                    _content
 
                     // Actions
                     VStack(spacing: theme.spacing.sm) {
-                        actions
+                        _actions
                     }
                 }
                 .padding(theme.spacing.xl)
@@ -143,23 +202,23 @@ public struct DSAlertDialog<Content: View, Actions: View>: View {
                 .transition(.scale(scale: 0.85).combined(with: .opacity))
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isPresented)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: _isPresented)
     }
 
     private var dialogBackground: Color {
         // Figma: neutral dialogs use surfacePrimary120 (dark), not surfaceNeutral2
-        severity == .neutral ? theme.colors.surfacePrimary120 : severity.color(from: theme.colors)
+        _severity == .neutral ? theme.colors.surfacePrimary120 : _severity.color(from: theme.colors)
     }
 
     private var isDarkBackground: Bool {
-        severity == .neutral
+        _severity == .neutral
     }
 
     private var textForeground: Color {
-        isDarkBackground ? theme.colors.textNeutral0_5 : theme.colors.textNeutral9
+        isDarkBackground ? theme.colors.textNeutral05 : theme.colors.textNeutral9
     }
 
     private var iconForeground: Color {
-        isDarkBackground ? theme.colors.textNeutral0_5 : theme.colors.textNeutral9
+        isDarkBackground ? theme.colors.textNeutral05 : theme.colors.textNeutral9
     }
 }

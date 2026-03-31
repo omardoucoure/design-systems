@@ -28,7 +28,7 @@ struct ShoppingStart5Page: View {
             }
             .padding(.horizontal, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -37,9 +37,9 @@ struct ShoppingStart5Page: View {
     // MARK: - Top App Bar
 
     private var topAppBar: some View {
-        DSTopAppBar(title: "Hello Hristo", style: .smallCentered, onBack: { dismiss() }) {
-            DSButton(style: .neutral, size: .medium, icon: .bellNotification) {}
-        }
+        DSTopAppBar(title: "Hello Hristo") {
+            DSButton {}.buttonStyle(.neutral).buttonSize(.medium).icon(.bellNotification)
+        }.appBarStyle(.smallCentered).onBack { dismiss() }
     }
 
     // MARK: - Gender Picker

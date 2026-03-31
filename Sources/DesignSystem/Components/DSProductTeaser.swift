@@ -36,41 +36,62 @@ public struct DSProductTeaserItem: Identifiable {
 /// Figma: "Teaser" container — fixed height (400px), horizontal flex row,
 /// gap 12, with product cards inside.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
 /// DSProductTeaser(products: [
 ///     DSProductTeaserItem(image: "photo1", brand: "Brand", subtitle: "Item", price: "$100")
 /// ])
+/// .height(450)
 /// ```
 public struct DSProductTeaser: View {
     @Environment(\.theme) private var theme
 
-    private let products: [DSProductTeaserItem]
-    private let height: CGFloat
+    // Core params (init)
+    private let _products: [DSProductTeaserItem]
 
+    // Modifier params
+    private var _height: CGFloat = 400
+
+    /// Creates a product teaser row. Use `.height()` modifier to customize.
+    public init(products: [DSProductTeaserItem]) {
+        self._products = products
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use init(products:) with .height() modifier")
     public init(
         products: [DSProductTeaserItem],
         height: CGFloat = 400
     ) {
-        self.products = products
-        self.height = height
+        self._products = products
+        self._height = height
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the fixed height of the teaser row. Default is 400.
+    public func height(_ height: CGFloat) -> Self {
+        var copy = self
+        copy._height = height
+        return copy
     }
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: theme.spacing.sm) {
-                ForEach(products) { product in
+                ForEach(_products) { product in
                     DSProductCard(
                         image: product.image,
                         brand: product.brand,
                         subtitle: product.subtitle,
-                        price: product.price,
-                        originalPrice: product.originalPrice,
-                        discount: product.discount
+                        price: product.price
                     )
+                    .originalPrice(product.originalPrice)
+                    .discount(product.discount)
                 }
             }
         }
-        .frame(height: height)
+        .frame(height: _height)
     }
 }

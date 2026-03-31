@@ -19,31 +19,72 @@ public enum DSChipStyle: Sendable, CaseIterable {
 
 /// A themed chip/tag component with dismiss support.
 ///
-/// Usage:
+/// **Modifier-based API (preferred):**
 /// ```swift
-/// DSChip("Swift", style: .filledA)
-/// DSChip("iOS", style: .outlined, onDismiss: { remove() })
+/// DSChip("Swift")
+///     .chipStyle(.filledA)
+///
+/// DSChip("iOS")
+///     .chipStyle(.outlined)
+///     .onDismiss { remove() }
+///     .onTap { filter("ios") }
+/// ```
+///
+/// **Legacy init (deprecated):**
+/// ```swift
+/// DSChip("Swift", style: .filledA, onTap: { }, onDismiss: { })
 /// ```
 public struct DSChip: View {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
 
     private let label: LocalizedStringKey
-    private let style: DSChipStyle
-    private let onDismiss: (() -> Void)?
-    private let onTap: (() -> Void)?
+    private var _style: DSChipStyle = .filledA
+    private var _onDismiss: (() -> Void)?
+    private var _onTap: (() -> Void)?
 
+    // MARK: - Modifier-based init (preferred)
+
+    public init(_ label: LocalizedStringKey) {
+        self.label = label
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSChip(_:) with .chipStyle(), .onTap(), .onDismiss() modifiers instead")
     public init(
         _ label: LocalizedStringKey,
-        style: DSChipStyle = .filledA,
+        style: DSChipStyle,
         onTap: (() -> Void)? = nil,
         onDismiss: (() -> Void)? = nil
     ) {
         self.label = label
-        self.style = style
-        self.onTap = onTap
-        self.onDismiss = onDismiss
+        self._style = style
+        self._onTap = onTap
+        self._onDismiss = onDismiss
     }
+
+    // MARK: - Modifiers
+
+    public func chipStyle(_ style: DSChipStyle) -> DSChip {
+        var copy = self
+        copy._style = style
+        return copy
+    }
+
+    public func onTap(_ action: @escaping () -> Void) -> DSChip {
+        var copy = self
+        copy._onTap = action
+        return copy
+    }
+
+    public func onDismiss(_ action: @escaping () -> Void) -> DSChip {
+        var copy = self
+        copy._onDismiss = action
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         HStack(spacing: theme.spacing.xs) {
@@ -51,8 +92,8 @@ public struct DSChip: View {
                 .font(theme.typography.label.font)
                 .tracking(theme.typography.label.tracking)
 
-            if let onDismiss {
-                Button(action: onDismiss) {
+            if let _onDismiss {
+                Button(action: _onDismiss) {
                     Image(systemName: "xmark")
                         .font(.system(size: 10, weight: .bold))
                 }
@@ -67,11 +108,11 @@ public struct DSChip: View {
         .clipShape(Capsule())
         .overlay(borderOverlay)
         .opacity(isEnabled ? 1.0 : 0.5)
-        .onTapGesture { onTap?() }
+        .onTapGesture { _onTap?() }
     }
 
     private var backgroundColor: Color {
-        switch style {
+        switch _style {
         case .filledA: return theme.colors.surfaceSecondary100
         case .filledB: return theme.colors.surfacePrimary100
         case .filledC: return theme.colors.surfacePrimary120
@@ -81,17 +122,17 @@ public struct DSChip: View {
     }
 
     private var foregroundColor: Color {
-        switch style {
+        switch _style {
         case .filledA, .neutral, .outlined:
             return theme.colors.textNeutral9
         case .filledB, .filledC:
-            return theme.colors.textNeutral0_5
+            return theme.colors.textNeutral05
         }
     }
 
     @ViewBuilder
     private var borderOverlay: some View {
-        if style == .outlined {
+        if _style == .outlined {
             Capsule()
                 .stroke(theme.colors.surfacePrimary120, lineWidth: theme.borders.widthSm)
         }

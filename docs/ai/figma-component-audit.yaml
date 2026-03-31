@@ -1,0 +1,1543 @@
+# Figma Component Audit — HaHo 301 Screen Analysis
+# Generated from systematic review of all screens in "Page exemples"
+# Status: covered (Figma CS exists) | needs_figma_cs (Swift only) | new_needed (nothing exists)
+
+categories_audited:
+  - stats     # 24 screens — DONE
+  - shopping  # 29 screens — DONE
+  - chat      # 23 screens — DONE
+  - calendar  # 18 screens — DONE
+  - feed      # 24 screens — DONE
+  - navigation # 24 screens — DONE
+  - profile    # 20 screens — DONE
+  - media      # 18 screens — DONE
+  - checkout   # 20 screens — DONE
+  - search     # 11 screens — DONE
+  - settings   # 8 screens — DONE
+  - alerts     # 11 screens — DONE
+  - camera     # 23 screens — DONE
+  - splash     # 3 screens — DONE
+  - unnamed    # 18 frames — DONE (category label cards, not screens)
+
+# ─── STATS (24 screens) ────────────────────────────────────────────────────────
+
+stats:
+  screens_reviewed: 24
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Progress Circle / Ring
+      screens: [9, 12, 13, 18, 20, 21, 24]
+      figma_component: Progress-Circle
+      swift_component: DSProgressCircle
+
+    - pattern: Top App Bar
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Bottom App Bar
+      screens: [4, 8, 11, 12, 16, 20, 21, 23]
+      figma_component: Bottom App Bar
+      swift_component: DSBottomAppBar
+
+    - pattern: Avatar
+      screens: [4, 9, 13, 17, 20, 21, 24]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges / Tags (percentage badges like "+12%")
+      screens: [1, 4, 6, 7, 9, 13, 15, 18, 19, 22, 24]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Segmented Picker (Day/Week/Month/Year)
+      screens: [7, 16, 19, 22]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+    - pattern: List Item (icon + label + amount + trend arrow)
+      screens: [9, 16, 22]
+      figma_component: List
+      swift_component: DSListItem
+
+    - pattern: Page Controls (dots)
+      screens: [21]
+      figma_component: Page-Controls
+      swift_component: DSPageControl
+
+  needs_figma_cs:
+    - pattern: Bar Chart (vertical grouped bars, dark + coral)
+      screens: [1, 4, 9, 12, 15, 19]
+      swift_component: DSBarChart
+      priority: high  # appears in 6 screens
+
+    - pattern: Lollipop Chart (vertical bars with rounded top + value labels)
+      screens: [1, 22]
+      swift_component: DSLollipopChart
+      priority: medium
+
+    - pattern: Line Chart (continuous line, optional area fill)
+      screens: [6, 8, 11, 16, 18, 19]
+      swift_component: DSLineChart
+      priority: high  # appears in 6 screens
+
+    - pattern: Metric Card (big number + label + badge + comparison text)
+      screens: [1, 4, 7, 9, 13, 15, 18, 19, 22, 24]
+      swift_component: DSMetricCard
+      priority: critical  # appears in 10 screens — most common pattern
+
+    - pattern: Stat Row (circular progress + label + value + trend)
+      screens: [9]
+      swift_component: DSStatRow
+      priority: low
+
+  new_needed:
+    - pattern: Candlestick Chart (financial OHLC red/green bars)
+      screens: [7]
+      description: Financial trading chart with open-high-low-close candlesticks
+      priority: low  # 1 screen, niche use case
+
+    - pattern: Horizontal Progress Bar (colored bar with label + value)
+      screens: [17, 24]
+      description: Horizontal bar showing progress/comparison, dual-color (coral + dark)
+      priority: medium
+
+    - pattern: Dot Matrix / Bubble Grid (filled/empty circles in a grid)
+      screens: [15]
+      description: Grid of circles where filled = completed tasks, empty = remaining
+      priority: low  # 1 screen
+
+    - pattern: Activity Rings (concentric colored circles, Apple Watch style)
+      screens: [24]
+      description: 3 nested rings (Move/Exercise/Stand) showing daily activity
+      priority: low  # 1 screen, complex
+
+    - pattern: Gauge / Semi-circle Chart (arc with center value)
+      screens: [6]
+      description: Half-circle arc chart with large number in center + badge
+      priority: medium
+
+    - pattern: Credit / Bank Card (card number + brand logo + gradient)
+      screens: [6, 8]
+      description: Stacked credit cards with dark/coral backgrounds, Visa/MC logos
+      priority: medium  # 2 screens, reusable for fintech
+
+    - pattern: Weather Card (temperature + condition + icon)
+      screens: [11, 23]
+      description: Day/Night temperature cards with weather icons
+      priority: low  # domain-specific
+
+    - pattern: Weather Detail Row (wind/humidity/visibility with icons)
+      screens: [23]
+      description: Horizontal row of weather metrics with dividers
+      priority: low
+
+    - pattern: Weekly Forecast Strip (horizontal scrollable day cards)
+      screens: [23]
+      description: Row of small cards with date + weather icon + temperature
+      priority: low
+
+    - pattern: Date Strip (horizontal scrolling day picker)
+      screens: [4]
+      description: Scrollable row of dates with today highlighted as pill
+      priority: medium  # reusable for calendars, scheduling
+
+    - pattern: User Comparison Card (avatar + name + location + stat)
+      screens: [17]
+      description: Side-by-side user cards comparing stats with trend arrows
+      priority: medium
+
+    - pattern: Area Chart (filled area under a line)
+      screens: [18]
+      description: Line chart with colored fill below, often with time-of-day axis
+      priority: medium  # variant of Line Chart
+
+    - pattern: Stacked Stat Cards (colored card with mini bar chart + progress ring)
+      screens: [20]
+      description: Full-width cards (light/dark/coral) each with metric + inline chart + ring
+      priority: medium
+
+    - pattern: Heart Rate Zone Bar (segmented colored bar with BPM ranges)
+      screens: [21]
+      description: Horizontal segmented bar showing zone ranges (z1-z5) with labels
+      priority: low  # fitness-specific
+
+# ─── SHOPPING (29 screens) ─────────────────────────────────────────────────────
+# Sub-types: Start (5), Categories Overview (4), Single Category (7), Filter (4), Detail Page (9)
+
+shopping:
+  screens_reviewed: 29
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Bottom App Bar (5-tab with heart badge "26")
+      screens: [Start 1-5, Cat 1-4, Single 1-7]
+      figma_component: Bottom App Bar
+      swift_component: DSBottomAppBar
+
+    - pattern: Avatar
+      screens: [Start 2, Start 4]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges-Tags (discount "40%", "10%")
+      screens: [Start 1-4, Single 1-7, Detail 1-2, Detail 7-8]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Checkbox
+      screens: [Filter 2, Filter 4]
+      figma_component: Checkbox
+      swift_component: DSCheckbox
+
+    - pattern: Page Controls (dots)
+      screens: [Start 1, Detail 1-2, Detail 5, Detail 7]
+      figma_component: Page-Controls
+      swift_component: DSPageControl
+
+    - pattern: Segmented Picker (tabs — Women/Men/Girl/Boy, Details/Composition/Shipping)
+      screens: [Cat 3-4, Detail 1]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+  needs_figma_cs:
+    - pattern: Search Field (search bar with icon + label)
+      screens: [Cat 1-4, Filter 2, Filter 4]
+      swift_component: DSSearchField
+      priority: high  # 6 screens
+
+    - pattern: Image Carousel (swipeable product images with dots)
+      screens: [Detail 1-2, Detail 5, Detail 7]
+      swift_component: DSCarousel
+      priority: high  # 4 screens
+
+  new_needed:
+    - pattern: Product Card (image + name + subtitle + price + old price + discount badge + wishlist)
+      screens: [Start 1-5, Single 1-7]
+      description: Card with product image, brand name, product name, current price, strikethrough old price, discount badge. Multiple layout variants — 2-col grid, horizontal list, full-width card, masonry grid
+      priority: critical  # 12 screens — THE core shopping component
+
+    - pattern: Filter Chip (scrollable horizontal pills — "Sneakers x", "41 +")
+      screens: [Single 1-4]
+      description: Horizontal scrollable row of filter pills. Active = dark filled with X. Inactive = outlined with +. Shows applied filters with dismiss action
+      priority: high  # 4 screens, reusable for any filtered list
+
+    - pattern: Promo Banner Card (large colored card — "80% off" + mini chart)
+      screens: [Start 1, Start 3-4, Cat 4]
+      description: Full-width colored card (dark/coral) with large discount text, subtitle, optional mini bar chart decoration, arrow CTA button
+      priority: high  # 4 screens
+
+    - pattern: Category List Row (name + item count + icon)
+      screens: [Cat 1, Cat 3]
+      description: Full-width row with category name (large text), item count, trailing category icon. With divider between rows
+      priority: medium
+
+    - pattern: Category Thumbnail Row (name + count + horizontal image strip with "See All")
+      screens: [Cat 2]
+      description: Section with category name + count header, then horizontal scrollable thumbnail images with coral "See All" card first
+      priority: medium
+
+    - pattern: Category Grid (icon + label in 3-column grid)
+      screens: [Cat 4]
+      description: 3x2 grid of category icons with labels on coral background (New, Clothes, Shoes, Bags, Accessories, Sale)
+      priority: medium
+
+    - pattern: Gender Toggle (pill — "For her ♀" / "For him ♂")
+      screens: [Start 1, Start 3, Start 5]
+      description: Two-option toggle pill for gender selection. Active = dark filled, inactive = outlined
+      priority: low  # could use Segmented Picker
+
+    - pattern: Product Detail Hero (large image with overlay back/share/heart buttons)
+      screens: [Detail 1-9]
+      description: Full-width or near-full product image with floating action buttons (back, share, heart, info, gallery). Multiple layout variants — image with card below, full-bleed with overlay, dark background
+      priority: critical  # 9 screens — every detail page needs this
+
+    - pattern: Size Selector (row/column of size buttons)
+      screens: [Detail 2-3, Detail 6-8, Filter 3]
+      description: Row or grid of size options (XS, S, M, L, XL, XXL or 40-46). Selected = dark filled circle/pill. Some layouts show sizes vertically alongside image
+      priority: high  # 6 screens
+
+    - pattern: Color Selector (row of color swatches with checkmark)
+      screens: [Detail 7-9, Filter 3]
+      description: Row of colored circles/pills. Selected shows checkmark overlay. Used for product variant and filter selection
+      priority: high  # 4 screens
+
+    - pattern: Quantity Stepper (– 1 + control)
+      screens: [Detail 3, Detail 6]
+      description: Dark pill or card with minus, number, plus buttons for quantity selection
+      priority: high  # common e-commerce pattern
+
+    - pattern: Star Rating (filled stars + review count)
+      screens: [Detail 6]
+      description: Row of filled/empty stars with "(260 Reviews)" text
+      priority: medium
+
+    - pattern: Price Row (current price + strikethrough + cart button)
+      screens: [Detail 6-9]
+      description: Bottom bar showing price, old price strikethrough, discount badge, and coral cart/add-to-cart button
+      priority: high  # 4 screens
+
+    - pattern: Range Slider (dual-thumb price range)
+      screens: [Filter 1]
+      description: Horizontal slider with two coral thumb handles for min/max price range
+      priority: medium
+
+    - pattern: Star Rating Selector (1-5 clickable stars for filter)
+      screens: [Filter 1]
+      description: Row of 5 star buttons (1-5) for selecting minimum rating in filters. Selected = dark filled
+      priority: low
+
+    - pattern: Filter List Row (label + selected value + arrow)
+      screens: [Filter 1, Filter 3]
+      description: Row showing filter name (Category, Brand, Color, Size) with current value and right arrow for drill-down
+      priority: medium
+
+    - pattern: Wishlist Button (heart icon — outlined/filled toggle)
+      screens: [Single 1-7, Detail 2-3, Detail 5-9]
+      description: Circular button with heart icon. Outlined = not saved, filled = saved. Appears on product cards and detail pages
+      priority: high  # 14 screens
+
+    - pattern: Floating Add to Cart CTA (coral button at bottom)
+      screens: [Detail 1-3, Detail 6-9]
+      description: Full-width or partial coral button anchored at bottom — "Add to Cart" with cart icon. Sometimes includes price
+      priority: critical  # 7 screens
+
+    - pattern: Info/Promo Banner Strip (thin banner with promo text)
+      screens: [Detail 6]
+      description: Thin coral/light banner with promotional text like "15% OFF orders with a total value over € 200"
+      priority: low
+
+# ─── CHAT (23 screens) ─────────────────────────────────────────────────────────
+# Sub-types: Overview (8), Individual (6), Group (4), Voice Calling (3), Video Call (2)
+
+chat:
+  screens_reviewed: 23
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar (name + video/more icons)
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Avatar (circular user photos)
+      screens: [Overview 1-8, Individual 1-6, Group 1-4]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges-Tags (unread count "12", "124")
+      screens: [Overview 3, Overview 4, Overview 7]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Segmented Picker (All/Read/Unread)
+      screens: [Overview 5]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+    - pattern: Progress Circle (message count ring)
+      screens: [Overview 1]
+      figma_component: Progress-Circle
+      swift_component: DSProgressCircle
+
+  needs_figma_cs:
+    - pattern: Search Field (search icon + text)
+      screens: [Overview 2, Overview 7]
+      swift_component: DSSearchField
+      priority: high
+
+  new_needed:
+    - pattern: Conversation List Item (avatar + name + message preview + time + unread badge)
+      screens: [Overview 1-8]
+      description: Chat list row with avatar, sender name, last message preview truncated, timestamp, optional unread count badge. Some variants show first message highlighted in a card
+      priority: critical  # 8 screens — every chat overview uses this
+
+    - pattern: Stories/Status Strip (horizontal scrollable avatars with names)
+      screens: [Overview 2-4, Overview 6-8]
+      description: Horizontal scrollable row of circular avatars with names below. First item can be search icon. Some on light background, some on dark card
+      priority: high  # 6 screens, also reusable for social feeds
+
+    - pattern: Friends Update Strip (horizontal large rounded image cards with name overlay)
+      screens: [Overview 4, Overview 6, Overview 8]
+      description: Horizontal scrollable large rounded-corner image cards (stories-like) with name label at bottom
+      priority: medium
+
+    - pattern: Frequent Contacts Row (small avatars with online indicator + name)
+      screens: [Overview 4, Overview 6-8]
+      description: Row of small avatars with green online dot or "Live" badge, name below. Inside a card section
+      priority: medium
+
+    - pattern: Chat Bubble — Sent (right-aligned, colored background)
+      screens: [Individual 1-6, Group 1-4]
+      description: Right-aligned message bubble with coral/green/teal background, white/dark text, timestamp + double-checkmark (read receipt). Sender avatar on right
+      priority: critical  # 10 screens
+
+    - pattern: Chat Bubble — Received (left-aligned, light background)
+      screens: [Individual 1-6, Group 1-4]
+      description: Left-aligned message bubble with light/cream background, dark text, sender avatar on left, timestamp. In group chats shows sender name
+      priority: critical  # 10 screens
+
+    - pattern: Chat Image Message (rounded image inside bubble)
+      screens: [Individual 1-4, Individual 6, Group 1-4]
+      description: Image with rounded corners sent as a chat message. Can have avatar beside it. Full-width or partial-width in the chat flow
+      priority: high  # 9 screens
+
+    - pattern: Voice Message (play button + waveform + duration)
+      screens: [Individual 2, Individual 4]
+      description: Chat bubble containing play/pause button, audio waveform visualization bars, duration text (0:47), and music note icon
+      priority: medium
+
+    - pattern: Chat Input Bar (text field + action icons)
+      screens: [Individual 1-6, Group 1-4]
+      description: Bottom-pinned input bar with text field ("Type a message..." / "Say something..."), mic icon, send button (coral circle with arrow/paper-plane), optional camera and attachment icons
+      priority: critical  # 10 screens — every chat conversation needs this
+
+    - pattern: Chat Attachment Menu (vertical dark pill with action icons)
+      screens: [Individual 5]
+      description: Vertical dark rounded pill overlay with icon buttons — emoji, image, attachment, camera, video, mic, settings
+      priority: medium
+
+    - pattern: Group Member Avatars Strip (overlapping avatars + count)
+      screens: [Group 1-2, Group 4]
+      description: Row of overlapping circular avatars with "+26" dark circle showing remaining count. Appears below group name in header
+      priority: medium
+
+    - pattern: Group Member List (vertical stacked avatars on right side)
+      screens: [Group 3]
+      description: Vertical column of member avatars stacked on the right edge, with "+26" count circle at bottom
+      priority: low
+
+    - pattern: Video Play Button (coral play icon on image thumbnail)
+      screens: [Group 1]
+      description: Large coral circular play button overlaid on video thumbnail image in chat
+      priority: low
+
+    - pattern: Call Action Grid (2x3 grid — Add/Speaker/Keypad/Chat/Video/Mute)
+      screens: [Voice 1-3]
+      description: Dark card with 2x3 grid of circular icon buttons with labels — Add to call, Speaker, Keypad, Chat, Video call, Mute. Standard phone call controls
+      priority: high  # needed for any calling feature
+
+    - pattern: End Call Button (full-width coral CTA)
+      screens: [Voice 1-3]
+      description: Full-width coral button with phone-off icon + "End call" text at bottom of call screen
+      priority: medium
+
+    - pattern: Caller Card (photo + name + email + duration badge)
+      screens: [Voice 2]
+      description: Large photo with name + email overlay at bottom, call duration badge (blue "2:26") at top-right
+      priority: low
+
+    - pattern: Video Call View (full-screen remote + PIP local video)
+      screens: [Video 1-2]
+      description: Full-screen video of remote caller with small picture-in-picture window of local camera. Dark background. Back button + timer at top
+      priority: high  # needed for video call feature
+
+    - pattern: Video Call Controls (dark pill with action buttons)
+      screens: [Video 1-2]
+      description: Dark rounded pill at bottom with grid/keypad, end call (coral), and emoji/chat buttons
+      priority: medium
+
+    - pattern: Online Status Indicator (green dot on avatar)
+      screens: [Overview 4, Overview 6-8, Group 4]
+      description: Small green circle positioned at bottom-right of avatar indicating online status
+      priority: high  # 5 screens, reusable across any social feature
+
+    - pattern: Live Badge (red "Live" label on avatar)
+      screens: [Overview 4, Overview 7]
+      description: Red "Live" badge below avatar indicating active livestream
+      priority: low
+
+    - pattern: Swipe-to-Delete Row (swiped chat revealing delete button)
+      screens: [Overview 3]
+      description: Chat list row swiped left revealing coral delete icon button
+      priority: low
+
+# ─── CALENDAR (18 screens) ─────────────────────────────────────────────────────
+
+calendar:
+  screens_reviewed: 18
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Bottom App Bar
+      screens: [6, 14]
+      figma_component: Bottom App Bar
+      swift_component: DSBottomAppBar
+
+    - pattern: Avatar (overlapping attendee avatars)
+      screens: [2, 4, 7, 8, 10, 14]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges-Tags ("+26" count, status badges like "Done", "To Do", "In Progress")
+      screens: [2, 7, 8, 10, 11, 14]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Segmented Picker (Overview/Completed/In Progress, Monthly/Weekly)
+      screens: [11, 13]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+    - pattern: Progress Circle
+      screens: [12, 13]
+      figma_component: Progress-Circle
+      swift_component: DSProgressCircle
+
+    - pattern: Divider
+      screens: [6, 16]
+      figma_component: Divider
+      swift_component: DSDivider
+
+  needs_figma_cs:
+    - pattern: Search Field
+      screens: [6]
+      swift_component: DSSearchField
+      priority: high
+
+    - pattern: Bar Chart (mini inline)
+      screens: [12, 13, 14]
+      swift_component: DSBarChart
+      priority: high
+
+  new_needed:
+    - pattern: Month Calendar Grid (7-col M-S grid with selected/today/range highlights)
+      screens: [1, 2, 5, 8, 10, 12, 13, 14, 15, 17]
+      description: Full month grid with day-of-week headers (M T W T F S S), today highlighted with circle outline, selected date with coral fill, date ranges with coral streak across multiple days. Month name + year header above
+      priority: critical  # 10 screens — the core calendar component
+
+    - pattern: Week Day Strip (horizontal scrollable day cards — day name + number)
+      screens: [3, 7, 9, 18]
+      description: Horizontal row of day cards showing day abbreviation + day number. Selected day has dark filled background. Shows 5-7 days visible
+      priority: critical  # 4 screens, essential for day view
+
+    - pattern: Day Timeline View (vertical hour axis with event blocks)
+      screens: [3, 7, 8, 9, 18]
+      description: Vertical timeline with hour labels (6 AM - 6 PM) on left, horizontal time grid lines, event blocks positioned at their time slots. Current time shown as coral dot + line
+      priority: critical  # 5 screens
+
+    - pattern: Event Card (title + time range + icon + optional attendees + location)
+      screens: [3, 6, 7, 8, 9, 16, 18]
+      description: Rounded card with event title, time range, category icon, optional overlapping attendee avatars, location pin. Variants — coral (important), dark (normal), light (secondary). Some show inside timeline, others in a list
+      priority: critical  # 7 screens — appears in almost every calendar view
+
+    - pattern: Event Detail View (full-screen event info)
+      screens: [4]
+      description: Event title (h1), invited count + avatars, time, date, meeting room, description text, prototype link, Teams meeting link. CTA "Add to Calendar" button at bottom
+      priority: high
+
+    - pattern: Date Range Picker (Starting/Until date pills)
+      screens: [6, 16]
+      description: Two side-by-side dark/coral pills showing "Starting [date]" and "Until [date]" with calendar icons
+      priority: high
+
+    - pattern: Month/Year Selector (pill with chevron + navigation arrows)
+      screens: [1, 10, 13, 14, 17]
+      description: Dark pill showing "August 2030" with up/down chevron, plus left/right arrow buttons for month navigation
+      priority: medium
+
+    - pattern: Continuous Month Scroll (stacked month cards with colored headers)
+      screens: [5]
+      description: Vertically scrollable list of month calendar grids, each in its own card with colored header (coral for current month, dark for others)
+      priority: medium
+
+    - pattern: Event List by Date (grouped date header + event cards)
+      screens: [6, 16]
+      description: Events grouped by date with "Week, 6-12 March — 2 Events" section headers. Each event shows day number + event card
+      priority: medium
+
+    - pattern: Task Card (status badge + title + description + tag chips + assignees)
+      screens: [11]
+      description: Card with colored status badge (Done/To Do/In Progress), task title, description text, tag chips (Development, CSS, UX), assignee avatars, drag handle
+      priority: high  # project management pattern
+
+    - pattern: Task Tag Chips (small outlined pills)
+      screens: [11]
+      description: Small outlined pills with category labels — "Development", "CSS", "UX", "UI", "Concept". Different from filter chips — these are read-only labels
+      priority: medium
+
+    - pattern: Stat Summary Card (icon + label + big number, side-by-side)
+      screens: [12]
+      description: Two cards side-by-side — coral (Water Usage 280 l) and dark (Water Savings 12%) with category icons
+      priority: medium  # similar to Metric Card from Stats
+
+    - pattern: Gauge / Semi-circle (time arc with start/end)
+      screens: [17]
+      description: Half-circle arc showing time range (07:00 Starts | 10:00 Ends) with date "14 Aug 2030" in center. Close button top-right
+      priority: medium  # also seen in Stats 6
+
+    - pattern: Globe / 3D Visualization
+      screens: [15]
+      description: Dark card with 3D globe/sphere graphic showing data points along a latitude line
+      priority: low  # very niche, decorative
+
+    - pattern: Floating Action Button (coral circle + / "Add")
+      screens: [7, 10, 16, 17]
+      description: Circular coral button with "+" icon, or pill-shaped "Add +" or "New Task +" button. Floating at bottom-right or bottom-center
+      priority: high  # 4 screens, reusable across many categories
+
+    - pattern: Horizontal Timeline (horizontal hour axis with staggered event cards)
+      screens: [9]
+      description: Horizontal scrollable timeline with hour labels at top (10:00-17:00), event cards positioned below at their time with connecting dots on a vertical dashed line
+      priority: medium
+
+    - pattern: Weather Info Row (temp + wind + humidity with icons)
+      screens: [1, 2]
+      description: Row showing weather data — "28° Weather", "12 m/s Wind Speed", "62% Humidity" with icons. Also seen in Stats
+      priority: low  # domain-specific, also in Stats
+
+# ─── FEED (24 screens) ─────────────────────────────────────────────────────────
+
+feed:
+  screens_reviewed: 24
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar (hamburger + title + search/notification)
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Bottom App Bar
+      screens: [1, 6, 12, 17, 22]
+      figma_component: Bottom App Bar
+      swift_component: DSBottomAppBar
+
+    - pattern: Avatar
+      screens: all
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges-Tags (unread count, "Live" badge)
+      screens: [11, 13, 22]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Segmented Picker (Images/Video/Reviews, Requests/Suggested)
+      screens: [12, 22]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+  needs_figma_cs:
+    - pattern: Search Field
+      screens: [2, 7, 9, 21]
+      swift_component: DSSearchField
+      priority: high  # 4 screens
+
+  new_needed:
+    - pattern: Feed Post Card (avatar + name + location + time + text + images + like/comment)
+      screens: [1, 2, 3, 6, 7, 9, 14, 15, 18, 23]
+      description: Social media post card with author avatar, name, location, timestamp, text body with hashtags, attached images, and like/comment action row. Multiple layout variants — image-first, text-first, dark background, light card
+      priority: critical  # 10 screens — the core feed component
+
+    - pattern: Photo Grid / Gallery (2-4 images + coral "N photos" counter)
+      screens: [2, 5, 7, 8, 21, 24]
+      description: Horizontal scrollable or grid of photo thumbnails with a coral card showing "26 photos" / "125 photos" count. Used inside feed posts and suggestion cards
+      priority: critical  # 6 screens
+
+    - pattern: Like/Comment Action Row (heart count + comment count + share icon)
+      screens: [1, 7, 12, 15, 17, 18, 23]
+      description: Row with like count + heart icon, comment count + bubble icon, optional share icon. Some variants show count inside a coral pill badge
+      priority: critical  # 7 screens — every feed post needs this
+
+    - pattern: Follow Button (outlined "Follow" / filled "Unfollow" / "Requested")
+      screens: [1, 2, 5, 6, 7, 8, 15, 20, 22, 24]
+      description: Button with "Follow" (outlined), "Unfollow" (filled), or "Requested" (outlined) state. Sometimes with "+" icon
+      priority: high  # 10 screens
+
+    - pattern: Stories/Status Strip (horizontal scrollable avatars with badges)
+      screens: [11, 13]
+      description: Horizontal scrollable row of circular avatars with names below, optional "Live" or count badges. Also seen in Chat category
+      priority: high  # cross-category reuse
+
+    - pattern: Suggestion Card (dark card — avatar + name + location + Follow + photo strip)
+      screens: [5, 21, 24]
+      description: Dark surfacePrimary card with user avatar, name, city, "Follow" button, and horizontal strip of their photos below. Used for user discovery
+      priority: high
+
+    - pattern: Pinterest-style Masonry Grid (staggered-height cards)
+      screens: [4, 10, 16]
+      description: 2-column layout with cards of varying heights. Each card has image, author name, location, caption, timestamp, and small avatar. Staggered/waterfall layout
+      priority: high  # popular social feed layout
+
+    - pattern: Create Post Composer (avatar + "What's on your mind?" + actions)
+      screens: [14]
+      description: Card with user avatar, "What's on your mind?" text + chevron, then action rows — "Add a photo" with camera icon, "Change Status" with pen icon, "Add location" with pin icon. Each row separated by divider
+      priority: high
+
+    - pattern: Board Header (cover image + hashtag + "Follow +" button)
+      screens: [12, 17]
+      description: Full-width image banner with hashtag overlay (#travel) and coral "Follow +" button. Used for topic/board pages
+      priority: medium
+
+    - pattern: Board Content Tabs (icon-only tab bar — grid/film/video/sparkle/hashtag)
+      screens: [17]
+      description: Horizontal row of icon-only tabs for switching between content types (photos grid, reels, videos, featured, tags)
+      priority: medium
+
+    - pattern: Explore Card (large hero image + title + caption overlay + time badge)
+      screens: [3]
+      description: Full-width tall card with large image, "2h ago" badge overlay, title + caption text overlay at bottom, arrow CTA button, author name below
+      priority: medium
+
+    - pattern: Activity Feed Item (avatar + action text + thumbnails)
+      screens: [19]
+      description: Activity log row — avatar + "X liked 3 photos" / "X commented on Y's photo" / "X has 8 new friends". With image thumbnails or friend avatar stack
+      priority: medium
+
+    - pattern: Contact List Item (avatar + name + location + Follow/Requested)
+      screens: [20, 22]
+      description: List row with avatar, name, city, and Follow/Requested action button on right. Used for contacts and find friends screens
+      priority: medium
+
+    - pattern: Contact Card Grid (2-col cards — avatar + name + city + Follow)
+      screens: [22]
+      description: 2-column grid of cards, each with centered avatar, name, city, and outlined Follow button
+      priority: medium
+
+    - pattern: Import Social Buttons ("Import from Facebook" / "Import from X")
+      screens: [20]
+      description: Full-width dark filled buttons with social platform icon for importing contacts
+      priority: low
+
+    - pattern: Podcast/Audio Card (image + title + description + waveform + headphone icon)
+      screens: [11, 13]
+      description: Card with image on left (or full background), title, description, audio waveform visualization, author name + city, headphone icon. For audio/podcast content in feeds
+      priority: medium
+
+    - pattern: Quick Menu FAB (coral pill "Quick menu" floating at bottom)
+      screens: [4]
+      description: Coral floating pill button at bottom with "Quick menu" text and hamburger icon
+      priority: low
+
+    - pattern: New Post Toast (coral pill notification at bottom)
+      screens: [10]
+      description: Coral pill notification at bottom of screen — "New post available X" with dismiss button
+      priority: low
+
+    - pattern: Photo Count Badge (coral square with "N photos" text)
+      screens: [2, 5, 7, 21, 24]
+      description: Coral-colored square tile showing photo count (26, 62, 125) mixed into photo grid. Part of Photo Grid component
+      priority: medium  # 5 screens
+
+# ─── NAVIGATION (24 screens) ───────────────────────────────────────────────────
+# All screens are menu/drawer patterns — not content screens
+
+navigation:
+  screens_reviewed: 24
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Avatar
+      screens: [2, 8, 10, 14, 15, 16, 17, 22, 23, 24]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges-Tags (notification count)
+      screens: [2, 4, 9, 10, 12]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Progress Circle
+      screens: [4, 12]
+      figma_component: Progress-Circle
+      swift_component: DSProgressCircle
+
+    - pattern: Divider
+      screens: [5, 14, 19, 23]
+      figma_component: Divider
+      swift_component: DSDivider
+
+  needs_figma_cs:
+    - pattern: Search Field
+      screens: [2, 10, 18]
+      swift_component: DSSearchField
+      priority: high
+
+  new_needed:
+    - pattern: Side Menu — List Style (icon + label + arrow/badge, vertical list)
+      screens: [2, 4, 5, 8, 9, 10, 12, 14, 16, 19]
+      description: Vertical list of menu items with icon on left, label text, optional right arrow or notification badge. Light card background. Items like Messages, Trending, Bookmarks, Gallery, Settings, etc. Active item has coral icon fill
+      priority: critical  # 10 screens — the most common navigation pattern
+
+    - pattern: Side Menu — Full-Screen Text (large display-size text links)
+      screens: [6, 13, 23]
+      description: Full-screen menu with large display/h1-sized text items centered or left-aligned. No icons, just bold text. Logo at top. Profile row at bottom. "Menu/Close" bar at bottom
+      priority: high
+
+    - pattern: Side Menu — Icon Grid (3x4 or 3x3 grid of icon-only buttons)
+      screens: [1, 11, 18, 24]
+      description: Dark card with grid of icon buttons (avatar, cart, messages, trending, bookmark, notification, gallery, people, map, search, settings, logout). Icon-only, no labels in most variants
+      priority: high
+
+    - pattern: Side Menu — Card Grid (2x2 image cards with label + icon)
+      screens: [15, 17]
+      description: 2x2 grid of tall cards, each with hero image background, white icon button overlay, and section label (Messages, Explore, People, Gallery)
+      priority: medium
+
+    - pattern: Side Menu — Overlay Buttons (dark rounded pill buttons over blurred content)
+      screens: [7]
+      description: Full-width dark rounded pill buttons (Messages → , Trending → , Bookmarks → , Gallery → , Settings → ) overlaying blurred content behind. Profile dimmed in background
+      priority: medium
+
+    - pattern: Side Menu — Stacked Cards (dark/coral cards layered with label + icon)
+      screens: [21]
+      description: Stacked overlapping cards — dark (News, Explore) and coral (Messages) with section icon on right. Menu and profile on separate layers
+      priority: medium
+
+    - pattern: Side Menu — Centered Text (logo + vertical text items)
+      screens: [13, 20]
+      description: Centered layout with logo at top, vertically stacked plain text menu items, selected item highlighted with coral pill
+      priority: medium
+
+    - pattern: Menu Bottom Bar (dark pill — "Menu" + coral "Close" button)
+      screens: [6, 13, 14, 19, 23]
+      description: Dark rounded pill at bottom with "Menu" text on left and coral "Close" button on right. Persistent navigation handle
+      priority: high  # 5 screens
+
+    - pattern: Close FAB (coral circle X button at bottom center)
+      screens: [1, 4, 5, 9, 11, 12, 15]
+      description: Coral circular floating button with X icon at bottom center, dismisses the menu overlay
+      priority: high  # 7 screens
+
+    - pattern: Profile Row (avatar + name + role + "Profile →" button)
+      screens: [2, 6, 8, 10, 14, 16, 17, 23, 24]
+      description: Row showing user avatar, name, role/title, and "Profile →" outlined button. Usually at bottom of side menu
+      priority: high  # 9 screens — every menu needs user identity
+
+    - pattern: FAB Radial Menu (expanding coral circle buttons)
+      screens: [22]
+      description: Radial/fan expansion of coral circle icon buttons from a trigger point. Shows Gallery, Trending, Bookmarks, Settings options
+      priority: low
+
+    - pattern: Stat Summary Card (dark card — number + progress ring + mini chart)
+      screens: [4, 12]
+      description: Dark card showing "560 done" + progress ring + mini bar chart sparkline. Also seen in Stats category
+      priority: medium  # cross-category
+
+    - pattern: Profile Views Card ("Views of your profile" + count + bar chart)
+      screens: [4, 9]
+      description: Light card with "Views of your profile" label, blue "14,238" badge, and bar chart histogram
+      priority: medium  # cross-category
+
+    - pattern: Menu Item — Active State (coral filled pill or coral icon highlight)
+      screens: [5, 7, 14, 16, 20, 21]
+      description: Active/selected menu item indicated by coral fill on icon circle, coral pill background on text, or coral card layer. Part of all menu item variants
+      priority: high  # integral to menu component
+
+    - pattern: Logout Button (outlined "Logout" with exit icon)
+      screens: [17]
+      description: Outlined button with "Logout" text and exit icon, shown at bottom of menu alongside "Close" coral button
+      priority: low
+
+# ─── PROFILE (20 screens) ─────────────────────────────────────────────────────
+
+profile:
+  screens_reviewed: 20
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Avatar (profile photo)
+      screens: [2, 5, 7, 12, 15, 17]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Badges-Tags ("+26" count)
+      screens: [11, 14]
+      figma_component: Badges-Tags
+      swift_component: DSBadge
+
+    - pattern: Page Controls (dots under hero carousel)
+      screens: [1, 3, 20]
+      figma_component: Page-Controls
+      swift_component: DSPageControl
+
+    - pattern: Segmented Picker (Images/Video/Reviews)
+      screens: [17]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+    - pattern: Progress Circle
+      screens: [2, 7, 13]
+      figma_component: Progress-Circle
+      swift_component: DSProgressCircle
+
+    - pattern: Divider
+      screens: [2, 6, 7]
+      figma_component: Divider
+      swift_component: DSDivider
+
+  new_needed:
+    - pattern: Profile Hero Card (cover image + name + bio + stats + action buttons)
+      screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 19, 20]
+      description: Large cover image (full-width or carousel), overlapping info card below with name, bio text with "read more", stats row (photos/followers/following), Follow + Message action buttons. Multiple variants — dark card, coral card, light card, image-only full-bleed
+      priority: critical  # 16 screens — every profile needs this
+
+    - pattern: Stats Row (photos/followers/following with dividers)
+      screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 16, 17, 18, 20]
+      description: Horizontal row of 3 stats — number + label (1,200 photos | 2,980 followers | 1,600 following) separated by vertical dividers. Sometimes includes an action button on the right (edit, follow)
+      priority: critical  # 15 screens
+
+    - pattern: Follow + Message Button Pair
+      screens: [3, 4, 6, 8, 9, 16, 17, 20]
+      description: Two action buttons — coral "Follow +" pill and outlined/text "Message" with chat icon. Standard profile interaction pattern
+      priority: critical  # 8 screens
+
+    - pattern: Photo Grid (3-col or masonry thumbnails)
+      screens: [4, 5, 6, 8, 9, 12, 13, 16, 17, 18]
+      description: Grid of photo thumbnails, usually 3-column. Some masonry/staggered height. Shows user's posted photos below profile info
+      priority: critical  # 10 screens — standard Instagram-style grid
+
+    - pattern: Content Type Tab Bar (icon-only tabs — grid/film/video/sparkle/hashtag)
+      screens: [5, 8, 9, 12]
+      description: Horizontal row of icon tabs for filtering content type (all photos, reels, videos, featured, tagged). Dark bar with white icons. Also seen in Feed category
+      priority: high  # cross-category
+
+    - pattern: Tinder-style Profile Card (full-screen photo + name/city overlay + like/reject buttons)
+      screens: [14, 19]
+      description: Full-screen portrait photo with floating info card at bottom showing name, city, bio, mutual friends avatars. Dark reject (X) + coral like (heart) buttons at bottom
+      priority: high  # dating/social discovery pattern
+
+    - pattern: Social Icons Row (Instagram + Facebook + X icons)
+      screens: [4, 6, 16]
+      description: Row of social media platform icons (Instagram, Facebook, X/Twitter) for linking to external profiles. Inside coral action bar
+      priority: medium
+
+    - pattern: People You Might Know (horizontal avatar strip with names)
+      screens: [15]
+      description: Section with "People you might know" + "View all" header, horizontal scrollable row of circular avatars with names. Reuses Stories Strip pattern
+      priority: medium
+
+    - pattern: Favourite Places (horizontal scrollable city image cards)
+      screens: [15]
+      description: Section with "Favourite places" header, horizontal row of city image cards with location label overlay (Milano, Berlin, Frankfurt)
+      priority: medium
+
+    - pattern: Travel Stories (horizontal destination cards)
+      screens: [11]
+      description: "Travel Stories" section with horizontal scrollable city image cards with city name labels below
+      priority: medium
+
+    - pattern: Event Card Grid (2-col image + title + location + attendees)
+      screens: [11]
+      description: 2-column grid of event cards — tall image, event title, location, overlapping attendee avatars with "+26" count
+      priority: medium
+
+    - pattern: Stat Summary Card (dark card — "560 done" + ring + sparkline)
+      screens: [2, 7, 13]
+      description: Dark card with metric text, progress ring, mini bar sparkline, date. Cross-category pattern (also in Stats, Navigation)
+      priority: medium
+
+    - pattern: Profile Views Card ("Views of your profile" + count + chart)
+      screens: [7]
+      description: Light card showing profile view count with bar chart histogram. Cross-category pattern
+      priority: medium
+
+    - pattern: Mutual Friends Row (overlapping avatars + count text)
+      screens: [14]
+      description: Row of overlapping small avatars with "26 mutual friends" text. Used for social proof on profile cards
+      priority: medium
+
+    - pattern: Profile Action Buttons (dark circle floating icons — follow/edit/info)
+      screens: [13, 18]
+      description: Vertical stack of dark circular icon buttons (follow, edit, info) floating on the right side of the profile image
+      priority: medium
+
+    - pattern: Friends/Reviews Stat Row (icon + count + label)
+      screens: [15, 16]
+      description: Row with people icon + "62K friends" and people icon + "260K reviews". Alternative to standard stats row for non-photo profiles
+      priority: medium
+
+    - pattern: Photo Count Badge (coral tile "260 photos" in grid)
+      screens: [18]
+      description: Coral-colored tile in photo grid showing photo count. Reuses pattern from Feed category
+      priority: low
+
+# ─── MEDIA (18 screens) ────────────────────────────────────────────────────────
+# All screens are music/audio player screens
+
+media:
+  screens_reviewed: 18
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar (back/close + title + shuffle/repeat/heart icons)
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Bottom App Bar (Home/Profile/Music/Favorites/More)
+      screens: [11, 13, 14, 16, 17]
+      figma_component: Bottom App Bar
+      swift_component: DSBottomAppBar
+
+    - pattern: Avatar (artist avatars)
+      screens: [7, 14]
+      figma_component: Avatar
+      swift_component: DSAvatar
+
+    - pattern: Page Controls (dots under album carousel)
+      screens: [3, 5, 6, 9, 14, 15]
+      figma_component: Page-Controls
+      swift_component: DSPageControl
+
+    - pattern: Segmented Picker (Albums/Playlists/Artists)
+      screens: [16, 17]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+  needs_figma_cs:
+    - pattern: Search Field
+      screens: [1, 4, 5, 10]
+      swift_component: DSSearchField
+      priority: high
+
+  new_needed:
+    - pattern: Now Playing Card (album art + song title + artist name)
+      screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 18]
+      description: Large album art image (rounded, stacked, or circular) with song title and artist name below/beside. Multiple variants — card with stacked shadows, full-bleed, inside dark card, with carousel
+      priority: critical  # 13 screens — the core music player component
+
+    - pattern: Playback Controls (shuffle + prev + play/pause + next + repeat)
+      screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 18]
+      description: Horizontal row of media control buttons. Center = large coral play/pause button. Flanked by prev/next. Outer = shuffle/repeat. Dark bar variant and light bar variant
+      priority: critical  # 13 screens
+
+    - pattern: Audio Waveform Visualizer (colored bar equalizer)
+      screens: [1, 3, 5, 8, 10, 12, 18]
+      description: Horizontal row of vertical bars showing audio waveform/equalizer. Coral/red active bars, dark/grey inactive. Sometimes with playhead position indicator
+      priority: high  # 7 screens
+
+    - pattern: Progress Slider (coral progress line with time labels)
+      screens: [2, 4, 7, 8, 9, 10, 15]
+      description: Horizontal progress bar — coral filled portion + grey remaining. "Time" label + current time (2:36). Optional coral circle thumb. Inside dark or light card
+      priority: high  # 7 screens
+
+    - pattern: Album Art Carousel (swipeable stacked album cards)
+      screens: [3, 5, 6, 8, 9, 14, 15]
+      description: Swipeable horizontal album art cards with stacked shadow effect behind. Current card prominent, others peek/shadow. With page dots below
+      priority: high  # 7 screens — reuses Carousel pattern
+
+    - pattern: Song List Item (thumbnail + title + artist + duration + music icon)
+      screens: [11, 14, 16]
+      description: List row with small album art on left, song title + artist text, duration (3:12, 6:20), and music note icon on right. Separated by dividers
+      priority: high  # standard music list pattern
+
+    - pattern: Featured Song Card (large image + title + artist overlay + duration badge + play button)
+      screens: [11, 14]
+      description: Large rounded card with album/artist image, song title + artist overlaid at bottom, duration badge (4:26) at top-right, optional coral play button. Horizontal carousel with peek
+      priority: high
+
+    - pattern: Vinyl/Ring Player (circular album art with progress ring)
+      screens: [1, 18]
+      description: Circular album art image with thin progress ring around it showing playback position (coral arc). Heart/save button floating. Center variant with controls inside the ring
+      priority: medium
+
+    - pattern: Song Action Row (shuffle/heart/repeat/share icon buttons)
+      screens: [10, 12]
+      description: Row of circular icon buttons for song actions — shuffle, like/heart, repeat, share/upload. Below album art and above waveform
+      priority: medium
+
+    - pattern: Genre Filter Chips (horizontal scrollable genre pills)
+      screens: [11]
+      description: Horizontal row of pills — Trending (filled dark), Rock, Hip Hop, Jazz, Electronic (outlined). Reuses Filter Chip pattern from Shopping
+      priority: medium
+
+    - pattern: Artist Strip (horizontal circular artist avatars with names)
+      screens: [7, 14]
+      description: Horizontal scrollable row of circular artist photos with names below. First item = search icon. Reuses Stories Strip pattern
+      priority: medium
+
+    - pattern: Favorites Grid (2-col masonry — album art + title + artist + music badge)
+      screens: [13]
+      description: 2-column masonry grid of album art cards, each with coral music note badge, song title, and artist name below
+      priority: medium
+
+    - pattern: Artist Card Grid (2-col dark cards — avatar + name + count + arrow)
+      screens: [17]
+      description: 2-column grid of dark cards, each with circular artist photo, name, album/song count, and arrow button at bottom
+      priority: medium
+
+    - pattern: Save/Heart Button (pill "Save ♡" on album art)
+      screens: [4]
+      description: Dark pill with "Save" text + heart icon floating over album art
+      priority: low
+
+    - pattern: Duration Badge (coral pill "4:26" with timer icon)
+      screens: [2, 11, 12]
+      description: Coral rounded badge showing song duration overlaid on album art
+      priority: low
+
+    - pattern: "ON Playing" Badge (status indicator)
+      screens: [18]
+      description: Light pill with "ON" badge + "Playing" text indicating live radio/streaming status
+      priority: low
+
+# ─── CHECKOUT (20 screens) ─────────────────────────────────────────────────────
+
+checkout:
+  screens_reviewed: 20
+  date_audited: 2026-03-21
+
+  covered:
+    - pattern: Top App Bar
+      screens: all
+      figma_component: Top App Bar
+      swift_component: DSTopAppBar
+
+    - pattern: Bottom App Bar
+      screens: [1, 3, 6]
+      figma_component: Bottom App Bar
+      swift_component: DSBottomAppBar
+
+    - pattern: Checkbox (Billing/Save toggles)
+      screens: [9]
+      figma_component: Checkbox
+      swift_component: DSCheckbox
+
+    - pattern: Radio (payment method selection)
+      screens: [8, 9]
+      figma_component: Radio
+      swift_component: DSRadio
+
+    - pattern: Divider
+      screens: [10, 13, 14, 20]
+      figma_component: Divider
+      swift_component: DSDivider
+
+    - pattern: Segmented Picker (Credit Card / PayPal)
+      screens: [15]
+      figma_component: Segmented Picker
+      swift_component: DSSegmentedPicker
+
+    - pattern: Inputs-Filled (form fields — Country, Name, Address, Card Number)
+      screens: [7, 9, 14, 15]
+      figma_component: Inputs-Filled
+      swift_component: DSTextField
+
+  new_needed:
+    - pattern: Cart Item Row (thumbnail + name + description + price + delete)
+      screens: [1, 2, 3, 5, 6, 10, 11]
+      description: Row with product thumbnail, product name, description, price, and delete/trash icon button. Some variants include size selector and quantity stepper inline
+      priority: critical  # 7 screens
+
+    - pattern: Cart Summary Footer (dark bar — shipping + total + Checkout CTA)
+      screens: [1, 3, 5, 6, 10, 13, 16, 17]
+      description: Dark card at bottom showing "Estimated shipping: $10", "Products total: $829/$909", and coral "Checkout"/"Place Order"/"Pay Now" CTA button with cart icon
+      priority: critical  # 8 screens
+
+    - pattern: Checkout Progress Stepper (Shipping → Payment → Review)
+      screens: [7, 8, 9, 10]
+      description: Dark card with 3 step indicators — Shipping, Payment, Review. Connected by lines. Completed steps show checkmark, current step is highlighted, future steps are outline circles
+      priority: critical  # 4 screens — essential for checkout flows
+
+    - pattern: Quantity Stepper (– N + control)
+      screens: [2, 4]
+      description: Inline minus/number/plus control for adjusting cart item quantity. Also seen in Shopping category
+      priority: high  # cross-category
+
+    - pattern: Credit/Bank Card (logo + type + card number + brand logo)
+      screens: [13, 16, 17, 19]
+      description: Styled card showing card brand logo, "Business"/"Personal" label, card number, Visa/MC brand. Stacked variants show multiple cards layered. Coral and dark color variants
+      priority: high  # 4 screens, cross-category (also Stats)
+
+    - pattern: Payment Method List (icon + name + radio)
+      screens: [8]
+      description: Vertical list of payment options — Card, PayPal, Apple Pay, Google Pay. Each with brand icon and radio button. Inside a card
+      priority: high
+
+    - pattern: Payment Method Tabs (horizontal scrollable icon cards)
+      screens: [18, 19]
+      description: Horizontal scrollable row of icon cards — Credit Card (filled/selected), Cash, PayPal, Apple Pay. Selected has coral icon highlight
+      priority: high
+
+    - pattern: Shipping Address Section (label + address + edit icon)
+      screens: [10, 13, 14, 16, 17]
+      description: Section showing "Shipping Address" label, full address text, and edit pencil icon. Used in checkout review and address forms
+      priority: high  # 5 screens
+
+    - pattern: Order Confirmation Card (Thank you + order items + Track Order)
+      screens: [11]
+      description: Card with "Thank you! Your order's in." display text, order items list, "Track Order" outlined button with truck icon. Dark footer "You want more? Shop Now"
+      priority: high
+
+    - pattern: Track Order Map (map + delivery route + timeline)
+      screens: [12]
+      description: Map view showing delivery route with truck icon at "48%" position, origin/destination markers. Edit/filter action buttons floating on map
+      priority: high
+
+    - pattern: Delivery Timeline (date + status icon + city — vertical stepper)
+      screens: [12]
+      description: Vertical timeline in dark card — dates on left, checkmark/download/pin icons in center, city names on right. Connected by dotted lines
+      priority: high
+
+    - pattern: Promo Code Input (text field + "Apply" coral button)
+      screens: [2, 5, 6]
+      description: "Promo Code" section with text input showing code (HKM121323) and coral "Apply" pill button
+      priority: medium
+
+    - pattern: Saved Card Row (brand icon + name + last 4 + exp + checkbox)
+      screens: [18]
+      description: Row showing payment brand icon, card name (Mastercard/Visa), last 4 digits, expiration, and checkbox for selection
+      priority: medium
+
+    - pattern: Delivery Row (label + courier + "free" + edit icon)
+      screens: [13, 16]
+      description: Row showing "Delivery" label, courier name "DHL Express", "free" text, and edit pencil icon
+      priority: medium
+
+    - pattern: Thank You Display (large display text + product suggestions)
+      screens: [20]
+      description: Full-screen display1/h1 text "You just made our day! Thanks for shopping with us." + divider + "You might like this!" suggestion with product row + dark "Not done yet?" footer
+      priority: medium
+
+    - pattern: "You might like" Section (suggestion row)
+      screens: [11, 20]
+      description: "You might like this!" header with product thumbnail + name + price below. Cross-sell pattern
+      priority: medium
+
+    - pattern: Cart Price Summary (coral card with cart icon + prices)
+      screens: [3, 6]
+      description: Coral card showing cart icon with strikethrough old total and new total price. Visual checkout summary
+      priority: medium
+
+    - pattern: Swipe-to-Delete Cart Item
+      screens: [2]
+      description: Cart row swiped left revealing coral delete button
+      priority: low
+
+    - pattern: Size Selector Pill ("Size: L" with chevron)
+      screens: [2]
+      description: Small pill showing "Size: L" or "Size: 43" with up/down chevron for changing size inline
+      priority: low
+
+    - pattern: Add New Card Row ("Add New Card" + plus icon)
+      screens: [18, 19]
+      description: Row with "Add New Card" text and plus icon button. Inside payment method section
+      priority: low
+
+    - pattern: Discount Badge (inline green/teal percentage)
+      screens: [2, 4]
+      description: Small teal/green circle badge showing "40%" or "10%" next to strikethrough price. Inline discount indicator
+      priority: low
+
+# ─── SEARCH (11 screens) ───────────────────────────────────────────────────────
+
+search:
+  screens_reviewed: 11
+  date_audited: 2026-03-21
+
+  covered:
+    - { pattern: Bottom App Bar, screens: [1, 4, 6, 7], figma_component: Bottom App Bar, swift_component: DSBottomAppBar }
+    - { pattern: Segmented Picker (Summaries/Audiobooks), screens: [5, 6, 10], figma_component: Segmented Picker, swift_component: DSSegmentedPicker }
+    - { pattern: Divider, screens: [2, 3, 5, 6, 8, 9], figma_component: Divider, swift_component: DSDivider }
+
+  needs_figma_cs:
+    - { pattern: Search Field (active with keyboard), screens: [1, 2, 3, 5, 6, 8, 9, 10, 11], swift_component: DSSearchField, priority: critical }
+
+  new_needed:
+    - pattern: Search Suggestion Row (search icon + text + arrow)
+      screens: [2, 5, 8, 9]
+      description: Row with search icon, suggestion text (Most Popular, Trending, or typed terms), and right arrow/chevron
+      priority: critical  # 4 screens
+
+    - pattern: Search Result Row (thumbnail + title + subtitle + bookmark)
+      screens: [3, 6, 10]
+      description: Row with image thumbnail, title, subtitle/author, and action icon (arrow, bookmark, lock). Divided by lines
+      priority: critical  # 3 screens
+
+    - pattern: Category Icon Grid (3x2 dark card with icon + label)
+      screens: [1]
+      description: Dark card with 3x2 grid of category icons (Vegan, Pizza, Asian, BBQ, Quick, Dessert) + coral card below (All Recipes, All Stories)
+      priority: medium
+
+    - pattern: Category Chip Row (icon + label pills)
+      screens: [4]
+      description: Wrapped flow of pills with icons — Psychology, Management, Career, Leadership, Meditation, Productivity. With "See all" button
+      priority: medium
+
+    - pattern: Collection Strip (horizontal scrollable image cards)
+      screens: [4]
+      description: "Collections" section with horizontal scrollable image cards, each with title overlay
+      priority: medium
+
+    - pattern: Continue Reading Mini Bar (avatar + title + icon at bottom)
+      screens: [4, 6]
+      description: Dark bar at bottom showing avatar/book cover, "Continue reading" text, book title, and book icon
+      priority: medium
+
+    - pattern: Search Hero Card (dark card with display text + search below)
+      screens: [7]
+      description: Dark/coral card with display-size text "Searching... Please hold while we dig through the digital universe" + search field below + hamburger
+      priority: medium
+
+    - pattern: Recent/Top Results Sections (grouped with section headers)
+      screens: [9]
+      description: Search results grouped by "Recent Searches" and "Top Results" section headers with different icons (search vs sparkle)
+      priority: medium
+
+    - pattern: Search Tag Chip (filled tag with X + inline text input)
+      screens: [11]
+      description: Dark filled pill "Design x" as applied filter inside search field, followed by text input for additional search term
+      priority: medium
+
+    - pattern: Map Preview (inline mini map with pins)
+      screens: [11]
+      description: Small embedded map showing event locations with pins. Part of location-based search results
+      priority: low
+
+    - pattern: Event Location Row (pin + name + distance + direction icon)
+      screens: [11]
+      description: Row with pin icon, event name, "New York, 2 km away", and direction/activity icon
+      priority: low
+
+# ─── SETTINGS (8 screens) ──────────────────────────────────────────────────────
+
+settings:
+  screens_reviewed: 8
+  date_audited: 2026-03-21
+
+  covered:
+    - { pattern: Top App Bar, screens: all, figma_component: Top App Bar, swift_component: DSTopAppBar }
+    - { pattern: Bottom App Bar, screens: [6], figma_component: Bottom App Bar, swift_component: DSBottomAppBar }
+    - { pattern: Toggle (Push Notifications/Dark Mode/Hide Balances), screens: [1, 3, 5, 6, 8], figma_component: Toggle, swift_component: DSToggle }
+    - { pattern: Avatar, screens: [2, 3, 6, 8], figma_component: Avatar, swift_component: DSAvatar }
+    - { pattern: Checkbox (language selection), screens: [7], figma_component: Checkbox, swift_component: DSCheckbox }
+    - { pattern: Divider, screens: [1, 2, 3, 5, 6, 8], figma_component: Divider, swift_component: DSDivider }
+    - { pattern: Segmented Picker (Security/External/Privacy), screens: [5], figma_component: Segmented Picker, swift_component: DSSegmentedPicker }
+
+  new_needed:
+    - pattern: Settings List Item (icon + label + toggle/arrow/value)
+      screens: [1, 2, 3, 4, 5, 6, 7, 8]
+      description: Settings row with left icon, label text, and trailing element (toggle, right arrow, value text like "English"). Grouped in sections with dividers between items
+      priority: critical  # 8 screens — every settings screen uses this
+
+    - pattern: Settings Section Header Card (dark/coral card — title + description + icon)
+      screens: [1, 4]
+      description: Colored card at top showing section title (Security & Privacy / Discovery Settings), description text, and category icon. Percentage badge optional
+      priority: high
+
+    - pattern: Profile Card (avatar + name + role + Edit/Sign Out)
+      screens: [2, 3, 6, 8]
+      description: Card with user avatar, "Hi, I'm [Name]" text, "Edit Profile" link, optional Sign Out and Edit buttons. Coral or dark card variant
+      priority: high  # 4 screens
+
+    - pattern: Range Slider (dual-thumb — Distance, Age)
+      screens: [4, 5]
+      description: Horizontal slider with coral track and dual thumb handles. Shows value label ("65 miles", "Pregnancy – 12+ years"). Also seen in Shopping Filter
+      priority: medium  # cross-category
+
+    - pattern: Language Card (flag + language name + greeting + checkbox)
+      screens: [7]
+      description: Full-width card with country flag, language name (English/Deutsch/Español/Italiano), greeting ("Hello, my friend!"), and checkbox for selection
+      priority: medium
+
+    - pattern: Selection Pill Row (multiple choice pills)
+      screens: [4]
+      description: Horizontal row of pills for single selection — "Near me now" / "Near my home", "Never" / "Less often" / "Next Day". Selected = dark filled
+      priority: medium
+
+    - pattern: Apply FAB (coral pill "Apply" at bottom)
+      screens: [5, 7]
+      description: Coral pill floating button with refresh/check icon + "Apply" text at bottom center
+      priority: medium
+
+    - pattern: Profile Views Card
+      screens: [2]
+      description: Card showing "Views of your profile 14,238" with bar chart. Cross-category pattern
+      priority: medium
+
+# ─── ALERTS (11 screens) ───────────────────────────────────────────────────────
+
+alerts:
+  screens_reviewed: 11
+  date_audited: 2026-03-21
+
+  covered:
+    - { pattern: Bottom App Bar, screens: [1, 3, 4, 6], figma_component: Bottom App Bar, swift_component: DSBottomAppBar }
+    - { pattern: Top App Bar, screens: [3, 4, 7, 8, 11], figma_component: Top App Bar, swift_component: DSTopAppBar }
+    - { pattern: Avatar, screens: [3, 8], figma_component: Avatar, swift_component: DSAvatar }
+    - { pattern: Badges-Tags, screens: [3], figma_component: Badges-Tags, swift_component: DSBadge }
+
+  new_needed:
+    - pattern: Full-Screen Alert Card (icon + display title + divider + description + CTA)
+      screens: [1, 2, 9, 10]
+      description: Full-width card with status icon (wifi-off, camera, bell, server), display-size title text, divider, body description, and dark footer with CTA button(s). Color variants — dark (offline), light (camera access), coral (server error)
+      priority: critical  # 4 screens
+
+    - pattern: Toast/Banner Alert (colored bar at bottom — Error/Warning/Success/Info)
+      screens: [3, 4, 5, 6]
+      description: Colored banner at bottom of screen with icon, title, and description text. Color coding — coral/red = error (3), yellow = warning (4), green = success (5), cyan/blue = info (6). Dismissible with X button
+      priority: critical  # 4 screens — standard alert system
+
+    - pattern: Dialog Alert (floating card with icon + title + text + action buttons)
+      screens: [7, 11]
+      description: Floating card overlaying content with icon, title text, body text, and stacked action buttons (coral primary "Delete App"/"Turn On", outlined secondary "Disable..."/"Maybe Later", text "Cancel"). Yellow/dark color variants
+      priority: critical  # modal dialog pattern
+
+    - pattern: Permission Request Card (icon + title + description + contacts preview + options)
+      screens: [8]
+      description: Cyan/blue full-screen card with people icon, "Access to Your Contacts" title, stacked contact preview card, and action options (Select Contacts, Allow Full Access, Don't Allow)
+      priority: high
+
+    - pattern: Alert Color System (coral=error, yellow=warning, green=success, cyan=info)
+      screens: [3, 4, 5, 6, 7, 8, 10]
+      description: Consistent color coding across all alert types. Coral/red for errors and destructive actions, yellow for warnings, green for success, cyan for info and permissions
+      priority: critical  # foundational design token for alerts
+
+    - pattern: Close FAB (dark X circle at bottom)
+      screens: [9, 10]
+      description: Dark circular button with X icon at bottom center. Cross-category pattern (also in Navigation)
+      priority: medium
+
+# ─── CAMERA (23 screens) ───────────────────────────────────────────────────────
+
+camera:
+  screens_reviewed: 23
+  date_audited: 2026-03-21
+
+  covered:
+    - { pattern: Top App Bar (back/close + Camera/Edit/Filter/Video + save/more), screens: all, figma_component: Top App Bar, swift_component: DSTopAppBar }
+    - { pattern: Bottom App Bar (Home/Heart/Camera/Folder/Search), screens: [10, 11, 12, 13, 14, 15], figma_component: Bottom App Bar, swift_component: DSBottomAppBar }
+    - { pattern: Avatar (people strip), screens: [10, 13], figma_component: Avatar, swift_component: DSAvatar }
+    - { pattern: Page Controls (album carousel dots), screens: [10], figma_component: Page-Controls, swift_component: DSPageControl }
+
+  new_needed:
+    - pattern: Camera Viewfinder (full-screen live camera with grid overlay + focus box)
+      screens: [1, 2, 3, 5, 6, 7, 8, 9]
+      description: Full-screen camera preview with rule-of-thirds grid lines overlay, autofocus rectangle/bracket, and blue focus dot. Floating back/switch/flash buttons. Rounded corners
+      priority: critical  # 8 screens
+
+    - pattern: Shutter Button (coral circle capture button)
+      screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 21, 23]
+      description: Large coral/red circle button for taking photos. Some variants with ring animation (recording). Centered at bottom. Dark bar variant and light bar variant
+      priority: critical  # 11 screens
+
+    - pattern: Camera Controls Bar (dark bar — grid/gallery/shutter/flip)
+      screens: [2, 4, 6, 8, 9, 21]
+      description: Dark rounded bar at bottom with gallery thumbnail, shutter button, and flip/switch camera icon. Some add grid toggle
+      priority: critical  # 6 screens
+
+    - pattern: Camera Mode Tabs (Settings/Video/Effects/Timer/Grid text tabs)
+      screens: [4]
+      description: Horizontal row of text labels below camera controls for switching modes — Settings, Video, Effects, Timer, Grid
+      priority: high
+
+    - pattern: Camera Settings Pills (F 2.8 / S 1/25 / EV +0.5 / ISO 100)
+      screens: [2, 5, 9]
+      description: Floating dark rounded pills showing camera manual settings. Vertical stack on left side or horizontal in settings card. Tappable to adjust value
+      priority: high  # 3 screens
+
+    - pattern: Exposure Dial (horizontal -2 to +3 scrubber with tick marks)
+      screens: [2, 5]
+      description: Horizontal scrubber with numbered stops from -2 to +3, tick marks, coral indicator line at center. For manual exposure adjustment
+      priority: high
+
+    - pattern: Aperture/Speed Picker (horizontal scrollable value strips)
+      screens: [9]
+      description: Two rows of horizontal scrollable values — f2.8/f3.2/f3.5 and 1/15/1/20/1/25/1/30. Selected value highlighted. Inside light card
+      priority: medium
+
+    - pattern: Photo Gallery Grid (date-grouped photo thumbnails)
+      screens: [12, 15]
+      description: Photos grouped by date ("29 Aug 2030", "30 Aug 2030") with date + calendar icon headers. Mixed-size grid (2-col, 3-col combinations)
+      priority: high  # 2 screens
+
+    - pattern: Album Card (cover image + title + photo count)
+      screens: [10, 11, 14]
+      description: Card with cover photo, album title (Pets in Action, Space Invaders), photo count (132 Photos, 260 Photos). Masonry 2-col layout
+      priority: high  # 3 screens
+
+    - pattern: Album Carousel (horizontal scrollable album cards + page dots)
+      screens: [10]
+      description: Horizontal scrollable album cover cards with coral "260 Photos" badge and album title overlay. Page dots below
+      priority: medium
+
+    - pattern: People Strip (horizontal scrollable — Search + circular avatars + names)
+      screens: [10, 13]
+      description: "People" section with horizontal avatars. First item = Search coral circle icon. Names below avatars. Reuses Stories Strip
+      priority: medium
+
+    - pattern: Photo Edit Toolbar (icon tabs — crop/stickers/filter/contrast/brightness)
+      screens: [16, 17, 19, 20, 22]
+      description: Horizontal row of icon buttons for editing tools — crop, stickers, filters, contrast, brightness. Below image in light or dark bar
+      priority: critical  # 5 screens
+
+    - pattern: Crop Controls (aspect ratio selector + rotation dial)
+      screens: [16, 17]
+      description: Aspect ratio pills (Custom, 3:2, 3:4, 5:4, 1:1) in dark card below crop grid. With rotation value badge (-12). Check/save coral button
+      priority: high
+
+    - pattern: Edit Adjustment Sliders (Brightness/Saturation/Color Filter with value)
+      screens: [18, 19]
+      description: Vertical list of editing sliders — icon + label + coral slider + value (+ 3, - 12, + 12). Light card or dark card variant
+      priority: high
+
+    - pattern: Color Filter Strip (horizontal scrollable thumbnail previews — Original/Blue/Yellow/Red/Green)
+      screens: [20, 22]
+      description: Horizontal row of small photo thumbnails with different color filters applied, with label below (Original, Blue, Yellow, Red, Green)
+      priority: high  # 2 screens
+
+    - pattern: Video Recording Controls (dark bar — gallery/record-stop/flip + pause/time)
+      screens: [21, 23]
+      description: Dark bar with square stop button (recording), flip camera icon. Progress ring around record button. Time display (2:36). "Pause" label with progress bar
+      priority: high
+
+    - pattern: Live/Selfie Camera (full-bleed camera + PIP + "Tap and hold to go live")
+      screens: [23]
+      description: Full-screen dark live camera view with PIP self-portrait at top-left, coral instruction text "Tap and hold to go live". For live streaming
+      priority: medium
+
+    - pattern: Filter Button (vertical floating pill — crop/stickers/filter/contrast/brightness icons)
+      screens: [20]
+      description: Vertical floating pill on right side with stacked editing tool icons. Selected tool highlighted coral
+      priority: medium
+
+    - pattern: Photo Count Badge (coral "260 Photos" on album cover)
+      screens: [10]
+      description: Coral badge showing photo count overlaid on album cover image
+      priority: low
+
+    - pattern: Filter Chip "Filter" Button (outlined pill with slider icon)
+      screens: [13]
+      description: Dark outlined pill "Filter" with slider icon, next to promo text "Unlimited views on albums over 16200 photos!"
+      priority: low
+
+# ─── SPLASH (3 screens) ────────────────────────────────────────────────────────
+
+splash:
+  screens_reviewed: 3
+  date_audited: 2026-03-21
+
+  covered: []
+
+  new_needed:
+    - pattern: Splash Screen (logo + brand name + tagline + version)
+      screens: [1, 2, 3]
+      description: Three variants of launch/splash screen. All feature HaHo brand logo, tagline text ("Spark Your Neurons!", "Ignite Your Imagination!", "Ready, set, Haho!"), and version badge (V 3.8). Layouts — stacked brand cards (1), centered logo with footer (2), coral header with centered logo (3)
+      priority: high  # every app needs a splash screen
+
+# ─── UNNAMED (18 frames) ──────────────────────────────────────────────────────
+# These are category label cards ("01. Splash", "05. Profile", "12. Calendar", etc.)
+# and one "Tutorial" link card. NOT actual screens — no new patterns.
+
+unnamed:
+  screens_reviewed: 0  # no actual screens, just labels
+  date_audited: 2026-03-21
+  note: 17 category label cards + 1 Tutorial link. All are section dividers, not content screens.

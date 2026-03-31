@@ -10,29 +10,35 @@ Use `DSProgressCircle` for:
 - loading progress displays
 - fitness/health progress rings
 
-## Properties
+## Init
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `progress` | `Double` | — | Progress value (0.0–1.0) |
-| `size` | `CGFloat` | `40` | Circle diameter |
-| `lineWidth` | `CGFloat` | `8.6` | Progress arc stroke width |
-| `trackLineWidth` | `CGFloat?` | `nil` | Background track stroke width |
-| `customLabel` | `String?` | `nil` | Custom center label (overrides %) |
-| `trackColor` | `Color?` | `nil` | Background track color |
-| `progressColor` | `Color?` | `nil` | Progress arc color |
-| `labelColor` | `Color?` | `nil` | Center label color |
+
+## Modifiers
+
+| Modifier | Type | Default | Description |
+|----------|------|---------|-------------|
+| `.circleSize(_:)` | `CGFloat` | `40` | Circle diameter |
+| `.lineWidth(_:)` | `CGFloat` | `8.6` | Progress arc stroke width |
+| `.trackLineWidth(_:)` | `CGFloat` | `1` | Background track stroke width |
+| `.customLabel(_:)` | `String` | percentage | Custom center label (overrides %) |
+| `.trackColor(_:)` | `Color` | `surfaceNeutral3` | Background track color |
+| `.progressColor(_:)` | `Color` | `surfaceSecondary100` | Progress arc color |
+| `.labelColor(_:)` | `Color` | `textNeutral9 @ 75%` | Center label color |
 
 ## Example
 
 ```swift
-DSProgressCircle(progress: 0.72, size: 80, lineWidth: 10)
-DSProgressCircle(
-    progress: 0.45,
-    size: 120,
-    customLabel: "45%",
-    progressColor: theme.colors.surfaceSecondary100
-)
+DSProgressCircle(progress: 0.72)
+    .circleSize(80)
+    .lineWidth(10)
+
+DSProgressCircle(progress: 0.45)
+    .circleSize(120)
+    .customLabel("45%")
+    .progressColor(theme.colors.surfaceSecondary100)
 ```
 
 ---

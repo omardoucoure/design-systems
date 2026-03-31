@@ -18,16 +18,16 @@ struct Alert8Page: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                DSTopAppBar(title: "Change Address", style: .small, onBack: { dismiss() }) {
-                    DSButton(style: .neutral, size: .medium, icon: .bellNotification) {}
-                    DSButton(style: .text, size: .medium, systemIcon: "ellipsis") {}
-                }
+                DSTopAppBar(title: "Change Address") {
+                    DSButton { }.buttonStyle(.neutral).buttonSize(.medium).icon(.bellNotification)
+                    DSButton { }.buttonStyle(.text).buttonSize(.medium).systemIcon("ellipsis")
+                }.onBack { dismiss() }
                 ScrollView {
                     VStack(spacing: theme.spacing.sm) { formCard }
                         .padding(.horizontal, theme.spacing.sm)
                 }
             }
-            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+            .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
 
             DSAlertDialog(
                 isPresented: $showDialog,
@@ -38,14 +38,17 @@ struct Alert8Page: View {
             ) {
                 contactCardsStack
             } actions: {
-                DSButton("Select Contacts...", style: .text, size: .medium,
-                         icon: .group, iconPosition: .right) {}
-                DSDivider(style: .fullBleed)
-                DSButton("Allow Full Access", style: .text, size: .medium,
-                         icon: .magicWand, iconPosition: .right) {}
-                DSDivider(style: .fullBleed)
-                DSButton("Don't Allow", style: .text, size: .medium,
-                         icon: .trash, iconPosition: .right) {}
+                DSButton("Select Contacts...") { }
+                    .buttonStyle(.text).buttonSize(.medium)
+                    .icon(.group, position: .right)
+                DSDivider()
+                DSButton("Allow Full Access") { }
+                    .buttonStyle(.text).buttonSize(.medium)
+                    .icon(.magicWand, position: .right)
+                DSDivider()
+                DSButton("Don't Allow") { }
+                    .buttonStyle(.text).buttonSize(.medium)
+                    .icon(.trash, position: .right)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -57,33 +60,45 @@ struct Alert8Page: View {
     }
 
     private var formCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 DSText("Moving on up?", style: theme.typography.h4, color: theme.colors.textNeutral9)
                 DSText("Update your address here!",
                        style: theme.typography.caption, color: theme.colors.textNeutral9.opacity(0.75))
-                DSTextField(text: $country, placeholder: "Country", label: "Country*",
-                            variant: .filled, state: .filled)
-                DSTextField(text: $fullName, placeholder: "Full Name", label: "Full Name*",
-                            variant: .filled, state: .filled, icon: .user)
-                DSTextField(text: $street, placeholder: "Street Address", label: "Street Address*",
-                            variant: .filled, state: .filled)
+                DSTextField(text: $country, placeholder: "Country")
+                    .label("Country*")
+                    .inputState(.filled)
+                DSTextField(text: $fullName, placeholder: "Full Name")
+                    .label("Full Name*")
+                    .inputState(.filled)
+                    .icon(.user)
+                DSTextField(text: $street, placeholder: "Street Address")
+                    .label("Street Address*")
+                    .inputState(.filled)
                 HStack(spacing: theme.spacing.sm) {
-                    DSTextField(text: $postalCode, placeholder: "Postal Code", label: "Postal Code*",
-                                variant: .filled, state: .filled)
-                    DSTextField(text: $city, placeholder: "City", label: "City*",
-                                variant: .filled, state: .filled)
+                    DSTextField(text: $postalCode, placeholder: "Postal Code")
+                        .label("Postal Code*")
+                        .inputState(.filled)
+                    DSTextField(text: $city, placeholder: "City")
+                        .label("City*")
+                        .inputState(.filled)
                 }
-                DSTextField(text: $phone, placeholder: "Phone Number", label: "Phone Number*",
-                            variant: .filled, state: .filled)
-                DSTextField(text: $email, placeholder: "Email", label: "Your Email",
-                            variant: .filled, state: .filled, icon: .mail)
-                DSButton("Change Address", style: .filledA, size: .big,
-                         iconRight: "arrow.right", isFullWidth: true) {}
+                DSTextField(text: $phone, placeholder: "Phone Number")
+                    .label("Phone Number*")
+                    .inputState(.filled)
+                DSTextField(text: $email, placeholder: "Email")
+                    .label("Your Email")
+                    .inputState(.filled)
+                    .icon(.mail)
+                DSButton("Change Address") { }
+                    .buttonStyle(.filledA)
+                    .systemIcon("arrow.right", position: .right)
+                    .fullWidth()
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxl)
         }
+        .cardPadding(0)
     }
 
     private var contactCardsStack: some View {
@@ -98,7 +113,7 @@ struct Alert8Page: View {
             }
             .padding(theme.spacing.sm)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(theme.colors.surfaceNeutral0_5)
+            .background(theme.colors.surfaceNeutral05)
             .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
             .shadow(color: .black.opacity(0.06), radius: 2, x: 0, y: 2)
             .shadow(color: .black.opacity(0.10), radius: 4, x: 0, y: 4)

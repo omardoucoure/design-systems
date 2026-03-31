@@ -14,44 +14,85 @@ import SwiftUI
 /// @State private var isMenuOpen = false
 ///
 /// DSSideMenuLayout(isOpen: $isMenuOpen) {
-///     DSNavigationMenu(items: menuItems, profile: profile)
+///     DSNavigationMenu(items: menuItems).profile(profile)
 /// } content: {
 ///     VStack {
-///         DSTopAppBar(title: "Gallery", style: .smallCentered) { }
+///         DSTopAppBar(title: "Gallery").appBarStyle(.smallCentered)
 ///             .overlay(alignment: .leading) {
-///                 DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+///                 DSButton {
 ///                     isMenuOpen.toggle()
-///                 }
+///                 }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
 ///             }
 ///     }
 /// }
+/// .menuWidth(300)
+/// .contentScale(0.8)
+/// .showBackgroundCards(false)
 /// ```
 public struct DSSideMenuLayout<Menu: View, Content: View>: View {
     @Environment(\.theme) private var theme
 
     @Binding private var isOpen: Bool
-    private let menuWidth: CGFloat
-    private let contentScale: CGFloat
-    private let showBackgroundCards: Bool
+    private var _menuWidth: CGFloat = 260
+    private var _contentScale: CGFloat = 0.85
+    private var _showBackgroundCards: Bool = true
     private let menu: () -> Menu
     private let content: () -> Content
 
     private let cardRadius: CGFloat = 32
 
+    // MARK: - Init (core params only)
+
     public init(
         isOpen: Binding<Bool>,
-        menuWidth: CGFloat = 260,
+        @ViewBuilder menu: @escaping () -> Menu,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self._isOpen = isOpen
+        self.menu = menu
+        self.content = content
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use init(isOpen:menu:content:) with .menuWidth(), .contentScale(), .showBackgroundCards() modifiers instead")
+    public init(
+        isOpen: Binding<Bool>,
+        menuWidth: CGFloat,
         contentScale: CGFloat = 0.85,
         showBackgroundCards: Bool = true,
         @ViewBuilder menu: @escaping () -> Menu,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._isOpen = isOpen
-        self.menuWidth = menuWidth
-        self.contentScale = contentScale
-        self.showBackgroundCards = showBackgroundCards
+        self._menuWidth = menuWidth
+        self._contentScale = contentScale
+        self._showBackgroundCards = showBackgroundCards
         self.menu = menu
         self.content = content
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the width of the side menu drawer.
+    public func menuWidth(_ width: CGFloat) -> Self {
+        var copy = self
+        copy._menuWidth = width
+        return copy
+    }
+
+    /// Sets the scale factor applied to the content card when the menu is open.
+    public func contentScale(_ scale: CGFloat) -> Self {
+        var copy = self
+        copy._contentScale = scale
+        return copy
+    }
+
+    /// Controls whether the ghost cards are shown behind the content when the menu is open.
+    public func showBackgroundCards(_ show: Bool) -> Self {
+        var copy = self
+        copy._showBackgroundCards = show
+        return copy
     }
 
     // MARK: - State
@@ -59,11 +100,11 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
     @GestureState private var dragOffset: CGFloat = 0
 
     private var effectiveOffset: CGFloat {
-        isOpen ? menuWidth + dragOffset : max(0, dragOffset)
+        isOpen ? _menuWidth + dragOffset : max(0, dragOffset)
     }
 
     private var progress: CGFloat {
-        min(max(effectiveOffset / menuWidth, 0), 1)
+        min(max(effectiveOffset / _menuWidth, 0), 1)
     }
 
     // MARK: - Body
@@ -72,7 +113,7 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
         GeometryReader { geo in
             ZStack {
                 // 0. Full-bleed background matching the menu area
-                theme.colors.surfaceNeutral0_5
+                theme.colors.surfaceNeutral05
                     .ignoresSafeArea()
 
                 // 1. Menu
@@ -82,7 +123,7 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
                     .animation(.easeInOut(duration: 0.3), value: isOpen)
 
                 // 2. Ghost cards behind content
-                if showBackgroundCards {
+                if _showBackgroundCards {
                     ghostCards(screenSize: geo.size)
                 }
 
@@ -100,7 +141,7 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
     /// Heights: back=320 (62% of 520), middle=420 (81% of 520).
     /// Back card: surfaceNeutral3 + 10% black overlay. Middle: plain surfaceNeutral3.
     private func ghostCards(screenSize: CGSize) -> some View {
-        let scale = 1.0 - (1.0 - contentScale) * progress
+        let scale = 1.0 - (1.0 - _contentScale) * progress
         let contentVisualW = screenSize.width * scale
         let contentVisualH = screenSize.height * scale
 
@@ -138,7 +179,7 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
     // MARK: - Content Card
 
     private var contentCard: some View {
-        let scale = 1.0 - (1.0 - contentScale) * progress
+        let scale = 1.0 - (1.0 - _contentScale) * progress
         let radius = cardRadius * progress
 
         return content()

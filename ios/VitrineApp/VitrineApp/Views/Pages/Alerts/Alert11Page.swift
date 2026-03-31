@@ -18,9 +18,9 @@ struct Alert11Page: View {
         ZStack {
             // Background: Schedule page — Figma: gap=sm(12), px=sm(12), py=0
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "Today, 8 Aug", style: .smallCentered, onBack: { dismiss() }) {
+                DSTopAppBar(title: "Today, 8 Aug") {
                     DSButton(style: .neutral, size: .medium, icon: .calendar) {}
-                }
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
 
                 // Days row
                 DSWeekStrip(items: weekDays, selectedId: $selectedDay)
@@ -36,7 +36,7 @@ struct Alert11Page: View {
                 .padding(.horizontal, theme.spacing.sm)
                 .padding(.bottom, theme.spacing.sm)
             }
-            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+            .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
 
             // Dialog overlay
             DSAlertDialog(
@@ -109,43 +109,35 @@ struct Alert11Page: View {
         [
             // 10:00–14:00 (startHour=10, row=0, spans 4 cols)
             DSTimelineSlot(id: "design-systems", startHour: 10, row: 0, columnSpan: 4) {
-                DSEventCard(
-                    title: "Design Systems",
-                    subtitle: "Unleash your ideas in a storm of creativity!",
-                    icon: .eye,
-                    background: theme.colors.surfaceSecondary100,
-                    foreground: theme.colors.textNeutral9
-                )
+                DSEventCard(title: "Design Systems",
+                            subtitle: "Unleash your ideas in a storm of creativity!")
+                    .eventIcon(.eye)
+                    .eventBackground(theme.colors.surfaceSecondary100)
+                    .eventForeground(theme.colors.textNeutral9)
             },
             // 12:00–15:00 (startHour=12, row=1, spans 3 cols)
             DSTimelineSlot(id: "font-fiesta", startHour: 12, row: 1, columnSpan: 3) {
-                DSEventCard(
-                    title: "Font Fiesta",
-                    subtitle: "Celebrate the art of typography by geeking out over serifs and sans-serifs.",
-                    icon: .textSize,
-                    background: theme.colors.surfacePrimary100,
-                    foreground: theme.colors.textNeutral0_5
-                )
+                DSEventCard(title: "Font Fiesta",
+                            subtitle: "Celebrate the art of typography by geeking out over serifs and sans-serifs.")
+                    .eventIcon(.textSize)
+                    .eventBackground(theme.colors.surfacePrimary100)
+                    .eventForeground(theme.colors.textNeutral05)
             },
             // 15:00–19:00 (startHour=15, row=2, spans 4 cols)
             DSTimelineSlot(id: "sustainability", startHour: 15, row: 2, columnSpan: 4) {
-                DSEventCard(
-                    title: "Sustainability in Design Symposium",
-                    subtitle: "Discover how to save the world!",
-                    icon: .timer,
-                    background: theme.colors.surfaceSecondary100,
-                    foreground: theme.colors.textNeutral9
-                )
+                DSEventCard(title: "Sustainability in Design Symposium",
+                            subtitle: "Discover how to save the world!")
+                    .eventIcon(.timer)
+                    .eventBackground(theme.colors.surfaceSecondary100)
+                    .eventForeground(theme.colors.textNeutral9)
             },
             // 10:00–14:00 (startHour=10, row=3, spans 4 cols)
             DSTimelineSlot(id: "hackathon", startHour: 10, row: 3, columnSpan: 4) {
-                DSEventCard(
-                    title: "Design Hackathon",
-                    subtitle: "Race against time and caffeine shortages to create the next big thing in design.",
-                    icon: .running,
-                    background: theme.colors.surfacePrimary100,
-                    foreground: theme.colors.textNeutral0_5
-                )
+                DSEventCard(title: "Design Hackathon",
+                            subtitle: "Race against time and caffeine shortages to create the next big thing in design.")
+                    .eventIcon(.running)
+                    .eventBackground(theme.colors.surfacePrimary100)
+                    .eventForeground(theme.colors.textNeutral05)
             },
         ]
     }

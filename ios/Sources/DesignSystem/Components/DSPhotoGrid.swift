@@ -29,51 +29,99 @@ public enum DSPhotoGridStyle {
 /// Supports both image assets and video URLs. Video cells show an auto-generated
 /// thumbnail with a play icon overlay.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
 /// // Dynamic (alternating 3/2 columns)
 /// DSPhotoGrid(items: [...], onTap: { item in ... })
 ///
 /// // Compact 4-column uniform grid
-/// DSPhotoGrid(items: [...], style: .compact(columns: 4), onTap: { item in ... })
+/// DSPhotoGrid(items: [...], onTap: { item in ... })
+///     .gridStyle(.compact(columns: 4))
+///     .gridRowHeight3(100)
 /// ```
 public struct DSPhotoGrid: View {
     @Environment(\.theme) private var theme
 
+    // Core (init-only)
     private let items: [DSMediaItem]
-    private let style: DSPhotoGridStyle
-    private let rowHeight3: CGFloat
-    private let rowHeight2: CGFloat
     private let onTap: ((DSMediaItem) -> Void)?
 
-    /// Convenience init for photo-only grids (backwards compatible).
+    // Modifier-based visual customization
+    private var _style: DSPhotoGridStyle = .dynamic
+    private var _rowHeight3: CGFloat = 88
+    private var _rowHeight2: CGFloat = 96
+
+    /// Primary init — media items with optional tap handler.
+    public init(
+        items: [DSMediaItem],
+        onTap: ((DSMediaItem) -> Void)? = nil
+    ) {
+        self.items = items
+        self.onTap = onTap
+    }
+
+    /// Convenience init for photo-only grids.
     public init(
         photos: [String],
-        style: DSPhotoGridStyle = .dynamic,
-        rowHeight3: CGFloat = 88,
-        rowHeight2: CGFloat = 96,
         onTap: ((String) -> Void)? = nil
     ) {
         self.items = photos.map { .photo($0) }
-        self.style = style
-        self.rowHeight3 = rowHeight3
-        self.rowHeight2 = rowHeight2
         self.onTap = onTap.map { cb in { item in if case .photo(let name) = item { cb(name) } } }
     }
 
+    // MARK: - Deprecated inits
+
+    @available(*, deprecated, message: "Use DSPhotoGrid(items:onTap:) with .gridStyle(), .gridRowHeight3(), .gridRowHeight2() modifiers instead")
     public init(
         items: [DSMediaItem],
-        style: DSPhotoGridStyle = .dynamic,
+        style: DSPhotoGridStyle,
         rowHeight3: CGFloat = 88,
         rowHeight2: CGFloat = 96,
         onTap: ((DSMediaItem) -> Void)? = nil
     ) {
         self.items = items
-        self.style = style
-        self.rowHeight3 = rowHeight3
-        self.rowHeight2 = rowHeight2
+        self._style = style
+        self._rowHeight3 = rowHeight3
+        self._rowHeight2 = rowHeight2
         self.onTap = onTap
     }
+
+    @available(*, deprecated, message: "Use DSPhotoGrid(photos:onTap:) with .gridStyle(), .gridRowHeight3(), .gridRowHeight2() modifiers instead")
+    public init(
+        photos: [String],
+        style: DSPhotoGridStyle,
+        rowHeight3: CGFloat = 88,
+        rowHeight2: CGFloat = 96,
+        onTap: ((String) -> Void)? = nil
+    ) {
+        self.items = photos.map { .photo($0) }
+        self._style = style
+        self._rowHeight3 = rowHeight3
+        self._rowHeight2 = rowHeight2
+        self.onTap = onTap.map { cb in { item in if case .photo(let name) = item { cb(name) } } }
+    }
+
+    // MARK: - Modifiers
+
+    public func gridStyle(_ style: DSPhotoGridStyle) -> Self {
+        var copy = self
+        copy._style = style
+        return copy
+    }
+
+    public func gridRowHeight3(_ height: CGFloat) -> Self {
+        var copy = self
+        copy._rowHeight3 = height
+        return copy
+    }
+
+    public func gridRowHeight2(_ height: CGFloat) -> Self {
+        var copy = self
+        copy._rowHeight2 = height
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         VStack(spacing: theme.spacing.sm) {
@@ -99,11 +147,11 @@ public struct DSPhotoGrid: View {
         var result: [Row] = []
         var index = 0
         var rowIndex = 0
-        switch style {
+        switch _style {
         case .dynamic:
             while index < items.count {
                 let count = rowIndex % 2 == 0 ? 3 : 2
-                let height = rowIndex % 2 == 0 ? rowHeight3 : rowHeight2
+                let height = rowIndex % 2 == 0 ? _rowHeight3 : _rowHeight2
                 let slice = Array(items[index..<min(index + count, items.count)])
                 result.append(Row(items: slice, height: height))
                 index += count
@@ -112,7 +160,7 @@ public struct DSPhotoGrid: View {
         case .compact(let columns):
             while index < items.count {
                 let slice = Array(items[index..<min(index + columns, items.count)])
-                result.append(Row(items: slice, height: rowHeight3))
+                result.append(Row(items: slice, height: _rowHeight3))
                 index += columns
             }
         }

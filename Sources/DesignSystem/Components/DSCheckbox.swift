@@ -6,32 +6,70 @@ import SwiftUI
 ///
 /// Usage:
 /// ```swift
-/// DSCheckbox(isOn: $accepted, label: "Accept terms")
-/// DSCheckbox(isOn: $subscribe, label: "Newsletter", description: "Receive weekly updates")
+/// DSCheckbox(isOn: $accepted)
+///     .label("Accept terms")
+///
+/// DSCheckbox(isOn: $subscribe)
+///     .label("Newsletter")
+///     .description("Receive weekly updates")
 /// ```
 public struct DSCheckbox: View {
     @Environment(\.theme) private var theme
 
     @Binding private var isOn: Bool
-    private let label: LocalizedStringKey?
-    private let description: LocalizedStringKey?
+    private var _label: LocalizedStringKey?
+    private var _description: LocalizedStringKey?
+    private var _labelFont: TypographyStyle?
 
+    // MARK: - Init
+
+    public init(isOn: Binding<Bool>) {
+        self._isOn = isOn
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSCheckbox(isOn:) with .label(), .description(), .labelFont() modifiers instead")
     public init(
         isOn: Binding<Bool>,
-        label: LocalizedStringKey? = nil,
-        description: LocalizedStringKey? = nil
+        label: LocalizedStringKey?,
+        description: LocalizedStringKey? = nil,
+        labelFont: TypographyStyle? = nil
     ) {
         self._isOn = isOn
-        self.label = label
-        self.description = description
+        self._label = label
+        self._description = description
+        self._labelFont = labelFont
     }
+
+    // MARK: - Modifiers
+
+    public func label(_ label: LocalizedStringKey) -> DSCheckbox {
+        var copy = self
+        copy._label = label
+        return copy
+    }
+
+    public func description(_ description: LocalizedStringKey) -> DSCheckbox {
+        var copy = self
+        copy._description = description
+        return copy
+    }
+
+    public func labelFont(_ font: TypographyStyle) -> DSCheckbox {
+        var copy = self
+        copy._labelFont = font
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         Button {
             isOn.toggle()
         } label: {
-            if label != nil {
-                HStack(alignment: .top, spacing: theme.spacing.sm) {
+            if _label != nil {
+                HStack(alignment: .center, spacing: theme.spacing.sm) {
                     checkboxIcon
                     textContent
                     Spacer(minLength: 0)
@@ -45,21 +83,21 @@ public struct DSCheckbox: View {
 
     private var checkboxIcon: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: theme.radius.xs)
+            RoundedRectangle(cornerRadius: theme.radius.xxs)
                 .stroke(
-                    isOn ? theme.colors.surfacePrimary100 : theme.colors.borderNeutral9_5,
-                    lineWidth: theme.borders.widthMd
+                    isOn ? theme.colors.surfacePrimary100 : theme.colors.borderNeutral95,
+                    lineWidth: theme.borders.widthSm
                 )
-                .frame(width: 20, height: 20)
+                .frame(width: 18, height: 18)
 
             if isOn {
-                RoundedRectangle(cornerRadius: theme.radius.xs)
+                RoundedRectangle(cornerRadius: theme.radius.xxs)
                     .fill(theme.colors.surfacePrimary100)
-                    .frame(width: 20, height: 20)
+                    .frame(width: 18, height: 18)
                     .overlay(
                         Image(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundStyle(theme.colors.textNeutral0_5)
+                            .foregroundStyle(theme.colors.textNeutral05)
                     )
             }
         }
@@ -69,15 +107,16 @@ public struct DSCheckbox: View {
     @ViewBuilder
     private var textContent: some View {
         VStack(alignment: .leading, spacing: 2) {
-            if let label {
-                Text(label)
-                    .font(theme.typography.body.font)
-                    .tracking(theme.typography.body.tracking)
+            if let _label {
+                let style = _labelFont ?? theme.typography.body
+                Text(_label)
+                    .font(style.font)
+                    .tracking(style.tracking)
                     .foregroundStyle(theme.colors.textNeutral9)
             }
 
-            if let description {
-                Text(description)
+            if let _description {
+                Text(_description)
                     .font(theme.typography.caption.font)
                     .tracking(theme.typography.caption.tracking)
                     .foregroundStyle(theme.colors.textNeutral8)

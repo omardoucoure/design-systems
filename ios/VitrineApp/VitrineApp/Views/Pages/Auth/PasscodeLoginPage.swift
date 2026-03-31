@@ -19,16 +19,16 @@ struct PasscodeLoginPage: View {
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
     }
 
     // MARK: - PIN Entry Card
 
     private var pinEntryCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(spacing: theme.spacing.xl) {
-                DSText("Enter Passcode", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                DSText("Enter Passcode", style: theme.typography.h4, color: theme.colors.textNeutral05)
 
                 HStack(spacing: theme.spacing.sm) {
                     ForEach(0..<passcodeLength, id: \.self) { index in
@@ -36,7 +36,7 @@ struct PasscodeLoginPage: View {
                             .fill(
                                 index < passcode.count
                                     ? theme.colors.surfaceSecondary100
-                                    : theme.colors.surfaceNeutral0_5.opacity(0.3)
+                                    : theme.colors.surfaceNeutral05.opacity(0.3)
                             )
                             .frame(width: theme.spacing.sm, height: theme.spacing.sm)
                     }
@@ -45,6 +45,7 @@ struct PasscodeLoginPage: View {
                 numberPad
             }
         }
+        .cardBackground(theme.colors.surfacePrimary100)
     }
 
     // MARK: - Number Pad

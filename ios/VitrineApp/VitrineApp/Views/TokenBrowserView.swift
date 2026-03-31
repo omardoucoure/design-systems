@@ -16,7 +16,7 @@ struct TokenBrowserView: View {
             }
             .padding()
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral05)
         .navigationTitle("Token Browser")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -115,12 +115,12 @@ struct TokenBrowserView: View {
             sectionTitle("Elevation")
             HStack(spacing: 24) {
                 RoundedRectangle(cornerRadius: theme.radius.md)
-                    .fill(theme.colors.surfaceNeutral0_5)
+                    .fill(theme.colors.surfaceNeutral05)
                     .frame(width: 120, height: 80)
                     .overlay(Text("none").font(theme.typography.caption.font))
 
                 RoundedRectangle(cornerRadius: theme.radius.md)
-                    .fill(theme.colors.surfaceNeutral0_5)
+                    .fill(theme.colors.surfaceNeutral05)
                     .frame(width: 120, height: 80)
                     .elevation(theme.elevation.sm)
                     .overlay(Text("sm").font(theme.typography.caption.font))
@@ -175,7 +175,7 @@ struct TokenBrowserView: View {
     private func borderSample(_ label: String, _ width: CGFloat) -> some View {
         VStack(spacing: 4) {
             RoundedRectangle(cornerRadius: theme.radius.sm)
-                .strokeBorder(theme.colors.borderNeutral9_5, lineWidth: max(width, 0.5))
+                .strokeBorder(theme.colors.borderNeutral95, lineWidth: max(width, 0.5))
                 .frame(width: 60, height: 60)
             Text(label)
                 .font(theme.typography.small.font)

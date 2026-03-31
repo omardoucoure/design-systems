@@ -47,7 +47,7 @@ struct CombinationGridView: View {
             }
             .padding(.vertical)
         }
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral05)
         .navigationTitle("Combination Grid")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -85,7 +85,7 @@ struct CombinationGridView: View {
         .padding(6)
         .background(
             RoundedRectangle(cornerRadius: config.radius.md)
-                .fill(config.colors.surfaceNeutral0_5)
+                .fill(config.colors.surfaceNeutral05)
                 .shadow(color: .black.opacity(0.08), radius: 2, y: 1)
         )
         .overlay(

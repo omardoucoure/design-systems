@@ -14,9 +14,9 @@ struct Profile6Page: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, icon: .moreVert) {}
-            }
+            DSTopAppBar(title: "Profile") {
+                DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.moreVert)
+            }.onBack { dismiss() }
 
             ScrollView {
                 ZStack(alignment: .top) {
@@ -32,12 +32,7 @@ struct Profile6Page: View {
                         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
 
                     // Single card — clipsContent: false so the photo scroll overflows right edge
-                    DSCard(
-                        background: theme.colors.surfaceNeutral2,
-                        radius: theme.radius.xl,
-                        padding: 0,
-                        clipsContent: false
-                    ) {
+                    DSCard {
                         VStack(alignment: .leading, spacing: theme.spacing.xl) {
                             // Name + bio + divider + stats
                             VStack(alignment: .leading, spacing: theme.spacing.lg) {
@@ -47,7 +42,7 @@ struct Profile6Page: View {
                                     DSText("Rockstar-in-training. Plays air guitar solos that even virtual fans cheer for.",
                                            style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
                                 }
-                                DSDivider(style: .fullBleed)
+                                DSDivider()
                                 HStack(spacing: 0) {
                                     statCol("1,200", label: "photos")
                                     statCol("2,980", label: "followers")
@@ -57,22 +52,21 @@ struct Profile6Page: View {
                             .padding(.horizontal, theme.spacing.xl)
 
                             // CTAs — Follow + social icons in a nested white card
-                            DSCard(
-                                background: theme.colors.surfaceNeutral0_5,
-                                radius: theme.radius.lg,
-                                padding: theme.spacing.lg
-                            ) {
+                            DSCard {
                                 HStack {
-                                    DSButton("Follow", style: .filledA, size: .medium, icon: .plus, iconPosition: .right) {}
+                                    DSButton("Follow") {}.buttonStyle(.filledA).buttonSize(.medium).icon(.plus, position: .right)
                                         .fixedSize()
                                     Spacer()
                                     HStack(spacing: theme.spacing.lg) {
-                                        DSButton(style: .text, size: .medium, assetIcon: "icon_instagram") {}
-                                        DSButton(style: .text, size: .medium, assetIcon: "icon_facebook") {}
-                                        DSButton(style: .text, size: .medium, assetIcon: "icon_x") {}
+                                        DSButton {}.buttonStyle(.text).buttonSize(.medium).assetIcon("icon_instagram")
+                                        DSButton {}.buttonStyle(.text).buttonSize(.medium).assetIcon("icon_facebook")
+                                        DSButton {}.buttonStyle(.text).buttonSize(.medium).assetIcon("icon_x")
                                     }
                                 }
                             }
+                            .cardBackground(theme.colors.surfaceNeutral05)
+                            .cardRadius(theme.radius.lg)
+                            .cardPadding(theme.spacing.lg)
                             .padding(.horizontal, theme.spacing.xl)
 
                             // Photo strip — no right padding so scroll bleeds past card edge
@@ -94,13 +88,15 @@ struct Profile6Page: View {
                         }
                         .padding(.top, theme.spacing.xl)
                     }
+                    .cardPadding(0)
+                    .clipsContent(false)
                     .padding(.top, 189) // 280 hero - 91 overlap
                 }
                 .padding(.horizontal, theme.spacing.sm)
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }

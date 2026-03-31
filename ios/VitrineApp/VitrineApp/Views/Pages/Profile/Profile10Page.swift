@@ -13,7 +13,7 @@ struct Profile10Page: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() })
+            DSTopAppBar(title: "Profile").onBack { dismiss() }
             ScrollView {
                 VStack(spacing: theme.spacing.sm) {
                     photoCTA
@@ -23,7 +23,7 @@ struct Profile10Page: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }
@@ -42,10 +42,10 @@ struct Profile10Page: View {
             .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
             .overlay(alignment: .top) {
                 HStack {
-                    DSButton("Message", style: .neutral, size: .medium, assetIcon: "icon_message_text", iconPosition: .right) {}
+                    DSButton("Message") {}.buttonStyle(.neutral).buttonSize(.medium).assetIcon("icon_message_text", position: .right)
                         .fixedSize()
                     Spacer()
-                    DSButton("Follow", style: .filledA, size: .medium, icon: .plus, iconPosition: .right) {}
+                    DSButton("Follow") {}.buttonStyle(.filledA).buttonSize(.medium).icon(.plus, position: .right)
                         .fixedSize()
                 }
                 .padding(.horizontal, theme.spacing.xl)
@@ -72,26 +72,28 @@ struct Profile10Page: View {
     // MARK: - Name Card
 
     private var nameCard: some View {
-        DSCard(background: theme.colors.surfacePrimary120, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.md) {
                 DSText("Mila Valentino",
                        style: theme.typography.h3,
-                       color: theme.colors.textNeutral0_5)
+                       color: theme.colors.textNeutral05)
                 (Text("Sports superhero. Training for the office chair Olympics... ")
                     .font(theme.typography.captionRegular.font)
-                    .foregroundColor(theme.colors.textNeutral0_5)
+                    .foregroundColor(theme.colors.textNeutral05)
                  + Text("read more")
                     .font(theme.typography.label.font)
-                    .foregroundColor(theme.colors.textNeutral0_5))
+                    .foregroundColor(theme.colors.textNeutral05))
             }
             .padding(theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfacePrimary120)
+        .cardPadding(0)
     }
 
     // MARK: - Stat Card
 
     private func statCard(value: String, label: String, background: Color) -> some View {
-        DSCard(background: background, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 0) {
                     DSText(value,
@@ -108,6 +110,8 @@ struct Profile10Page: View {
             .padding(.bottom, theme.spacing.lg)
             .padding(.top, theme.spacing.xxxxl)
         }
+        .cardBackground(background)
+        .cardPadding(0)
         .frame(height: 140)
     }
 

@@ -1,0 +1,617 @@
+{
+  "fileKey": "NzMUKWSRFEXmcH0uN5wjBC",
+  "pages": {
+    "Cover": "0:1",
+    "Tokens": "6:52",
+    "Components": "78:91",
+    "Icons": "80:1077",
+    "PageExemples": "85:32937",
+    "OurStorybook": "90:168805",
+    "Demo": "125:49648",
+    "FUTEvolutionOnboarding": "129:71388"
+  },
+  "componentSets": {
+    "Inputs-Filled": {
+      "setId": "85:22930",
+      "variants": {
+        "Empty": "85:22931",
+        "Filled": "85:22942",
+        "Active": "85:22953",
+        "Error": "85:22964",
+        "Validated": "85:22975",
+        "Dropdown": "85:22986",
+        "Textarea": "85:23053"
+      }
+    },
+    "Inputs-Lined": {
+      "setId": "85:23305",
+      "variants": {
+        "Empty": "85:23306",
+        "Filled": "85:23317",
+        "Active": "85:23328",
+        "Error": "85:23339",
+        "Validated": "85:23350",
+        "Dropdown": "85:23361",
+        "Textarea": "85:23428"
+      }
+    },
+    "Button": {
+      "setId": "85:23697",
+      "variants": {
+        "FilledA_Big_Default": "85:23698",
+        "Neutral_Big_Default": "85:23702",
+        "FilledB_Big_Default": "85:23706",
+        "FilledC_Big_Default": "85:23710",
+        "FilledA_Big_Pressed": "85:23714",
+        "Neutral_Big_Pressed": "85:23718",
+        "FilledB_Big_Pressed": "85:23722",
+        "FilledA_Big_Disabled": "85:23726",
+        "Neutral_Big_Disabled": "85:23730",
+        "FilledB_Big_Disabled": "85:23734",
+        "FilledC_Big_Pressed": "85:23738",
+        "FilledC_Big_Disabled": "85:23742",
+        "FilledA_Medium_Default": "85:23746",
+        "Neutral_Medium_Default": "85:23750",
+        "FilledA_Medium_Pressed": "85:23754",
+        "Neutral_Medium_Pressed": "85:23758",
+        "FilledB_Medium_Default": "85:23762",
+        "FilledB_Medium_Pressed": "85:23766",
+        "FilledA_Medium_Disabled": "85:23770",
+        "Neutral_Medium_Disabled": "85:23774",
+        "FilledB_Medium_Disabled": "85:23778",
+        "FilledC_Medium_Default": "85:23782",
+        "FilledC_Medium_Pressed": "85:23786",
+        "FilledC_Medium_Disabled": "85:23790",
+        "FilledA_Small_Default": "85:23794",
+        "Neutral_Small_Default": "85:23798",
+        "FilledA_Small_Pressed": "85:23802",
+        "Neutral_Small_Pressed": "85:23806",
+        "FilledB_Small_Default": "85:23810",
+        "FilledB_Small_Pressed": "85:23814",
+        "FilledA_Small_Disabled": "85:23818",
+        "Neutral_Small_Disabled": "85:23822",
+        "FilledB_Small_Disabled": "85:23826",
+        "Outlined_Big_Default": "85:23830",
+        "TextButton_Big_Default": "85:23834",
+        "Outlined_Big_Pressed": "85:23838",
+        "FilledC_Small_Default": "85:23842",
+        "FilledC_Small_Pressed": "85:23846",
+        "FilledC_Small_Disabled": "85:23850",
+        "TextButton_Big_Pressed": "85:23854",
+        "Outlined_Big_Disabled": "85:23858",
+        "TextButton_Big_Disabled": "85:23862",
+        "Outlined_Medium_Default": "85:23866",
+        "TextButton_Medium_Default": "85:23870",
+        "Outlined_Medium_Pressed": "85:23874",
+        "TextButton_Medium_Pressed": "85:23878",
+        "Outlined_Medium_Disabled": "85:23882",
+        "TextButton_Medium_Disabled": "85:23886",
+        "Outlined_Small_Default": "85:23890",
+        "TextButton_Small_Default": "85:23894",
+        "Outlined_Small_Pressed": "85:23898",
+        "TextButton_Small_Pressed": "85:23902",
+        "Outlined_Small_Disabled": "85:23906",
+        "TextButton_Small_Disabled": "85:23910"
+      }
+    },
+    "Checkbox-Large": {
+      "setId": "85:24367",
+      "variants": {
+        "False": "85:24368",
+        "Selected": "85:24376"
+      }
+    },
+    "Checkbox": {
+      "setId": "85:24849",
+      "variants": {
+        "Unchecked": "85:24850",
+        "Intermediate": "85:24853",
+        "Checked": "85:24858"
+      }
+    },
+    "Radio": {
+      "setId": "85:24408",
+      "variants": {
+        "False": "85:24409",
+        "True": "85:24412"
+      }
+    },
+    "Toggle": {
+      "setId": "85:24435",
+      "variants": {
+        "False": "85:24436",
+        "True": "85:24442"
+      }
+    },
+    "Tooltip": {
+      "setId": "85:24455",
+      "variants": {
+        "2_Left": "85:24456",
+        "2_Bottom": "85:24467",
+        "2_Right": "85:24478",
+        "2_Top": "85:24489",
+        "1_Left": "85:24500",
+        "1_Bottom": "85:24506",
+        "1_Right": "85:24512",
+        "1_Top": "85:24518"
+      }
+    },
+    "TopAppBar": {
+      "setId": "85:24922",
+      "variants": {
+        "Status-Bar": "85:24923",
+        "Logo": "85:24937",
+        "Small-Centered": "85:24941",
+        "Small-CenteredImage": "85:24945",
+        "Image-Button": "85:24949",
+        "Small-Icons": "85:24954",
+        "Search": "85:24962",
+        "Medium-Icons": "85:24968",
+        "Large-Icons": "85:24977",
+        "HomeIndicator": "85:24986"
+      }
+    },
+    "BottomAppBar": {
+      "setId": "85:25779",
+      "variants": {
+        "Full": "85:25780",
+        "Floating": "85:25791",
+        "MoreLabels": "85:25801"
+      }
+    },
+    "SegmentedPicker": {
+      "setId": "85:25956",
+      "variants": {
+        "NavigationTabs": "85:25957",
+        "Pills": "85:25962"
+      }
+    },
+    "Nav-Tab": {
+      "setId": "85:25996",
+      "variants": {
+        "Active": "85:25997",
+        "Ontap": "85:25999",
+        "Default": "85:26001"
+      }
+    },
+    "Page-Controls": {
+      "setId": "85:26004",
+      "variants": {
+        "3_1": "85:26005",
+        "3_2": "85:26009",
+        "3_3": "85:26013",
+        "2_1": "85:26017",
+        "2_2": "85:26020",
+        "4_1": "85:26023",
+        "4_2": "85:26028",
+        "4_3": "85:26033",
+        "4_4": "85:26038",
+        "5_1": "85:26043",
+        "5_2": "85:26049",
+        "5_3": "85:26055",
+        "5_4": "85:26061",
+        "5_5": "85:26067"
+      }
+    },
+    "Keyboard": {
+      "setId": "85:26092",
+      "variants": {
+        "Alphabet": "85:26093",
+        "Numerical": "85:26165"
+      }
+    },
+    "List": {
+      "setId": "85:26304",
+      "variants": {
+        "False_False_False_False_False_False": "85:26305",
+        "False_False_False_False_True_False": "85:26310",
+        "False_False_False_True_False_False": "85:26317",
+        "False_False_False_True_True_False": "85:26323",
+        "False_False_True_False_False_False": "85:26332",
+        "False_False_True_False_True_False": "85:26338",
+        "False_False_True_True_False_False": "85:26346",
+        "False_False_True_True_True_False": "85:26353",
+        "False_True_False_False_False_False": "85:26363",
+        "False_True_False_False_True_False": "85:26369",
+        "False_True_False_True_False_False": "85:26377",
+        "False_True_False_True_True_False": "85:26384",
+        "False_True_True_False_False_False": "85:26394",
+        "False_True_True_False_True_False": "85:26401",
+        "False_True_True_True_False_False": "85:26410",
+        "False_True_True_True_True_False": "85:26418",
+        "True_False_False_False_False_False": "85:26429",
+        "True_False_False_False_True_False": "85:26435",
+        "True_False_False_True_False_False": "85:26443",
+        "True_False_False_True_True_False": "85:26450",
+        "True_False_True_False_False_False": "85:26460",
+        "True_False_True_False_True_False": "85:26467",
+        "True_False_True_True_False_False": "85:26476",
+        "True_False_True_True_True_False": "85:26484",
+        "True_True_False_False_False_False": "85:26495",
+        "True_True_False_False_True_False": "85:26502",
+        "True_True_False_True_False_False": "85:26511",
+        "True_True_False_True_True_False": "85:26519",
+        "True_True_True_False_False_False": "85:26530",
+        "True_True_True_False_True_False": "85:26538",
+        "True_True_True_True_False_False": "85:26548",
+        "True_True_True_True_True_False": "85:26557",
+        "False_False_False_False_False_True": "85:26569",
+        "False_False_False_False_True_True": "85:26575",
+        "False_False_False_True_False_True": "85:26583",
+        "False_False_False_True_True_True": "85:26590",
+        "False_False_True_False_False_True": "85:26600",
+        "False_False_True_False_True_True": "85:26607",
+        "False_False_True_True_False_True": "85:26616",
+        "False_False_True_True_True_True": "85:26624",
+        "False_True_False_False_False_True": "85:26635",
+        "False_True_False_False_True_True": "85:26642",
+        "False_True_False_True_False_True": "85:26651",
+        "False_True_False_True_True_True": "85:26659",
+        "False_True_True_False_False_True": "85:26670",
+        "False_True_True_False_True_True": "85:26678",
+        "False_True_True_True_False_True": "85:26688",
+        "False_True_True_True_True_True": "85:26697",
+        "True_False_False_False_False_True": "85:26709",
+        "True_False_False_False_True_True": "85:26716",
+        "True_False_False_True_False_True": "85:26725",
+        "True_False_False_True_True_True": "85:26733",
+        "True_False_True_False_False_True": "85:26744",
+        "True_False_True_False_True_True": "85:26752",
+        "True_False_True_True_False_True": "85:26762",
+        "True_False_True_True_True_True": "85:26771",
+        "True_True_False_False_False_True": "85:26783",
+        "True_True_False_False_True_True": "85:26791",
+        "True_True_False_True_False_True": "85:26801",
+        "True_True_False_True_True_True": "85:26810",
+        "True_True_True_False_False_True": "85:26822",
+        "True_True_True_False_True_True": "85:26831",
+        "True_True_True_True_False_True": "85:26842",
+        "True_True_True_True_True_True": "85:26852"
+      }
+    },
+    "LeadingItem": {
+      "setId": "85:27094",
+      "variants": {
+        "Icon": "85:27095",
+        "Radio": "85:27097",
+        "Checkbox": "85:27099",
+        "Switch": "85:27101",
+        "Avatar": "85:27103",
+        "Progress-Circle": "85:27105",
+        "Image": "85:27107",
+        "Video": "85:27109",
+        "Button": "85:27111"
+      }
+    },
+    "TrailingItem": {
+      "setId": "85:27135",
+      "variants": {
+        "Icon": "85:27136",
+        "Radio": "85:27138",
+        "Checkbox": "85:27140",
+        "Switch": "85:27142",
+        "Avatar": "85:27144",
+        "Progress-Circle": "85:27146",
+        "Image": "85:27148",
+        "Video": "85:27150",
+        "Button": "85:27152"
+      }
+    },
+    "InteractionState": {
+      "setId": "85:27183",
+      "variants": {
+        "Enabled": "85:27184",
+        "Pressed": "85:27185",
+        "Selected": "85:27187"
+      }
+    },
+    "Avatar": {
+      "setId": "85:27173",
+      "variants": {
+        "Monogram": "85:27174",
+        "Icon": "85:27176",
+        "Image": "85:27178"
+      }
+    },
+    "Progress-Circle": {
+      "setId": "85:27190",
+      "variants": {
+        "10": "85:27191",
+        "20": "85:27196",
+        "30": "85:27201",
+        "40": "85:27206",
+        "50": "85:27211",
+        "60": "85:27216",
+        "70": "85:27221",
+        "80": "85:27226",
+        "90": "85:27231",
+        "100": "85:27236"
+      }
+    },
+    "Divider": {
+      "setId": "85:27242",
+      "variants": {
+        "Full-bleed": "85:27243",
+        "Inset": "85:27245",
+        "Middle": "85:27247",
+        "Subheader": "85:27249"
+      }
+    },
+    "Badges-Tags": {
+      "setId": "85:31357",
+      "variants": {
+        "Dot": "85:31358",
+        "Number-Brand": "85:31359",
+        "Number-Semantic": "85:31361",
+        "Tag-Brand": "85:31363",
+        "Tag-Semantic": "85:31365"
+      }
+    },
+    "ChatBubble": {
+      "setId": "87:95924",
+      "variants": {
+        "Text_Received": "87:95836",
+        "Text_Sent": "87:95845",
+        "Image_Sent": "87:95856",
+        "Image_Received": "87:95867",
+        "Audio_Received": "87:95895",
+        "Audio_Sent": "87:95923"
+      }
+    },
+    "ChatInputBar": {
+      "setId": "87:95530",
+      "variants": {
+        "SendButton": "87:95528",
+        "IconActions": "87:95529"
+      }
+    },
+    "ProductCard": {
+      "setId": "87:96055",
+      "variants": {
+        "Grid": "87:96053",
+        "Horizontal": "87:96054"
+      }
+    },
+    "ProductDetailHero": {
+      "setId": "87:96135",
+      "variants": {
+        "CardWithSizes": "87:96133",
+        "ImageAbove": "87:96134"
+      }
+    },
+    "FeedPostCard": {
+      "setId": "87:96262",
+      "variants": {
+        "ImageFirst": "87:96260",
+        "TextFirst": "87:96261",
+        "Podcast": "87:96471",
+        "SideBadges": "87:96485"
+      }
+    },
+    "LikeCommentRow": {
+      "setId": "87:96325",
+      "variants": {
+        "Badge": "87:96323",
+        "Row": "87:96324"
+      }
+    },
+    "ToastAlert": {
+      "setId": "87:95277",
+      "variants": {
+        "Warning": "87:95272",
+        "Success": "87:95273",
+        "Info": "87:95274",
+        "Error": "87:95278"
+      }
+    },
+    "Full-ScreenAlertCard": {
+      "setId": "87:100899",
+      "variants": {
+        "Offline": "87:100897",
+        "Permission": "87:100898"
+      }
+    },
+    "DialogAlert": {
+      "setId": "87:100926",
+      "variants": {
+        "Warning": "87:100924",
+        "Dark": "87:100925"
+      }
+    },
+    "PhotoGrid": {
+      "setId": "87:96819",
+      "variants": {
+        "Standard": "87:96766",
+        "Masonry": "87:96777",
+        "ThreeColumn": "87:96783",
+        "TwoColumn": "87:96795",
+        "HorizontalRow": "87:96802",
+        "Pinterest": "87:96808"
+      }
+    },
+    "ProfileHeroCard": {
+      "setId": "87:97036",
+      "variants": {
+        "Light": "87:96960",
+        "Dark": "87:96981",
+        "Cover": "87:96999",
+        "Coral": "87:97017"
+      }
+    },
+    "StatsRow": {
+      "setId": "87:98042",
+      "variants": {
+        "WithDividers": "87:97908",
+        "Compact": "87:97918",
+        "WithButton": "87:97928",
+        "WithIcons": "87:97939",
+        "Progress": "87:97948",
+        "WhiteText": "87:97968",
+        "BarChart": "87:97978",
+        "WithAvatars": "87:98015",
+        "DarkCard": "87:98022"
+      }
+    },
+    "MonthCalendarGrid": {
+      "setId": "87:99455",
+      "variants": {
+        "Light": "87:98909",
+        "Coral": "87:99086",
+        "Dots": "87:99286"
+      }
+    },
+    "WeekDayStrip": {
+      "setId": "87:99567",
+      "variants": {
+        "Pills": "87:99565",
+        "Compact": "87:99566"
+      }
+    },
+    "DayTimeline": {
+      "setId": "87:99677",
+      "variants": {
+        "Vertical": "87:99675"
+      }
+    },
+    "DateRangeBar": {
+      "setId": "87:99691",
+      "variants": {
+        "Default": "87:99690"
+      }
+    },
+    "TimeArc": {
+      "setId": "87:99717",
+      "variants": {
+        "Default": "87:99716"
+      }
+    },
+    "EventCard": {
+      "setId": "87:99855",
+      "variants": {
+        "List": "87:99851",
+        "TimelineDark": "87:99853",
+        "TimelineLight": "87:99854"
+      }
+    },
+    "CartItemRow": {
+      "setId": "87:100080",
+      "variants": {
+        "Expanded": "87:100076",
+        "Compact": "87:100079"
+      }
+    },
+    "CartSummaryFooter": {
+      "setId": "87:100098",
+      "variants": {
+        "Coral": "87:100096",
+        "Dark": "87:100097"
+      }
+    },
+    "CheckoutStepper": {
+      "setId": "87:100203",
+      "variants": {
+        "Shipping": "87:100200",
+        "Payment": "87:100201",
+        "Review": "87:100202"
+      }
+    },
+    "CameraControlsBar": {
+      "setId": "87:100709",
+      "variants": {
+        "Exposure": "87:100707",
+        "GridGallery": "87:100708"
+      }
+    },
+    "PhotoEditToolbar": {
+      "setId": "87:100817",
+      "variants": {
+        "Adjustments": "87:100815",
+        "CropRatios": "87:100816"
+      }
+    },
+    "SideMenu": {
+      "setId": "87:104255",
+      "variants": {
+        "IconGridDark": "87:103862",
+        "ListSearchPeek": "87:103886",
+        "SidebarIcons": "87:103912",
+        "ListWithStats": "87:103934",
+        "DarkArrowsCoral": "87:104003",
+        "BigTypography": "87:104018",
+        "DarkPillOverlay": "87:104037",
+        "FlatActiveHighlight": "87:104050",
+        "CenteredLogo": "87:104070",
+        "IconLabelCoral": "87:104088",
+        "ImageCardsGrid": "87:104112",
+        "CardGridTiles": "87:104141",
+        "DarkCoralDropdown": "87:104178",
+        "ImageHeroList": "87:104215",
+        "LayeredDarkCoral": "87:104231"
+      }
+    },
+    "MediaPlayer": {
+      "setId": "87:107645",
+      "variants": {
+        "VinylDisc": "87:107335",
+        "FullImageDark": "87:107435",
+        "Carousel": "87:107462",
+        "FullImageLight": "87:107513",
+        "StackedCards": "87:107551",
+        "CircleArt": "87:107590"
+      }
+    },
+    "StatsChartCard": {
+      "setId": "87:118703",
+      "variants": {
+        "LollipopChart": "87:117765",
+        "LineChartLight": "87:117833",
+        "LineChartDark": "87:117870",
+        "Candlestick": "87:117907",
+        "GaugeArc": "87:117942",
+        "AreaChart": "87:118002",
+        "WaveformBarChart": "87:118025",
+        "SummaryCardDark": "87:118120",
+        "MetricCardDark": "87:118128",
+        "MetricCardCoral": "87:118137",
+        "ActivityRings": "87:118159",
+        "BreakdownBarsDark": "87:118178",
+        "RoundedColumnChart": "87:118201",
+        "DotHeatmap": "87:118234",
+        "LineChartCoral": "87:118629",
+        "ComparisonBars": "87:118668"
+      }
+    },
+    "LayeredCard": {
+      "setId": "88:137815",
+      "variants": {
+        "Bottom_2": "88:137809",
+        "Bottom_1": "88:137810",
+        "Top_2": "88:137811",
+        "Top_1": "88:137812",
+        "Top-Right_2": "88:137813",
+        "Right_2": "88:137814"
+      }
+    },
+    "OverlappingCards": {
+      "setId": "88:152411",
+      "variants": {
+        "2_Small": "88:152405",
+        "2_Medium": "88:152406",
+        "2_Large": "88:152407",
+        "3_Small": "88:152408",
+        "3_Large": "88:152409",
+        "5_Small": "88:152410"
+      }
+    }
+  },
+  "icons": {
+    "mailOpen": "85:33084",
+    "eyeClosed": "85:33088",
+    "google": "85:34182",
+    "facebook": "85:35004",
+    "x": "85:35009"
+  },
+  "containerCard": "88:137854",
+  "_generated": "2026-03-25",
+  "_note": "Auto-generated from Figma file. Run figma_execute scan to refresh."
+}

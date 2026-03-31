@@ -18,24 +18,25 @@ never_use_when:
   - More than 5 options → use DSDropdown
 
 # ─── PARAMETERS ─────────────────────────────────────────────────────────────────
-parameters:
+init_parameters:
   isSelected:
     type: Bool (not a Binding — caller compares value to selection)
     note: >
-      Typically used as: DSRadio(isSelected: selectedOption == .option1, ...)
+      Typically used as: DSRadio(isSelected: selectedOption == .option1) { selectedOption = .option1 }
 
+  action:
+    type: "() -> Void"
+    note: Called when radio tapped — set selectedOption in the action
+
+modifiers:
   label:
-    type: LocalizedStringKey?
+    signature: ".label(_ label: LocalizedStringKey) -> DSRadio"
     font: theme.typography.body (16px medium)
 
   description:
-    type: LocalizedStringKey?
+    signature: ".description(_ description: LocalizedStringKey) -> DSRadio"
     font: theme.typography.caption (14px medium)
     color: textNeutral8
-
-  onSelect:
-    type: "() -> Void"
-    note: Called when radio tapped — set selectedOption in the action
 
 # ─── VISUAL STATES ───────────────────────────────────────────────────────────────
 visual_states:
@@ -53,12 +54,12 @@ grouping_pattern: |
   @State private var selectedPlan: PlanOption = .monthly
 
   VStack(spacing: theme.spacing.sm) {
-      DSRadio(isSelected: selectedPlan == .monthly, label: "Monthly") {
+      DSRadio(isSelected: selectedPlan == .monthly) {
           selectedPlan = .monthly
-      }
-      DSRadio(isSelected: selectedPlan == .yearly, label: "Yearly", description: "Save 20%") {
+      }.label("Monthly")
+      DSRadio(isSelected: selectedPlan == .yearly) {
           selectedPlan = .yearly
-      }
+      }.label("Yearly").description("Save 20%")
   }
 
 # ─── HARD RULES ──────────────────────────────────────────────────────────────────

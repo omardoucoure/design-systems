@@ -24,33 +24,31 @@ struct Profile7Page: View {
     }
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "profile", label: "Profile", icon: .user, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
                 DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "profile5_avatar",
                 name: "Hristo Hristov",
                 subtitle: "Sports Enthusiast"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+            DSTopAppBar(title: "Profile") {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                }
-            }
+                }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
 
             ScrollView {
                 VStack(spacing: theme.spacing.sm) {
@@ -62,17 +60,13 @@ struct Profile7Page: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Profile Info
 
     private var profileInfoCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 // Avatar + name + bio
                 HStack(alignment: .top, spacing: theme.spacing.lg) {
@@ -95,7 +89,7 @@ struct Profile7Page: View {
                     }
                 }
 
-                DSDivider(style: .fullBleed)
+                DSDivider()
 
                 // Stats row
                 HStack(spacing: 0) {
@@ -103,7 +97,7 @@ struct Profile7Page: View {
                     statColumn("2,980", label: "followers")
                     statColumn("1,600", label: "following")
 
-                    DSButton(style: .filledA, size: .medium, icon: .plus) {}
+                    DSButton {}.buttonStyle(.filledA).buttonSize(.medium).icon(.plus)
                 }
             }
         }
@@ -112,11 +106,7 @@ struct Profile7Page: View {
     // MARK: - Stats Card
 
     private var statsCard: some View {
-        DSCard(
-            background: theme.colors.surfacePrimary120,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(spacing: theme.spacing.xl) {
                 statRow(
                     title: "560 works done",
@@ -139,16 +129,13 @@ struct Profile7Page: View {
                 )
             }
         }
+        .cardBackground(theme.colors.surfacePrimary120)
     }
 
     // MARK: - Views Card
 
     private var viewsCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral3,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.md) {
                 // Header
                 HStack {
@@ -157,22 +144,21 @@ struct Profile7Page: View {
 
                     Spacer()
 
-                    DSBadge(variant: .tagSemantic, text: "14,238")
+                    DSBadge(.tagSemantic).text("14,238")
                 }
 
                 // Bar chart — 32 bars, max height 56
-                DSBarChart(
-                    data: viewBars.map { DSBarChartData(label: "", value: CGFloat($0) / 56.0) },
-                    barColor: theme.colors.textNeutral9.opacity(0.5),
-                    highlightColor: theme.colors.textNeutral9,
-                    highlightIndex: nil,
-                    maxHeight: 56
-                )
+                DSBarChart(data: viewBars.map { DSBarChartData(label: "", value: CGFloat($0) / 56.0) })
+                    .barColor(theme.colors.textNeutral9.opacity(0.5))
+                    .highlightColor(theme.colors.textNeutral9)
+                    .maxHeight(56)
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.top, theme.spacing.xl)
             .padding(.bottom, theme.spacing.lg)
         }
+        .cardBackground(theme.colors.surfaceNeutral3)
+        .cardPadding(0)
     }
 
     // MARK: - Helpers
@@ -200,11 +186,11 @@ struct Profile7Page: View {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: 0) {
                     DSText(title,
-                           style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.largeSemiBold, color: theme.colors.textNeutral05)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                     DSText(subtitle,
-                           style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.smallRegular, color: theme.colors.textNeutral05)
                         .lineLimit(1)
                 }
 
@@ -214,7 +200,7 @@ struct Profile7Page: View {
                         RoundedRectangle(cornerRadius: 100)
                             .fill(highlightRange.contains(index)
                                   ? theme.colors.surfaceSecondary100
-                                  : theme.colors.surfaceNeutral0_5)
+                                  : theme.colors.surfaceNeutral05)
                             .frame(width: 4, height: height)
                     }
                 }
@@ -222,18 +208,16 @@ struct Profile7Page: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             // Rotated date
-            DSText(date, style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5)
+            DSText(date, style: theme.typography.smallRegular, color: theme.colors.textNeutral05)
                 .rotationEffect(.degrees(-90))
                 .fixedSize()
 
             // Progress circle
-            DSProgressCircle(
-                progress: progress,
-                size: 88,
-                customLabel: value,
-                progressColor: theme.colors.surfaceNeutral0_5,
-                labelColor: theme.colors.textNeutral0_5
-            )
+            DSProgressCircle(progress: progress)
+                .circleSize(88)
+                .customLabel(value)
+                .progressColor(theme.colors.surfaceNeutral05)
+                .labelColor(theme.colors.textNeutral05)
         }
     }
 

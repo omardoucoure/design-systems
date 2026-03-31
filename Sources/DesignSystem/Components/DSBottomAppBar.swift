@@ -58,31 +58,94 @@ public struct DSBottomBarItem: Identifiable {
 /// - `.floating`: Floating capsule bar with a center FAB button.
 /// - `.labeled`: Docked bar with icon + label + optional badges.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
 /// // Full style with FAB
-/// DSBottomAppBar(items: tabs, selectedId: $tab, style: .full,
-///                fabIcon: "plus", onFabTap: { })
+/// DSBottomAppBar(items: tabs, selectedId: $tab)
+///     .barStyle(.full)
+///     .fabIcon("plus")
+///     .onFabTap { }
 ///
 /// // Labeled style with badges
-/// DSBottomAppBar(items: labeledTabs, selectedId: $tab, style: .labeled)
+/// DSBottomAppBar(items: labeledTabs, selectedId: $tab)
+///     .barStyle(.labeled)
+///
+/// // Floating with DSIcon FAB
+/// DSBottomAppBar(items: tabs, selectedId: $tab)
+///     .barStyle(.floating)
+///     .fabDSIcon(.cart)
+///     .fabColor(.red)
+///     .fabBadgeCount(3)
 /// ```
 public struct DSBottomAppBar: View {
     @Environment(\.theme) private var theme
 
-    private let items: [DSBottomBarItem]
-    @Binding private var selectedId: String
-    private let style: DSBottomAppBarStyle
-    private let fabSystemIcon: String?
-    private let fabDSIcon: DSIcon?
-    private let fabColor: Color?
-    private let fabForegroundColor: Color?
-    private let fabBadgeCount: Int?
-    private let onFabTap: (() -> Void)?
-    private let embedded: Bool
+    // Core (required)
+    private var _items: [DSBottomBarItem]
+    @Binding private var _selectedId: String
 
-    /// - Parameter embedded: When `true`, removes the container background, clip shape, and shadow.
-    ///   Use this when the bar is embedded in a parent that already provides the background.
+    // Modifier props (optional, with defaults)
+    private var _style: DSBottomAppBarStyle = .labeled
+    private var _fabSystemIcon: String? = nil
+    private var _fabDSIcon: DSIcon? = nil
+    private var _fabColor: Color? = nil
+    private var _fabForegroundColor: Color? = nil
+    private var _fabBadgeCount: Int? = nil
+    private var _onFabTap: (() -> Void)? = nil
+    private var _embedded: Bool = false
+
+    // MARK: - New Modifier API
+
+    /// Creates a bottom app bar with the given tab items and selection binding.
+    public init(items: [DSBottomBarItem], selectedId: Binding<String>) {
+        self._items = items
+        self.__selectedId = selectedId
+    }
+
+    /// Sets the bar style (`.full`, `.floating`, or `.labeled`). Default is `.labeled`.
+    public func barStyle(_ style: DSBottomAppBarStyle) -> Self {
+        var copy = self; copy._style = style; return copy
+    }
+
+    /// Sets an SF Symbol icon for the center FAB button.
+    public func fabIcon(_ systemName: String) -> Self {
+        var copy = self; copy._fabSystemIcon = systemName; copy._fabDSIcon = nil; return copy
+    }
+
+    /// Sets a DSIcon for the center FAB button.
+    public func fabDSIcon(_ icon: DSIcon) -> Self {
+        var copy = self; copy._fabDSIcon = icon; copy._fabSystemIcon = nil; return copy
+    }
+
+    /// Sets the background color of the FAB button.
+    public func fabColor(_ color: Color) -> Self {
+        var copy = self; copy._fabColor = color; return copy
+    }
+
+    /// Sets the foreground (icon) color of the FAB button.
+    public func fabForegroundColor(_ color: Color) -> Self {
+        var copy = self; copy._fabForegroundColor = color; return copy
+    }
+
+    /// Sets the badge count displayed on the FAB button.
+    public func fabBadgeCount(_ count: Int) -> Self {
+        var copy = self; copy._fabBadgeCount = count; return copy
+    }
+
+    /// Sets the action triggered when the FAB button is tapped.
+    public func onFabTap(_ action: @escaping () -> Void) -> Self {
+        var copy = self; copy._onFabTap = action; return copy
+    }
+
+    /// When `true`, removes the container background, clip shape, and shadow.
+    /// Use when the bar is embedded in a parent that already provides the background.
+    public func embedded(_ value: Bool = true) -> Self {
+        var copy = self; copy._embedded = value; return copy
+    }
+
+    // MARK: - Deprecated Inits
+
+    @available(*, deprecated, message: "Use DSBottomAppBar(items:selectedId:) with modifier methods instead")
     public init(
         items: [DSBottomBarItem],
         selectedId: Binding<String>,
@@ -94,19 +157,19 @@ public struct DSBottomAppBar: View {
         onFabTap: (() -> Void)? = nil,
         embedded: Bool = false
     ) {
-        self.items = items
-        self._selectedId = selectedId
-        self.style = style
-        self.fabSystemIcon = fabIcon
-        self.fabDSIcon = nil
-        self.fabColor = fabColor
-        self.fabForegroundColor = fabForegroundColor
-        self.fabBadgeCount = fabBadgeCount
-        self.onFabTap = onFabTap
-        self.embedded = embedded
+        self._items = items
+        self.__selectedId = selectedId
+        self._style = style
+        self._fabSystemIcon = fabIcon
+        self._fabDSIcon = nil
+        self._fabColor = fabColor
+        self._fabForegroundColor = fabForegroundColor
+        self._fabBadgeCount = fabBadgeCount
+        self._onFabTap = onFabTap
+        self._embedded = embedded
     }
 
-    /// Init with a DSIcon for the FAB button.
+    @available(*, deprecated, message: "Use DSBottomAppBar(items:selectedId:) with .fabDSIcon() modifier instead")
     public init(
         items: [DSBottomBarItem],
         selectedId: Binding<String>,
@@ -118,20 +181,22 @@ public struct DSBottomAppBar: View {
         onFabTap: (() -> Void)? = nil,
         embedded: Bool = false
     ) {
-        self.items = items
-        self._selectedId = selectedId
-        self.style = style
-        self.fabSystemIcon = nil
-        self.fabDSIcon = fabIcon
-        self.fabColor = fabColor
-        self.fabForegroundColor = fabForegroundColor
-        self.fabBadgeCount = fabBadgeCount
-        self.onFabTap = onFabTap
-        self.embedded = embedded
+        self._items = items
+        self.__selectedId = selectedId
+        self._style = style
+        self._fabSystemIcon = nil
+        self._fabDSIcon = fabIcon
+        self._fabColor = fabColor
+        self._fabForegroundColor = fabForegroundColor
+        self._fabBadgeCount = fabBadgeCount
+        self._onFabTap = onFabTap
+        self._embedded = embedded
     }
 
+    // MARK: - Body
+
     public var body: some View {
-        switch style {
+        switch _style {
         case .full:
             fullBar
         case .floating:
@@ -149,14 +214,14 @@ public struct DSBottomAppBar: View {
             .padding(.top, theme.spacing.md)
             .padding(.bottom, 0)
             .frame(maxWidth: .infinity)
-            .modifier(DockedContainerModifier(embedded: embedded))
+            .modifier(DockedContainerModifier(embedded: _embedded))
     }
 
     private var fullBarContent: some View {
         HStack {
-            let halfCount = items.count / 2
-            let leftItems = Array(items.prefix(halfCount))
-            let rightItems = Array(items.suffix(items.count - halfCount))
+            let halfCount = _items.count / 2
+            let leftItems = Array(_items.prefix(halfCount))
+            let rightItems = Array(_items.suffix(_items.count - halfCount))
 
             ForEach(leftItems) { item in
                 iconButton(item)
@@ -176,9 +241,9 @@ public struct DSBottomAppBar: View {
 
     private var floatingBar: some View {
         HStack {
-            let halfCount = items.count / 2
-            let leftItems = Array(items.prefix(halfCount))
-            let rightItems = Array(items.suffix(items.count - halfCount))
+            let halfCount = _items.count / 2
+            let leftItems = Array(_items.prefix(halfCount))
+            let rightItems = Array(_items.suffix(_items.count - halfCount))
 
             ForEach(leftItems) { item in
                 iconButton(item)
@@ -205,7 +270,7 @@ public struct DSBottomAppBar: View {
 
     private var labeledBar: some View {
         HStack {
-            ForEach(items) { item in
+            ForEach(_items) { item in
                 labeledButton(item)
             }
         }
@@ -213,7 +278,7 @@ public struct DSBottomAppBar: View {
         .padding(.top, theme.spacing.md)
         .padding(.bottom, 0)
         .frame(maxWidth: .infinity)
-        .modifier(DockedContainerModifier(embedded: embedded))
+        .modifier(DockedContainerModifier(embedded: _embedded))
     }
 
     // MARK: - Docked Container
@@ -221,11 +286,11 @@ public struct DSBottomAppBar: View {
     // MARK: - Shared Components
 
     private func iconButton(_ item: DSBottomBarItem) -> some View {
-        let isSelected = item.id == selectedId
+        let isSelected = item.id == _selectedId
 
         return Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
-                selectedId = item.id
+                _selectedId = item.id
             }
         } label: {
             itemIconView(item)
@@ -244,11 +309,11 @@ public struct DSBottomAppBar: View {
     }
 
     private func labeledButton(_ item: DSBottomBarItem) -> some View {
-        let isSelected = item.id == selectedId
+        let isSelected = item.id == _selectedId
 
         return Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
-                selectedId = item.id
+                _selectedId = item.id
             }
         } label: {
             VStack(spacing: 4) {
@@ -285,44 +350,44 @@ public struct DSBottomAppBar: View {
     }
 
     private var hasFab: Bool {
-        fabSystemIcon != nil || fabDSIcon != nil
+        _fabSystemIcon != nil || _fabDSIcon != nil
     }
 
     private func fabButton(size: CGFloat) -> some View {
         // Figma: BIG container is `size` tall, inner button padding depends on fabColor presence
         // Default FAB: h=size, px=lg(24) — e.g. plus icon FAB
         // Custom color FAB: natural height from padding, px=md(16) — e.g. cart icon FAB
-        let isCustom = fabColor != nil
+        let isCustom = _fabColor != nil
         let hPadding = isCustom ? theme.spacing.md : (size == 56 ? theme.spacing.lg : theme.spacing.md)
         let vPadding = isCustom ? theme.spacing.xs : (size == 56 ? theme.spacing.md : theme.spacing.xs)
 
         return ZStack(alignment: .topTrailing) {
             Button {
-                onFabTap?()
+                _onFabTap?()
             } label: {
                 Group {
-                    if let fabDSIcon {
-                        Image(dsIcon: fabDSIcon)
+                    if let _fabDSIcon {
+                        Image(dsIcon: _fabDSIcon)
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()
-                    } else if let fabSystemIcon {
-                        Image(systemName: fabSystemIcon)
+                    } else if let _fabSystemIcon {
+                        Image(systemName: _fabSystemIcon)
                             .font(.system(size: 24))
                     }
                 }
                 .frame(width: 24, height: 24)
-                .foregroundStyle(fabForegroundColor ?? theme.colors.textNeutral0_5)
+                .foregroundStyle(_fabForegroundColor ?? theme.colors.textNeutral05)
                 .padding(.horizontal, hPadding)
                 .padding(.vertical, vPadding)
-                .background(fabColor ?? theme.colors.surfacePrimary120)
+                .background(_fabColor ?? theme.colors.surfacePrimary120)
                 .clipShape(Capsule())
             }
             .buttonStyle(.plain)
             .frame(height: size)
 
-            if let fabBadgeCount {
-                DSBadge(variant: .numberSemantic, count: fabBadgeCount)
+            if let _fabBadgeCount {
+                DSBadge(.numberSemantic).count(_fabBadgeCount)
                     .offset(x: 2, y: 0)
             }
         }
@@ -442,31 +507,83 @@ public extension View {
 /// so all ScrollView/List children get correct bottom spacing for free —
 /// no manual padding needed in individual pages.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSBottomBarLayout(
-///     items: tabs,
-///     selectedId: $selectedTab,
-///     style: .labeled
-/// ) {
-///     // Tab content — ScrollViews automatically clear the bar
+/// DSBottomBarLayout(items: tabs, selectedId: $selectedTab) {
 ///     MyPageView()
 /// }
+/// .barStyle(.labeled)
+/// .fabIcon("plus")
+/// .onFabTap { }
 /// ```
 public struct DSBottomBarLayout<Content: View>: View {
-    private let items: [DSBottomBarItem]
-    @Binding private var selectedId: String
-    private let style: DSBottomAppBarStyle
-    private let fabSystemIcon: String?
-    private let fabDSIcon: DSIcon?
-    private let fabColor: Color?
-    private let fabForegroundColor: Color?
-    private let fabBadgeCount: Int?
-    private let onFabTap: (() -> Void)?
-    private let content: Content
+    // Core
+    private var _items: [DSBottomBarItem]
+    @Binding private var _selectedId: String
+    private var _content: Content
+
+    // Modifier props
+    private var _style: DSBottomAppBarStyle = .labeled
+    private var _fabSystemIcon: String? = nil
+    private var _fabDSIcon: DSIcon? = nil
+    private var _fabColor: Color? = nil
+    private var _fabForegroundColor: Color? = nil
+    private var _fabBadgeCount: Int? = nil
+    private var _onFabTap: (() -> Void)? = nil
 
     @State private var barHeight: CGFloat = 0
 
+    // MARK: - New Modifier API
+
+    /// Creates a bottom bar layout with tab items, selection binding, and content.
+    public init(
+        items: [DSBottomBarItem],
+        selectedId: Binding<String>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self._items = items
+        self.__selectedId = selectedId
+        self._content = content()
+    }
+
+    /// Sets the bar style (`.full`, `.floating`, or `.labeled`). Default is `.labeled`.
+    public func barStyle(_ style: DSBottomAppBarStyle) -> Self {
+        var copy = self; copy._style = style; return copy
+    }
+
+    /// Sets an SF Symbol icon for the center FAB button.
+    public func fabIcon(_ systemName: String) -> Self {
+        var copy = self; copy._fabSystemIcon = systemName; copy._fabDSIcon = nil; return copy
+    }
+
+    /// Sets a DSIcon for the center FAB button.
+    public func fabDSIcon(_ icon: DSIcon) -> Self {
+        var copy = self; copy._fabDSIcon = icon; copy._fabSystemIcon = nil; return copy
+    }
+
+    /// Sets the background color of the FAB button.
+    public func fabColor(_ color: Color) -> Self {
+        var copy = self; copy._fabColor = color; return copy
+    }
+
+    /// Sets the foreground (icon) color of the FAB button.
+    public func fabForegroundColor(_ color: Color) -> Self {
+        var copy = self; copy._fabForegroundColor = color; return copy
+    }
+
+    /// Sets the badge count displayed on the FAB button.
+    public func fabBadgeCount(_ count: Int) -> Self {
+        var copy = self; copy._fabBadgeCount = count; return copy
+    }
+
+    /// Sets the action triggered when the FAB button is tapped.
+    public func onFabTap(_ action: @escaping () -> Void) -> Self {
+        var copy = self; copy._onFabTap = action; return copy
+    }
+
+    // MARK: - Deprecated Inits
+
+    @available(*, deprecated, message: "Use DSBottomBarLayout(items:selectedId:content:) with modifier methods instead")
     public init(
         items: [DSBottomBarItem],
         selectedId: Binding<String>,
@@ -478,18 +595,19 @@ public struct DSBottomBarLayout<Content: View>: View {
         onFabTap: (() -> Void)? = nil,
         @ViewBuilder content: () -> Content
     ) {
-        self.items = items
-        self._selectedId = selectedId
-        self.style = style
-        self.fabSystemIcon = fabIcon
-        self.fabDSIcon = nil
-        self.fabColor = fabColor
-        self.fabForegroundColor = fabForegroundColor
-        self.fabBadgeCount = fabBadgeCount
-        self.onFabTap = onFabTap
-        self.content = content()
+        self._items = items
+        self.__selectedId = selectedId
+        self._style = style
+        self._fabSystemIcon = fabIcon
+        self._fabDSIcon = nil
+        self._fabColor = fabColor
+        self._fabForegroundColor = fabForegroundColor
+        self._fabBadgeCount = fabBadgeCount
+        self._onFabTap = onFabTap
+        self._content = content()
     }
 
+    @available(*, deprecated, message: "Use DSBottomBarLayout(items:selectedId:content:) with .fabDSIcon() modifier instead")
     public init(
         items: [DSBottomBarItem],
         selectedId: Binding<String>,
@@ -501,39 +619,74 @@ public struct DSBottomBarLayout<Content: View>: View {
         onFabTap: (() -> Void)? = nil,
         @ViewBuilder content: () -> Content
     ) {
-        self.items = items
-        self._selectedId = selectedId
-        self.style = style
-        self.fabSystemIcon = nil
-        self.fabDSIcon = fabIcon
-        self.fabColor = fabColor
-        self.fabForegroundColor = fabForegroundColor
-        self.fabBadgeCount = fabBadgeCount
-        self.onFabTap = onFabTap
-        self.content = content()
+        self._items = items
+        self.__selectedId = selectedId
+        self._style = style
+        self._fabSystemIcon = nil
+        self._fabDSIcon = fabIcon
+        self._fabColor = fabColor
+        self._fabForegroundColor = fabForegroundColor
+        self._fabBadgeCount = fabBadgeCount
+        self._onFabTap = onFabTap
+        self._content = content()
     }
 
+    // MARK: - Body
+
     public var body: some View {
-        content
+        _content
             .environment(\.dsBottomBarInset, barHeight)
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                DSBottomAppBar(
-                    items: items,
-                    selectedId: $selectedId,
-                    style: style,
-                    fabIcon: fabSystemIcon,
-                    fabColor: fabColor,
-                    fabForegroundColor: fabForegroundColor,
-                    fabBadgeCount: fabBadgeCount,
-                    onFabTap: onFabTap
-                )
-                .background(
-                    GeometryReader { geo in
-                        Color.clear.preference(key: BottomBarHeightKey.self, value: geo.size.height)
-                    }
-                )
+                DSBottomAppBar(items: _items, selectedId: $_selectedId)
+                    .barStyle(_style)
+                    .fabIconIfNeeded(_fabSystemIcon, dsIcon: _fabDSIcon)
+                    .fabColorIfNeeded(_fabColor)
+                    .fabForegroundColorIfNeeded(_fabForegroundColor)
+                    .fabBadgeCountIfNeeded(_fabBadgeCount)
+                    .onFabTapIfNeeded(_onFabTap)
+                    .background(
+                        GeometryReader { geo in
+                            Color.clear.preference(key: BottomBarHeightKey.self, value: geo.size.height)
+                        }
+                    )
             }
             .onPreferenceChange(BottomBarHeightKey.self) { barHeight = $0 }
+    }
+}
+
+// MARK: - Internal Conditional Modifier Helpers
+
+extension DSBottomAppBar {
+    /// Internal helper: conditionally applies fabIcon or fabDSIcon.
+    fileprivate func fabIconIfNeeded(_ systemName: String?, dsIcon: DSIcon?) -> Self {
+        var copy = self
+        if let systemName { copy._fabSystemIcon = systemName; copy._fabDSIcon = nil }
+        if let dsIcon { copy._fabDSIcon = dsIcon; copy._fabSystemIcon = nil }
+        return copy
+    }
+
+    /// Internal helper: conditionally applies fabColor.
+    fileprivate func fabColorIfNeeded(_ color: Color?) -> Self {
+        guard let color else { return self }
+        var copy = self; copy._fabColor = color; return copy
+    }
+
+    /// Internal helper: conditionally applies fabForegroundColor.
+    fileprivate func fabForegroundColorIfNeeded(_ color: Color?) -> Self {
+        guard let color else { return self }
+        var copy = self; copy._fabForegroundColor = color; return copy
+    }
+
+    /// Internal helper: conditionally applies fabBadgeCount.
+    fileprivate func fabBadgeCountIfNeeded(_ count: Int?) -> Self {
+        guard let count else { return self }
+        var copy = self; copy._fabBadgeCount = count; return copy
+    }
+
+    /// Internal helper: conditionally applies onFabTap.
+    fileprivate func onFabTapIfNeeded(_ action: (() -> Void)?) -> Self {
+        guard let action else { return self }
+        var copy = self; copy._onFabTap = action; return copy
     }
 }
 

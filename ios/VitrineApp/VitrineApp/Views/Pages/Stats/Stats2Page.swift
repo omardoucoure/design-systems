@@ -13,9 +13,9 @@ struct Stats2Page: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Transaction History", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, icon: .bell) {}
-            }
+            DSTopAppBar(title: "Transaction History") {
+                DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.bell)
+            }.onBack { dismiss() }
 
             ScrollView(showsIndicators: false) {
                 VStack(spacing: theme.spacing.sm) {
@@ -27,7 +27,7 @@ struct Stats2Page: View {
             }
         }
         .padding(.horizontal, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -36,11 +36,7 @@ struct Stats2Page: View {
     // MARK: - Savings Card
 
     private var savingsCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(spacing: theme.spacing.lg) {
                 cardHeader(
                     title: "Savings",
@@ -50,14 +46,11 @@ struct Stats2Page: View {
                     buttonStyle: .outlined
                 )
 
-                DSStatsChart(
-                    data: monthData,
-                    linePoints: savingsLinePoints,
-                    style: .light,
-                    badgeText: "$620",
-                    badgeX: 0.58,
-                    badgeY: 0.72
-                )
+                DSStatsChart(data: monthData)
+                    .linePoints(savingsLinePoints)
+                    .chartStyle(.light)
+                    .badgeText("$620")
+                    .badgePosition(x: 0.58, y: 0.72)
             }
         }
     }
@@ -65,59 +58,47 @@ struct Stats2Page: View {
     // MARK: - Investments Card
 
     private var investmentsCard: some View {
-        DSCard(
-            background: theme.colors.surfacePrimary100,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(spacing: theme.spacing.lg) {
                 cardHeader(
                     title: "Investments",
                     amount: "$88826",
-                    titleColor: theme.colors.textNeutral0_5,
-                    amountColor: theme.colors.textNeutral0_5,
+                    titleColor: theme.colors.textNeutral05,
+                    amountColor: theme.colors.textNeutral05,
                     buttonStyle: .outlinedLight
                 )
 
-                DSStatsChart(
-                    data: monthData,
-                    linePoints: investmentsLinePoints,
-                    style: .medium,
-                    badgeText: "$800",
-                    badgeX: 0.44,
-                    badgeY: 0.72
-                )
+                DSStatsChart(data: monthData)
+                    .linePoints(investmentsLinePoints)
+                    .chartStyle(.medium)
+                    .badgeText("$800")
+                    .badgePosition(x: 0.44, y: 0.72)
             }
         }
+        .cardBackground(theme.colors.surfacePrimary100)
     }
 
     // MARK: - Expenses Card
 
     private var expensesCard: some View {
-        DSCard(
-            background: theme.colors.surfacePrimary120,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(spacing: theme.spacing.lg) {
                 cardHeader(
                     title: "Expenses",
                     amount: "$62826",
-                    titleColor: theme.colors.textNeutral0_5,
-                    amountColor: theme.colors.textNeutral0_5,
+                    titleColor: theme.colors.textNeutral05,
+                    amountColor: theme.colors.textNeutral05,
                     buttonStyle: .outlinedLight
                 )
 
-                DSStatsChart(
-                    data: monthData,
-                    linePoints: expensesLinePoints,
-                    style: .dark,
-                    badgeText: "$440",
-                    badgeX: 0.78,
-                    badgeY: 0.55
-                )
+                DSStatsChart(data: monthData)
+                    .linePoints(expensesLinePoints)
+                    .chartStyle(.dark)
+                    .badgeText("$440")
+                    .badgePosition(x: 0.78, y: 0.55)
             }
         }
+        .cardBackground(theme.colors.surfacePrimary120)
     }
 
     // MARK: - Card Header
@@ -144,7 +125,7 @@ struct Stats2Page: View {
 
             Spacer()
 
-            DSButton("Year", style: buttonStyle, size: .small, icon: .arrowSeparateVertical, iconPosition: .right) {}
+            DSButton("Year") {}.buttonStyle(buttonStyle).buttonSize(.small).icon(.arrowSeparateVertical, position: .right)
         }
     }
 

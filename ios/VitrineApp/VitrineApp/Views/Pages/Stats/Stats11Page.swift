@@ -26,35 +26,33 @@ struct Stats11Page: View {
     }
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "weather", label: "Weather", icon: .sunLight, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
                 DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "nav8_profile",
                 name: "Hristo Hristov",
                 subtitle: "Weather Watcher"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Today", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .search) {}
-            }
+            DSTopAppBar(title: "Today") {
+                DSButton {}.buttonStyle(.neutral).buttonSize(.medium).icon(.search)
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
             .overlay(alignment: .leading) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                }
+                }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
                 .padding(.leading, theme.spacing.sm)
             }
 
@@ -68,17 +66,13 @@ struct Stats11Page: View {
             segmentedPicker
         }
         .padding(.horizontal, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Weather Graph Card
 
     private var weatherGraphCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.xl) {
                 // Info
                 VStack(alignment: .leading, spacing: theme.spacing.xxs) {
@@ -94,20 +88,19 @@ struct Stats11Page: View {
                 }
 
                 // Chart
-                DSWeatherChart(
-                    data: weatherData,
-                    linePoints: temperatureLinePoints,
-                    barColor: theme.colors.borderNeutral9_5,
-                    barOpacity: 0.6,
-                    highlightColor: theme.brand.primitives.secondary120,
-                    lineColor: theme.brand.primitives.secondary120,
-                    maxBarHeight: 174,
-                    barWidth: 8
-                )
+                DSWeatherChart(data: weatherData)
+                    .linePoints(temperatureLinePoints)
+                    .barColor(theme.colors.borderNeutral95)
+                    .barOpacity(0.6)
+                    .highlightColor(theme.brand.primitives.secondary120)
+                    .lineColor(theme.brand.primitives.secondary120)
+                    .maxBarHeight(174)
+                    .barWidth(8)
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxl)
         }
+        .cardPadding(0)
     }
 
     // MARK: - Day / Night Cards
@@ -115,11 +108,7 @@ struct Stats11Page: View {
     private var dayNightCards: some View {
         HStack(spacing: theme.spacing.sm) {
             // Day card
-            DSCard(
-                background: theme.colors.surfaceSecondary100,
-                radius: theme.radius.xl,
-                padding: theme.spacing.xl
-            ) {
+            DSCard {
                 VStack(alignment: .leading, spacing: theme.spacing.xl) {
                     HStack {
                         Text("Day")
@@ -143,19 +132,16 @@ struct Stats11Page: View {
                         .foregroundStyle(theme.colors.textNeutral9)
                 }
             }
+            .cardBackground(theme.colors.surfaceSecondary100)
 
             // Night card
-            DSCard(
-                background: theme.colors.surfacePrimary100,
-                radius: theme.radius.xl,
-                padding: theme.spacing.xl
-            ) {
+            DSCard {
                 VStack(alignment: .leading, spacing: theme.spacing.xl) {
                     HStack {
                         Text("Night")
                             .font(theme.typography.largeSemiBold.font)
                             .tracking(theme.typography.largeSemiBold.tracking)
-                            .foregroundStyle(theme.colors.textNeutral0_5)
+                            .foregroundStyle(theme.colors.textNeutral05)
 
                         Spacer()
 
@@ -164,15 +150,16 @@ struct Stats11Page: View {
                             .renderingMode(.template)
                             .scaledToFit()
                             .frame(width: 24, height: 24)
-                            .foregroundStyle(theme.colors.textNeutral0_5)
+                            .foregroundStyle(theme.colors.textNeutral05)
                     }
 
                     Text("+ 62° F")
                         .font(theme.typography.h1.font)
                         .tracking(theme.typography.h1.tracking)
-                        .foregroundStyle(theme.colors.textNeutral0_5)
+                        .foregroundStyle(theme.colors.textNeutral05)
                 }
             }
+            .cardBackground(theme.colors.surfacePrimary100)
         }
     }
 
@@ -219,7 +206,7 @@ struct Stats11Page: View {
             }
             .foregroundStyle(
                 isSelected
-                    ? theme.colors.textNeutral0_5
+                    ? theme.colors.textNeutral05
                     : theme.colors.textNeutral9
             )
             .frame(maxWidth: .infinity)

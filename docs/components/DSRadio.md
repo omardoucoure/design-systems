@@ -10,29 +10,34 @@ Use `DSRadio` for:
 - form options requiring one selection
 - settings with mutually exclusive choices
 
-## Properties
+## Init Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `isSelected` | `Bool` | — | Selection state |
-| `label` | `LocalizedStringKey?` | `nil` | Primary label |
-| `description` | `LocalizedStringKey?` | `nil` | Supporting text |
-| `action` | `() -> Void` | — | Tap handler |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `isSelected` | `Bool` | Selection state |
+| `action` | `() -> Void` | Tap handler |
+
+## Modifiers
+
+| Modifier | Parameter | Description |
+|----------|-----------|-------------|
+| `.label(_:)` | `LocalizedStringKey` | Primary label |
+| `.description(_:)` | `LocalizedStringKey` | Supporting text |
 
 ## Accessibility
 
 - Group related radio buttons and ensure only one can be selected at a time.
-- Provide labels for all options.
+- Provide labels for all options via `.label()`.
 
 ## Example
 
 ```swift
 ForEach(options) { option in
-    DSRadio(
-        isSelected: selectedOption == option.id,
-        label: option.name,
-        description: option.detail
-    ) { selectedOption = option.id }
+    DSRadio(isSelected: selectedOption == option.id) {
+        selectedOption = option.id
+    }
+    .label(option.name)
+    .description(option.detail)
 }
 ```
 

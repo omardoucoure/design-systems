@@ -27,8 +27,7 @@ struct Feed1Page: View {
     // MARK: - Side Menu
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "feed", label: "Feed", icon: .mediaImageList, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "trending", label: "Trending", icon: .activity),
@@ -37,29 +36,28 @@ struct Feed1Page: View {
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
                 DSNavigationMenuItem(id: "places", label: "Places", icon: .mapPin),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "feed1_avatar1",
                 name: "Hristo Hristov",
                 subtitle: "Content Creator"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Feed Content
 
     private var feedContent: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Feed", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .search) {}
-            }
+            DSTopAppBar(title: "Feed") {
+                DSButton {}.buttonStyle(.neutral).buttonSize(.medium).icon(.search)
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
             .overlay(alignment: .leading) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                }
+                }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
                 .padding(.leading, theme.spacing.sm)
             }
 
@@ -67,7 +65,6 @@ struct Feed1Page: View {
                 VStack(spacing: theme.spacing.sm) {
                     DSFeedPost(
                         avatar: "feed1_avatar1",
-                        avatarSize: CGSize(width: 56, height: 40),
                         name: "Hristo Hristov",
                         time: "2h ago",
                         likeCount: "2K",
@@ -75,13 +72,13 @@ struct Feed1Page: View {
                         images: [
                             DSFeedPostImage(image: "feed1_photo1", isMain: true),
                             DSFeedPostImage(image: "feed1_photo2"),
-                        ],
-                        horizontalPadding: theme.spacing.sm
+                        ]
                     )
+                    .avatarSize(CGSize(width: 56, height: 40))
+                    .horizontalPadding(theme.spacing.sm)
 
                     DSFeedPost(
                         avatar: "feed1_avatar2",
-                        avatarSize: CGSize(width: 56, height: 40),
                         name: "Mila Valentino",
                         time: "6h ago",
                         likeCount: "2K",
@@ -89,13 +86,14 @@ struct Feed1Page: View {
                         images: [
                             DSFeedPostImage(image: "feed1_photo3", isMain: true),
                             DSFeedPostImage(image: "feed1_photo4"),
-                        ],
-                        horizontalPadding: theme.spacing.sm
+                        ]
                     )
+                    .avatarSize(CGSize(width: 56, height: 40))
+                    .horizontalPadding(theme.spacing.sm)
                 }
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 }
 

@@ -15,27 +15,34 @@ Use `DSDatePicker` for:
 - `single` — pick one date
 - `range` — pick a start and end date
 
-## Properties
+## Init
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `startDate` | `Binding<Date?>` | — | Selected start date |
-| `endDate` | `Binding<Date?>` | — | Selected end date (range mode) |
-| `variant` | `DSDatePickerVariant` | `.single` | Selection mode |
-| `title` | `LocalizedStringKey` | `"Select date"` | Header title |
-| `onCancel` | `(() -> Void)?` | `nil` | Cancel handler |
-| `onConfirm` | `(() -> Void)?` | `nil` | Confirm handler |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `startDate` | `Binding<Date>` | Selected start date (required) |
+
+## Modifiers
+
+| Modifier | Type | Default | Description |
+|----------|------|---------|-------------|
+| `.endDate(_:)` | `Binding<Date>` | `.constant(Date())` | Selected end date (range mode) |
+| `.variant(_:)` | `DSDatePickerVariant` | `.single` | Selection mode |
+| `.title(_:)` | `LocalizedStringKey` | `"Select date"` | Header title |
+| `.onCancel(_:)` | `() -> Void` | `nil` | Cancel handler |
+| `.onConfirm(_:)` | `() -> Void` | `nil` | Confirm handler |
 
 ## Example
 
 ```swift
-DSDatePicker(
-    startDate: $checkIn,
-    endDate: $checkOut,
-    variant: .range,
-    title: "Select dates",
-    onConfirm: { bookDates() }
-)
+// Single date
+DSDatePicker(startDate: $checkIn)
+
+// Range with modifiers
+DSDatePicker(startDate: $checkIn)
+    .endDate($checkOut)
+    .variant(.range)
+    .title("Select dates")
+    .onConfirm { bookDates() }
 ```
 
 ---

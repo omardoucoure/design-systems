@@ -22,37 +22,74 @@ public enum DSAvatarShape {
 
 /// A themed avatar with three style variants and configurable shape.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
 /// DSAvatar(style: .monogram("H"))
-/// DSAvatar(style: .icon("person"), size: 48)
-/// DSAvatar(style: .image(Image("photo")), size: .init(width: 56, height: 40), shape: .roundedRect(8))
+/// DSAvatar(style: .icon("person")).avatarSize(48)
+/// DSAvatar(style: .image(Image("photo"))).avatarSize(width: 56, height: 40).shape(.roundedRect(8))
 /// ```
 public struct DSAvatar: View {
     @Environment(\.theme) private var theme
 
-    private let style: DSAvatarStyle
-    private let width: CGFloat
-    private let height: CGFloat
-    private let shape: DSAvatarShape
+    private let _style: DSAvatarStyle
+    private var _width: CGFloat = 40
+    private var _height: CGFloat = 40
+    private var _shape: DSAvatarShape = .circle
 
-    public init(style: DSAvatarStyle, size: CGFloat = 40, shape: DSAvatarShape = .circle) {
-        self.style = style
-        self.width = size
-        self.height = size
-        self.shape = shape
+    // MARK: - Minimal init
+
+    public init(style: DSAvatarStyle) {
+        self._style = style
     }
 
+    // MARK: - Deprecated inits
+
+    @available(*, deprecated, message: "Use DSAvatar(style:) with .avatarSize() and .shape() modifiers instead")
+    public init(style: DSAvatarStyle, size: CGFloat, shape: DSAvatarShape = .circle) {
+        self._style = style
+        self._width = size
+        self._height = size
+        self._shape = shape
+    }
+
+    @available(*, deprecated, message: "Use DSAvatar(style:) with .avatarSize(width:height:) and .shape() modifiers instead")
     public init(style: DSAvatarStyle, size: CGSize, shape: DSAvatarShape = .circle) {
-        self.style = style
-        self.width = size.width
-        self.height = size.height
-        self.shape = shape
+        self._style = style
+        self._width = size.width
+        self._height = size.height
+        self._shape = shape
     }
+
+    // MARK: - Modifiers
+
+    /// Sets a uniform avatar size (width = height).
+    public func avatarSize(_ size: CGFloat) -> DSAvatar {
+        var copy = self
+        copy._width = size
+        copy._height = size
+        return copy
+    }
+
+    /// Sets independent width and height for the avatar.
+    public func avatarSize(width: CGFloat, height: CGFloat) -> DSAvatar {
+        var copy = self
+        copy._width = width
+        copy._height = height
+        return copy
+    }
+
+    /// Sets the clipping shape of the avatar.
+    public func shape(_ shape: DSAvatarShape) -> DSAvatar {
+        var copy = self
+        copy._shape = shape
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         Group {
-            switch style {
+            switch _style {
             case .monogram(let initials):
                 Text(initials)
                     .font(theme.typography.body.font)
@@ -61,7 +98,7 @@ public struct DSAvatar: View {
 
             case .icon(let systemName):
                 Image(systemName: systemName)
-                    .font(.system(size: min(width, height) * 0.45))
+                    .font(.system(size: min(_width, _height) * 0.45))
                     .foregroundStyle(theme.colors.textNeutral9)
 
             case .image(let image):
@@ -70,13 +107,13 @@ public struct DSAvatar: View {
                     .scaledToFill()
             }
         }
-        .frame(width: width, height: height)
-        .background(theme.colors.surfaceNeutral0_5)
+        .frame(width: _width, height: _height)
+        .background(theme.colors.surfaceNeutral05)
         .clipShape(clipShape)
     }
 
     private var clipShape: AnyShape {
-        switch shape {
+        switch _shape {
         case .circle:
             AnyShape(Circle())
         case .roundedRect(let radius):

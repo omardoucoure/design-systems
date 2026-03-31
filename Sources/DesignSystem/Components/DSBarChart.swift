@@ -17,27 +17,32 @@ public struct DSBarChartData: Identifiable {
 
 /// A simple bar chart with rounded-top bars and labels below.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSBarChart(
-///     data: [
-///         DSBarChartData(label: "Mon", value: 0.4),
-///         DSBarChartData(label: "Tue", value: 0.8),
-///     ],
-///     barColor: theme.colors.surfaceNeutral2,
-///     highlightColor: theme.colors.surfaceSecondary100,
-///     highlightIndex: 3
-/// )
+/// DSBarChart(data: weeklySteps)
+///     .barColor(theme.colors.surfaceNeutral2)
+///     .highlightColor(theme.colors.surfaceSecondary100)
+///     .highlightIndex(3)
+///     .maxHeight(120)
 /// ```
 public struct DSBarChart: View {
     @Environment(\.theme) private var theme
 
     private let data: [DSBarChartData]
-    private let barColor: Color?
-    private let highlightColor: Color?
-    private let highlightIndex: Int?
-    private let maxHeight: CGFloat
+    var _barColor: Color?
+    var _highlightColor: Color?
+    var _highlightIndex: Int?
+    var _maxHeight: CGFloat = 120
 
+    // MARK: - New Minimal Init
+
+    public init(data: [DSBarChartData]) {
+        self.data = data
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use DSBarChart(data:) with modifier methods instead")
     public init(
         data: [DSBarChartData],
         barColor: Color? = nil,
@@ -46,18 +51,38 @@ public struct DSBarChart: View {
         maxHeight: CGFloat = 120
     ) {
         self.data = data
-        self.barColor = barColor
-        self.highlightColor = highlightColor
-        self.highlightIndex = highlightIndex
-        self.maxHeight = maxHeight
+        self._barColor = barColor
+        self._highlightColor = highlightColor
+        self._highlightIndex = highlightIndex
+        self._maxHeight = maxHeight
     }
+
+    // MARK: - Modifiers
+
+    public func barColor(_ color: Color) -> DSBarChart {
+        var copy = self; copy._barColor = color; return copy
+    }
+
+    public func highlightColor(_ color: Color) -> DSBarChart {
+        var copy = self; copy._highlightColor = color; return copy
+    }
+
+    public func highlightIndex(_ index: Int?) -> DSBarChart {
+        var copy = self; copy._highlightIndex = index; return copy
+    }
+
+    public func maxHeight(_ height: CGFloat) -> DSBarChart {
+        var copy = self; copy._maxHeight = height; return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         HStack(alignment: .bottom, spacing: theme.spacing.xs) {
             ForEach(Array(data.enumerated()), id: \.element.id) { index, item in
                 VStack(spacing: theme.spacing.xxs) {
-                    let isHighlighted = index == highlightIndex
-                    let barHeight = max(item.value * maxHeight, 4)
+                    let isHighlighted = index == _highlightIndex
+                    let barHeight = max(item.value * _maxHeight, 4)
 
                     UnevenRoundedRectangle(
                         topLeadingRadius: theme.radius.xs,
@@ -66,8 +91,8 @@ public struct DSBarChart: View {
                         topTrailingRadius: theme.radius.xs
                     )
                     .fill(isHighlighted
-                          ? (highlightColor ?? theme.colors.surfaceSecondary100)
-                          : (barColor ?? theme.colors.surfaceNeutral3))
+                          ? (_highlightColor ?? theme.colors.surfaceSecondary100)
+                          : (_barColor ?? theme.colors.surfaceNeutral3))
                     .frame(height: barHeight)
 
                     Text(item.label)

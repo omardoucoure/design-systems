@@ -113,27 +113,27 @@ private struct ButtonDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.lg) {
-                DSButton("Filled A", style: .filledA, size: .big, isFullWidth: true) {}
-                DSButton("Filled B", style: .filledB, size: .big, isFullWidth: true) {}
-                DSButton("Filled C", style: .filledC, size: .big, isFullWidth: true) {}
-                DSButton("Neutral", style: .neutral, size: .big, isFullWidth: true) {}
-                DSButton("Outlined", style: .outlined, size: .big, isFullWidth: true) {}
-                DSButton("Text", style: .text, size: .big) {}
+                DSButton("Filled A") {}.buttonStyle(.filledA).fullWidth()
+                DSButton("Filled B") {}.fullWidth()
+                DSButton("Filled C") {}.buttonStyle(.filledC).fullWidth()
+                DSButton("Neutral") {}.buttonStyle(.neutral).fullWidth()
+                DSButton("Outlined") {}.buttonStyle(.outlined).fullWidth()
+                DSButton("Text") {}.buttonStyle(.text)
 
-                DSDivider(style: .subheader("Sizes"))
+                DSDivider().dividerStyle(.subheader("Sizes"))
 
                 HStack(spacing: theme.spacing.sm) {
-                    DSButton("Small", style: .filledA, size: .small) {}
-                    DSButton("Medium", style: .filledA, size: .medium) {}
-                    DSButton("Big", style: .filledA, size: .big) {}
+                    DSButton("Small") {}.buttonStyle(.filledA).buttonSize(.small)
+                    DSButton("Medium") {}.buttonStyle(.filledA).buttonSize(.medium)
+                    DSButton("Big") {}.buttonStyle(.filledA)
                 }
 
-                DSDivider(style: .subheader("With Icons"))
+                DSDivider().dividerStyle(.subheader("With Icons"))
 
                 HStack(spacing: theme.spacing.sm) {
-                    DSButton("Left", style: .filledA, size: .medium, iconLeft: "arrow.left") {}
-                    DSButton("Right", style: .filledA, size: .medium, iconRight: "arrow.right") {}
-                    DSButton(style: .filledA, size: .medium, systemIcon: "plus") {}
+                    DSButton("Left") {}.buttonStyle(.filledA).buttonSize(.medium).systemIcon("arrow.left", position: .left)
+                    DSButton("Right") {}.buttonStyle(.filledA).buttonSize(.medium).systemIcon("arrow.right", position: .right)
+                    DSButton {}.buttonStyle(.filledA).buttonSize(.medium).systemIcon("plus")
                 }
             }
             .padding(theme.spacing.lg)
@@ -148,28 +148,28 @@ private struct ChipBadgeDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: theme.spacing.xl) {
-                DSDivider(style: .subheader("Chips"))
+                DSDivider().dividerStyle(.subheader("Chips"))
 
                 HStack(spacing: theme.spacing.xs) {
-                    DSChip("Filled A", style: .filledA)
-                    DSChip("Filled B", style: .filledB)
-                    DSChip("Neutral", style: .neutral)
+                    DSChip("Filled A").chipStyle(.filledA)
+                    DSChip("Filled B").chipStyle(.filledB)
+                    DSChip("Neutral").chipStyle(.neutral)
                 }
                 HStack(spacing: theme.spacing.xs) {
-                    DSChip("Outlined", style: .outlined)
-                    DSChip("Filled C", style: .filledC)
+                    DSChip("Outlined").chipStyle(.outlined)
+                    DSChip("Filled C").chipStyle(.filledC)
                 }
 
-                DSDivider(style: .subheader("Badges"))
+                DSDivider().dividerStyle(.subheader("Badges"))
 
                 HStack(spacing: theme.spacing.xl) {
-                    DSBadge(variant: .dot)
-                    DSBadge(variant: .numberBrand, count: 3)
-                    DSBadge(variant: .numberSemantic, count: 12)
+                    DSBadge(.dot)
+                    DSBadge(.numberBrand).count(3)
+                    DSBadge(.numberSemantic).count(12)
                 }
                 HStack(spacing: theme.spacing.sm) {
-                    DSBadge(variant: .tagSemantic, text: "Info")
-                    DSBadge(variant: .tagBrand, text: "New")
+                    DSBadge(.tagSemantic).text("Info")
+                    DSBadge(.tagBrand).text("New")
                 }
             }
             .padding(theme.spacing.lg)
@@ -186,18 +186,18 @@ private struct SelectionDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                DSDivider(style: .subheader("Checkbox"))
-                DSCheckbox(isOn: $checkOn, label: "Accept terms")
-                DSCheckbox(isOn: .constant(false), label: "Unchecked")
+                DSDivider().dividerStyle(.subheader("Checkbox"))
+                DSCheckbox(isOn: $checkOn).label("Accept terms")
+                DSCheckbox(isOn: .constant(false)).label("Unchecked")
 
-                DSDivider(style: .subheader("Radio"))
-                DSRadio(isSelected: selected == 0, label: "Option A") { selected = 0 }
-                DSRadio(isSelected: selected == 1, label: "Option B") { selected = 1 }
-                DSRadio(isSelected: selected == 2, label: "Option C") { selected = 2 }
+                DSDivider().dividerStyle(.subheader("Radio"))
+                DSRadio(isSelected: selected == 0) { selected = 0 }.label("Option A")
+                DSRadio(isSelected: selected == 1) { selected = 1 }.label("Option B")
+                DSRadio(isSelected: selected == 2) { selected = 2 }.label("Option C")
 
-                DSDivider(style: .subheader("Toggle"))
-                DSToggle(isOn: $toggleOn, label: "Dark mode")
-                DSToggle(isOn: .constant(false), label: "Notifications")
+                DSDivider().dividerStyle(.subheader("Toggle"))
+                DSToggle(isOn: $toggleOn).label("Dark mode")
+                DSToggle(isOn: .constant(false)).label("Notifications")
             }
             .padding(24)
         }
@@ -212,17 +212,23 @@ private struct TextFieldDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.lg) {
-                DSDivider(style: .subheader("Text Field"))
+                DSDivider().dividerStyle(.subheader("Text Field"))
 
-                DSTextField(text: $text, placeholder: "Empty", variant: .filled, state: .empty)
-                DSTextField(text: .constant("Hello"), placeholder: "Filled", variant: .filled, state: .filled)
-                DSTextField(text: .constant("Error"), placeholder: "Error", variant: .filled, state: .error)
-                DSTextField(text: .constant("OK"), placeholder: "Validated", variant: .filled, state: .validated)
-                DSTextField(text: .constant("Lined"), placeholder: "Lined", variant: .lined, state: .filled)
+                DSTextField(text: $text, placeholder: "Empty")
+                DSTextField(text: .constant("Hello"), placeholder: "Filled")
+                    .inputState(.filled)
+                DSTextField(text: .constant("Error"), placeholder: "Error")
+                    .inputState(.error)
+                DSTextField(text: .constant("OK"), placeholder: "Validated")
+                    .inputState(.validated)
+                DSTextField(text: .constant("Lined"), placeholder: "Lined")
+                    .variant(.lined)
+                    .inputState(.filled)
 
-                DSDivider(style: .subheader("Search Field"))
+                DSDivider().dividerStyle(.subheader("Search Field"))
 
-                DSSearchField(text: .constant(""), placeholder: "Search...")
+                DSSearchField(text: .constant(""))
+                    .placeholder("Search...")
             }
             .padding(theme.spacing.lg)
         }
@@ -237,7 +243,7 @@ private struct FormExtrasDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                DSDivider(style: .subheader("Dropdown"))
+                DSDivider().dividerStyle(.subheader("Dropdown"))
 
                 DSDropdown(
                     items: [
@@ -245,17 +251,20 @@ private struct FormExtrasDetailView: View {
                         DSDropdownItem(id: "m", label: "Medium"),
                         DSDropdownItem(id: "l", label: "Large"),
                     ],
-                    selectedId: .constant("m"),
-                    placeholder: "Size"
+                    selectedId: .constant("m")
                 )
+                .placeholder("Size")
 
-                DSDivider(style: .subheader("Text Area"))
+                DSDivider().dividerStyle(.subheader("Text Area"))
 
-                DSTextArea(text: $areaText, title: "Notes", placeholder: "Write something...")
+                DSTextArea(text: $areaText)
+                    .title("Notes")
+                    .placeholder("Write something...")
 
-                DSDivider(style: .subheader("Code Input"))
+                DSDivider().dividerStyle(.subheader("Code Input"))
 
-                DSCodeInput(code: $code, digitCount: 6)
+                DSCodeInput(code: $code)
+                    .digitCount(6)
             }
             .padding(24)
         }
@@ -281,28 +290,26 @@ private struct ListDividerDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.xl) {
-                DSDivider(style: .subheader("List Items"))
+                DSDivider().dividerStyle(.subheader("List Items"))
 
-                DSListItem(overline: "Category", headline: "Item Title", metadata: "3m ago") {
+                DSListItem("Item Title") {
                     Image(systemName: "star.fill")
                         .foregroundStyle(theme.colors.surfaceSecondary100)
                 } trailing: {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(theme.colors.textNeutral8)
                 }
+                .overline("Category")
+                .metadata("3m ago")
 
-                DSListItem(headline: "Simple row") {
-                    EmptyView()
-                } trailing: {
-                    EmptyView()
-                }
+                DSListItem("Simple row")
 
-                DSDivider(style: .subheader("Divider Styles"))
+                DSDivider().dividerStyle(.subheader("Divider Styles"))
 
-                DSDivider(style: .fullBleed)
-                DSDivider(style: .inset)
-                DSDivider(style: .middle)
-                DSDivider(style: .subheader("Section Header"))
+                DSDivider()
+                DSDivider().dividerStyle(.inset)
+                DSDivider().dividerStyle(.middle)
+                DSDivider().dividerStyle(.subheader("Section Header"))
             }
             .padding(theme.spacing.lg)
         }
@@ -324,25 +331,22 @@ private struct AppBarDetailView: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: theme.spacing.xl) {
-                    DSDivider(style: .subheader("Top App Bar"))
+                    DSDivider().dividerStyle(.subheader("Top App Bar"))
 
-                    DSTopAppBar(title: "Small", style: .small, onBack: {}) {
-                        EmptyView()
-                    }
+                    DSTopAppBar(title: "Small").onBack {}
 
-                    DSTopAppBar(title: "Centered", style: .smallCentered, onBack: {}) {
-                        DSButton(style: .text, size: .small, systemIcon: "bell") {}
-                    }
+                    DSTopAppBar(title: "Centered") {
+                        DSButton {}.buttonStyle(.text).buttonSize(.small).systemIcon("bell")
+                    }.appBarStyle(.smallCentered).onBack {}
 
-                    DSTopAppBar(title: "Medium", style: .medium, onBack: {}) {
-                        EmptyView()
-                    }
+                    DSTopAppBar(title: "Medium").appBarStyle(.medium).onBack {}
                 }
             }
 
-            DSDivider(style: .subheader("Bottom App Bar"))
+            DSDivider().dividerStyle(.subheader("Bottom App Bar"))
 
-            DSBottomAppBar(items: items, selectedId: $selected, style: .labeled)
+            DSBottomAppBar(items: items, selectedId: $selected)
+                .barStyle(.labeled)
         }
         .navigationTitle("App Bars")
     }
@@ -355,10 +359,10 @@ private struct PickerControlDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 32) {
-                DSDivider(style: .subheader("Segmented Picker"))
+                DSDivider().dividerStyle(.subheader("Segmented Picker"))
                 DSSegmentedPicker(items: ["Day", "Week", "Month"], selectedIndex: $index)
 
-                DSDivider(style: .subheader("Page Control"))
+                DSDivider().dividerStyle(.subheader("Page Control"))
                 DSPageControl(count: 5, currentIndex: $current)
             }
             .padding(24)
@@ -373,33 +377,33 @@ private struct FeedbackDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.lg) {
-                DSDivider(style: .subheader("Alerts"))
+                DSDivider().dividerStyle(.subheader("Alerts"))
 
                 DSAlert(
                     title: "Something went wrong",
-                    message: "Please try again later.",
                     severity: .error
                 ) {
                     EmptyView()
                 } actions: {
-                    DSButton("Retry", style: .filledA, size: .small) {}
+                    DSButton("Retry") {}.buttonStyle(.filledA).buttonSize(.small)
                 }
+                .message("Please try again later.")
 
                 DSAlert(
                     title: "Update available",
-                    message: "A new version is ready.",
                     severity: .neutral
                 ) {
                     EmptyView()
                 } actions: {
-                    DSButton("Update", style: .filledB, size: .small) {}
+                    DSButton("Update") {}.buttonSize(.small)
                 }
+                .message("A new version is ready.")
 
-                DSDivider(style: .subheader("Banners"))
+                DSDivider().dividerStyle(.subheader("Banners"))
 
-                DSBanner(title: "Success!", message: "Operation completed.", severity: .success, onDismiss: {})
-                DSBanner(title: "Warning", message: "Check your input.", severity: .warning, onDismiss: {})
-                DSBanner(title: "Error", message: "Something failed.", severity: .error, onDismiss: {})
+                DSBanner(severity: .success).title("Success!").message("Operation completed.").onDismiss {}
+                DSBanner(severity: .warning).title("Warning").message("Check your input.").onDismiss {}
+                DSBanner(severity: .error).title("Error").message("Something failed.").onDismiss {}
             }
             .padding(theme.spacing.lg)
         }
@@ -413,8 +417,8 @@ private struct TooltipDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.xl) {
-                DSTooltip(style: .simple("Top tooltip"), direction: .top)
-                DSTooltip(style: .simple("Bottom tooltip"), direction: .bottom)
+                DSTooltip(style: .simple("Top tooltip")).tooltipDirection(.top)
+                DSTooltip(style: .simple("Bottom tooltip")).tooltipDirection(.bottom)
             }
             .padding(theme.spacing.lg)
         }
@@ -428,29 +432,25 @@ private struct ChartsDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.xl) {
-                DSDivider(style: .subheader("Line Chart"))
+                DSDivider().dividerStyle(.subheader("Line Chart"))
 
-                DSLineChart(
-                    points: [
-                        .init(x: 0, y: 0.3), .init(x: 0.25, y: 0.7),
-                        .init(x: 0.5, y: 0.4), .init(x: 0.75, y: 0.8), .init(x: 1, y: 0.5),
-                    ],
-                    lineColor: theme.colors.surfacePrimary100,
-                    shadowColor: theme.colors.surfacePrimary100.opacity(0.3)
-                )
+                DSLineChart(points: [
+                    .init(x: 0, y: 0.3), .init(x: 0.25, y: 0.7),
+                    .init(x: 0.5, y: 0.4), .init(x: 0.75, y: 0.8), .init(x: 1, y: 0.5),
+                ])
+                .lineColor(theme.colors.surfacePrimary100)
+                .shadowColor(theme.colors.surfacePrimary100.opacity(0.3))
                 .frame(height: 160)
 
-                DSDivider(style: .subheader("Lollipop Chart"))
+                DSDivider().dividerStyle(.subheader("Lollipop Chart"))
 
-                DSLollipopChart(
-                    data: [
-                        .init(label: "Jan", height: 20), .init(label: "Feb", height: 35),
-                        .init(label: "Mar", height: 55), .init(label: "Apr", height: 40),
-                        .init(label: "May", height: 25), .init(label: "Jun", height: 60),
-                    ],
-                    highlightIndex: 2,
-                    highlightLabel: "$55"
-                )
+                DSLollipopChart(data: [
+                    .init(label: "Jan", height: 20), .init(label: "Feb", height: 35),
+                    .init(label: "Mar", height: 55), .init(label: "Apr", height: 40),
+                    .init(label: "May", height: 25), .init(label: "Jun", height: 60),
+                ])
+                .highlightIndex(2)
+                .highlightLabel("$55")
                 .frame(height: 160)
             }
             .padding(theme.spacing.lg)
@@ -465,15 +465,15 @@ private struct GaugeProgressDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.xl) {
-                DSDivider(style: .subheader("Progress Circle"))
+                DSDivider().dividerStyle(.subheader("Progress Circle"))
 
                 HStack(spacing: theme.spacing.xl) {
-                    DSProgressCircle(progress: 0.25, size: 80)
-                    DSProgressCircle(progress: 0.6, size: 80)
-                    DSProgressCircle(progress: 1.0, size: 80)
+                    DSProgressCircle(progress: 0.25).circleSize(80)
+                    DSProgressCircle(progress: 0.6).circleSize(80)
+                    DSProgressCircle(progress: 1.0).circleSize(80)
                 }
 
-                DSDivider(style: .subheader("Semi-Circular Gauge"))
+                DSDivider().dividerStyle(.subheader("Semi-Circular Gauge"))
 
                 DSSemiCircularGauge(segments: [
                     .init(fraction: 0.6, color: theme.colors.textNeutral9),
@@ -498,11 +498,11 @@ private struct CalendarDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.xl) {
-                DSDivider(style: .subheader("Date Picker"))
+                DSDivider().dividerStyle(.subheader("Date Picker"))
 
                 DSDatePicker(startDate: $date)
 
-                DSDivider(style: .subheader("Day Picker"))
+                DSDivider().dividerStyle(.subheader("Day Picker"))
 
                 DSDayPicker(
                     items: [
@@ -527,43 +527,28 @@ private struct CardDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.lg) {
-                DSDivider(style: .subheader("Cards"))
+                DSDivider().dividerStyle(.subheader("Cards"))
 
-                DSCard(
-                    background: theme.colors.surfaceNeutral2,
-                    radius: theme.radius.xl,
-                    padding: theme.spacing.xl
-                ) {
+                DSCard {
                     DSText("Neutral card", style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
                 }
 
-                DSCard(
-                    background: theme.colors.surfacePrimary100,
-                    radius: theme.radius.xl,
-                    padding: theme.spacing.xl
-                ) {
-                    DSText("Primary card", style: theme.typography.bodyRegular, color: theme.colors.textNeutral0_5)
+                DSCard {
+                    DSText("Primary card", style: theme.typography.bodyRegular, color: theme.colors.textNeutral05)
                 }
+                .cardBackground(theme.colors.surfacePrimary100)
 
-                DSDivider(style: .subheader("Metric Cards"))
+                DSDivider().dividerStyle(.subheader("Metric Cards"))
 
-                DSMetricCard(
-                    title: "Walk",
-                    icon: .walking,
-                    value: "6,560",
-                    unit: "steps",
-                    background: theme.colors.surfacePrimary100,
-                    foreground: theme.colors.textNeutral0_5
-                )
+                DSMetricCard(title: "Walk", icon: .walking)
+                    .metricValue("6,560", unit: "steps")
+                    .metricBackground(theme.colors.surfacePrimary100)
+                    .metricForeground(theme.colors.textNeutral05)
 
-                DSMetricCard(
-                    title: "Calories",
-                    icon: .fireFlame,
-                    value: "1,248",
-                    unit: "kcal",
-                    background: theme.colors.surfaceSecondary100,
-                    foreground: theme.colors.textNeutral0_5
-                )
+                DSMetricCard(title: "Calories", icon: .fireFlame)
+                    .metricValue("1,248", unit: "kcal")
+                    .metricBackground(theme.colors.surfaceSecondary100)
+                    .metricForeground(theme.colors.textNeutral05)
             }
             .padding(theme.spacing.lg)
         }
@@ -593,21 +578,21 @@ private struct AvatarIconDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: theme.spacing.xl) {
-                DSDivider(style: .subheader("Avatars"))
+                DSDivider().dividerStyle(.subheader("Avatars"))
 
                 HStack(spacing: theme.spacing.lg) {
-                    DSAvatar(style: .monogram("H"), size: 56)
-                    DSAvatar(style: .monogram("AB"), size: 56)
-                    DSAvatar(style: .icon("star.fill"), size: 56)
+                    DSAvatar(style: .monogram("H")).avatarSize(56)
+                    DSAvatar(style: .monogram("AB")).avatarSize(56)
+                    DSAvatar(style: .icon("star.fill")).avatarSize(56)
                 }
 
                 HStack(spacing: theme.spacing.lg) {
-                    DSAvatar(style: .monogram("S"), size: 32)
-                    DSAvatar(style: .monogram("M"), size: 48)
-                    DSAvatar(style: .monogram("L"), size: 64)
+                    DSAvatar(style: .monogram("S")).avatarSize(32)
+                    DSAvatar(style: .monogram("M")).avatarSize(48)
+                    DSAvatar(style: .monogram("L")).avatarSize(64)
                 }
 
-                DSDivider(style: .subheader("Icon Images"))
+                DSDivider().dividerStyle(.subheader("Icon Images"))
 
                 LazyVGrid(columns: [
                     GridItem(.adaptive(minimum: 60))

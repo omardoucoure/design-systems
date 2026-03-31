@@ -17,26 +17,59 @@ public enum DSDividerStyle {
 
 /// A themed divider with four style variants.
 ///
-/// Usage:
+/// **Modifier-based API (preferred):**
+/// ```swift
+/// DSDivider()
+///
+/// DSDivider()
+///     .dividerStyle(.inset)
+///
+/// DSDivider()
+///     .dividerStyle(.subheader("Section Title"))
+///     .dividerColor(theme.colors.borderNeutral2)
+/// ```
+///
+/// **Legacy init (deprecated):**
 /// ```swift
 /// DSDivider(style: .fullBleed)
-/// DSDivider(style: .inset)
-/// DSDivider(style: .middle)
-/// DSDivider(style: .subheader("Section Title"))
+/// DSDivider(style: .inset, color: theme.colors.borderNeutral2)
 /// ```
 public struct DSDivider: View {
     @Environment(\.theme) private var theme
 
-    private let style: DSDividerStyle
-    private let color: Color?
+    private var _style: DSDividerStyle = .fullBleed
+    private var _color: Color?
 
-    public init(style: DSDividerStyle = .fullBleed, color: Color? = nil) {
-        self.style = style
-        self.color = color
+    // MARK: - Modifier-based init (preferred)
+
+    public init() {}
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSDivider() with .dividerStyle(), .dividerColor() modifiers instead")
+    public init(style: DSDividerStyle, color: Color? = nil) {
+        self._style = style
+        self._color = color
     }
 
+    // MARK: - Modifiers
+
+    public func dividerStyle(_ style: DSDividerStyle) -> DSDivider {
+        var copy = self
+        copy._style = style
+        return copy
+    }
+
+    public func dividerColor(_ color: Color?) -> DSDivider {
+        var copy = self
+        copy._color = color
+        return copy
+    }
+
+    // MARK: - Body
+
     public var body: some View {
-        switch style {
+        switch _style {
         case .fullBleed:
             dividerLine
 
@@ -63,7 +96,7 @@ public struct DSDivider: View {
 
     private var dividerLine: some View {
         Rectangle()
-            .fill(color ?? theme.colors.borderNeutral9_5)
+            .fill(_color ?? theme.colors.borderNeutral95)
             .frame(height: 1)
     }
 }

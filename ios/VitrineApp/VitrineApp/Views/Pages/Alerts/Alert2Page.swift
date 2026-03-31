@@ -25,80 +25,68 @@ struct Alert2Page: View {
     }
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "profile", label: "Profile", icon: .user, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
                 DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "nav8_profile",
                 name: "Hristo Hristov",
                 subtitle: "Visual Designer"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+            DSTopAppBar(title: "Profile") {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                }
-            }
+                }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
 
             ScrollView {
-                DSCard(
-                    background: theme.colors.surfaceNeutral2,
-                    radius: theme.radius.xl,
-                    padding: theme.spacing.xl
-                ) {
+                DSCard {
                     VStack(alignment: .leading, spacing: theme.spacing.xl) {
                         HStack {
                             DSIconImage(.mediaImagePlus, size: 40, color: theme.colors.textNeutral9)
                             Spacer()
-                            DSButton(style: .neutralLight, size: .medium, icon: .xmark) {}
+                            DSButton { }
+                                .buttonStyle(.neutralLight).buttonSize(.medium).icon(.xmark)
                         }
 
                         DSText("Chase down that beloved snapshot!",
                                style: theme.typography.display2, color: theme.colors.textNeutral9)
 
-                        DSDivider(style: .fullBleed)
+                        DSDivider()
 
                         DSText("With just a few taps, you can snap up and upload your star-studded profile pic.",
                                style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
 
-                        DSCard(
-                            background: theme.colors.surfacePrimary120,
-                            radius: theme.radius.xl,
-                            padding: theme.spacing.xl
-                        ) {
+                        DSCard {
                             HStack(spacing: theme.spacing.lg) {
                                 DSText("Let's Access Your Camera?",
-                                       style: theme.typography.label, color: theme.colors.textNeutral0_5)
+                                       style: theme.typography.label, color: theme.colors.textNeutral05)
                                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                                DSButton(
-                                    "Go!",
-                                    style: .filledB,
-                                    size: .medium,
-                                    icon: .camera,
-                                    iconPosition: .right
-                                ) {}
+                                DSButton("Go!") { }
+                                    .buttonSize(.medium)
+                                    .icon(.camera, position: .right)
                             }
                         }
+                        .cardBackground(theme.colors.surfacePrimary120)
                     }
                 }
                 .padding(.horizontal, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 }
 

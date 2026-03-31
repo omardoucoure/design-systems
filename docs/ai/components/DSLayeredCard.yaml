@@ -1,0 +1,165 @@
+component: DSLayeredCard
+category: layout
+figma_component_key: c463fd01b3f4f25634206a9a94b9a2eb3708b9bd
+figma_node_id: "88:137815"
+
+description: >
+  Layered depth card — 2-3 stacked rounded rectangles behind a content card creating
+  a visual depth/shadow effect. The front Content card holds the actual content (image, text),
+  while Layer-Middle and Layer-Back peek from behind to create a 3D stacking illusion.
+  Used across 22+ HaHo screens (Navigation, Profile, Login, Walkthrough, Media, Camera, Shopping, Chat, Settings).
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Hero image cards on onboarding/walkthrough screens
+  - Profile info cards with depth
+  - Featured content cards (carousel items, product highlights)
+  - Anywhere you want visual depth behind a content area
+  - Login hero cards, media player backgrounds
+
+never_use_when:
+  - Simple flat cards → use DSCard
+  - Overlapping menu/accordion cards → use DSOverlappingCards
+  - Cards that stack vertically with content in each → use DSOverlappingCards
+
+# ─── VARIANTS ───────────────────────────────────────────────────────────────────
+variants:
+  direction:
+    Bottom: "Shadow layers peek BELOW the content card (most common — 12 screens)"
+    Top: "Shadow layers peek ABOVE the content card (6 screens)"
+    Top-Right: "Layers offset upper-right, content at bottom-left (Profile-Info — 3 screens)"
+    Right: "Staircase offset right, front is tallest (side menu — 1 screen)"
+  layers:
+    "1": "Single shadow layer behind content"
+    "2": "Two shadow layers (back smaller than middle) for deeper depth"
+
+# ─── ANATOMY ────────────────────────────────────────────────────────────────────
+anatomy:
+  Content:
+    description: "Front card — holds the actual content (image, text, components)"
+    width: 369px (full container width)
+    height: "Variable — typically 280-490px depending on content"
+    radius: 32
+    position: "x=0, y=0 (top-left corner)"
+    fills: "MUST have a solid background fill + optional image fill on top"
+  Layer-Middle:
+    description: "Middle shadow card — narrower, peeks from behind Content"
+    width: 308px (~83% of Content width)
+    height: "Similar to Content height"
+    radius: 32
+    fill: "rgb(226,225,218) — warm grey"
+    position: "Centered horizontally, offset vertically based on Direction"
+  Layer-Back:
+    description: "Back shadow card — narrowest, peeks behind Layer-Middle"
+    width: 258px (~70% of Content width)
+    height: "Similar to Content height"
+    radius: 32
+    fill: "rgb(226,225,218) + rgb(0,0,0) @ 10% opacity (darker than middle)"
+    position: "Centered horizontally, offset more than Layer-Middle"
+
+# ─── LAYOUT ─────────────────────────────────────────────────────────────────────
+layout:
+  layout_mode: "NONE (absolute positioning — NOT auto-layout)"
+  container_width: 369px
+  container_height: "Variable — must encompass all layers including shadow peek"
+  z_order: "Layer-Back (index 0, bottom) → Layer-Middle (index 1) → Content (index 2, top)"
+
+# ─── FIGMA INSTANCE RULES (CRITICAL) ───────────────────────────────────────────
+figma_instance_rules:
+  content_background_required: >
+    CRITICAL: The Content card MUST ALWAYS have a solid background fill BEFORE any image fill.
+    The component's Content frame comes EMPTY (no fills). When adding an image, you MUST add
+    TWO fills: (1) surfaceNeutral2 rgb(235,235,230) as the base solid fill, then (2) the IMAGE
+    fill on top. Without the solid background, if the image has transparency or doesn't fully
+    render, the page background bleeds through and the card looks broken.
+
+    Correct: content.fills = [
+      { type: 'SOLID', color: surfaceNeutral2 },
+      { type: 'IMAGE', imageHash: '...', scaleMode: 'FILL' }
+    ]
+
+    Wrong: content.fills = [
+      { type: 'IMAGE', imageHash: '...', scaleMode: 'FILL' }
+    ]
+
+  detach_before_content: >
+    The Layered Card is a component instance. You CANNOT add children to frames inside
+    an instance. To add custom content (text, buttons, images):
+    1. Instantiate the component with the desired variant
+    2. Set layoutSizingHorizontal = 'FILL' on the instance
+    3. Detach the instance (detachInstance())
+    4. Now you can modify the Content frame's fills and add children
+    5. ALWAYS add solid background fill to Content after detaching
+
+  image_from_haho: >
+    Always copy HD images from HaHo reference screens. Find the reference image node,
+    read its fills, and copy via: JSON.parse(JSON.stringify(sourceNode.fills)).
+    Then PREPEND a solid surfaceNeutral2 fill before the image fill.
+
+  resize_for_context: >
+    After detaching, resize the Content card and shadow layers to fit the screen context:
+    - Walkthrough hero: Content 420-490px tall
+    - Profile hero: Content 280-340px tall
+    - Login hero: Content 300-400px tall
+    Also resize the overall container frame to encompass all layers with their offsets.
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: layered_content_solid_bg
+    trigger: after_detach
+    condition:
+      type: always
+    action:
+      type: set_fill
+      target: "child:Content"
+      value: "surfaceNeutral2"
+      position: "first"
+    check:
+      assertion: fill_matches_rgb
+      target: "child:Content.fills[0]"
+      expected: { r: 0.922, g: 0.922, b: 0.902 }
+      fail_message: "Content card MUST have a solid surfaceNeutral2 fill as its first fill — image fill goes second"
+    severity: critical
+    auto_fixable: true
+
+  - id: layered_content_bg_before_image
+    trigger: after_detach
+    condition:
+      type: always
+    action:
+      type: set_fill
+      target: "child:Content"
+      value: "surfaceNeutral2"
+      position: "first"
+    check:
+      assertion: equals
+      target: "child:Content.fills[0].type"
+      expected: "SOLID"
+      fail_message: "Content card first fill must be SOLID (not IMAGE) — solid bg goes before image fill"
+    severity: critical
+    auto_fixable: true
+
+  - id: layered_detach_before_modify
+    trigger: before_instantiate
+    condition:
+      type: always
+    action:
+      type: use_node_id
+      node_id: "88:137815"
+    check:
+      assertion: property_is_false
+      target: "self.isComponent"
+      expected: false
+      fail_message: "Layered Card must be detached (detachInstance()) before adding content to child frames"
+    severity: critical
+    auto_fixable: false
+
+# ─── HARD RULES ─────────────────────────────────────────────────────────────────
+rules:
+  - Content card MUST have a solid background fill (surfaceNeutral2) — NEVER leave it empty
+  - When adding an image, the solid fill goes FIRST, image fill goes SECOND (layered fills)
+  - Detach the instance before modifying Content — instances don't allow child manipulation
+  - Shadow layers (Layer-Middle, Layer-Back) should keep their original fills — don't modify them
+  - All cards use radius 32
+  - Container must be layoutSizingHorizontal='FILL' to stretch to parent width
+  - Z-order: Layer-Back at index 0, Layer-Middle at index 1, Content at index 2 (top)

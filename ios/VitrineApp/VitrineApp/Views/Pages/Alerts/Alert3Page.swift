@@ -24,10 +24,10 @@ struct Alert3Page: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "Your Activities", style: .smallCentered, onBack: { dismiss() }) {
+                DSTopAppBar(title: "Your Activities") {
                     DSAvatar(style: .image(Image("avatar_contact")),
                              size: CGSize(width: 56, height: 40), shape: .roundedRect(theme.radius.sm))
-                }
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
                 DSDayPicker(items: dayPickerItems, selectedId: $selectedDay)
                 ScrollView {
                     stepsGraphCard.padding(.bottom, showError ? 200 : 20)
@@ -43,7 +43,7 @@ struct Alert3Page: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -53,11 +53,13 @@ struct Alert3Page: View {
     }
 
     private var stepsGraphCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.xl) {
                 stepsInfoSection
-                DSStatRow(items: statItems, dividerColor: theme.colors.textNeutral9) { statValue(for: $0.id) }
-                DSStackedBarChart(columns: chartColumns, timeLabels: ["00:00", "12:00", "23:59"])
+                DSStatRow(items: statItems) { statValue(for: $0.id) }
+                    .statDividerColor(theme.colors.textNeutral9)
+                DSStackedBarChart(columns: chartColumns)
+                    .timeLabels(["00:00", "12:00", "23:59"])
             }
         }
         .padding(.horizontal, theme.spacing.sm)
@@ -68,7 +70,7 @@ struct Alert3Page: View {
             DSText("Steps", style: theme.typography.caption, color: theme.colors.textNeutral8)
             HStack(spacing: theme.spacing.lg) {
                 DSText("8,628", style: theme.typography.display2, color: theme.colors.textNeutral9)
-                DSBadge(variant: .tagSemantic, text: "+ 12%")
+                DSBadge(.tagSemantic).text("+ 12%")
             }
             DSText("Compared to Yesterday, 25 March",
                    style: theme.typography.smallRegular, color: theme.colors.textNeutral8)

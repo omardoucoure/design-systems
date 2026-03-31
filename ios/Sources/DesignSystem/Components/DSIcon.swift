@@ -6,7 +6,7 @@ import SwiftUI
 ///
 /// Usage:
 /// ```swift
-/// DSButton(style: .neutral, size: .medium, icon: .arrowLeftLong) { }
+/// DSButton { }.buttonStyle(.neutral).buttonSize(.medium).icon(.arrowLeftLong)
 /// Image(dsIcon: .bellNotification)
 /// ```
 public enum DSIcon: String, CaseIterable, Sendable {

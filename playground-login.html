@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=393, initial-scale=1.0">
+<title>Login Page - HaHo DS</title>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --surface-neutral-0-5: #FAFAF9;
+    --surface-neutral-2: #EBEBE6;
+    --surface-neutral-3: #DDDDD6;
+    --surface-primary-100: #465A54;
+    --surface-primary-120: #374A44;
+    --surface-secondary-100: #FF6A5F;
+    --text-neutral-9: #292927;
+    --text-neutral-0-5: #FAFAF9;
+    --border-neutral-2: #EBEBE6;
+    --border-neutral-9-5: #292927;
+    --radius-xl: 32px;
+    --radius-md: 16px;
+    --spacing-xxs: 4px;
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface-neutral-0-5);
+    width: 393px;
+    min-height: 852px;
+    margin: 0 auto;
+    padding: var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  /* Forms Card */
+  .forms-card {
+    background: var(--surface-neutral-2);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  /* Segmented Picker */
+  .segmented-picker {
+    display: flex;
+    background: var(--surface-neutral-0-5);
+    border-radius: 999px;
+    padding: 4px;
+    height: 48px;
+  }
+  .segmented-picker .tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-neutral-9);
+    border-radius: 999px;
+    cursor: pointer;
+    letter-spacing: -0.4px;
+  }
+  .segmented-picker .tab.active {
+    background: var(--surface-primary-120);
+    color: var(--text-neutral-0-5);
+  }
+
+  /* Header */
+  .welcome-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-neutral-9);
+    opacity: 0.75;
+    letter-spacing: -0.35px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-row h1 {
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text-neutral-9);
+    letter-spacing: -1.26px;
+  }
+  .logo {
+    width: 40px;
+    height: 40px;
+    background: var(--surface-primary-100);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo::after {
+    content: '';
+    position: absolute;
+    top: 8px; left: 8px;
+    width: 24px; height: 24px;
+    background: var(--surface-secondary-100);
+    border-radius: 4px;
+    transform: rotate(-15deg);
+  }
+
+  /* Input Fields */
+  .input-field {
+    background: var(--surface-neutral-0-5);
+    border: 2px solid var(--border-neutral-2);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+  .input-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .input-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-neutral-9);
+    opacity: 0.75;
+    letter-spacing: -0.24px;
+    line-height: 1.5;
+  }
+  .input-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-neutral-9);
+    letter-spacing: -0.4px;
+    line-height: 1.5;
+  }
+  .input-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .input-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: var(--text-neutral-9);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Checkbox + Forgot */
+  .remember-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-xxs) 0;
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+  .checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-neutral-9-5);
+    border-radius: 6px;
+  }
+  .checkbox-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-neutral-9);
+    letter-spacing: -0.4px;
+  }
+  .forgot-link {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-neutral-9);
+    letter-spacing: -0.4px;
+  }
+
+  /* CTA Button */
+  .cta-button {
+    background: var(--surface-secondary-100);
+    border-radius: 999px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+  }
+  .cta-button span {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-neutral-9);
+    letter-spacing: -0.4px;
+  }
+  .cta-button svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: var(--text-neutral-9);
+    stroke-width: 2;
+  }
+
+  /* Social Card */
+  .social-card {
+    background: var(--surface-primary-100);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    padding-top: calc(var(--spacing-xl) + var(--spacing-xs));
+    padding-bottom: calc(var(--spacing-xl) + var(--spacing-xs));
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  .social-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-neutral-0-5);
+    letter-spacing: -0.84px;
+  }
+  .social-buttons {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+  .social-btn {
+    flex: 1;
+    height: 56px;
+    background: var(--surface-neutral-2);
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .social-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-neutral-9);
+  }
+</style>
+</head>
+<body>
+
+<!-- Forms Card -->
+<div class="forms-card">
+  <!-- Segmented Picker -->
+  <div class="segmented-picker" style="margin-bottom: var(--spacing-sm);">
+    <div class="tab active">Log In</div>
+    <div class="tab">Sign Up</div>
+  </div>
+
+  <!-- Welcome -->
+  <span class="welcome-text">Welcome back!</span>
+
+  <!-- Header -->
+  <div class="header-row">
+    <h1>Login</h1>
+    <div class="logo"></div>
+  </div>
+
+  <!-- Email Input -->
+  <div class="input-field">
+    <div class="input-content">
+      <span class="input-label">Your Email</span>
+      <span class="input-value">hristov123@gmail.com</span>
+    </div>
+    <div class="input-icon">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 8 10-8"/></svg>
+    </div>
+  </div>
+
+  <!-- Password Input -->
+  <div class="input-field">
+    <div class="input-content">
+      <span class="input-label">Your Password</span>
+      <span class="input-value">&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;</span>
+    </div>
+    <div class="input-icon">
+      <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+    </div>
+  </div>
+
+  <!-- Remember / Forgot -->
+  <div class="remember-row">
+    <div class="checkbox-group">
+      <div class="checkbox"></div>
+      <span class="checkbox-label">Remember me</span>
+    </div>
+    <span class="forgot-link">Forgot Password?</span>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-button">
+    <span>Let's Roll!</span>
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </div>
+</div>
+
+<!-- Social Login Card -->
+<div class="social-card">
+  <span class="social-title">Continue with:</span>
+  <div class="social-buttons">
+    <div class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    </div>
+    <div class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </div>
+    <div class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

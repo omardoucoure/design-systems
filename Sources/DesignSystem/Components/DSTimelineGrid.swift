@@ -36,7 +36,7 @@ public struct DSTimelineSlot {
 /// The selected column is highlighted with accent color (orange dot, thicker line, full opacity).
 /// Tapping a column selects it. The grid auto-scrolls to the selected column on appear.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
 /// @State private var selectedTime = "14:00"
 ///
@@ -45,30 +45,22 @@ public struct DSTimelineSlot {
 ///     selectedTime: $selectedTime,
 ///     slots: [
 ///         DSTimelineSlot(id: "meeting", startHour: 10, row: 0, columnSpan: 4) {
-///             DSEventCard(...)
+///             DSEventCard(title: "Meeting", subtitle: "Team sync")
 ///         },
 ///     ]
 /// )
+/// .timelineColumnWidth(60)
 /// ```
 public struct DSTimelineGrid: View {
     @Environment(\.theme) private var theme
 
-    private let timeLabels: [String]
-    @Binding private var selectedTime: String
-    private let slots: [DSTimelineSlot]
-    private let columnWidth: CGFloat
+    // Core (required)
+    private var _timeLabels: [String]
+    @Binding private var _selectedTime: String
+    private var _slots: [DSTimelineSlot]
 
-    public init(
-        timeLabels: [String],
-        selectedTime: Binding<String>,
-        columnWidth: CGFloat = 56,
-        slots: [DSTimelineSlot] = []
-    ) {
-        self.timeLabels = timeLabels
-        self._selectedTime = selectedTime
-        self.columnWidth = columnWidth
-        self.slots = slots
-    }
+    // Modifier props (optional, with defaults)
+    private var _columnWidth: CGFloat = 56
 
     /// Height for each event row (card + spacing).
     private let rowHeight: CGFloat = 100
@@ -76,25 +68,54 @@ public struct DSTimelineGrid: View {
     /// Vertical offset where event rows start (below time labels + gap).
     private let eventsTopOffset: CGFloat = 36
 
+    // MARK: - New Modifier API
+
+    /// Creates a timeline grid with time labels, selection binding, and event slots.
+    public init(
+        timeLabels: [String],
+        selectedTime: Binding<String>,
+        slots: [DSTimelineSlot] = []
+    ) {
+        self._timeLabels = timeLabels
+        self.__selectedTime = selectedTime
+        self._slots = slots
+    }
+
+    /// Sets the width of each time column. Default is 56.
+    public func timelineColumnWidth(_ width: CGFloat) -> Self {
+        var copy = self; copy._columnWidth = width; return copy
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use DSTimelineGrid(timeLabels:selectedTime:slots:) with modifier methods instead")
+    public init(
+        timeLabels: [String],
+        selectedTime: Binding<String>,
+        columnWidth: CGFloat,
+        slots: [DSTimelineSlot] = []
+    ) {
+        self._timeLabels = timeLabels
+        self.__selectedTime = selectedTime
+        self._columnWidth = columnWidth
+        self._slots = slots
+    }
+
     public var body: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
+        DSCard {
             ScrollViewReader { proxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     ZStack(alignment: .topLeading) {
                         // Time columns
                         HStack(alignment: .top, spacing: 0) {
-                            ForEach(Array(timeLabels.enumerated()), id: \.offset) { index, time in
-                                let isSelected = time == selectedTime
+                            ForEach(Array(_timeLabels.enumerated()), id: \.offset) { index, time in
+                                let isSelected = time == _selectedTime
                                 timeColumn(time: time, isSelected: isSelected)
-                                    .frame(width: columnWidth)
+                                    .frame(width: _columnWidth)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         withAnimation(.easeInOut(duration: 0.2)) {
-                                            selectedTime = time
+                                            _selectedTime = time
                                         }
                                     }
                                     .id(time)
@@ -102,11 +123,11 @@ public struct DSTimelineGrid: View {
                         }
 
                         // Event slots — positioned by hour and row
-                        ForEach(slots, id: \.id) { slot in
+                        ForEach(_slots, id: \.id) { slot in
                             slot.content
-                                .frame(width: columnWidth * CGFloat(slot.columnSpan))
+                                .frame(width: _columnWidth * CGFloat(slot.columnSpan))
                                 .offset(
-                                    x: columnWidth * CGFloat(slot.startHour),
+                                    x: _columnWidth * CGFloat(slot.startHour),
                                     y: eventsTopOffset + CGFloat(slot.row) * rowHeight
                                 )
                                 .allowsHitTesting(false)
@@ -118,12 +139,13 @@ public struct DSTimelineGrid: View {
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         withAnimation {
-                            proxy.scrollTo(selectedTime, anchor: .center)
+                            proxy.scrollTo(_selectedTime, anchor: .center)
                         }
                     }
                 }
             }
         }
+        .cardPadding(0)
         .clipped()
     }
 

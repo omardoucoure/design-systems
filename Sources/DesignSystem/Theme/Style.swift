@@ -52,11 +52,11 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
         if isDark {
             return ColorTokens(
                 // Surface — dark: inverted neutrals, swapped brand colors
-                surfaceNeutral0_5: p.neutrals.n9,
-                surfaceNeutral1: p.neutrals.n8_5,
-                surfaceNeutral2: p.neutrals.n8_5,
+                surfaceNeutral05: p.neutrals.n9,
+                surfaceNeutral1: p.neutrals.n85,
+                surfaceNeutral2: p.neutrals.n85,
                 surfaceNeutral3: p.neutrals.n8,
-                surfaceNeutral9: p.neutrals.n0_5,
+                surfaceNeutral9: p.neutrals.n05,
                 surfacePrimary100: p.secondary100,
                 surfacePrimary120: p.neutrals.n5,
                 surfaceSecondary100: p.primary100,
@@ -64,18 +64,18 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 textNeutral9: p.neutrals.n3,
                 textNeutral8: p.neutrals.n2,
                 textNeutral3: p.neutrals.n8,
-                textNeutral2: p.neutrals.n8_5,
-                textNeutral0_5: p.neutrals.n9,
+                textNeutral2: p.neutrals.n85,
+                textNeutral05: p.neutrals.n9,
                 textPrimary100: p.secondary100,
                 textSecondary100: p.primary100,
                 textOpacity75: 0.75,
                 textOpacity50: 0.50,
                 // Border — dark: inverted neutrals, brand colors stay
-                borderNeutral9_5: p.neutrals.n3,
+                borderNeutral95: p.neutrals.n3,
                 borderNeutral8: p.neutrals.n2,
                 borderNeutral3: p.neutrals.n8,
-                borderNeutral2: p.neutrals.n8_5,
-                borderNeutral0_5: p.neutrals.n9,
+                borderNeutral2: p.neutrals.n85,
+                borderNeutral05: p.neutrals.n9,
                 borderSecondary100: p.secondary100,
                 borderPrimary100: p.primary100,
                 // Semantic — shared
@@ -87,7 +87,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
         } else {
             return ColorTokens(
                 // Surface — light: direct mapping
-                surfaceNeutral0_5: p.neutrals.n0_5,
+                surfaceNeutral05: p.neutrals.n05,
                 surfaceNeutral1: p.neutrals.n1,
                 surfaceNeutral2: p.neutrals.n2,
                 surfaceNeutral3: p.neutrals.n3,
@@ -100,17 +100,17 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 textNeutral8: p.neutrals.n8,
                 textNeutral3: p.neutrals.n3,
                 textNeutral2: p.neutrals.n2,
-                textNeutral0_5: p.neutrals.n0_5,
+                textNeutral05: p.neutrals.n05,
                 textPrimary100: p.primary100,
                 textSecondary100: p.secondary100,
                 textOpacity75: 0.75,
                 textOpacity50: 0.50,
                 // Border — light: direct
-                borderNeutral9_5: p.neutrals.n9,
+                borderNeutral95: p.neutrals.n9,
                 borderNeutral8: p.neutrals.n8,
                 borderNeutral3: p.neutrals.n3,
                 borderNeutral2: p.neutrals.n2,
-                borderNeutral0_5: p.neutrals.n0_5,
+                borderNeutral05: p.neutrals.n05,
                 borderSecondary100: p.secondary100,
                 borderPrimary100: p.primary100,
                 // Semantic — shared

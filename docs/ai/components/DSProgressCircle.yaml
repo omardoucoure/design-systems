@@ -17,14 +17,16 @@ never_use_when:
   - Multi-step linear progress → use a custom ProgressView or linear bar
   - Semi-circular gauge → use DSSemiCircularGauge
 
-# ─── PARAMETERS ─────────────────────────────────────────────────────────────────
-parameters:
+# ─── INIT PARAMETER ─────────────────────────────────────────────────────────────
+init_parameters:
   progress:
     type: Double (0.0–1.0)
     required: true
     note: Clamped to [0, 1] automatically
 
-  size:
+# ─── MODIFIERS ──────────────────────────────────────────────────────────────────
+modifiers:
+  circleSize:
     type: CGFloat
     default: 40px
     common_values:
@@ -42,15 +44,20 @@ parameters:
       The track ring is always 1px thin (trackLineWidth default).
       Only override if Figma shows a noticeably thinner or thicker arc.
 
+  trackLineWidth:
+    type: CGFloat
+    default: 1px
+    note: Background track stroke width
+
   customLabel:
-    type: String?
+    type: String
     default: percentage integer (e.g., "75" for 0.75 progress)
     use_when:
       - Figma shows a unit label ("75%", "3/5", "7h")
       - Figma shows a non-numeric center label
 
   progressColor:
-    type: Color?
+    type: Color
     default: theme.colors.surfaceSecondary100 (brand accent)
     use_when: Figma shows a different progress arc color (e.g., error red, success green)
     common_overrides:
@@ -59,12 +66,12 @@ parameters:
       info: theme.colors.infoFocus
 
   trackColor:
-    type: Color?
+    type: Color
     default: theme.colors.surfaceNeutral3
     note: Usually keep default — only override if Figma shows a visible colored track
 
   labelColor:
-    type: Color?
+    type: Color
     default: textNeutral9.opacity(0.75)
 
 # ─── VISUAL STRUCTURE ────────────────────────────────────────────────────────────
@@ -73,6 +80,51 @@ visual_structure:
     1_track: "1px thin full-circle ring, surfaceNeutral3, inset by lineWidth/2"
     2_arc: "Thick arc (lineWidth), rounded caps, rotated -90° (starts at top)"
     3_label: "Center text — percentage or customLabel"
+
+# ─── FIGMA INSTANCE RULES ────────────────────────────────────────────────────
+figma_instance_rules:
+  dark_background_override: >
+    When DSProgressCircle is placed inside a dark card (surfacePrimary100/120),
+    the label text defaults to dark (textNeutral9) which becomes INVISIBLE.
+    Override the label text fill to textNeutral0_5 (rgb 250,250,249) for contrast.
+    Also override the track ring stroke to textNeutral0_5 at 20% opacity so it's
+    visible on the dark background. The progress arc color (coral) is fine as-is.
+    In Swift: chain .labelColor(theme.colors.textNeutral0_5) and
+    .trackColor(theme.colors.textNeutral0_5.opacity(0.2)).
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: progress_label_dark_bg
+    trigger: after_instantiate
+    condition:
+      type: parent_fill_dark
+    action:
+      type: set_fill
+      target: "child:Label"
+      value: "textNeutral0_5"
+    check:
+      assertion: fill_contrasts
+      target: "child:Label.fills"
+      expected: "parent.fills"
+      fail_message: "Label text is dark on a dark parent — override labelColor to textNeutral0_5"
+    severity: critical
+    auto_fixable: true
+
+  - id: progress_track_dark_bg
+    trigger: after_instantiate
+    condition:
+      type: parent_fill_dark
+    action:
+      type: set_fill
+      target: "child:Track"
+      value: "textNeutral0_5_opacity_0.2"
+    check:
+      assertion: fill_contrasts
+      target: "child:Track.strokes"
+      expected: "parent.fills"
+      fail_message: "Track ring is invisible on dark parent — override trackColor to textNeutral0_5 at 20% opacity"
+    severity: critical
+    auto_fixable: true
 
 # ─── HARD RULES ──────────────────────────────────────────────────────────────────
 rules:

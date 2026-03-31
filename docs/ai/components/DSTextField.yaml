@@ -28,6 +28,12 @@ variants:
       - Fields placed inside cards (the cream background contrasts with surfaceNeutral2 card)
       - Auth screens, profile forms, checkout
     figma_signal: field has a visible filled background rectangle
+    figma_background_note: >
+      IMPORTANT: In Figma, the Inputs-Filled component's "Input" frame defaults to surfaceNeutral2 (rgb 235,235,230).
+      But the Swift DSTextField uses surfaceNeutral0_5 (white/cream) as its background.
+      When placing Inputs-Filled instances inside a surfaceNeutral2 card in Figma, the input blends in.
+      ALWAYS override the "Input" frame fill to surfaceNeutral0_5 (rgb 250,250,249) for proper contrast.
+      All HaHo login/signup screens follow this pattern — input fields are always lighter than their card container.
 
   lined:
     background: .clear (transparent)
@@ -123,6 +129,27 @@ background_on_cards:
     When DSTextField is placed inside a DSCard with surfaceNeutral2 background,
     the .filled variant's surfaceNeutral0_5 (cream/white) creates natural contrast.
     Do NOT set fieldBackgroundColor manually unless Figma explicitly shows a different color.
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: textfield_bg_contrast
+    trigger: after_append
+    condition:
+      type: parent_fill_is
+      token: surfaceNeutral2
+      rgb: [235, 235, 230]
+    action:
+      type: set_fill
+      target: "child:Input"
+      token: surfaceNeutral0_5
+      rgb: [250, 250, 249]
+    check:
+      assertion: fill_contrasts
+      target: "child:Input"
+      tolerance: 10
+      fail_message: "Input bg must be surfaceNeutral0_5 when inside surfaceNeutral2 card"
+    severity: critical
+    auto_fixable: true
 
 # ─── HARD RULES ──────────────────────────────────────────────────────────────────
 rules:

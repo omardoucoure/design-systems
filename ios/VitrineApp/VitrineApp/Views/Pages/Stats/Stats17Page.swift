@@ -25,24 +25,22 @@ struct Stats17Page: View {
     }
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "statistics", label: "Statistics", icon: .activity, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
                 DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "stats17_player1",
                 name: "Hristo Hristov",
                 subtitle: "Sports Fan"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var mainContent: some View {
@@ -62,17 +60,17 @@ struct Stats17Page: View {
 
             fabButton
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Top App Bar
 
     private var topAppBar: some View {
-        DSTopAppBar(title: "Statistics", style: .smallCentered, onBack: { dismiss() }) {
-            DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+        DSTopAppBar(title: "Statistics") {
+            DSButton {
                 withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-            }
-        }
+            }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
+        }.appBarStyle(.smallCentered).onBack { dismiss() }
     }
 
     // MARK: - Player Cards
@@ -104,11 +102,7 @@ struct Stats17Page: View {
         score: LocalizedStringKey,
         icon: DSIcon
     ) -> some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.md) {
                 // Avatar + more icon
                 HStack(alignment: .top) {
@@ -120,7 +114,7 @@ struct Stats17Page: View {
 
                     Spacer()
 
-                    DSButton(style: .text, size: .small, icon: .moreVert) {}
+                    DSButton {}.buttonStyle(.text).buttonSize(.small).icon(.moreVert)
                 }
 
                 // Name + location
@@ -138,7 +132,7 @@ struct Stats17Page: View {
                 }
 
                 // Score button
-                DSButton(score, style: .neutralLight, size: .small, icon: icon, iconPosition: .right) {}
+                DSButton(score) {}.buttonStyle(.neutralLight).buttonSize(.small).icon(icon, position: .right)
                     .frame(maxWidth: .infinity)
             }
         }
@@ -147,26 +141,21 @@ struct Stats17Page: View {
     // MARK: - Chart Card
 
     private var chartCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
-            DSHorizontalBarChart(
-                data: chartData,
-                leftColor: theme.brand.primitives.secondary120,
-                rightColor: theme.colors.borderNeutral9_5,
-                rightOpacity: 0.75
-            )
+        DSCard {
+            DSHorizontalBarChart(data: chartData)
+                .leftColor(theme.brand.primitives.secondary120)
+                .rightColor(theme.colors.borderNeutral95)
+                .rightOpacity(0.75)
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxxl)
         }
+        .cardPadding(0)
     }
 
     // MARK: - FAB Button
 
     private var fabButton: some View {
-        DSButton("Choose Players", style: .filledA, size: .big, icon: .playstationGamepad, iconPosition: .right) {}
+        DSButton("Choose Players") {}.buttonStyle(.filledA).icon(.playstationGamepad, position: .right)
             .shadow(color: .black.opacity(0.02), radius: 8, x: 0, y: 4)
             .shadow(color: .black.opacity(0.18), radius: 48, x: 0, y: 24)
             .padding(.bottom, theme.spacing.sm)

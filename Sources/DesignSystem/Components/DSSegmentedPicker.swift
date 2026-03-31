@@ -13,36 +13,73 @@ public enum DSSegmentedPickerStyle: Sendable {
 
 // MARK: - DSSegmentedPicker
 
-/// A themed segmented control with two style variants.
+/// A themed segmented control with three style variants.
 ///
 /// Usage:
 /// ```swift
 /// // Navigation Tabs style (default)
 /// DSSegmentedPicker(items: ["Day", "Week", "Month"], selectedIndex: $index)
 ///
-/// // Pills style
-/// DSSegmentedPicker(items: ["All", "Active", "Done"], selectedIndex: $index, style: .pills)
+/// // Pills style with custom background
+/// DSSegmentedPicker(items: ["All", "Active", "Done"], selectedIndex: $index)
+///     .pickerStyle(.pills)
+///     .containerBackground(.white)
 /// ```
 public struct DSSegmentedPicker: View {
     @Environment(\.theme) private var theme
     @Namespace private var segmentAnimation
 
+    // Core (required)
     private let items: [LocalizedStringKey]
     @Binding private var selectedIndex: Int
-    private let style: DSSegmentedPickerStyle
+
+    // Modifier-based (optional)
+    private var _pickerStyle: DSSegmentedPickerStyle = .tabs
+    private var _containerBackground: Color?
+
+    // MARK: - Minimal Init
 
     public init(
         items: [LocalizedStringKey],
-        selectedIndex: Binding<Int>,
-        style: DSSegmentedPickerStyle = .tabs
+        selectedIndex: Binding<Int>
     ) {
         self.items = items
         self._selectedIndex = selectedIndex
-        self.style = style
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use .pickerStyle() and .containerBackground() modifiers instead")
+    public init(
+        items: [LocalizedStringKey],
+        selectedIndex: Binding<Int>,
+        style: DSSegmentedPickerStyle,
+        containerBackground: Color? = nil
+    ) {
+        self.items = items
+        self._selectedIndex = selectedIndex
+        self._pickerStyle = style
+        self._containerBackground = containerBackground
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the visual style of the segmented picker.
+    public func pickerStyle(_ style: DSSegmentedPickerStyle) -> Self {
+        var copy = self
+        copy._pickerStyle = style
+        return copy
+    }
+
+    /// Overrides the container background color.
+    public func containerBackground(_ color: Color?) -> Self {
+        var copy = self
+        copy._containerBackground = color
+        return copy
     }
 
     public var body: some View {
-        switch style {
+        switch _pickerStyle {
         case .tabs:
             tabsLayout
         case .pills:
@@ -69,7 +106,7 @@ public struct DSSegmentedPicker: View {
                         .tracking(theme.typography.label.tracking)
                         .foregroundStyle(
                             isSelected
-                                ? theme.colors.textNeutral0_5
+                                ? theme.colors.textNeutral05
                                 : theme.colors.textNeutral9
                         )
                         .frame(maxWidth: .infinity)
@@ -87,7 +124,7 @@ public struct DSSegmentedPicker: View {
             }
         }
         .padding(theme.spacing.xs)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(_containerBackground ?? theme.colors.surfaceNeutral2)
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
     }
 
@@ -108,7 +145,7 @@ public struct DSSegmentedPicker: View {
                         .tracking(theme.typography.label.tracking)
                         .foregroundStyle(
                             isSelected
-                                ? theme.colors.textNeutral0_5
+                                ? theme.colors.textNeutral05
                                 : theme.colors.textNeutral9
                         )
                         .frame(maxWidth: .infinity)
@@ -127,7 +164,7 @@ public struct DSSegmentedPicker: View {
             }
         }
         .padding(theme.spacing.xs)
-        .background(theme.colors.surfaceNeutral2)
+        .background(_containerBackground ?? theme.colors.surfaceNeutral2)
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
     }
     // MARK: - Underline Layout
@@ -151,7 +188,7 @@ public struct DSSegmentedPicker: View {
                         .frame(height: 48)
                         .overlay(alignment: .bottom) {
                             Rectangle()
-                                .fill(theme.colors.borderNeutral9_5)
+                                .fill(theme.colors.borderNeutral95)
                                 .frame(height: isSelected ? theme.borders.widthMd : theme.borders.widthSm)
                         }
                 }
@@ -189,7 +226,7 @@ public struct DSPageControl: View {
                         .frame(width: 32, height: 8)
                 } else {
                     Circle()
-                        .fill(theme.colors.borderNeutral9_5)
+                        .fill(theme.colors.borderNeutral95)
                         .frame(width: 8, height: 8)
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.2)) {

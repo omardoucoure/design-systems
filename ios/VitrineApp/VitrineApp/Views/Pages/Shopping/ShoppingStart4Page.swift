@@ -28,7 +28,7 @@ struct ShoppingStart4Page: View {
                 .padding(.horizontal, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
     }
 
@@ -43,7 +43,7 @@ struct ShoppingStart4Page: View {
                     .scaledToFill()
             },
             actions: {
-                DSButton("Him", style: .neutral, size: .medium, icon: .male, iconPosition: .right) {}
+                DSButton("Him") {}.buttonStyle(.neutral).buttonSize(.medium).icon(.male, position: .right)
             }
         )
     }
@@ -53,15 +53,15 @@ struct ShoppingStart4Page: View {
     private var categoryPicker: some View {
         DSSegmentedPicker(
             items: ["Shoes", "Clothing", "Accessories"],
-            selectedIndex: $categoryIndex,
-            style: .pills
+            selectedIndex: $categoryIndex
         )
+        .pickerStyle(.pills)
     }
 
     // MARK: - New Arrivals
 
     private var newArrivalsSection: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(spacing: theme.spacing.md) {
                 // Header row
                 HStack {
@@ -80,7 +80,7 @@ struct ShoppingStart4Page: View {
 
                     Spacer()
 
-                    DSButton("See all", style: .outlined, size: .small) {}
+                    DSButton("See all") {}.buttonStyle(.outlined).buttonSize(.small)
                 }
 
                 // Products row
@@ -90,34 +90,31 @@ struct ShoppingStart4Page: View {
                             image: "shop4_product1",
                             brand: "Roa® Andreas",
                             subtitle: "Hybrid Boots",
-                            price: "$282",
-                            originalPrice: "$470",
-                            discount: "40%",
-                            photoWidth: 140,
-                            photoHeight: 180
+                            price: "$282"
                         )
+                        .originalPrice("$470")
+                        .discount("40%")
+                        .photoSize(width: 140, height: 180)
 
                         DSProductCard(
                             image: "shop4_product2",
                             brand: "Roa® CVO",
                             subtitle: "High-Top Sneakers",
-                            price: "$192",
-                            originalPrice: "$320",
-                            discount: "40%",
-                            photoWidth: 140,
-                            photoHeight: 180
+                            price: "$192"
                         )
+                        .originalPrice("$320")
+                        .discount("40%")
+                        .photoSize(width: 140, height: 180)
 
                         DSProductCard(
                             image: "shop4_product3",
                             brand: "Roa® Katharina",
                             subtitle: "Approach Shoes",
-                            price: "$412",
-                            originalPrice: "$430",
-                            discount: "40%",
-                            photoWidth: 140,
-                            photoHeight: 180
+                            price: "$412"
                         )
+                        .originalPrice("$430")
+                        .discount("40%")
+                        .photoSize(width: 140, height: 180)
                     }
                 }
             }
@@ -127,19 +124,19 @@ struct ShoppingStart4Page: View {
     // MARK: - Sale Card
 
     private var saleCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("60% off")
                         .font(.system(size: 48, weight: .medium))
                         .tracking(-2.4)
-                        .foregroundStyle(theme.colors.textNeutral0_5)
+                        .foregroundStyle(theme.colors.textNeutral05)
 
                     HStack(alignment: .bottom) {
                         Text("Orders over $200")
                             .font(theme.typography.label.font)
                             .tracking(theme.typography.label.tracking)
-                            .foregroundStyle(theme.colors.textNeutral0_5)
+                            .foregroundStyle(theme.colors.textNeutral05)
 
                         Spacer()
 
@@ -151,7 +148,7 @@ struct ShoppingStart4Page: View {
                 Text("Free standard Delivery on Orders over $200")
                     .font(theme.typography.small.font)
                     .tracking(theme.typography.small.tracking)
-                    .foregroundStyle(theme.colors.textNeutral0_5)
+                    .foregroundStyle(theme.colors.textNeutral05)
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
                     .padding(24)
@@ -160,6 +157,8 @@ struct ShoppingStart4Page: View {
             }
             .padding(theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardPadding(0)
     }
 
     // MARK: - Mini Bar Chart (decorative)

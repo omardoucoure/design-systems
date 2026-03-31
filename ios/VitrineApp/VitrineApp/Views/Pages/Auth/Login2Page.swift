@@ -21,16 +21,17 @@ struct Login2Page: View {
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
     }
 
     // MARK: - Forms Card
 
     private var formsCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                DSSegmentedPicker(items: ["Log In", "Sign Up"], selectedIndex: $selectedTab, style: .underline)
+                DSSegmentedPicker(items: ["Log In", "Sign Up"], selectedIndex: $selectedTab)
+                    .pickerStyle(.underline)
                     .padding(.bottom, theme.spacing.md)
 
                 DSText("Welcome back!", style: theme.typography.caption, color: theme.colors.textNeutral9.opacity(0.75))
@@ -44,21 +45,25 @@ struct Login2Page: View {
                         .frame(height: 40)
                 }
 
-                DSTextField(text: $email, placeholder: "Enter your email", label: "Your Email",
-                            variant: .filled, state: .filled, icon: .mail)
+                DSTextField(text: $email, placeholder: "Enter your email")
+                    .label("Your Email")
+                    .inputState(.filled)
+                    .icon(.mail)
 
-                DSTextField(text: $password, placeholder: "Enter your password", label: "Your Password",
-                            variant: .filled, state: .filled, isSecure: true)
+                DSTextField(text: $password, placeholder: "Enter your password")
+                    .label("Your Password")
+                    .inputState(.filled)
+                    .secure()
 
                 HStack {
-                    DSCheckbox(isOn: $rememberMe, label: "Remember me")
+                    DSCheckbox(isOn: $rememberMe).label("Remember me")
                     Spacer()
-                    DSButton("Forgot Password?", style: .text, size: .medium) {}
+                    DSButton("Forgot Password?") {}.buttonStyle(.text).buttonSize(.medium)
                 }
                 .padding(.vertical, theme.spacing.xxs)
 
-                DSButton("Let's Roll!", style: .filledA, size: .big,
-                         iconRight: "arrow.right", isFullWidth: true) {}
+                DSButton("Let's Roll!") {}
+                    .buttonStyle(.filledA).systemIcon("arrow.right", position: .right).fullWidth()
             }
         }
     }
@@ -66,7 +71,7 @@ struct Login2Page: View {
     // MARK: - Social Login Card
 
     private var socialLoginCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral9)
 
@@ -81,8 +86,8 @@ struct Login2Page: View {
     }
 
     private func socialButton(label: String, imageName: String) -> some View {
-        DSButton(style: .filledC, size: .big, assetIcon: imageName, isFullWidth: true) {
-        }
+        DSButton { }
+            .buttonStyle(.filledC).assetIcon(imageName).fullWidth()
         .accessibilityLabel(label)
     }
 }

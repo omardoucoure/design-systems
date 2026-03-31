@@ -29,7 +29,7 @@ public struct DSIconSegmentedPickerItem: Identifiable {
 ///
 /// Figma: "Segmented Picker" used in shopping gender selection.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
 /// DSIconSegmentedPicker(
 ///     items: [
@@ -38,42 +38,67 @@ public struct DSIconSegmentedPickerItem: Identifiable {
 ///     ],
 ///     selectedId: $selectedGender
 /// )
+/// .pickerWidth(180)
 /// ```
 public struct DSIconSegmentedPicker: View {
     @Environment(\.theme) private var theme
 
-    private let items: [DSIconSegmentedPickerItem]
-    @Binding private var selectedId: Int
-    private let width: CGFloat
+    // Core params (init)
+    private let _items: [DSIconSegmentedPickerItem]
+    @Binding private var _selectedId: Int
 
+    // Modifier params
+    private var _width: CGFloat = 145
+
+    /// Creates an icon segmented picker. Use `.pickerWidth()` modifier to customize width.
+    public init(
+        items: [DSIconSegmentedPickerItem],
+        selectedId: Binding<Int>
+    ) {
+        self._items = items
+        self.__selectedId = selectedId
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use init(items:selectedId:) with .pickerWidth() modifier")
     public init(
         items: [DSIconSegmentedPickerItem],
         selectedId: Binding<Int>,
         width: CGFloat = 145
     ) {
-        self.items = items
-        self._selectedId = selectedId
-        self.width = width
+        self._items = items
+        self.__selectedId = selectedId
+        self._width = width
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the fixed width of the picker. Default is 145.
+    public func pickerWidth(_ width: CGFloat) -> Self {
+        var copy = self
+        copy._width = width
+        return copy
     }
 
     public var body: some View {
         HStack(spacing: theme.spacing.xxs) {
-            ForEach(items) { item in
+            ForEach(_items) { item in
                 segmentButton(item)
             }
         }
         .padding(theme.spacing.xs)
         .background(theme.colors.surfaceNeutral2)
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
-        .frame(width: width)
+        .frame(width: _width)
     }
 
     private func segmentButton(_ item: DSIconSegmentedPickerItem) -> some View {
-        let isSelected = item.id == selectedId
+        let isSelected = item.id == _selectedId
 
         return Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
-                selectedId = item.id
+                _selectedId = item.id
             }
         } label: {
             HStack(spacing: theme.spacing.xs) {
@@ -91,7 +116,7 @@ public struct DSIconSegmentedPicker: View {
             }
             .foregroundStyle(
                 isSelected
-                    ? theme.colors.textNeutral0_5
+                    ? theme.colors.textNeutral05
                     : theme.colors.textNeutral9
             )
             .padding(.horizontal, theme.spacing.sm)

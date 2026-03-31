@@ -4,42 +4,101 @@ import SwiftUI
 
 /// A themed list item row matching the Figma List component.
 ///
-/// Supports generic leading and trailing content slots, with convenience
-/// initializers for common patterns (icon + arrow).
+/// Supports generic leading and trailing content slots, with modifier-based
+/// customization for optional properties.
 ///
 /// Usage:
 /// ```swift
 /// // Minimal
-/// DSListItem(headline: "Settings")
-///
-/// // Icon + arrow (convenience)
-/// DSListItem(
-///     headline: "Privacy",
-///     leadingIcon: "lock",
-///     showTrailingArrow: true
-/// )
-///
-/// // Generic leading/trailing content
-/// DSListItem(headline: "Notifications") {
-///     DSToggle(isOn: .constant(true))
+/// DSListItem("Settings") {
+///     EmptyView()
 /// } trailing: {
-///     DSBadge(variant: .numberBrand, count: 5)
+///     EmptyView()
 /// }
+///
+/// // With modifiers
+/// DSListItem("Privacy") {
+///     Image(systemName: "lock")
+/// } trailing: {
+///     Image(systemName: "chevron.right")
+/// }
+/// .overline("Category")
+/// .metadata("3m ago")
+/// .showDivider()
+///
+/// // Leading only
+/// DSListItem("Notifications") {
+///     DSProgressCircle(progress: 0.8, size: 40)
+/// }
+/// .supportingText("3 new")
+///
+/// // No slots
+/// DSListItem("Simple row")
+///     .metadata("Info")
 /// ```
 public struct DSListItem<Leading: View, Trailing: View>: View {
     @Environment(\.theme) private var theme
 
-    private let overline: LocalizedStringKey?
-    private let headline: LocalizedStringKey
-    private let supportingText: LocalizedStringKey?
-    private let metadata: LocalizedStringKey?
-    private let showDivider: Bool
-    private let action: (() -> Void)?
-    private let leading: Leading
-    private let trailing: Trailing
+    // Core (required)
+    private let _headline: LocalizedStringKey
+    private let _leading: Leading
+    private let _trailing: Trailing
 
-    // MARK: - Full Generic Init
+    // Configurable via modifiers (all have defaults)
+    private var _overline: LocalizedStringKey?
+    private var _supportingText: LocalizedStringKey?
+    private var _metadata: LocalizedStringKey?
+    private var _showDivider: Bool = false
+    private var _action: (() -> Void)?
 
+    // MARK: - Init (full generic: leading + trailing)
+
+    /// Full generic init with leading and trailing view builders.
+    public init(
+        _ headline: LocalizedStringKey,
+        @ViewBuilder leading: () -> Leading,
+        @ViewBuilder trailing: () -> Trailing
+    ) {
+        self._headline = headline
+        self._leading = leading()
+        self._trailing = trailing()
+    }
+
+    // MARK: - Modifiers
+
+    public func overline(_ text: LocalizedStringKey) -> Self {
+        var copy = self
+        copy._overline = text
+        return copy
+    }
+
+    public func supportingText(_ text: LocalizedStringKey) -> Self {
+        var copy = self
+        copy._supportingText = text
+        return copy
+    }
+
+    public func metadata(_ text: LocalizedStringKey) -> Self {
+        var copy = self
+        copy._metadata = text
+        return copy
+    }
+
+    public func showDivider(_ show: Bool = true) -> Self {
+        var copy = self
+        copy._showDivider = show
+        return copy
+    }
+
+    public func onAction(_ action: @escaping () -> Void) -> Self {
+        var copy = self
+        copy._action = action
+        return copy
+    }
+
+    // MARK: - Deprecated inits (backward compat)
+
+    @available(*, deprecated, message: "Use DSListItem(headline) { leading } trailing: { trailing } with modifier chain instead")
     public init(
         overline: LocalizedStringKey? = nil,
         headline: LocalizedStringKey,
@@ -50,37 +109,37 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
         @ViewBuilder leading: () -> Leading,
         @ViewBuilder trailing: () -> Trailing
     ) {
-        self.overline = overline
-        self.headline = headline
-        self.supportingText = supportingText
-        self.metadata = metadata
-        self.showDivider = showDivider
-        self.action = action
-        self.leading = leading()
-        self.trailing = trailing()
+        self._overline = overline
+        self._headline = headline
+        self._supportingText = supportingText
+        self._metadata = metadata
+        self._showDivider = showDivider
+        self._action = action
+        self._leading = leading()
+        self._trailing = trailing()
     }
 
     // MARK: - Body
 
     public var body: some View {
-        let content = HStack(spacing: 16) {
-            leading
+        let content = HStack(spacing: theme.components.listItem.rowGap) {
+            _leading
 
             VStack(alignment: .leading, spacing: 0) {
-                if let overline {
-                    Text(overline)
+                if let _overline {
+                    Text(_overline)
                         .font(theme.typography.small.font)
                         .tracking(theme.typography.small.tracking)
                         .foregroundStyle(theme.colors.textNeutral9.opacity(theme.colors.textOpacity75))
                 }
 
-                Text(headline)
+                Text(_headline)
                     .font(theme.typography.bodySemiBold.font)
                     .tracking(theme.typography.bodySemiBold.tracking)
                     .foregroundStyle(theme.colors.textNeutral9)
 
-                if let supportingText {
-                    Text(supportingText)
+                if let _supportingText {
+                    Text(_supportingText)
                         .font(theme.typography.body.font)
                         .tracking(theme.typography.body.tracking)
                         .foregroundStyle(theme.colors.textNeutral8.opacity(theme.colors.textOpacity75))
@@ -88,24 +147,24 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if metadata != nil {
-                if let metadata {
-                    Text(metadata)
+            if _metadata != nil {
+                if let _metadata {
+                    Text(_metadata)
                         .font(theme.typography.body.font)
                         .tracking(theme.typography.body.tracking)
                         .foregroundStyle(theme.colors.textNeutral8.opacity(theme.colors.textOpacity75))
                         .padding(.horizontal, theme.spacing.xs)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, theme.components.listItem.metadataVerticalPadding)
                 }
             }
 
-            trailing
+            _trailing
         }
         .padding(theme.spacing.md)
         .background(theme.colors.surfaceNeutral2)
 
-        if let action {
-            Button(action: action) { content }
+        if let _action {
+            Button(action: _action) { content }
                 .buttonStyle(.plain)
                 .overlay(alignment: .bottom) { dividerView }
         } else {
@@ -116,7 +175,7 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
 
     @ViewBuilder
     private var dividerView: some View {
-        if showDivider {
+        if _showDivider {
             Rectangle()
                 .fill(theme.colors.borderNeutral3)
                 .frame(height: 1)
@@ -124,11 +183,93 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
     }
 }
 
-// MARK: - Convenience Init (Leading = icon, Trailing = arrow)
+// MARK: - Convenience Init (Leading only)
+
+extension DSListItem where Trailing == EmptyView {
+
+    /// Leading-only init. Trailing defaults to EmptyView.
+    public init(
+        _ headline: LocalizedStringKey,
+        @ViewBuilder leading: () -> Leading
+    ) {
+        self._headline = headline
+        self._leading = leading()
+        self._trailing = EmptyView()
+    }
+
+    @available(*, deprecated, message: "Use DSListItem(headline) { leading } with modifier chain instead")
+    public init(
+        overline: LocalizedStringKey? = nil,
+        headline: LocalizedStringKey,
+        supportingText: LocalizedStringKey? = nil,
+        metadata: LocalizedStringKey? = nil,
+        showDivider: Bool = false,
+        action: (() -> Void)? = nil,
+        @ViewBuilder leading: () -> Leading
+    ) {
+        self._overline = overline
+        self._headline = headline
+        self._supportingText = supportingText
+        self._metadata = metadata
+        self._showDivider = showDivider
+        self._action = action
+        self._leading = leading()
+        self._trailing = EmptyView()
+    }
+}
+
+// MARK: - Convenience Init (Trailing only)
+
+extension DSListItem where Leading == EmptyView {
+
+    /// Trailing-only init. Leading defaults to EmptyView.
+    public init(
+        _ headline: LocalizedStringKey,
+        @ViewBuilder trailing: () -> Trailing
+    ) {
+        self._headline = headline
+        self._leading = EmptyView()
+        self._trailing = trailing()
+    }
+
+    @available(*, deprecated, message: "Use DSListItem(headline) { trailing } with modifier chain instead")
+    public init(
+        overline: LocalizedStringKey? = nil,
+        headline: LocalizedStringKey,
+        supportingText: LocalizedStringKey? = nil,
+        metadata: LocalizedStringKey? = nil,
+        showDivider: Bool = false,
+        action: (() -> Void)? = nil,
+        @ViewBuilder trailing: () -> Trailing
+    ) {
+        self._overline = overline
+        self._headline = headline
+        self._supportingText = supportingText
+        self._metadata = metadata
+        self._showDivider = showDivider
+        self._action = action
+        self._leading = EmptyView()
+        self._trailing = trailing()
+    }
+}
+
+// MARK: - Convenience Init (No slots)
+
+extension DSListItem where Leading == EmptyView, Trailing == EmptyView {
+
+    /// Minimal init with no leading or trailing content.
+    public init(_ headline: LocalizedStringKey) {
+        self._headline = headline
+        self._leading = EmptyView()
+        self._trailing = EmptyView()
+    }
+}
+
+// MARK: - Convenience Init (Leading = icon, Trailing = arrow) — Deprecated
 
 extension DSListItem where Leading == AnyView, Trailing == AnyView {
 
-    /// Convenience initializer matching the original API with optional icon and arrow.
+    @available(*, deprecated, message: "Use DSListItem(headline) with leading/trailing ViewBuilders and modifier chain instead")
     public init(
         overline: LocalizedStringKey? = nil,
         headline: LocalizedStringKey,
@@ -139,81 +280,33 @@ extension DSListItem where Leading == AnyView, Trailing == AnyView {
         showDivider: Bool = false,
         action: (() -> Void)? = nil
     ) {
-        self.overline = overline
-        self.headline = headline
-        self.supportingText = supportingText
-        self.metadata = metadata
-        self.showDivider = showDivider
-        self.action = action
+        self._overline = overline
+        self._headline = headline
+        self._supportingText = supportingText
+        self._metadata = metadata
+        self._showDivider = showDivider
+        self._action = action
 
         if let leadingIcon {
-            self.leading = AnyView(
+            self._leading = AnyView(
                 Image(systemName: leadingIcon)
-                    .font(.system(size: 24))
-                    .frame(width: 24, height: 24)
-                    .padding(8)
+                    .font(.system(size: ListItemComponentTokens.shared.leadingIconSize))
+                    .frame(width: ListItemComponentTokens.shared.leadingIconSize, height: ListItemComponentTokens.shared.leadingIconSize)
+                    .padding(ListItemComponentTokens.shared.iconPadding)
             )
         } else {
-            self.leading = AnyView(EmptyView())
+            self._leading = AnyView(EmptyView())
         }
 
         if showTrailingArrow {
-            self.trailing = AnyView(
+            self._trailing = AnyView(
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 20))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
+                    .font(.system(size: ListItemComponentTokens.shared.trailingIconSize))
+                    .padding(.horizontal, ListItemComponentTokens.shared.metadataVerticalPadding)
+                    .padding(.vertical, ListItemComponentTokens.shared.iconPadding)
             )
         } else {
-            self.trailing = AnyView(EmptyView())
+            self._trailing = AnyView(EmptyView())
         }
-    }
-}
-
-// MARK: - Convenience Init (Leading only)
-
-extension DSListItem where Trailing == EmptyView {
-
-    public init(
-        overline: LocalizedStringKey? = nil,
-        headline: LocalizedStringKey,
-        supportingText: LocalizedStringKey? = nil,
-        metadata: LocalizedStringKey? = nil,
-        showDivider: Bool = false,
-        action: (() -> Void)? = nil,
-        @ViewBuilder leading: () -> Leading
-    ) {
-        self.overline = overline
-        self.headline = headline
-        self.supportingText = supportingText
-        self.metadata = metadata
-        self.showDivider = showDivider
-        self.action = action
-        self.leading = leading()
-        self.trailing = EmptyView()
-    }
-}
-
-// MARK: - Convenience Init (Trailing only)
-
-extension DSListItem where Leading == EmptyView {
-
-    public init(
-        overline: LocalizedStringKey? = nil,
-        headline: LocalizedStringKey,
-        supportingText: LocalizedStringKey? = nil,
-        metadata: LocalizedStringKey? = nil,
-        showDivider: Bool = false,
-        action: (() -> Void)? = nil,
-        @ViewBuilder trailing: () -> Trailing
-    ) {
-        self.overline = overline
-        self.headline = headline
-        self.supportingText = supportingText
-        self.metadata = metadata
-        self.showDivider = showDivider
-        self.action = action
-        self.leading = EmptyView()
-        self.trailing = trailing()
     }
 }

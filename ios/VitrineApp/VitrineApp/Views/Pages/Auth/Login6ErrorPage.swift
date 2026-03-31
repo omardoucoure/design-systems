@@ -24,7 +24,7 @@ struct Login6ErrorPage: View {
             .padding(.horizontal, theme.spacing.sm)
             .padding(.bottom, theme.spacing.sm)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
         .dsTabBarHidden()
     }
@@ -32,7 +32,7 @@ struct Login6ErrorPage: View {
     // MARK: - Forms Card
 
     private var formsCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 DSText("Welcome back!", style: theme.typography.caption, color: theme.colors.textNeutral9.opacity(0.75))
 
@@ -45,22 +45,26 @@ struct Login6ErrorPage: View {
                         .frame(height: 40)
                 }
 
-                DSTextField(text: $email, placeholder: "Enter your email", label: "Your Email",
-                            variant: .filled, state: .filled, icon: .mail)
+                DSTextField(text: $email, placeholder: "Enter your email")
+                    .label("Your Email")
+                    .inputState(.filled)
+                    .icon(.mail)
 
-                DSTextField(text: $password, placeholder: "Enter your password", label: "Your Password",
-                            helperText: "Oops! Wrong password. Try again.",
-                            variant: .filled, state: .error, isSecure: true)
+                DSTextField(text: $password, placeholder: "Enter your password")
+                    .label("Your Password")
+                    .helperText("Oops! Wrong password. Try again.")
+                    .inputState(.error)
+                    .secure()
 
                 HStack {
-                    DSCheckbox(isOn: $rememberMe, label: "Remember me")
+                    DSCheckbox(isOn: $rememberMe).label("Remember me")
                     Spacer()
-                    DSButton("Forgot Password?", style: .text, size: .medium) {}
+                    DSButton("Forgot Password?") {}.buttonStyle(.text).buttonSize(.medium)
                 }
                 .padding(.vertical, theme.spacing.xs)
 
-                DSButton("Let's Roll!", style: .filledA, size: .big,
-                         iconRight: "arrow.right", isFullWidth: true) {}
+                DSButton("Let's Roll!") {}
+                    .buttonStyle(.filledA).systemIcon("arrow.right", position: .right).fullWidth()
             }
         }
     }
@@ -68,9 +72,9 @@ struct Login6ErrorPage: View {
     // MARK: - Social Login Card
 
     private var socialLoginCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral05)
 
                 HStack(spacing: theme.spacing.xs) {
                     socialButton(label: "Continue with Google", imageName: "icon_google")
@@ -81,28 +85,32 @@ struct Login6ErrorPage: View {
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxl)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardPadding(0)
     }
 
     private func socialButton(label: String, imageName: String) -> some View {
-        DSButton(style: .neutral, size: .big, assetIcon: imageName, isFullWidth: true) {
-        }
+        DSButton { }
+            .buttonStyle(.neutral).assetIcon(imageName).fullWidth()
         .accessibilityLabel(label)
     }
 
     // MARK: - Sign Up Bar
 
     private var signUpBar: some View {
-        DSCard(background: theme.colors.surfaceSecondary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             HStack {
                 DSText("Don't have an account?",
                        style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
                 Spacer()
-                DSButton("Sign Up", style: .text, size: .medium) {}
+                DSButton("Sign Up") {}.buttonStyle(.text).buttonSize(.medium)
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.top, theme.spacing.xxxxl)
             .padding(.bottom, theme.spacing.lg)
         }
+        .cardBackground(theme.colors.surfaceSecondary100)
+        .cardPadding(0)
     }
 }
 

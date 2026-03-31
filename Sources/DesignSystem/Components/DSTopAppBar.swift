@@ -23,55 +23,59 @@ public enum DSTopAppBarStyle: Sendable {
 
 /// A themed top navigation bar with multiple layout styles.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
-/// // Standard styles
-/// DSTopAppBar(title: "Settings", style: .small, onBack: { }) {
-///     DSButton(style: .neutral, size: .medium, systemIcon: "gear") {}
+/// // Standard styles — title + optional actions in init, style/back as modifiers
+/// DSTopAppBar(title: "Settings") {
+///     DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("gear")
 /// }
+/// .appBarStyle(.small)
+/// .onBack { dismiss() }
 ///
 /// // Logo style
 /// DSTopAppBar(leadingIcon: "person.circle", onLeadingTap: { }) {
 ///     Image("logo")
 /// } actions: {
-///     DSButton(style: .neutral, size: .medium, systemIcon: "line.3.horizontal") {}
+///     DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("line.3.horizontal")
 /// }
 ///
 /// // Search style
 /// DSTopAppBar(searchPlaceholder: "Search...") {
-///     DSButton(style: .neutral, size: .medium, systemIcon: "plus.circle") {}
+///     DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("plus.circle")
 /// }
 /// ```
 public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
     @Environment(\.theme) private var theme
 
-    private let title: LocalizedStringKey?
-    private let style: DSTopAppBarStyle
-    private let onBack: (() -> Void)?
-    private let leadingIcon: String?
-    private let onLeadingTap: (() -> Void)?
-    private let searchPlaceholder: LocalizedStringKey?
-    private let onSearchTap: (() -> Void)?
-    private let centerContent: CenterContent
-    private let actions: Actions
+    private var _title: LocalizedStringKey?
+    private var _style: DSTopAppBarStyle
+    private var _onBack: (() -> Void)?
+    private var _leadingIcon: String?
+    private var _onLeadingTap: (() -> Void)?
+    private var _searchPlaceholder: LocalizedStringKey?
+    private var _onSearchTap: (() -> Void)?
+    private let _centerContent: CenterContent
+    private let _actions: Actions
 
-    // MARK: - Standard Init (backward compatible)
+    // MARK: - Standard Init (modifier-based)
 
+    /// Creates a standard top app bar with a title and optional trailing actions.
+    ///
+    /// Use `.appBarStyle(_:)` to set the layout (default: `.small`),
+    /// and `.onBack { }` to add a back button.
     public init(
         title: LocalizedStringKey,
-        style: DSTopAppBarStyle = .small,
-        onBack: (() -> Void)? = nil,
         @ViewBuilder actions: () -> Actions = { EmptyView() }
     ) where CenterContent == EmptyView {
-        self.title = title
-        self.style = style
-        self.onBack = onBack
-        self.leadingIcon = nil
-        self.onLeadingTap = nil
-        self.searchPlaceholder = nil
-        self.onSearchTap = nil
-        self.centerContent = EmptyView()
-        self.actions = actions()
+        self._title = title
+        self._style = .small
+        self._onBack = nil
+        self._leadingIcon = nil
+        self._onLeadingTap = nil
+        self._searchPlaceholder = nil
+        self._onSearchTap = nil
+        self._centerContent = EmptyView()
+        self._actions = actions()
     }
 
     // MARK: - Logo Init
@@ -82,15 +86,15 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         @ViewBuilder center: () -> CenterContent,
         @ViewBuilder actions: () -> Actions
     ) {
-        self.title = nil
-        self.style = .logo
-        self.onBack = nil
-        self.leadingIcon = leadingIcon
-        self.onLeadingTap = onLeadingTap
-        self.searchPlaceholder = nil
-        self.onSearchTap = nil
-        self.centerContent = center()
-        self.actions = actions()
+        self._title = nil
+        self._style = .logo
+        self._onBack = nil
+        self._leadingIcon = leadingIcon
+        self._onLeadingTap = onLeadingTap
+        self._searchPlaceholder = nil
+        self._onSearchTap = nil
+        self._centerContent = center()
+        self._actions = actions()
     }
 
     // MARK: - Search Init
@@ -102,15 +106,15 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         onLeadingTap: (() -> Void)? = nil,
         @ViewBuilder actions: () -> Actions
     ) where CenterContent == EmptyView {
-        self.title = nil
-        self.style = .search
-        self.onBack = nil
-        self.leadingIcon = leadingIcon
-        self.onLeadingTap = onLeadingTap
-        self.searchPlaceholder = searchPlaceholder
-        self.onSearchTap = onSearchTap
-        self.centerContent = EmptyView()
-        self.actions = actions()
+        self._title = nil
+        self._style = .search
+        self._onBack = nil
+        self._leadingIcon = leadingIcon
+        self._onLeadingTap = onLeadingTap
+        self._searchPlaceholder = searchPlaceholder
+        self._onSearchTap = onSearchTap
+        self._centerContent = EmptyView()
+        self._actions = actions()
     }
 
     // MARK: - Image-Title Init
@@ -120,22 +124,59 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         @ViewBuilder leadingImage: () -> CenterContent,
         @ViewBuilder actions: () -> Actions
     ) {
-        self.title = title
-        self.style = .imageTitle
-        self.onBack = nil
-        self.leadingIcon = nil
-        self.onLeadingTap = nil
-        self.searchPlaceholder = nil
-        self.onSearchTap = nil
-        self.centerContent = leadingImage()
-        self.actions = actions()
+        self._title = title
+        self._style = .imageTitle
+        self._onBack = nil
+        self._leadingIcon = nil
+        self._onLeadingTap = nil
+        self._searchPlaceholder = nil
+        self._onSearchTap = nil
+        self._centerContent = leadingImage()
+        self._actions = actions()
+    }
+
+    // MARK: - Deprecated Standard Init
+
+    /// Deprecated: Use `DSTopAppBar(title:actions:)` with `.appBarStyle(_:)` and `.onBack { }` modifiers instead.
+    @available(*, deprecated, message: "Use DSTopAppBar(title:actions:).appBarStyle(_:).onBack { } instead")
+    public init(
+        title: LocalizedStringKey,
+        style: DSTopAppBarStyle,
+        onBack: (() -> Void)? = nil,
+        @ViewBuilder actions: () -> Actions = { EmptyView() }
+    ) where CenterContent == EmptyView {
+        self._title = title
+        self._style = style
+        self._onBack = onBack
+        self._leadingIcon = nil
+        self._onLeadingTap = nil
+        self._searchPlaceholder = nil
+        self._onSearchTap = nil
+        self._centerContent = EmptyView()
+        self._actions = actions()
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the app bar layout style.
+    public func appBarStyle(_ style: DSTopAppBarStyle) -> Self {
+        var copy = self
+        copy._style = style
+        return copy
+    }
+
+    /// Adds a back button with the given action.
+    public func onBack(_ action: @escaping () -> Void) -> Self {
+        var copy = self
+        copy._onBack = action
+        return copy
     }
 
     // MARK: - Body
 
     public var body: some View {
         VStack(spacing: 0) {
-            switch style {
+            switch _style {
             case .small:
                 smallBar
             case .smallCentered:
@@ -160,8 +201,8 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         .overlay(alignment: .bottom) {
             LinearGradient(
                 colors: [
-                    theme.colors.surfaceNeutral0_5.opacity(0.6),
-                    theme.colors.surfaceNeutral0_5.opacity(0)
+                    theme.colors.surfaceNeutral05.opacity(0.6),
+                    theme.colors.surfaceNeutral05.opacity(0)
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -177,12 +218,12 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
     private var smallBar: some View {
         HStack(spacing: theme.spacing.xs) {
             backButton
-            Text(title ?? "")
+            Text(_title ?? "")
                 .font(theme.typography.bodySemiBold.font)
                 .tracking(theme.typography.bodySemiBold.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
             Spacer()
-            actions
+            _actions
         }
         .padding(.horizontal, theme.spacing.sm)
         .frame(height: 64)
@@ -194,12 +235,12 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         HStack(spacing: theme.spacing.xs) {
             backButton
             Spacer()
-            Text(title ?? "")
+            Text(_title ?? "")
                 .font(theme.typography.h5.font)
                 .tracking(theme.typography.h5.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
             Spacer()
-            actions
+            _actions
         }
         .padding(.horizontal, theme.spacing.sm)
         .frame(height: 64)
@@ -211,7 +252,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         HStack(spacing: theme.spacing.xs) {
             backButton
             Spacer()
-            actions
+            _actions
         }
         .padding(.horizontal, theme.spacing.sm)
         .frame(height: 64)
@@ -221,7 +262,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
 
     private var mediumTitle: some View {
         HStack {
-            Text(title ?? "")
+            Text(_title ?? "")
                 .font(theme.typography.h5.font)
                 .tracking(theme.typography.h5.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
@@ -235,7 +276,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
 
     private var largeTitle: some View {
         HStack {
-            Text(title ?? "")
+            Text(_title ?? "")
                 .font(theme.typography.h3.font)
                 .tracking(theme.typography.h3.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
@@ -249,15 +290,15 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
 
     private var logoBar: some View {
         HStack(spacing: theme.spacing.xs) {
-            if let leadingIcon, let onLeadingTap {
-                iconCapsuleButton(icon: leadingIcon, action: onLeadingTap)
+            if let _leadingIcon, let _onLeadingTap {
+                iconCapsuleButton(icon: _leadingIcon, action: _onLeadingTap)
             }
 
             Spacer()
-            centerContent
+            _centerContent
             Spacer()
 
-            actions
+            _actions
         }
         .padding(.horizontal, theme.spacing.sm)
         .frame(height: 64)
@@ -267,19 +308,19 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
 
     private var searchBar: some View {
         HStack(spacing: theme.spacing.md) {
-            if let leadingIcon {
-                iconCapsuleButton(icon: leadingIcon, action: onLeadingTap ?? {})
+            if let _leadingIcon {
+                iconCapsuleButton(icon: _leadingIcon, action: _onLeadingTap ?? {})
             }
 
             HStack(spacing: theme.spacing.xs) {
-                Button(action: onSearchTap ?? {}) {
+                Button(action: _onSearchTap ?? {}) {
                     HStack(spacing: 12) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 20))
                             .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
                             .frame(width: 24, height: 24)
 
-                        Text(searchPlaceholder ?? "Search...")
+                        Text(_searchPlaceholder ?? "Search...")
                             .font(theme.typography.body.font)
                             .tracking(theme.typography.body.tracking)
                             .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
@@ -297,7 +338,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
                 }
                 .buttonStyle(.plain)
 
-                actions
+                _actions
             }
         }
         .padding(.leading, theme.spacing.sm)
@@ -310,18 +351,18 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
     private var imageTitleBar: some View {
         HStack(spacing: theme.spacing.xs) {
             HStack(spacing: theme.spacing.md) {
-                centerContent
+                _centerContent
                     .frame(width: 56, height: 40)
                     .clipShape(RoundedRectangle(cornerRadius: theme.radius.sm))
 
-                Text(title ?? "")
+                Text(_title ?? "")
                     .font(theme.typography.h5.font)
                     .tracking(theme.typography.h5.tracking)
                     .foregroundStyle(theme.colors.textNeutral9)
             }
 
             Spacer()
-            actions
+            _actions
         }
         .padding(theme.spacing.sm)
         .frame(height: 64)
@@ -331,10 +372,10 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
 
     @ViewBuilder
     private var backButton: some View {
-        if let onBack {
-            DSButton(style: .neutral, size: .medium, icon: .arrowLeftLong) {
-                onBack()
-            }
+        if let _onBack {
+            DSButton {
+                _onBack()
+            }.buttonStyle(.neutral).buttonSize(.medium).icon(.arrowLeftLong)
         }
     }
 

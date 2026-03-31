@@ -22,7 +22,7 @@ struct LoginPage: View {
             .padding(.bottom, theme.spacing.sm)
         }
         .scrollDismissesKeyboard(.interactively)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -32,7 +32,7 @@ struct LoginPage: View {
     // MARK: - Forms Card
 
     private var formsCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 DSSegmentedPicker(items: ["Log In", "Sign Up"], selectedIndex: $selectedTab)
                     .padding(.bottom, theme.spacing.sm)
@@ -48,21 +48,25 @@ struct LoginPage: View {
                         .frame(height: 40)
                 }
 
-                DSTextField(text: $email, placeholder: "Enter your email", label: "Your Email",
-                            variant: .filled, state: .filled, icon: .mail)
+                DSTextField(text: $email, placeholder: "Enter your email")
+                    .label("Your Email")
+                    .inputState(.filled)
+                    .icon(.mail)
 
-                DSTextField(text: $password, placeholder: "Enter your password", label: "Your Password",
-                            variant: .filled, state: .filled, isSecure: true)
+                DSTextField(text: $password, placeholder: "Enter your password")
+                    .label("Your Password")
+                    .inputState(.filled)
+                    .secure()
 
                 HStack {
-                    DSCheckbox(isOn: $rememberMe, label: "Remember me")
+                    DSCheckbox(isOn: $rememberMe).label("Remember me")
                     Spacer()
-                    DSButton("Forgot Password?", style: .text, size: .medium) {}
+                    DSButton("Forgot Password?") {}.buttonStyle(.text).buttonSize(.medium)
                 }
                 .padding(.vertical, theme.spacing.xxs)
 
-                DSButton("Let's Roll!", style: .filledA, size: .big,
-                         iconRight: "arrow.right", isFullWidth: true) {}
+                DSButton("Let's Roll!") {}
+                    .buttonStyle(.filledA).systemIcon("arrow.right", position: .right).fullWidth()
             }
         }
     }
@@ -70,9 +74,9 @@ struct LoginPage: View {
     // MARK: - Social Login Card
 
     private var socialLoginCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                DSText("Continue with:", style: theme.typography.h4, color: theme.colors.textNeutral05)
 
                 HStack(spacing: theme.spacing.xs) {
                     socialButton(imageName: "icon_google")
@@ -82,11 +86,12 @@ struct LoginPage: View {
             }
             .padding(.vertical, theme.spacing.xs)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
     }
 
     private func socialButton(imageName: String) -> some View {
-        DSButton(style: .neutral, size: .big, assetIcon: imageName, isFullWidth: true) {
-        }
+        DSButton { }
+            .buttonStyle(.neutral).assetIcon(imageName).fullWidth()
     }
 }
 

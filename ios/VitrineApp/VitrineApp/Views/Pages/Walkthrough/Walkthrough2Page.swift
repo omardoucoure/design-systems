@@ -22,10 +22,11 @@ struct Walkthrough2Page: View {
         VStack(spacing: theme.spacing.md) {
             stackedCarousel
 
-            DSCard(background: theme.colors.surfaceSecondary100, radius: theme.radius.xl, padding: theme.spacing.xl) {
+            DSCard {
                 DSText(headlines[currentPage], style: theme.typography.h4, color: theme.colors.textNeutral9)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .cardBackground(theme.colors.surfaceSecondary100)
 
             DSPageControl(count: pageCount, currentIndex: $currentPage)
                 .padding(.top, theme.spacing.lg)
@@ -33,7 +34,7 @@ struct Walkthrough2Page: View {
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
         .animation(.easeInOut(duration: 0.3), value: currentPage)
         .gesture(
@@ -72,11 +73,13 @@ struct Walkthrough2Page: View {
     }
 
     private func cardLayer(width: CGFloat, color: Color, iconName: String, offset: CGFloat) -> some View {
-        DSCard(background: color, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             Image(systemName: iconName)
                 .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .cardBackground(color)
+        .cardPadding(0)
         .frame(width: width, height: carouselHeight - offset * 2)
         .offset(y: offset)
         .frame(maxWidth: .infinity)

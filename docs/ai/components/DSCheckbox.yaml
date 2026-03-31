@@ -53,8 +53,60 @@ layout:
   gap_to_label: theme.spacing.sm (12px)
   label_description_gap: 2px
 
+# ─── FIGMA INSTANCE RULES ────────────────────────────────────────────────────────
+figma_instance_rules:
+  stroke_overflow_fix: >
+    CRITICAL: The Checkbox component's inner square frame has strokeAlign="OUTSIDE" on an 18×18 frame.
+    This causes a 1px stroke bleed on all sides — the left edge overflows into the parent padding.
+    AFTER instantiating any Checkbox, ALWAYS override the stroke alignment:
+    1. Find the "Checkbox" child FRAME inside the instance
+    2. Set cbFrame.strokeAlign = 'INSIDE'
+    This fix must be applied on EVERY checkbox instance. The source component is remote and cannot be edited.
+  correct_variant: >
+    There are TWO Checkbox component sets in the file:
+    - 85:24367 (370×124px) — WRONG. This is a large checkbox with icon + description + lorem ipsum.
+    - 85:24849 (98×24px) — CORRECT. This is the simple checkbox (box + label). States: Unchecked, Intermediate, Checked.
+    ALWAYS use the 85:24849 set. Use State=Unchecked (85:24850) or State=Checked (85:24858).
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: checkbox_correct_variant
+    trigger: before_instantiate
+    condition:
+      type: always
+    action:
+      type: use_node_id
+      node_id: "85:24849"
+      reject_ids: ["85:24367"]
+    check:
+      assertion: component_id_not_in
+      target: self
+      expected: ["85:24367"]
+      fail_message: "Must use small Checkbox (85:24849), not large (85:24367)"
+    severity: critical
+    auto_fixable: false
+
+  - id: checkbox_stroke_fix
+    trigger: after_instantiate
+    condition:
+      type: always
+    action:
+      type: set_property
+      target: "child:Checkbox"
+      property: strokeAlign
+      value: "INSIDE"
+    check:
+      assertion: equals
+      target: "child:Checkbox.strokeAlign"
+      expected: "INSIDE"
+      fail_message: "Checkbox strokeAlign must be INSIDE (stroke overflow fix)"
+    severity: critical
+    auto_fixable: true
+
 # ─── HARD RULES ──────────────────────────────────────────────────────────────────
 rules:
   - Initialize isOn to true if Figma shows a checked checkbox
   - Whole button is tappable (the label area also toggles the checkbox)
   - Use DSRadio for mutually exclusive options, DSCheckbox for independent options
+  - ALWAYS fix strokeAlign to INSIDE after instantiating (see figma_instance_rules)
+  - ALWAYS use the small Checkbox set (85:24849), NEVER the large one (85:24367)

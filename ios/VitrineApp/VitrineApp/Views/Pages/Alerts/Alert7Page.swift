@@ -10,9 +10,9 @@ struct Alert7Page: View {
     var body: some View {
         ZStack {
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "March 2030", style: .smallCentered, onBack: { dismiss() }) {
-                    DSButton(style: .neutral, size: .medium, icon: .viewGrid) {}
-                }
+                DSTopAppBar(title: "March 2030") {
+                    DSButton { }.buttonStyle(.neutral).buttonSize(.medium).icon(.viewGrid)
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
                 dateRangePicker
                 ScrollView {
                     VStack(spacing: theme.spacing.sm) {
@@ -27,13 +27,13 @@ struct Alert7Page: View {
                     .padding(.horizontal, theme.spacing.sm)
                 }
             }
-            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+            .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
 
             VStack {
                 Spacer()
                 HStack {
                     Spacer()
-                    DSButton(style: .filledA, size: .medium, icon: .plus) {}
+                    DSButton { }.buttonStyle(.filledA).buttonSize(.medium).icon(.plus)
                         .shadow(color: .black.opacity(0.02), radius: 4, x: 0, y: 4)
                         .shadow(color: .black.opacity(0.18), radius: 24, x: 0, y: 24)
                     Spacer()
@@ -50,10 +50,13 @@ struct Alert7Page: View {
             ) {
                 EmptyView()
             } actions: {
-                DSButton("Delete App", style: .filledA, size: .medium, icon: .logOut,
-                         iconPosition: .right, isFullWidth: true) {}
-                DSButton("Disable Background Usage", style: .neutral, size: .medium, isFullWidth: true) {}
-                DSButton("Cancel", style: .neutral, size: .medium, isFullWidth: true) { showDialog = false }
+                DSButton("Delete App") { }
+                    .buttonStyle(.filledA).buttonSize(.medium)
+                    .icon(.logOut, position: .right).fullWidth()
+                DSButton("Disable Background Usage") { }
+                    .buttonStyle(.neutral).buttonSize(.medium).fullWidth()
+                DSButton("Cancel") { showDialog = false }
+                    .buttonStyle(.neutral).buttonSize(.medium).fullWidth()
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -73,19 +76,22 @@ struct Alert7Page: View {
     }
 
     private func dateRangeCard(label: String, date: String, icon: DSIcon) -> some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.lg, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.sm) {
-                DSIconImage(icon, size: 24, color: theme.colors.textNeutral0_5)
-                DSText(label, style: theme.typography.tiny, color: theme.colors.textNeutral0_5)
-                DSText(date, style: theme.typography.body, color: theme.colors.textNeutral0_5)
+                DSIconImage(icon, size: 24, color: theme.colors.textNeutral05)
+                DSText(label, style: theme.typography.tiny, color: theme.colors.textNeutral05)
+                DSText(date, style: theme.typography.body, color: theme.colors.textNeutral05)
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.lg)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardRadius(theme.radius.lg)
+        .cardPadding(0)
     }
 
     private func eventDayCard(day: String, month: String, events: [(time: String, title: String)]) -> some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.md) {
                 HStack(alignment: .firstTextBaseline, spacing: theme.spacing.xs) {
                     DSText(day, style: theme.typography.display2, color: theme.colors.textNeutral9)
@@ -101,7 +107,7 @@ struct Alert7Page: View {
                         DSIconImage(.arrowUpRight, size: 20, color: theme.colors.textNeutral9)
                     }
                     .padding(theme.spacing.lg)
-                    .background(theme.colors.surfaceNeutral0_5)
+                    .background(theme.colors.surfaceNeutral05)
                     .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
                 }
             }

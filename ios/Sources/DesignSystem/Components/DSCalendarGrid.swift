@@ -17,47 +17,79 @@ public enum DSCalendarGridMode: Sendable {
 ///
 /// The component computes its own weeks from `displayedMonth` and the system calendar.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
 /// @State var month = DateComponents(calendar: .current, year: 2030, month: 8).date!
 /// @State var start: Date? = nil
 /// @State var end: Date? = nil
 ///
-/// DSCalendarGrid(
-///     displayedMonth: $month,
-///     rangeStart: $start,
-///     rangeEnd: $end,
-///     mode: .range
-/// )
+/// DSCalendarGrid(displayedMonth: $month, rangeStart: $start, rangeEnd: $end)
+///     .selectionMode(.range)
+///     .highlightColor(theme.colors.surfaceSecondary100)
+///     .rangeColor(theme.colors.surfaceNeutral3)
 /// ```
 public struct DSCalendarGrid: View {
     @Environment(\.theme) private var theme
 
-    @Binding private var displayedMonth: Date
-    @Binding private var rangeStart: Date?
-    @Binding private var rangeEnd: Date?
-    private let mode: DSCalendarGridMode
-    private let highlightColor: Color?
-    private let rangeColor: Color?
+    // Core (required)
+    @Binding private var _displayedMonth: Date
+    @Binding private var _rangeStart: Date?
+    @Binding private var _rangeEnd: Date?
+
+    // Modifier props (optional, with defaults)
+    private var _mode: DSCalendarGridMode = .range
+    private var _highlightColor: Color? = nil
+    private var _rangeColor: Color? = nil
 
     @State private var showMonthPicker = false
 
     private let calendar = Calendar.current
 
+    // MARK: - New Modifier API
+
+    /// Creates a calendar grid with month and date-range bindings.
+    public init(
+        displayedMonth: Binding<Date>,
+        rangeStart: Binding<Date?>,
+        rangeEnd: Binding<Date?> = .constant(nil)
+    ) {
+        self.__displayedMonth = displayedMonth
+        self.__rangeStart = rangeStart
+        self.__rangeEnd = rangeEnd
+    }
+
+    /// Sets the selection mode (`.single` or `.range`). Default is `.range`.
+    public func selectionMode(_ mode: DSCalendarGridMode) -> Self {
+        var copy = self; copy._mode = mode; return copy
+    }
+
+    /// Sets the accent color used for selected date circles.
+    public func highlightColor(_ color: Color) -> Self {
+        var copy = self; copy._highlightColor = color; return copy
+    }
+
+    /// Sets the background color used for the range band between start and end dates.
+    public func rangeColor(_ color: Color) -> Self {
+        var copy = self; copy._rangeColor = color; return copy
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use DSCalendarGrid(displayedMonth:rangeStart:rangeEnd:) with modifier methods instead")
     public init(
         displayedMonth: Binding<Date>,
         rangeStart: Binding<Date?>,
         rangeEnd: Binding<Date?> = .constant(nil),
-        mode: DSCalendarGridMode = .range,
+        mode: DSCalendarGridMode,
         highlightColor: Color? = nil,
         rangeColor: Color? = nil
     ) {
-        self._displayedMonth = displayedMonth
-        self._rangeStart = rangeStart
-        self._rangeEnd = rangeEnd
-        self.mode = mode
-        self.highlightColor = highlightColor
-        self.rangeColor = rangeColor
+        self.__displayedMonth = displayedMonth
+        self.__rangeStart = rangeStart
+        self.__rangeEnd = rangeEnd
+        self._mode = mode
+        self._highlightColor = highlightColor
+        self._rangeColor = rangeColor
     }
 
     public var body: some View {
@@ -73,7 +105,7 @@ public struct DSCalendarGrid: View {
     private var monthYearLabel: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
-        return formatter.string(from: displayedMonth)
+        return formatter.string(from: _displayedMonth)
     }
 
     // MARK: - Month Selector
@@ -166,7 +198,7 @@ public struct DSCalendarGrid: View {
 
                     Spacer()
 
-                    Text(String(calendar.component(.year, from: displayedMonth)))
+                    Text(String(calendar.component(.year, from: _displayedMonth)))
                         .font(theme.typography.bodySemiBold.font)
                         .tracking(theme.typography.bodySemiBold.tracking)
                         .foregroundStyle(theme.colors.textNeutral9)
@@ -189,7 +221,7 @@ public struct DSCalendarGrid: View {
 
                 // Month grid (3 columns × 4 rows)
                 let months = Calendar.current.shortMonthSymbols
-                let currentMonth = calendar.component(.month, from: displayedMonth)
+                let currentMonth = calendar.component(.month, from: _displayedMonth)
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: theme.spacing.xs) {
                     ForEach(Array(months.enumerated()), id: \.offset) { index, name in
                         let isSelected = index + 1 == currentMonth
@@ -202,7 +234,7 @@ public struct DSCalendarGrid: View {
                                 .foregroundStyle(theme.colors.textNeutral9)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, theme.spacing.xs)
-                                .background(isSelected ? (highlightColor ?? theme.colors.surfaceSecondary100) : Color.clear)
+                                .background(isSelected ? (_highlightColor ?? theme.colors.surfaceSecondary100) : Color.clear)
                                 .clipShape(Capsule())
                         }
                         .buttonStyle(.plain)
@@ -277,7 +309,7 @@ public struct DSCalendarGrid: View {
             ZStack {
                 if isHighlighted {
                     Circle()
-                        .fill(highlightColor ?? theme.colors.surfaceSecondary100)
+                        .fill(_highlightColor ?? theme.colors.surfaceSecondary100)
                         .frame(width: 40, height: 40)
                 }
 
@@ -300,7 +332,7 @@ public struct DSCalendarGrid: View {
     private func rangeBackground(week: [Date?]) -> some View {
         GeometryReader { geo in
             let cellWidth = geo.size.width / 7.0
-            let resolvedRangeColor = rangeColor ?? theme.colors.surfaceNeutral3
+            let resolvedRangeColor = _rangeColor ?? theme.colors.surfaceNeutral3
 
             let rangeCols = week.enumerated().compactMap { index, date -> Int? in
                 guard let date, isDateInRange(date) else { return nil }
@@ -322,13 +354,13 @@ public struct DSCalendarGrid: View {
     // MARK: - Helpers
 
     private func isDateHighlighted(_ date: Date) -> Bool {
-        if let start = rangeStart, calendar.isDate(date, inSameDayAs: start) { return true }
-        if let end = rangeEnd, calendar.isDate(date, inSameDayAs: end) { return true }
+        if let start = _rangeStart, calendar.isDate(date, inSameDayAs: start) { return true }
+        if let end = _rangeEnd, calendar.isDate(date, inSameDayAs: end) { return true }
         return false
     }
 
     private func isDateInRange(_ date: Date) -> Bool {
-        guard let start = rangeStart, let end = rangeEnd else { return false }
+        guard let start = _rangeStart, let end = _rangeEnd else { return false }
         let earliest = min(start, end)
         let latest = max(start, end)
         return date >= calendar.startOfDay(for: earliest) && date <= calendar.startOfDay(for: latest)
@@ -336,22 +368,22 @@ public struct DSCalendarGrid: View {
 
     private func handleDateTap(_ date: Date) {
         withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
-            switch mode {
+            switch _mode {
             case .single:
-                rangeStart = date
-                rangeEnd = nil
+                _rangeStart = date
+                _rangeEnd = nil
             case .range:
-                if rangeStart == nil || rangeEnd != nil {
+                if _rangeStart == nil || _rangeEnd != nil {
                     // Start new selection
-                    rangeStart = date
-                    rangeEnd = nil
+                    _rangeStart = date
+                    _rangeEnd = nil
                 } else {
                     // Complete the range
-                    rangeEnd = date
+                    _rangeEnd = date
                     // Ensure start ≤ end
-                    if let s = rangeStart, let e = rangeEnd, e < s {
-                        rangeStart = e
-                        rangeEnd = s
+                    if let s = _rangeStart, let e = _rangeEnd, e < s {
+                        _rangeStart = e
+                        _rangeEnd = s
                     }
                 }
             }
@@ -360,25 +392,25 @@ public struct DSCalendarGrid: View {
 
     private func navigateMonth(by offset: Int) {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-            if let newMonth = calendar.date(byAdding: .month, value: offset, to: displayedMonth) {
-                displayedMonth = newMonth
+            if let newMonth = calendar.date(byAdding: .month, value: offset, to: _displayedMonth) {
+                _displayedMonth = newMonth
             }
         }
     }
 
     private func navigateYear(by offset: Int) {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-            if let newDate = calendar.date(byAdding: .year, value: offset, to: displayedMonth) {
-                displayedMonth = newDate
+            if let newDate = calendar.date(byAdding: .year, value: offset, to: _displayedMonth) {
+                _displayedMonth = newDate
             }
         }
     }
 
     private func selectMonth(_ month: Int) {
-        let year = calendar.component(.year, from: displayedMonth)
+        let year = calendar.component(.year, from: _displayedMonth)
         if let newDate = DateComponents(calendar: calendar, year: year, month: month, day: 1).date {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                displayedMonth = newDate
+                _displayedMonth = newDate
                 showMonthPicker = false
             }
         }
@@ -388,7 +420,7 @@ public struct DSCalendarGrid: View {
     /// Each week is an array of 7 optional Dates (nil for empty cells).
     /// Week starts on Monday.
     private func computeWeeks() -> [[Date?]] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: displayedMonth) else {
+        guard let monthInterval = calendar.dateInterval(of: .month, for: _displayedMonth) else {
             return []
         }
 
@@ -397,7 +429,7 @@ public struct DSCalendarGrid: View {
         let firstWeekday = calendar.component(.weekday, from: firstDay)
         let mondayOffset = (firstWeekday + 5) % 7
 
-        let daysInMonth = calendar.range(of: .day, in: .month, for: displayedMonth)?.count ?? 30
+        let daysInMonth = calendar.range(of: .day, in: .month, for: _displayedMonth)?.count ?? 30
 
         var weeks: [[Date?]] = []
         var currentWeek: [Date?] = Array(repeating: nil, count: mondayOffset)

@@ -5,7 +5,7 @@ swift_path: ios/Sources/DesignSystem/Components/DSToggle.swift
 description: >
   Themed toggle switch (48×28pt capsule, 22pt thumb). ON color: surfacePrimary100.
   OFF color: surfaceNeutral3. Thumb: surfaceNeutral0_5 (white/cream).
-  Optional label + description text to the left of the switch.
+  Optional label + description via modifier-based API.
 
 # ─── WHEN TO USE ────────────────────────────────────────────────────────────────
 use_when:
@@ -29,17 +29,18 @@ visual_states:
     thumb: surfaceNeutral0_5, aligned .leading
 
 # ─── PARAMETERS ─────────────────────────────────────────────────────────────────
-parameters:
+init_parameters:
   isOn:
     type: "Binding<Bool>"
 
+modifiers:
   label:
-    type: LocalizedStringKey?
+    signature: ".label(_ label: LocalizedStringKey) -> DSToggle"
     font: theme.typography.body (16px medium)
     color: textNeutral9
 
   description:
-    type: LocalizedStringKey?
+    signature: ".description(_ description: LocalizedStringKey) -> DSToggle"
     font: theme.typography.caption (14px medium)
     color: textNeutral8
     use_when: Extra context below the label ("Changes require restart", etc.)

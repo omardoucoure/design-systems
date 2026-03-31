@@ -23,6 +23,7 @@
 6. **Images**: NEVER reuse existing placeholder images if Figma provides different ones — ALWAYS download images from the Figma asset URLs (`curl -sL "https://www.figma.com/api/mcp/asset/..."`) and create proper asset catalog entries (`.imageset/` with `Contents.json`)
 7. **Icons**: NEVER substitute SF Symbols when Figma provides custom vector icons — download SVG assets from Figma and add them to the asset catalog with `preserves-vector-representation: true`. Use `DSButton(assetIcon:)` for custom icon buttons
 8. **Every Figma property must be used**: Do NOT skip opacity values, exact icon names, z-index ordering, negative margins, or any CSS variable from the design context. Read EVERY line of the Figma output and map it to code
+9. **Input field background contrast**: DSTextField `.filled` default background is `surfaceNeutral2` (`rgb(235,235,230)`), which works on a bare page (`surfaceNeutral0_5`). But when inputs are placed **inside a card that also uses `surfaceNeutral2`**, the input blends into the card. In this case, override the input background to `surfaceNeutral0_5` (`rgb(250,250,249)`) for contrast — this is what all HaHo login screens do. Rule: **input background must always contrast with its parent container**.
 
 ### Mandatory extraction checklist (before writing ANY page):
 
@@ -90,6 +91,19 @@ When you see: `mb-[-50px]` on a card
 
 When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for overlap from the card above.
 
+## HaHo Reference = Visual Only, NEVER Copy Structure (CRITICAL)
+
+The HaHo designer builds screens using manual frames, raw rectangles, and hand-crafted negative spacing. **We have real DS components** (Overlapping Cards, Layered Card, Container Card, DSListItem, etc.) that the designer does not use. Our component library is MORE complete than the designer's file structure.
+
+**When studying a HaHo reference screen:**
+- **USE the screenshot** — colors, proportions, visual hierarchy, text content, icon choices
+- **NEVER walk the node tree to copy frame structure** — the designer's manual frames are NOT our blueprint
+- **Map every visual zone to a DS component** — overlapping cards → Overlapping Cards instance, shadow layers → Layered Card instance, card containers → DSCard, list rows → DSListItem
+- **NEVER create manual frames with negative spacing** — use Overlapping Cards component
+- **NEVER create manual absolute-positioned layers** — use Layered Card component
+
+The designer's file is the VISUAL reference. Our components are the STRUCTURAL reference.
+
 ## Component-First Architecture
 
 **Every visual element on a page MUST be a DS component.** Pages should be simple compositions of components.
@@ -105,7 +119,7 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 - ❌ `RoundedRectangle(cornerRadius: ...).fill(color)` → ✅ `DSCard(background: color, radius: theme.radius.xl, padding: 0) { Color.clear }`
 - ❌ `Button { } label: { Text("...") }` → ✅ `DSButton("...", style: .text, size: .medium) { }`
 - ❌ `.font(.system(size: 20))` or `.font(.custom("DMSans-...", size: 14))` → ✅ `theme.typography.caption.font`
-- ❌ Custom back-button ZStack with DSButton + Text → ✅ `DSTopAppBar(title: "...", style: .small, onBack: { dismiss() })`
+- ❌ Custom back-button ZStack with DSButton + Text → ✅ `DSTopAppBar(title: "...").onBack { dismiss() }`
 - ❌ `.foregroundStyle(.black)` or `.foregroundStyle(Color(hex: ...))` → ✅ `theme.colors.textNeutral9`
 - ❌ `VStack(spacing: 2)` or `padding(50)` → ✅ `theme.spacing.xxs`, `theme.spacing.xxxl`
 - ❌ `.frame(width: 12, height: 12)` → ✅ `.frame(width: theme.spacing.sm, height: theme.spacing.sm)`
@@ -121,7 +135,7 @@ When a card has large top padding (e.g., `pt-[64px]`), this is to compensate for
 
 ### Available DS Components:
 - `DSButton` — styles: `.filledA`, `.filledB`, `.filledC`, `.neutral`, `.outlined`, `.text` / supports SF Symbols via `systemIcon:` and custom asset images via `assetIcon:` / text+asset icon via `init(_:style:size:assetIcon:iconPosition:)`
-- `DSTextField` — variants: `.filled`, `.lined` / states: `.empty`, `.filled`, `.active`, `.error`, `.validated` / supports `isSecure: true` for password fields
+- `DSTextField` — variants: `.filled`, `.lined` / states: `.empty`, `.filled`, `.active`, `.error`, `.validated` / supports `isSecure: true` for password fields / **Background contrast rule**: default bg is `surfaceNeutral2` — when inside a `surfaceNeutral2` card, override to `surfaceNeutral0_5` (white) for contrast. In Figma: Input frame fill = `rgb(250,250,249)` inside cards.
 - `DSCard` — container with `background`, `radius`, `padding` (use `padding: 0` for asymmetric padding)
 - `DSCheckbox` — toggle with label
 - `DSCodeInput` — OTP/verification code input (interactive, numeric keyboard)
@@ -169,9 +183,9 @@ var body: some View {
     ZStack(alignment: .bottom) {
         VStack(spacing: 0) {
             // 1. Top app bar — pinned, never scrolls
-            DSTopAppBar(title: "Title", style: .smallCentered, onBack: { dismiss() }) {
+            DSTopAppBar(title: "Title") {
                 DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
-            }
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
 
             // 2. ScrollView — fills remaining space, NO outer horizontal padding
             ScrollView {
@@ -249,6 +263,41 @@ Every component using `surfacePrimary*`, `surfaceSecondary*`, `textPrimary100`, 
 - **NEVER** pass `primaryColor`/`secondaryColor` inside component files — only at the app root `.designSystem()` call
 - **NEVER** override individual component colors to match a brand color — the theme propagates it everywhere
 - The neutral scale always comes from the `Brand` enum — custom colors only affect primary/secondary shades
+- **NEVER change the page/screen background color.** Every page background MUST be `surfaceNeutral0_5` (`rgb(250,250,249)`) — the warm white. Dark cards, coral cards, and colored sections go INSIDE the page as child cards/frames, but the screen frame itself always stays `surfaceNeutral0_5`. This applies to ALL pages in ALL applications — onboarding, login, home, settings, etc. No exceptions.
+- **Parent→Child Color Relationship (FUNDAMENTAL RULE):**
+  Every element's colors must be evaluated against its IMMEDIATE parent — not the grandparent, not the screen. The visual chain is: `Screen → Card → Component → Text/Icon`. At EACH level of this chain:
+  1. **Child background must CONTRAST with its immediate parent background** — lighter or completely different color family
+  2. **Text/icon color must be readable against the child's OWN background** — NOT against the grandparent card
+  3. **Walk the chain inside-out**: Start from the text → check against its immediate container bg → check that container against ITS parent → repeat up to the screen
+
+  **Critical examples:**
+  - DSListItem (surfaceNeutral2 bg) inside a dark card → list item text must be **DARK** (readable on surfaceNeutral2). The text lives on the LIST ITEM's neutral2 bg, NOT on the dark card. The dark card is the grandparent — irrelevant for text color.
+  - DSButton (coral bg) inside a dark card → button text must be **DARK** (readable on coral). The dark card is irrelevant.
+  - DSProgressCircle inside a dark card → the circle has its own track. The label text must be light if the circle's OWN bg is dark/transparent on dark parent.
+  - Empty icon circle (surfaceNeutral0_5 bg) inside a surfaceNeutral2 card → the circle is lighter than its parent = GOOD contrast. But the circle itself must CONTAIN something visible (icon instance), not be empty.
+
+  **Color rules per background:**
+  - Light backgrounds (`surfaceNeutral0_5`, `surfaceNeutral2`, any `r > 200`) → text/icons MUST be dark (`textNeutral9`)
+  - Dark backgrounds (`surfacePrimary100/120`, any `r < 100`) → text/icons MUST be light (`textNeutral0_5`)
+  - Coral backgrounds (`surfaceSecondary100`) → text/icons MUST be dark (`textNeutral9`)
+  - **NEVER** put light text on light bg — invisible
+  - **NEVER** put dark text on dark bg — invisible
+  - This applies to ALL elements: text, icons, button labels, badge text, pill labels
+
+- **Visual intelligence — use common sense:**
+  - Every icon container must have a visible, relevant icon inside — never leave empty circles
+  - Every item in a list must have a unique icon — search the DS icons for the best semantic match
+  - Page content must make sense for the context — a settings page has preferences and account actions, not content navigation items
+  - Different buttons need different icons — use your judgment to match the action
+  - Adapt content to the specific app — don't copy generic examples
+- **Typography weight hierarchy — avoid excessive bold:**
+  - `Bold` → ONLY for one hero headline per page (if any). Most pages have zero bold text.
+  - `SemiBold` → section headers, stat numbers, emphasis text. Use sparingly.
+  - `Medium` → card titles, labels, button text, navigation items. This is the DEFAULT weight for most text.
+  - `Regular` → descriptions, metadata, subtitles, helper text.
+  - HaHo pages use mostly Medium + Regular. Bold is rare. Look at actual HaHo screens before applying Bold to anything.
+- **Dividers NEVER take full width** — DSDivider must always appear inset from card edges. The parent card must have horizontal padding (minimum 16px) so dividers get natural inset. NEVER use padding: 0 on a card that contains dividers or DSListItem rows. HaHo settings/menu lists typically don't use dividers at all — visual separation comes from DSListItem internal padding + card padding.
+- **For images**: ALWAYS use real HD images from the HaHo Figma file — it contains high-quality photos (astronaut, landscapes, portraits, etc.) that the designer selected. To reuse a HaHo image: find the reference screen's image node, read its `fills` (which contain IMAGE type fills with `imageHash`), and copy those fills to your frame via `JSON.parse(JSON.stringify(refNode.fills))`. NEVER use grey frames with "Image Placeholder" text — the HaHo library has real images ready to use. For profile photos use DSAvatar (style: .icon or .monogram). NEVER use emoji.
 - Full theming reference: `docs/theming.md`
 
 ## Per-Component AI Reference YAMLs

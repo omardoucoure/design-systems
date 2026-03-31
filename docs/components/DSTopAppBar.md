@@ -39,9 +39,9 @@ Use `DSTopAppBar` for:
 ## Example
 
 ```swift
-DSTopAppBar(title: "Settings", style: .smallCentered, onBack: { dismiss() }) {
+DSTopAppBar(title: "Settings") {
     DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
-}
+}.appBarStyle(.smallCentered).onBack { dismiss() }
 
 DSTopAppBar(
     searchPlaceholder: "Search...",

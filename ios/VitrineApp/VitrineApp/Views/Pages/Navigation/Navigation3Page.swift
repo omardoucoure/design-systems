@@ -27,9 +27,7 @@ struct Navigation3Page: View {
     // MARK: - Menu Content
 
     private var menuContent: some View {
-        DSIconSidebar(
-            avatar: Image("nav3_avatar"),
-            sections: [
+        DSIconSidebar(sections: [
                 DSIconSidebarSection(items: [
                     DSIconSidebarItem(id: "cart", icon: .cart),
                     DSIconSidebarItem(id: "activity", icon: .activity),
@@ -45,26 +43,26 @@ struct Navigation3Page: View {
                 DSIconSidebarSection(items: [
                     DSIconSidebarItem(id: "logout", icon: .logOut),
                 ]),
-            ]
-        )
+            ])
+            .avatar(Image("nav3_avatar"))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Gallery Content (the "front card")
 
     private var galleryContent: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Gallery", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, icon: .search) {}
-            }
+            DSTopAppBar(title: "Gallery") {
+                DSButton {}.buttonStyle(.neutral).buttonSize(.medium).icon(.search)
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
             .overlay(alignment: .leading) {
-                DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) {
                         isMenuOpen.toggle()
                     }
-                }
+                }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
                 .padding(.leading, theme.spacing.sm)
             }
 
@@ -86,7 +84,7 @@ struct Navigation3Page: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 }
 

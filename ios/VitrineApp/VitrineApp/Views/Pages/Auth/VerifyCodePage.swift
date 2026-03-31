@@ -12,31 +12,32 @@ struct VerifyCodePage: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Forgot password", style: .small, onBack: { dismiss() })
+            DSTopAppBar(title: "Forgot password").onBack { dismiss() }
 
             ScrollView {
-                DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+                DSCard {
                     VStack(alignment: .leading, spacing: theme.spacing.lg) {
                         DSText("Verify your identity", style: theme.typography.h4, color: theme.colors.textNeutral9)
                         DSText("An authentication code has been sent to hristov123@gmail.com",
                                style: theme.typography.caption, color: theme.colors.textNeutral9.opacity(0.75))
 
-                        DSCodeInput(code: $code, digitCount: 4)
+                        DSCodeInput(code: $code)
+                            .digitCount(4)
 
                         HStack(spacing: theme.spacing.xs) {
                             DSText("I didn't receive code?",
                                    style: theme.typography.bodyRegular, color: theme.colors.textNeutral9.opacity(0.75))
-                            DSButton("Resend Code", style: .text, size: .medium) {}
+                            DSButton("Resend Code") {}.buttonStyle(.text).buttonSize(.medium)
                         }
 
-                        DSButton("Next", style: .filledA, size: .big,
-                                 iconRight: "arrow.right", isFullWidth: true) {}
+                        DSButton("Next") {}
+                            .buttonStyle(.filledA).systemIcon("arrow.right", position: .right).fullWidth()
                             .disabled(code.count < 4)
 
                         VStack(spacing: theme.spacing.xxs) {
                             DSText("By Signing In, you agree to our?",
                                    style: theme.typography.bodyRegular, color: theme.colors.textNeutral9.opacity(0.75))
-                            DSButton("Terms and Conditions", style: .text, size: .medium) {}
+                            DSButton("Terms and Conditions") {}.buttonStyle(.text).buttonSize(.medium)
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
@@ -46,7 +47,7 @@ struct VerifyCodePage: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }

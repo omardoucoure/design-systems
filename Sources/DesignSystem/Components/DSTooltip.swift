@@ -25,30 +25,52 @@ public enum DSTooltipStyle {
 
 /// A themed tooltip that appears from a given direction with an arrow.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
-/// // Simple text
-/// DSTooltip(style: .simple("Hint text here"), direction: .top)
+/// // Simple text (default direction: .top)
+/// DSTooltip(style: .simple("Hint text here"))
+///
+/// // With direction modifier
+/// DSTooltip(style: .simple("Hint text here"))
+///     .tooltipDirection(.bottom)
 ///
 /// // Rich with title + body
-/// DSTooltip(
-///     style: .rich(title: "Title", body: "Description...", actionLabel: "Learn more", onAction: {}),
-///     direction: .bottom
-/// )
+/// DSTooltip(style: .rich(title: "Title", body: "Description...", actionLabel: "Learn more", onAction: {}))
+///     .tooltipDirection(.bottom)
 /// ```
 public struct DSTooltip: View {
     @Environment(\.theme) private var theme
 
-    private let style: DSTooltipStyle
-    private let direction: DSTooltipDirection
+    private let _style: DSTooltipStyle
+    private var _direction: DSTooltipDirection = .top
 
-    public init(style: DSTooltipStyle, direction: DSTooltipDirection = .top) {
-        self.style = style
-        self.direction = direction
+    // MARK: - Minimal init
+
+    public init(style: DSTooltipStyle) {
+        self._style = style
     }
 
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSTooltip(style:) with .tooltipDirection() modifier instead")
+    public init(style: DSTooltipStyle, direction: DSTooltipDirection) {
+        self._style = style
+        self._direction = direction
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the direction the tooltip arrow points toward.
+    public func tooltipDirection(_ direction: DSTooltipDirection) -> DSTooltip {
+        var copy = self
+        copy._direction = direction
+        return copy
+    }
+
+    // MARK: - Body
+
     public var body: some View {
-        switch direction {
+        switch _direction {
         case .top:
             VStack(spacing: 0) {
                 tooltipContent
@@ -76,12 +98,12 @@ public struct DSTooltip: View {
 
     private var tooltipContent: some View {
         VStack(alignment: .leading, spacing: 0) {
-            switch style {
+            switch _style {
             case .simple(let text):
                 Text(text)
                     .font(theme.typography.caption.font)
                     .tracking(theme.typography.caption.tracking)
-                    .foregroundStyle(theme.colors.surfaceNeutral0_5)
+                    .foregroundStyle(theme.colors.surfaceNeutral05)
                     .padding(.horizontal, theme.spacing.md)
                     .padding(.vertical, theme.spacing.sm)
 
@@ -99,12 +121,12 @@ public struct DSTooltip: View {
                             Text(title)
                                 .font(theme.typography.bodySemiBold.font)
                                 .tracking(theme.typography.bodySemiBold.tracking)
-                                .foregroundStyle(theme.colors.surfaceNeutral0_5)
+                                .foregroundStyle(theme.colors.surfaceNeutral05)
 
                             Text(body)
                                 .font(theme.typography.caption.font)
                                 .tracking(theme.typography.caption.tracking)
-                                .foregroundStyle(theme.colors.surfaceNeutral0_5)
+                                .foregroundStyle(theme.colors.surfaceNeutral05)
                         }
 
                         if let actionLabel, let onAction {
@@ -116,7 +138,7 @@ public struct DSTooltip: View {
                                     Image(systemName: "arrow.right")
                                         .font(.system(size: 14))
                                 }
-                                .foregroundStyle(theme.colors.textNeutral0_5)
+                                .foregroundStyle(theme.colors.textNeutral05)
                             }
                             .buttonStyle(.plain)
                         }
@@ -131,7 +153,7 @@ public struct DSTooltip: View {
     }
 
     private var cornerRadius: CGFloat {
-        switch style {
+        switch _style {
         case .simple:
             return theme.radius.sm
         case .rich:

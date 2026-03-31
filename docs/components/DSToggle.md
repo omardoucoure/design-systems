@@ -10,26 +10,29 @@ Use `DSToggle` for:
 - feature enable/disable switches
 - boolean preferences
 
-## Properties
+## Init Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `isOn` | `Binding<Bool>` | — | Toggle state |
-| `label` | `LocalizedStringKey?` | `nil` | Primary label |
-| `description` | `LocalizedStringKey?` | `nil` | Supporting text below the label |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `isOn` | `Binding<Bool>` | Toggle state |
+
+## Modifiers
+
+| Modifier | Parameter | Description |
+|----------|-----------|-------------|
+| `.label(_:)` | `LocalizedStringKey` | Primary label |
+| `.description(_:)` | `LocalizedStringKey` | Supporting text below the label |
 
 ## Accessibility
 
-- Always provide a `label` so screen readers can describe the toggle's purpose.
+- Always provide a `.label()` so screen readers can describe the toggle's purpose.
 
 ## Example
 
 ```swift
-DSToggle(
-    isOn: $darkMode,
-    label: "Dark mode",
-    description: "Switch between light and dark appearance"
-)
+DSToggle(isOn: $darkMode)
+    .label("Dark mode")
+    .description("Switch between light and dark appearance")
 ```
 
 ---

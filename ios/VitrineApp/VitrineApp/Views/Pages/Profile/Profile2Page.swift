@@ -14,9 +14,9 @@ struct Profile2Page: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                DSButton(style: .neutral, size: .medium, systemIcon: "ellipsis.vertical") {}
-            }
+            DSTopAppBar(title: "Profile") {
+                DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("ellipsis.vertical")
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
 
             ScrollView {
                 VStack(spacing: theme.spacing.sm) {
@@ -29,7 +29,7 @@ struct Profile2Page: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }
@@ -41,7 +41,7 @@ struct Profile2Page: View {
             HStack(alignment: .bottom) {
                 avatarPhoto
                 Spacer()
-                DSButton("Follow", style: .filledA, size: .medium, iconRight: "plus") {}
+                DSButton("Follow") {}.buttonStyle(.filledA).buttonSize(.medium).systemIcon("plus", position: .right)
             }
             .padding(.horizontal, theme.spacing.xl)
             .zIndex(2)
@@ -54,16 +54,18 @@ struct Profile2Page: View {
     }
 
     private var avatarPhoto: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.md, padding: 0) {
+        DSCard {
             Image("profile-photo-1")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 108, height: 108)
         }
+        .cardRadius(theme.radius.md)
+        .cardPadding(0)
     }
 
     private var profileInfoCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: theme.spacing.sm) {
                     DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral9)
@@ -84,6 +86,7 @@ struct Profile2Page: View {
             .padding(.bottom, theme.spacing.xl)
             .padding(.horizontal, theme.spacing.xl)
         }
+        .cardPadding(0)
     }
 
     // MARK: - Social Stats Row
@@ -118,34 +121,37 @@ struct Profile2Page: View {
     // MARK: - Stats Card
 
     private var statsCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             HStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .leading, spacing: theme.spacing.lg) {
                     VStack(alignment: .leading, spacing: 0) {
-                        DSText("560 done", style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
-                        DSText("268 works in progress", style: theme.typography.small, color: theme.colors.textNeutral0_5)
+                        DSText("560 done", style: theme.typography.largeSemiBold, color: theme.colors.textNeutral05)
+                        DSText("268 works in progress", style: theme.typography.small, color: theme.colors.textNeutral05)
                     }
                     miniBarChart
                 }
 
                 Spacer()
 
-                DSProgressCircle(
-                    progress: 0.5, size: 86, lineWidth: 6, customLabel: "560",
-                    trackColor: theme.colors.textNeutral0_5.opacity(0.08),
-                    progressColor: theme.colors.textNeutral0_5,
-                    labelColor: theme.colors.textNeutral0_5
-                )
+                DSProgressCircle(progress: 0.5)
+                    .circleSize(86)
+                    .lineWidth(6)
+                    .customLabel("560")
+                    .trackColor(theme.colors.textNeutral05.opacity(0.08))
+                    .progressColor(theme.colors.textNeutral05)
+                    .labelColor(theme.colors.textNeutral05)
 
                 Spacer()
 
-                DSText("March 12, 2030", style: theme.typography.small, color: theme.colors.textNeutral0_5)
+                DSText("March 12, 2030", style: theme.typography.small, color: theme.colors.textNeutral05)
                     .fixedSize()
                     .rotationEffect(.degrees(-90))
                     .frame(width: 18, height: 81)
             }
             .padding(theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardPadding(0)
     }
 
     private var miniBarChart: some View {
@@ -153,11 +159,11 @@ struct Profile2Page: View {
             miniDot(color: theme.colors.surfaceSecondary100)
             miniDot(color: theme.colors.surfaceSecondary100)
             miniBar(color: theme.colors.surfaceSecondary100, height: 23)
-            miniDot(color: theme.colors.surfaceNeutral0_5)
-            miniDot(color: theme.colors.surfaceNeutral0_5)
-            miniDot(color: theme.colors.surfaceNeutral0_5)
-            miniDot(color: theme.colors.surfaceNeutral0_5)
-            miniDot(color: theme.colors.surfaceNeutral0_5)
+            miniDot(color: theme.colors.surfaceNeutral05)
+            miniDot(color: theme.colors.surfaceNeutral05)
+            miniDot(color: theme.colors.surfaceNeutral05)
+            miniDot(color: theme.colors.surfaceNeutral05)
+            miniDot(color: theme.colors.surfaceNeutral05)
         }
     }
 
@@ -172,32 +178,39 @@ struct Profile2Page: View {
     // MARK: - List Card
 
     private var listCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(spacing: 0) {
-                DSListItem(overline: "April, 2030", headline: "12,380 reviews", metadata: "12K") {
-                    DSProgressCircle(progress: 0.8, size: 40, progressColor: theme.colors.surfaceSecondary100)
+                DSListItem("12,380 reviews") {
+                    DSProgressCircle(progress: 0.8).circleSize(40).progressColor(theme.colors.surfaceSecondary100)
                 } trailing: {
-                    DSButton(style: .text, size: .medium, systemIcon: "chart.line.uptrend.xyaxis") {}
+                    DSButton {}.buttonStyle(.text).buttonSize(.medium).systemIcon("chart.line.uptrend.xyaxis")
                 }
+                .overline("April, 2030")
+                .metadata("12K")
 
-                DSDivider(style: .middle)
+                DSDivider().dividerStyle(.middle)
 
-                DSListItem(overline: "March, 2030", headline: "560 works done", metadata: "560") {
-                    DSProgressCircle(progress: 0.5, size: 40, progressColor: theme.colors.surfaceSecondary100)
+                DSListItem("560 works done") {
+                    DSProgressCircle(progress: 0.5).circleSize(40).progressColor(theme.colors.surfaceSecondary100)
                 } trailing: {
-                    DSButton(style: .text, size: .medium, systemIcon: "chart.line.uptrend.xyaxis") {}
+                    DSButton {}.buttonStyle(.text).buttonSize(.medium).systemIcon("chart.line.uptrend.xyaxis")
                 }
+                .overline("March, 2030")
+                .metadata("560")
 
-                DSDivider(style: .middle)
+                DSDivider().dividerStyle(.middle)
 
-                DSListItem(overline: "February, 2030", headline: "28,560 reviews", metadata: "28K") {
-                    DSProgressCircle(progress: 0.9, size: 40, progressColor: theme.colors.surfaceSecondary100)
+                DSListItem("28,560 reviews") {
+                    DSProgressCircle(progress: 0.9).circleSize(40).progressColor(theme.colors.surfaceSecondary100)
                 } trailing: {
-                    DSButton(style: .text, size: .medium, systemIcon: "chart.line.uptrend.xyaxis") {}
+                    DSButton {}.buttonStyle(.text).buttonSize(.medium).systemIcon("chart.line.uptrend.xyaxis")
                 }
+                .overline("February, 2030")
+                .metadata("28K")
             }
             .padding(.vertical, theme.spacing.lg)
         }
+        .cardPadding(0)
     }
 }
 

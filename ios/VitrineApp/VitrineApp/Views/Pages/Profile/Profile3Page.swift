@@ -15,12 +15,12 @@ struct Profile3Page: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
+            DSTopAppBar(title: "Profile") {
                 HStack(spacing: theme.spacing.xs) {
-                    DSButton(style: .neutral, size: .medium, systemIcon: "plus.circle") {}
-                    DSButton(style: .neutral, size: .medium, systemIcon: "ellipsis.vertical") {}
+                    DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("plus.circle")
+                    DSButton {}.buttonStyle(.neutral).buttonSize(.medium).systemIcon("ellipsis.vertical")
                 }
-            }
+            }.appBarStyle(.smallCentered).onBack { dismiss() }
 
             ScrollView {
                 VStack(spacing: theme.spacing.lg) {
@@ -40,7 +40,7 @@ struct Profile3Page: View {
                 .padding(.bottom, theme.spacing.lg)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }
@@ -73,16 +73,18 @@ struct Profile3Page: View {
     // MARK: - Social Info Card
 
     private var socialInfoCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral05)
                 DSText("Rockstar-in-training. Plays air guitar solos that even virtual fans cheer for.",
-                       style: theme.typography.captionRegular, color: theme.colors.textNeutral0_5)
+                       style: theme.typography.captionRegular, color: theme.colors.textNeutral05)
                 socialStatsRow
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxl)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardPadding(0)
     }
 
     private var socialStatsRow: some View {
@@ -95,14 +97,14 @@ struct Profile3Page: View {
 
     private func statColumn(value: String, label: String, showDivider: Bool) -> some View {
         VStack(alignment: .center, spacing: theme.spacing.xxs) {
-            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
-            DSText(label, style: theme.typography.tiny, color: theme.colors.textNeutral0_5.opacity(theme.colors.textOpacity50))
+            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral05)
+            DSText(label, style: theme.typography.tiny, color: theme.colors.textNeutral05.opacity(theme.colors.textOpacity50))
         }
         .frame(maxWidth: .infinity)
         .overlay(alignment: .trailing) {
             if showDivider {
                 Rectangle()
-                    .fill(theme.colors.textNeutral0_5.opacity(0.2))
+                    .fill(theme.colors.textNeutral05.opacity(0.2))
                     .frame(width: 1)
             }
         }
@@ -111,16 +113,18 @@ struct Profile3Page: View {
     // MARK: - CTA Card
 
     private var ctaCard: some View {
-        DSCard(background: theme.colors.surfaceSecondary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             HStack {
-                DSButton("Follow", style: .filledB, size: .big, iconLeft: "plus") {}
+                DSButton("Follow") {}.systemIcon("plus", position: .left)
                 Spacer()
-                DSButton("Message", style: .text, size: .big, iconLeft: "message") {}
+                DSButton("Message") {}.buttonStyle(.text).systemIcon("message", position: .left)
             }
             .padding(.top, 80)
             .padding(.bottom, theme.spacing.lg)
             .padding(.horizontal, theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfaceSecondary100)
+        .cardPadding(0)
     }
 }
 

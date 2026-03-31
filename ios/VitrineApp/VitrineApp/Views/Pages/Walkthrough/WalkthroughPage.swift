@@ -25,13 +25,13 @@ struct WalkthroughPage: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSCard(background: theme.colors.surfaceNeutral2) {
+            DSCard {
                 VStack(alignment: .leading, spacing: 0) {
                     VStack(alignment: .leading, spacing: theme.spacing.xl) {
                         DSText(pages[currentPage].title,
                                style: theme.typography.display2, color: theme.colors.textNeutral9)
 
-                        DSDivider(style: .fullBleed)
+                        DSDivider()
 
                         DSText(pages[currentPage].subtitle,
                                style: theme.typography.bodyRegular, color: theme.colors.textNeutral9)
@@ -40,28 +40,29 @@ struct WalkthroughPage: View {
                     Spacer()
 
                     HStack(spacing: 0) {
-                        DSButton(style: .filledA, size: .big, systemIcon: "arrow.left", action: previousPage)
+                        DSButton(action: previousPage).buttonStyle(.filledA).systemIcon("arrow.left")
                             .opacity(currentPage > 0 ? 1.0 : 0.3)
-                        DSButton(style: .filledA, size: .big, systemIcon: "arrow.right", action: nextPage)
+                        DSButton(action: nextPage).buttonStyle(.filledA).systemIcon("arrow.right")
                             .opacity(currentPage < pages.count - 1 ? 1.0 : 0.3)
                     }
                 }
             }
             .frame(maxHeight: .infinity)
 
-            DSCard(background: theme.colors.surfacePrimary100) {
+            DSCard {
                 HStack {
                     DSText("For designers who dare to think differently.",
-                           style: theme.typography.bodyRegular, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.bodyRegular, color: theme.colors.textNeutral05)
                     Spacer()
-                    DSButton("Skip", style: .filledA, size: .medium) {}
+                    DSButton("Skip") {}.buttonStyle(.filledA).buttonSize(.medium)
                 }
             }
+            .cardBackground(theme.colors.surfacePrimary100)
             .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
         .animation(.easeInOut(duration: 0.3), value: currentPage)
     }

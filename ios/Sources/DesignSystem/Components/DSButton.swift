@@ -34,106 +34,211 @@ public enum DSButtonSize: Sendable, CaseIterable {
 
 // MARK: - DSButton
 
-/// A themed button matching all 6 Figma styles × 3 sizes.
+/// A themed button with modifier-based customization.
 ///
 /// Usage:
 /// ```swift
-/// DSButton("Save", style: .filledB, size: .big) { save() }
-/// DSButton("Cancel", style: .text, size: .medium) { cancel() }
-/// DSButton(style: .neutral, size: .big, systemIcon: "xmark") { dismiss() }
+/// // Text button (minimal)
+/// DSButton("Save") { save() }
+///
+/// // Styled text button
+/// DSButton("Save") { save() }
+///     .buttonStyle(.filledA)
+///     .buttonSize(.big)
+///     .fullWidth()
+///
+/// // Text + icon
+/// DSButton("Let's Roll!") { go() }
+///     .buttonStyle(.filledA)
+///     .icon(.arrowRightLong, position: .right)
+///
+/// // Icon-only
+/// DSButton { dismiss() }
+///     .buttonStyle(.neutral)
+///     .icon(.xmark)
+///
+/// // SF Symbol
+/// DSButton { dismiss() }
+///     .buttonStyle(.neutral)
+///     .systemIcon("xmark")
 /// ```
 public struct DSButton: View {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
 
-    private let label: LocalizedStringKey?
-    private let style: DSButtonStyle
-    private let size: DSButtonSize
-    private let iconLeft: String?
-    private let iconRight: String?
-    private let isSystemIcon: Bool
-    private let isFullWidth: Bool
-    private let action: () -> Void
+    // Core
+    private let _label: LocalizedStringKey?
+    private let _action: () -> Void
 
-    /// Text button with optional SF Symbol icons.
+    // Configurable via modifiers
+    private var _style: DSButtonStyle = .filledB
+    private var _size: DSButtonSize = .big
+    private var _iconLeft: String?
+    private var _iconRight: String?
+    private var _isSystemIcon: Bool = true
+    private var _isFullWidth: Bool = false
+
+    public enum IconPosition: Sendable {
+        case left, right
+    }
+
+    // MARK: - Inits (2 only: text button + icon-only)
+
+    /// Text button.
+    public init(_ label: LocalizedStringKey, action: @escaping () -> Void) {
+        self._label = label
+        self._action = action
+    }
+
+    /// Icon-only button (no label). Requires `.icon()`, `.systemIcon()`, or `.assetIcon()` modifier.
+    public init(action: @escaping () -> Void) {
+        self._label = nil
+        self._action = action
+    }
+
+    // MARK: - Modifiers
+
+    public func buttonStyle(_ style: DSButtonStyle) -> Self {
+        var copy = self
+        copy._style = style
+        return copy
+    }
+
+    public func buttonSize(_ size: DSButtonSize) -> Self {
+        var copy = self
+        copy._size = size
+        return copy
+    }
+
+    public func fullWidth(_ isFullWidth: Bool = true) -> Self {
+        var copy = self
+        copy._isFullWidth = isFullWidth
+        return copy
+    }
+
+    /// DS icon (from the 1364 icon set).
+    public func icon(_ icon: DSIcon, position: IconPosition = .left) -> Self {
+        var copy = self
+        copy._isSystemIcon = false
+        if position == .left {
+            copy._iconLeft = icon.imageName
+            copy._iconRight = nil
+        } else {
+            copy._iconLeft = nil
+            copy._iconRight = icon.imageName
+        }
+        return copy
+    }
+
+    /// SF Symbol icon.
+    public func systemIcon(_ name: String, position: IconPosition = .left) -> Self {
+        var copy = self
+        copy._isSystemIcon = true
+        if position == .left {
+            copy._iconLeft = name
+            copy._iconRight = nil
+        } else {
+            copy._iconLeft = nil
+            copy._iconRight = name
+        }
+        return copy
+    }
+
+    /// Custom asset image icon.
+    public func assetIcon(_ name: String, position: IconPosition = .left) -> Self {
+        var copy = self
+        copy._isSystemIcon = false
+        if position == .left {
+            copy._iconLeft = name
+            copy._iconRight = nil
+        } else {
+            copy._iconLeft = nil
+            copy._iconRight = name
+        }
+        return copy
+    }
+
+    // MARK: - Deprecated inits (backward compat)
+
+    @available(*, deprecated, message: "Use DSButton(label) { action }.buttonStyle(.x).buttonSize(.y) instead")
     public init(
         _ label: LocalizedStringKey,
-        style: DSButtonStyle = .filledB,
+        style: DSButtonStyle,
         size: DSButtonSize = .big,
         iconLeft: String? = nil,
         iconRight: String? = nil,
         isFullWidth: Bool = false,
         action: @escaping () -> Void
     ) {
-        self.label = label
-        self.style = style
-        self.size = size
-        self.iconLeft = iconLeft
-        self.iconRight = iconRight
-        self.isSystemIcon = true
-        self.isFullWidth = isFullWidth
-        self.action = action
+        self._label = label
+        self._action = action
+        self._style = style
+        self._size = size
+        self._iconLeft = iconLeft
+        self._iconRight = iconRight
+        self._isSystemIcon = true
+        self._isFullWidth = isFullWidth
     }
 
-    /// Icon-only button with SF Symbol.
+    @available(*, deprecated, message: "Use DSButton { action }.buttonStyle(.x).systemIcon(name) instead")
     public init(
-        style: DSButtonStyle = .neutral,
+        style: DSButtonStyle,
         size: DSButtonSize = .big,
         systemIcon: String,
         isFullWidth: Bool = false,
         action: @escaping () -> Void
     ) {
-        self.label = nil
-        self.style = style
-        self.size = size
-        self.iconLeft = systemIcon
-        self.iconRight = nil
-        self.isSystemIcon = true
-        self.isFullWidth = isFullWidth
-        self.action = action
+        self._label = nil
+        self._action = action
+        self._style = style
+        self._size = size
+        self._iconLeft = systemIcon
+        self._iconRight = nil
+        self._isSystemIcon = true
+        self._isFullWidth = isFullWidth
     }
 
-    /// Icon-only button with custom asset image.
+    @available(*, deprecated, message: "Use DSButton { action }.buttonStyle(.x).assetIcon(name) instead")
     public init(
-        style: DSButtonStyle = .neutral,
+        style: DSButtonStyle,
         size: DSButtonSize = .big,
         assetIcon: String,
         isFullWidth: Bool = false,
         action: @escaping () -> Void
     ) {
-        self.label = nil
-        self.style = style
-        self.size = size
-        self.iconLeft = assetIcon
-        self.iconRight = nil
-        self.isSystemIcon = false
-        self.isFullWidth = isFullWidth
-        self.action = action
+        self._label = nil
+        self._action = action
+        self._style = style
+        self._size = size
+        self._iconLeft = assetIcon
+        self._iconRight = nil
+        self._isSystemIcon = false
+        self._isFullWidth = isFullWidth
     }
 
-    /// Text button with a custom asset icon (left or right).
+    @available(*, deprecated, message: "Use DSButton(label) { action }.buttonStyle(.x).assetIcon(name, position:) instead")
     public init(
         _ label: LocalizedStringKey,
-        style: DSButtonStyle = .filledB,
+        style: DSButtonStyle,
         size: DSButtonSize = .big,
         assetIcon: String,
         iconPosition: IconPosition = .left,
         isFullWidth: Bool = false,
         action: @escaping () -> Void
     ) {
-        self.label = label
-        self.style = style
-        self.size = size
-        self.iconLeft = iconPosition == .left ? assetIcon : nil
-        self.iconRight = iconPosition == .right ? assetIcon : nil
-        self.isSystemIcon = false
-        self.isFullWidth = isFullWidth
-        self.action = action
+        self._label = label
+        self._action = action
+        self._style = style
+        self._size = size
+        self._iconLeft = iconPosition == .left ? assetIcon : nil
+        self._iconRight = iconPosition == .right ? assetIcon : nil
+        self._isSystemIcon = false
+        self._isFullWidth = isFullWidth
     }
 
-    /// Icon-only button with DSIcon enum.
+    @available(*, deprecated, message: "Use DSButton { action }.buttonStyle(.x).icon(.y) instead")
     public init(
-        style: DSButtonStyle = .neutral,
+        style: DSButtonStyle,
         size: DSButtonSize = .big,
         icon: DSIcon,
         isFullWidth: Bool = false,
@@ -142,10 +247,10 @@ public struct DSButton: View {
         self.init(style: style, size: size, assetIcon: icon.imageName, isFullWidth: isFullWidth, action: action)
     }
 
-    /// Text button with a DSIcon enum (left or right).
+    @available(*, deprecated, message: "Use DSButton(label) { action }.buttonStyle(.x).icon(.y, position:) instead")
     public init(
         _ label: LocalizedStringKey,
-        style: DSButtonStyle = .filledB,
+        style: DSButtonStyle,
         size: DSButtonSize = .big,
         icon: DSIcon,
         iconPosition: IconPosition = .left,
@@ -155,59 +260,54 @@ public struct DSButton: View {
         self.init(label, style: style, size: size, assetIcon: icon.imageName, iconPosition: iconPosition, isFullWidth: isFullWidth, action: action)
     }
 
-    public enum IconPosition {
-        case left, right
-    }
-
-    // MARK: - Backward-compatible init
-
-    /// Backward-compatible initializer mapping old variants.
+    @available(*, deprecated, message: "Use new DSButton API with .buttonStyle() modifier")
     public init(
         _ label: LocalizedStringKey,
         variant: _LegacyButtonVariant,
         isFullWidth: Bool = false,
         action: @escaping () -> Void
     ) {
-        self.label = label
-        self.style = variant.mapped
-        self.size = .big
-        self.iconLeft = nil
-        self.iconRight = nil
-        self.isSystemIcon = true
-        self.isFullWidth = isFullWidth
-        self.action = action
+        self._label = label
+        self._action = action
+        self._style = variant.mapped
+        self._size = .big
+        self._iconLeft = nil
+        self._iconRight = nil
+        self._isSystemIcon = true
+        self._isFullWidth = isFullWidth
     }
 
+    @available(*, deprecated, message: "Use new DSButton API with .buttonStyle() modifier")
     public init(
         variant: _LegacyButtonVariant,
         systemIcon: String,
         action: @escaping () -> Void
     ) {
-        self.label = nil
-        self.style = variant.mapped
-        self.size = .big
-        self.iconLeft = systemIcon
-        self.iconRight = nil
-        self.isSystemIcon = true
-        self.isFullWidth = false
-        self.action = action
+        self._label = nil
+        self._action = action
+        self._style = variant.mapped
+        self._size = .big
+        self._iconLeft = systemIcon
+        self._iconRight = nil
+        self._isSystemIcon = true
+        self._isFullWidth = false
     }
 
     // MARK: - Body
 
     public var body: some View {
-        Button(action: action) {
+        Button(action: _action) {
             HStack(spacing: gap) {
-                if let iconLeft {
-                    iconView(iconLeft)
+                if let _iconLeft {
+                    iconView(_iconLeft)
                 }
 
-                if let label {
-                    Text(label)
+                if let _label {
+                    Text(_label)
                 }
 
-                if let iconRight {
-                    iconView(iconRight)
+                if let _iconRight {
+                    iconView(_iconRight)
                 }
             }
             .font(textFont)
@@ -216,7 +316,7 @@ public struct DSButton: View {
             .padding(.horizontal, paddingH)
             .padding(.vertical, paddingV)
             .frame(height: height)
-            .frame(maxWidth: isFullWidth ? .infinity : nil)
+            .frame(maxWidth: _isFullWidth ? .infinity : nil)
             .background(backgroundColor)
             .clipShape(Capsule())
             .overlay(borderOverlay)
@@ -227,15 +327,21 @@ public struct DSButton: View {
 
     @ViewBuilder
     private func iconView(_ name: String) -> some View {
-        if isSystemIcon {
+        if _isSystemIcon {
             Image(systemName: name)
                 .font(.system(size: iconSize, weight: .medium))
+                .frame(width: iconSize, height: iconSize)
+        } else if let dsIcon = DSIcon(rawValue: name) {
+            Image(dsIcon: dsIcon)
+                .resizable()
+                .renderingMode(.template)
+                .aspectRatio(contentMode: .fit)
                 .frame(width: iconSize, height: iconSize)
         } else {
             Image(name, bundle: .main)
                 .resizable()
                 .renderingMode(.template)
-                .scaledToFit()
+                .aspectRatio(contentMode: .fit)
                 .frame(width: iconSize, height: iconSize)
         }
     }
@@ -243,7 +349,7 @@ public struct DSButton: View {
     // MARK: - Resolved Sizes
 
     private var height: CGFloat {
-        switch size {
+        switch _size {
         case .big: return theme.components.button.bigHeight
         case .medium: return theme.components.button.mediumHeight
         case .small: return theme.components.button.smallHeight
@@ -251,14 +357,14 @@ public struct DSButton: View {
     }
 
     private var paddingH: CGFloat {
-        if style == .text {
-            switch size {
+        if _style == .text {
+            switch _size {
             case .big: return theme.spacing.md
             case .medium: return theme.spacing.xs
             case .small: return theme.spacing.xxs
             }
         }
-        switch size {
+        switch _size {
         case .big: return theme.spacing.lg
         case .medium: return theme.spacing.md
         case .small: return theme.spacing.sm
@@ -266,7 +372,7 @@ public struct DSButton: View {
     }
 
     private var paddingV: CGFloat {
-        switch size {
+        switch _size {
         case .big: return theme.spacing.md
         case .medium: return theme.spacing.xs
         case .small: return theme.spacing.xxs
@@ -274,28 +380,28 @@ public struct DSButton: View {
     }
 
     private var gap: CGFloat {
-        switch size {
+        switch _size {
         case .big, .medium: return theme.spacing.sm
         case .small: return theme.spacing.xs
         }
     }
 
     private var iconSize: CGFloat {
-        switch size {
+        switch _size {
         case .big, .medium: return theme.components.button.bigIconSize
         case .small: return theme.components.button.smallIconSize
         }
     }
 
     private var textFont: Font {
-        switch size {
+        switch _size {
         case .big: return theme.typography.bodySemiBold.font
         case .medium, .small: return theme.typography.label.font
         }
     }
 
     private var textTracking: CGFloat {
-        switch size {
+        switch _size {
         case .big: return theme.typography.bodySemiBold.tracking
         case .medium, .small: return theme.typography.label.tracking
         }
@@ -304,33 +410,33 @@ public struct DSButton: View {
     // MARK: - Resolved Colors
 
     private var backgroundColor: Color {
-        switch style {
+        switch _style {
         case .filledA: return theme.colors.surfaceSecondary100
         case .filledB: return theme.colors.surfacePrimary100
         case .filledC: return theme.colors.surfacePrimary120
         case .neutral: return theme.colors.surfaceNeutral2
-        case .neutralLight: return theme.colors.surfaceNeutral0_5
+        case .neutralLight: return theme.colors.surfaceNeutral05
         case .outlined, .outlinedLight, .text: return .clear
         }
     }
 
     private var foregroundColor: Color {
-        switch style {
+        switch _style {
         case .filledA, .neutral, .neutralLight, .outlined, .text:
             return theme.colors.textNeutral9
         case .filledB, .filledC, .outlinedLight:
-            return theme.colors.textNeutral0_5
+            return theme.colors.textNeutral05
         }
     }
 
     @ViewBuilder
     private var borderOverlay: some View {
-        if style == .outlined {
+        if _style == .outlined {
             Capsule()
                 .stroke(theme.colors.surfacePrimary120, lineWidth: theme.borders.widthSm)
-        } else if style == .outlinedLight {
+        } else if _style == .outlinedLight {
             Capsule()
-                .stroke(theme.colors.surfaceNeutral0_5, lineWidth: theme.borders.widthSm)
+                .stroke(theme.colors.surfaceNeutral05, lineWidth: theme.borders.widthSm)
         }
     }
 }

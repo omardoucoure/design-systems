@@ -15,10 +15,10 @@ struct Alert4Page: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "Today", style: .smallCentered, onBack: { dismiss() }) {
+                DSTopAppBar(title: "Today") {
                     DSAvatar(style: .image(Image("avatar_contact")),
                              size: CGSize(width: 56, height: 40), shape: .roundedRect(theme.radius.sm))
-                }
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
                 ScrollView {
                     VStack(spacing: theme.spacing.sm) {
                         HStack(alignment: .top, spacing: theme.spacing.sm) { walkCard; waterCard }
@@ -37,7 +37,7 @@ struct Alert4Page: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -47,28 +47,35 @@ struct Alert4Page: View {
     }
 
     private var walkCard: some View {
-        DSMetricCard(title: "Walk", icon: .walking,
-                     background: theme.colors.surfacePrimary100, foreground: theme.colors.textNeutral0_5) {
+        DSMetricCard(title: "Walk", icon: .walking) {
             ZStack {
-                DSProgressCircle(progress: 0.75, size: 104, lineWidth: 6, trackLineWidth: 3, customLabel: " ",
-                                 trackColor: theme.colors.textNeutral0_5.opacity(0.2),
-                                 progressColor: theme.colors.textNeutral0_5)
+                DSProgressCircle(progress: 0.75)
+                    .circleSize(104)
+                    .lineWidth(6)
+                    .trackLineWidth(3)
+                    .customLabel(" ")
+                    .trackColor(theme.colors.textNeutral05.opacity(0.2))
+                    .progressColor(theme.colors.textNeutral05)
                 VStack(spacing: 0) {
-                    DSText("6560", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
-                    DSText("Steps", style: theme.typography.small, color: theme.colors.textNeutral0_5)
+                    DSText("6560", style: theme.typography.h4, color: theme.colors.textNeutral05)
+                    DSText("Steps", style: theme.typography.small, color: theme.colors.textNeutral05)
                 }
             }
         }
+        .metricBackground(theme.colors.surfacePrimary100)
+        .metricForeground(theme.colors.textNeutral05)
     }
 
     private var waterCard: some View {
-        DSMetricCard(title: "Water", icon: .droplet, value: "2.48", unit: "liters",
-                     background: theme.colors.surfaceSecondary100, foreground: theme.colors.textNeutral9) {
+        DSMetricCard(title: "Water", icon: .droplet) {
             VStack(spacing: 0) {
                 Spacer()
                 waterBars
             }
         }
+        .metricValue("2.48", unit: "liters")
+        .metricBackground(theme.colors.surfaceSecondary100)
+        .metricForeground(theme.colors.textNeutral9)
     }
 
     private var waterBars: some View {
@@ -89,29 +96,36 @@ struct Alert4Page: View {
     private var row2Cards: some View {
         HStack(alignment: .top, spacing: theme.spacing.sm) {
             VStack(spacing: theme.spacing.sm) {
-                DSMetricCard(title: "Calories", icon: .halfCookie, value: "2.248", unit: "kcal",
-                             background: theme.colors.surfaceNeutral2, foreground: theme.colors.textNeutral9)
-                DSMetricCard(title: "Sleep", icon: .eyeClosed, value: "6.56", unit: "hours",
-                             background: theme.colors.surfaceNeutral2, foreground: theme.colors.textNeutral9)
+                DSMetricCard(title: "Calories", icon: .halfCookie)
+                    .metricValue("2.248", unit: "kcal")
+                    .metricBackground(theme.colors.surfaceNeutral2)
+                    .metricForeground(theme.colors.textNeutral9)
+                DSMetricCard(title: "Sleep", icon: .eyeClosed)
+                    .metricValue("6.56", unit: "hours")
+                    .metricBackground(theme.colors.surfaceNeutral2)
+                    .metricForeground(theme.colors.textNeutral9)
             }
-            DSMetricCard(title: "Heart", icon: .heart, value: "86", unit: "bpm",
-                         background: theme.colors.surfaceNeutral3, foreground: theme.colors.textNeutral9) {
+            DSMetricCard(title: "Heart", icon: .heart) {
                 ZStack {
                     HStack(alignment: .bottom, spacing: 0) {
                         ForEach(0..<9, id: \.self) { _ in
                             Spacer(minLength: 0)
                             RoundedRectangle(cornerRadius: theme.radius.xxs)
-                                .fill(theme.colors.surfaceNeutral0_5.opacity(0.8))
+                                .fill(theme.colors.surfaceNeutral05.opacity(0.8))
                                 .frame(width: 4)
                             Spacer(minLength: 0)
                         }
                     }
-                    DSLineChart(points: heartRatePoints, lineColor: theme.colors.textNeutral9,
-                                shadowColor: theme.brand.primitives.primary120)
+                    DSLineChart(points: heartRatePoints)
+                        .lineColor(theme.colors.textNeutral9)
+                        .shadowColor(theme.brand.primitives.primary120)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 80)
             }
+            .metricValue("86", unit: "bpm")
+            .metricBackground(theme.colors.surfaceNeutral3)
+            .metricForeground(theme.colors.textNeutral9)
         }
     }
 
@@ -125,9 +139,9 @@ struct Alert4Page: View {
                     .background(theme.colors.surfaceNeutral2)
                     .clipShape(Capsule())
                 Spacer()
-                DSButton(style: .text, size: .medium, icon: .xmark) {
+                DSButton {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { showBanner = false }
-                }
+                }.buttonStyle(.text).buttonSize(.medium).icon(.xmark)
                 .accessibilityLabel("Close warning")
                 .padding(.vertical, theme.spacing.xxs)
             }

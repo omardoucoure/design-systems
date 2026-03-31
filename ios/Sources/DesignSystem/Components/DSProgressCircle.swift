@@ -10,32 +10,34 @@ import SwiftUI
 /// Usage:
 /// ```swift
 /// DSProgressCircle(progress: 0.75)
-/// DSProgressCircle(progress: 0.5, size: 56)
+/// DSProgressCircle(progress: 0.5)
+///     .circleSize(56)
+///     .progressColor(theme.colors.surfaceSecondary100)
 /// ```
 public struct DSProgressCircle: View {
     @Environment(\.theme) private var theme
 
     private let progress: Double
-    private let size: CGFloat
+    private var _circleSize: CGFloat = 40
     /// Stroke width for the thick progress arc.
-    private let lineWidth: CGFloat
+    private var _lineWidth: CGFloat = 8.6
     /// Stroke width for the thin background track. Defaults to 1.
-    private let trackLineWidth: CGFloat?
+    private var _trackLineWidth: CGFloat?
 
-    private let customLabel: String?
-    private let trackColor: Color?
-    private let progressColor: Color?
-    private let labelColor: Color?
+    private var _customLabel: String?
+    private var _trackColor: Color?
+    private var _progressColor: Color?
+    private var _labelColor: Color?
 
-    /// - Parameters:
-    ///   - progress: Value between 0.0 and 1.0.
-    ///   - size: Diameter of the circle (default 40).
-    ///   - lineWidth: Stroke width for the thick progress arc (default 6).
-    ///   - trackLineWidth: Stroke width for the thin background ring (default 1).
-    ///   - customLabel: Override center text (defaults to percentage string).
-    ///   - trackColor: Override track ring color.
-    ///   - progressColor: Override arc color.
-    ///   - labelColor: Override label color.
+    // MARK: - Init
+
+    /// - Parameter progress: Value between 0.0 and 1.0.
+    public init(progress: Double) {
+        self.progress = min(max(progress, 0), 1)
+    }
+
+    /// Deprecated — use the modifier-based API instead.
+    @available(*, deprecated, message: "Use DSProgressCircle(progress:) with .circleSize(), .lineWidth(), .trackLineWidth(), .customLabel(), .trackColor(), .progressColor(), .labelColor() modifiers")
     public init(
         progress: Double,
         size: CGFloat = 40,
@@ -47,18 +49,64 @@ public struct DSProgressCircle: View {
         labelColor: Color? = nil
     ) {
         self.progress = min(max(progress, 0), 1)
-        self.size = size
-        self.lineWidth = lineWidth
-        self.trackLineWidth = trackLineWidth
-        self.customLabel = customLabel
-        self.trackColor = trackColor
-        self.progressColor = progressColor
-        self.labelColor = labelColor
+        self._circleSize = size
+        self._lineWidth = lineWidth
+        self._trackLineWidth = trackLineWidth
+        self._customLabel = customLabel
+        self._trackColor = trackColor
+        self._progressColor = progressColor
+        self._labelColor = labelColor
     }
+
+    // MARK: - Modifiers
+
+    public func circleSize(_ size: CGFloat) -> Self {
+        var copy = self
+        copy._circleSize = size
+        return copy
+    }
+
+    public func lineWidth(_ width: CGFloat) -> Self {
+        var copy = self
+        copy._lineWidth = width
+        return copy
+    }
+
+    public func trackLineWidth(_ width: CGFloat) -> Self {
+        var copy = self
+        copy._trackLineWidth = width
+        return copy
+    }
+
+    public func customLabel(_ label: String) -> Self {
+        var copy = self
+        copy._customLabel = label
+        return copy
+    }
+
+    public func trackColor(_ color: Color) -> Self {
+        var copy = self
+        copy._trackColor = color
+        return copy
+    }
+
+    public func progressColor(_ color: Color) -> Self {
+        var copy = self
+        copy._progressColor = color
+        return copy
+    }
+
+    public func labelColor(_ color: Color) -> Self {
+        var copy = self
+        copy._labelColor = color
+        return copy
+    }
+
+    // MARK: - Body
 
     /// Resolved track stroke width — very thin by default (1pt).
     private var resolvedTrackLineWidth: CGFloat {
-        trackLineWidth ?? 1
+        _trackLineWidth ?? 1
     }
 
     public var body: some View {
@@ -67,30 +115,30 @@ public struct DSProgressCircle: View {
             // Inset by lineWidth/2 so both rings share the same center-path radius.
             Circle()
                 .stroke(
-                    trackColor ?? theme.colors.surfaceNeutral3,
+                    _trackColor ?? theme.colors.surfaceNeutral3,
                     lineWidth: resolvedTrackLineWidth
                 )
-                .padding(lineWidth / 2)
+                .padding(_lineWidth / 2)
 
             // Progress arc — thick with rounded caps, on top of the track.
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    progressColor ?? theme.colors.surfaceSecondary100,
-                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                    _progressColor ?? theme.colors.surfaceSecondary100,
+                    style: StrokeStyle(lineWidth: _lineWidth, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-                .padding(lineWidth / 2)
+                .padding(_lineWidth / 2)
 
             // Center label
-            Text(customLabel ?? "\(Int(progress * 100))")
+            Text(_customLabel ?? "\(Int(progress * 100))")
                 .font(theme.typography.smallSemiBold.font)
                 .tracking(theme.typography.smallSemiBold.tracking)
                 .foregroundStyle(
-                    labelColor ?? theme.colors.textNeutral9
+                    _labelColor ?? theme.colors.textNeutral9
                         .opacity(theme.colors.textOpacity75)
                 )
         }
-        .frame(width: size, height: size)
+        .frame(width: _circleSize, height: _circleSize)
     }
 }

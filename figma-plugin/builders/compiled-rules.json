@@ -1,0 +1,384 @@
+{
+  "DSButton": [
+    {
+      "id": "button_icon_contrast",
+      "trigger": "after_set_property",
+      "condition": {
+        "type": "variant_in",
+        "property": "Style",
+        "values": [
+          "filledB",
+          "filledC",
+          "outlinedLight"
+        ]
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child_type:VECTOR",
+        "token": "textNeutral0_5",
+        "rgb": [
+          250,
+          250,
+          249
+        ]
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    }
+  ],
+  "DSCheckbox": [
+    {
+      "id": "checkbox_correct_variant",
+      "trigger": "before_instantiate",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "use_node_id",
+        "node_id": "85:24849",
+        "reject_ids": [
+          "85:24367"
+        ]
+      },
+      "severity": "critical",
+      "auto_fixable": false
+    },
+    {
+      "id": "checkbox_stroke_fix",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_property",
+        "target": "child:Checkbox",
+        "property": "strokeAlign",
+        "value": "INSIDE"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    }
+  ],
+  "DSLayeredCard": [
+    {
+      "id": "layered_content_solid_bg",
+      "trigger": "after_detach",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child:Content",
+        "value": "surfaceNeutral2",
+        "position": "first"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "layered_content_bg_before_image",
+      "trigger": "after_detach",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child:Content",
+        "value": "surfaceNeutral2",
+        "position": "first"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "layered_detach_before_modify",
+      "trigger": "before_instantiate",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "use_node_id",
+        "node_id": "88:137815"
+      },
+      "severity": "critical",
+      "auto_fixable": false
+    }
+  ],
+  "DSListItem": [
+    {
+      "id": "listitem_settings_leading_icon",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "variant_in",
+        "context": [
+          "settings",
+          "preferences",
+          "menu"
+        ]
+      },
+      "action": {
+        "type": "set_component_property",
+        "target": "self",
+        "property": "Leading Item",
+        "value": true,
+        "sub_action": {
+          "type": "swap_component",
+          "target": "child:Leading Item",
+          "value": "Button(Style=Neutral, Size=Medium, icon-only)"
+        }
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "listitem_card_padding_minimum",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_property",
+        "target": "parent:DSCard",
+        "property": "padding",
+        "value": ">=16"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "listitem_no_manual_dividers",
+      "trigger": "after_append",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_property",
+        "target": "self",
+        "property": "showDivider",
+        "value": false
+      },
+      "severity": "critical",
+      "auto_fixable": false
+    },
+    {
+      "id": "listitem_no_spacing_between",
+      "trigger": "after_append",
+      "condition": {
+        "type": "item_count_lte",
+        "max": 20
+      },
+      "action": {
+        "type": "set_property",
+        "target": "parent",
+        "property": "itemSpacing",
+        "value": 0
+      },
+      "severity": "error",
+      "auto_fixable": true
+    }
+  ],
+  "DSOverlappingCards": [
+    {
+      "id": "overlap_text_contrast_dark",
+      "trigger": "after_append",
+      "condition": {
+        "type": "parent_fill_dark",
+        "cards": [
+          "Card-1",
+          "Card-2"
+        ]
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child_type:TEXT",
+        "value": "textNeutral0_5"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "overlap_text_contrast_coral",
+      "trigger": "after_append",
+      "condition": {
+        "type": "parent_fill_is",
+        "fill_rgb": {
+          "r": 1,
+          "g": 0.416,
+          "b": 0.373
+        },
+        "cards": [
+          "Card-3"
+        ]
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child_type:TEXT",
+        "value": "textNeutral9"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "overlap_text_contrast_light",
+      "trigger": "after_append",
+      "condition": {
+        "type": "parent_fill_is",
+        "fill_rgb_min_channel": 0.8,
+        "cards": [
+          "Card-4",
+          "Card-5"
+        ]
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child_type:TEXT",
+        "value": "textNeutral9"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "overlap_content_at_bottom",
+      "trigger": "after_detach",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_property",
+        "target": "child:Card-*",
+        "property": "primaryAxisAlignItems",
+        "value": "MAX"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "overlap_card_bg_required",
+      "trigger": "after_detach",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child:Card-*",
+        "value": "keep_existing"
+      },
+      "severity": "critical",
+      "auto_fixable": false
+    }
+  ],
+  "DSProgressCircle": [
+    {
+      "id": "progress_label_dark_bg",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "parent_fill_dark"
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child:Label",
+        "value": "textNeutral0_5"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "progress_track_dark_bg",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "parent_fill_dark"
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child:Track",
+        "value": "textNeutral0_5_opacity_0.2"
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    }
+  ],
+  "DSSegmentedPicker": [
+    {
+      "id": "picker_bg_contrast",
+      "trigger": "after_append",
+      "condition": {
+        "type": "parent_fill_is",
+        "token": "surfaceNeutral2",
+        "rgb": [
+          235,
+          235,
+          230
+        ]
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "self",
+        "token": "surfaceNeutral0_5",
+        "rgb": [
+          250,
+          250,
+          249
+        ]
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    },
+    {
+      "id": "picker_unselected_match",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "always"
+      },
+      "action": {
+        "type": "match_fill_to_parent",
+        "target": "child:Button[unselected]"
+      },
+      "severity": "error",
+      "auto_fixable": true
+    },
+    {
+      "id": "picker_hide_segments",
+      "trigger": "after_instantiate",
+      "condition": {
+        "type": "item_count_lte",
+        "count": 2
+      },
+      "action": {
+        "type": "set_component_property",
+        "properties": {
+          "Show 3": false,
+          "Show 4": false
+        }
+      },
+      "severity": "error",
+      "auto_fixable": true
+    }
+  ],
+  "DSTextField": [
+    {
+      "id": "textfield_bg_contrast",
+      "trigger": "after_append",
+      "condition": {
+        "type": "parent_fill_is",
+        "token": "surfaceNeutral2",
+        "rgb": [
+          235,
+          235,
+          230
+        ]
+      },
+      "action": {
+        "type": "set_fill",
+        "target": "child:Input",
+        "token": "surfaceNeutral0_5",
+        "rgb": [
+          250,
+          250,
+          249
+        ]
+      },
+      "severity": "critical",
+      "auto_fixable": true
+    }
+  ]
+}

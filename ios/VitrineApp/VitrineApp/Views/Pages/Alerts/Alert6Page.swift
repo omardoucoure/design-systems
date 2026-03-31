@@ -32,34 +32,32 @@ struct Alert6Page: View {
     }
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "earnings", label: "Earnings", icon: .wallet, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
                 DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "nav8_profile",
                 name: "Hristo Hristov",
                 subtitle: "Visual Designer"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var mainContent: some View {
         ZStack(alignment: .top) {
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "Total Earnings", style: .smallCentered, onBack: { dismiss() }) {
-                    DSButton(style: .neutral, size: .medium, icon: .menuScale) {
+                DSTopAppBar(title: "Total Earnings") {
+                    DSButton {
                         withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                    }
-                }
+                    }.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
                 ScrollView {
                     VStack(spacing: 0) {
                         thisMonthCard
@@ -79,35 +77,38 @@ struct Alert6Page: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var thisMonthCard: some View {
-        DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.xl) {
                 VStack(alignment: .leading, spacing: theme.spacing.xxs) {
                     HStack(spacing: theme.spacing.xxs) {
                         DSText("This Month", style: theme.typography.h4, color: theme.colors.textNeutral9)
                         Spacer()
-                        DSBadge(variant: .tagSemantic, text: "+ 12%")
+                        DSBadge(.tagSemantic).text("+ 12%")
                     }
                     DSText("Compared to Last Month", style: theme.typography.smallRegular, color: theme.colors.textNeutral9)
                 }
-                DSLollipopChart(data: monthlyData, highlightIndex: 9, highlightLabel: "$8,628")
+                DSLollipopChart(data: monthlyData)
+                    .highlightIndex(9)
+                    .highlightLabel("$8,628")
             }
             .padding(.horizontal, theme.spacing.xl)
             .padding(.vertical, theme.spacing.xxl)
         }
+        .cardPadding(0)
         .zIndex(2)
     }
 
     private var thisYearCard: some View {
-        DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {
                 DSText("This Year", style: theme.typography.caption, color: theme.colors.textNeutral2)
                 HStack(spacing: theme.spacing.lg) {
-                    DSText("$288,628", style: theme.typography.display2, color: theme.colors.textNeutral0_5)
-                    DSBadge(variant: .tagBrand, text: "+ 26%")
+                    DSText("$288,628", style: theme.typography.display2, color: theme.colors.textNeutral05)
+                    DSBadge(.tagBrand).text("+ 26%")
                 }
                 DSText("Compared to $20,620 last year", style: theme.typography.smallRegular, color: theme.colors.textNeutral2)
             }
@@ -115,6 +116,8 @@ struct Alert6Page: View {
             .padding(.bottom, theme.spacing.xl)
             .padding(.horizontal, theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfacePrimary100)
+        .cardPadding(0)
         .zIndex(1)
     }
 }

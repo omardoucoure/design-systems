@@ -17,9 +17,9 @@ struct Stats16Page: View {
     var body: some View {
         VStack(spacing: 0) {
             // Top App Bar
-            DSTopAppBar(title: "Transactions", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, icon: .bellOff) {}
-            }
+            DSTopAppBar(title: "Transactions") {
+                DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.bellOff)
+            }.onBack { dismiss() }
 
             // Scrollable content
             ScrollView {
@@ -32,7 +32,7 @@ struct Stats16Page: View {
             }
             .scrollIndicators(.hidden)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -41,11 +41,7 @@ struct Stats16Page: View {
     // MARK: - Chart Card
 
     private var chartCard: some View {
-        DSCard(
-            background: theme.colors.surfaceSecondary100,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
+        DSCard {
             VStack(spacing: theme.spacing.lg) {
                 // Heading row
                 HStack(alignment: .top) {
@@ -66,25 +62,22 @@ struct Stats16Page: View {
 
                     // Chart / Table toggle
                     HStack(spacing: theme.spacing.sm) {
-                        DSButton("Chart", style: showChart ? .neutral : .text, size: .small) {
+                        DSButton("Chart") {
                             withAnimation { showChart = true }
-                        }
-                        DSButton("Table", style: showChart ? .text : .neutral, size: .small) {
+                        }.buttonStyle(showChart ? .neutral : .text).buttonSize(.small)
+                        DSButton("Table") {
                             withAnimation { showChart = false }
-                        }
+                        }.buttonStyle(showChart ? .text : .neutral).buttonSize(.small)
                     }
                     .padding(.vertical, 2)
                 }
 
                 if showChart {
                     // Stats chart — auto-line from data values
-                    DSStatsChart(
-                        data: chartData,
-                        style: .brand,
-                        badgeText: "$620",
-                        badgeX: 0.75,
-                        badgeY: 0.42
-                    )
+                    DSStatsChart(data: chartData)
+                        .chartStyle(.brand)
+                        .badgeText("$620")
+                        .badgePosition(x: 0.75, y: 0.42)
                 } else {
                     // Table view
                     tableView
@@ -92,6 +85,8 @@ struct Stats16Page: View {
             }
             .padding(theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfaceSecondary100)
+        .cardPadding(0)
     }
 
     // MARK: - Period Picker
@@ -99,9 +94,9 @@ struct Stats16Page: View {
     private var periodPicker: some View {
         DSSegmentedPicker(
             items: ["All", "Month", "Week", "Day"],
-            selectedIndex: $selectedPeriod,
-            style: .pills
+            selectedIndex: $selectedPeriod
         )
+        .pickerStyle(.pills)
     }
 
     // MARK: - Table View
@@ -125,7 +120,7 @@ struct Stats16Page: View {
                 .padding(.vertical, theme.spacing.xs)
 
                 if row.label != chartTableData.last?.label {
-                    DSDivider(style: .fullBleed, color: theme.colors.textNeutral9.opacity(0.1))
+                    DSDivider().dividerColor(theme.colors.textNeutral9.opacity(0.1))
                 }
             }
         }
@@ -134,30 +129,25 @@ struct Stats16Page: View {
     // MARK: - Transaction List
 
     private var transactionList: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: 0
-        ) {
+        DSCard {
             VStack(spacing: 0) {
                 ForEach(Array(transactions.enumerated()), id: \.element.id) { index, transaction in
-                    DSListItem(
-                        headline: transaction.name,
-                        supportingText: transaction.date,
-                        metadata: transaction.type,
-                        showDivider: index < transactions.count - 1
-                    ) {
+                    DSListItem(transaction.name) {
                         DSAvatar(
                             style: .image(Image(transaction.avatar)),
                             size: 40
                         )
                     } trailing: {
-                        DSButton(transaction.amount, style: .neutral, size: .medium) {}
+                        DSButton(transaction.amount) {}.buttonStyle(.neutral).buttonSize(.medium)
                     }
+                    .supportingText(transaction.date)
+                    .metadata(transaction.type)
+                    .showDivider(index < transactions.count - 1)
                 }
             }
             .padding(.vertical, theme.spacing.lg)
         }
+        .cardPadding(0)
     }
 
     // MARK: - Data

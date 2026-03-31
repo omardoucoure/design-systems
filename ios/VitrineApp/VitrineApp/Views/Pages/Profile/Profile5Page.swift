@@ -19,12 +19,12 @@ struct Profile5Page: View {
     var body: some View {
         ZStack {
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
+                DSTopAppBar(title: "Profile") {
                     HStack(spacing: 0) {
-                        DSButton(style: .text, size: .medium, icon: .plusCircle) {}
-                        DSButton(style: .text, size: .medium, icon: .moreVert) {}
+                        DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.plusCircle)
+                        DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.moreVert)
                     }
-                }
+                }.onBack { dismiss() }
 
                 ScrollView {
                     VStack(spacing: theme.spacing.lg) {
@@ -35,7 +35,7 @@ struct Profile5Page: View {
                     .padding(.bottom, theme.spacing.sm)
                 }
             }
-            .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+            .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
 
             if let videoURL = playingVideoURL {
                 DSVideoPlayer(urlString: videoURL) {
@@ -66,38 +66,39 @@ struct Profile5Page: View {
     // MARK: - Info Card
 
     private var infoCard: some View {
-        DSCard(background: theme.colors.surfacePrimary120, radius: theme.radius.xl, padding: theme.spacing.xl) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 HStack(alignment: .top, spacing: theme.spacing.lg) {
                     VStack(alignment: .leading, spacing: theme.spacing.sm) {
-                        DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                        DSText("Hristo Hristov", style: theme.typography.h4, color: theme.colors.textNeutral05)
                         (Text("Sports superhero. Training for the office chair Olympics... ")
                             .font(theme.typography.bodyRegular.font)
-                            .foregroundColor(theme.colors.textNeutral0_5)
+                            .foregroundColor(theme.colors.textNeutral05)
                          + Text("read more")
                             .font(theme.typography.label.font)
-                            .foregroundColor(theme.colors.textNeutral0_5))
+                            .foregroundColor(theme.colors.textNeutral05))
                     }
                     Image("p5_avatar")
                         .resizable().scaledToFill()
                         .frame(width: 61, height: 64)
                         .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
                 }
-                DSDivider(style: .fullBleed, color: theme.colors.textNeutral0_5.opacity(0.2))
+                DSDivider().dividerColor(theme.colors.textNeutral05.opacity(0.2))
                 HStack(spacing: 0) {
                     statCol("1,200", label: "photos")
                     statCol("2,980", label: "followers")
                     statCol("1,600", label: "following")
-                    DSButton(style: .filledA, size: .medium, icon: .editPencil) {}
+                    DSButton {}.buttonStyle(.filledA).buttonSize(.medium).icon(.editPencil)
                 }
             }
         }
+        .cardBackground(theme.colors.surfacePrimary120)
     }
 
     private func statCol(_ value: String, label: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral0_5)
-            DSText(label, style: theme.typography.smallRegular, color: theme.colors.textNeutral0_5).opacity(0.75)
+            DSText(value, style: theme.typography.largeSemiBold, color: theme.colors.textNeutral05)
+            DSText(label, style: theme.typography.smallRegular, color: theme.colors.textNeutral05).opacity(0.75)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -109,21 +110,20 @@ struct Profile5Page: View {
         // Card 3 (back):   w=258, h=419.5, rendered first
         // Card 2 (middle): w=308, h=419.5, mb=[-400] → top offset = 419.5-400 = 19.5pt
         // Card 1 (front):  w=full, h=400,  mb=[-400] → top offset = 19.5+19.5 ≈ 39pt from back
-        DSStackedCard(
-            levels: [
-                // Middle: 308pt wide on 393pt screen → inset = (393-308)/2 = 42.5pt, peek = 19.5pt
-                DSStackedCardLevel(horizontalInset: 42, darkOverlay: 0.00, peekOffset: 20),
-                // Back: 258pt wide → inset = (393-258)/2 = 67.5pt, peek = 0pt (at very top)
-                DSStackedCardLevel(horizontalInset: 67, darkOverlay: 0.10, peekOffset: 0),
-            ],
-            alignment: .top,
-            frontOffset: 39
-        ) {
+        DSStackedCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 iconTabBar
                 tabContent
             }
         }
+        .stackedLevels([
+            // Middle: 308pt wide on 393pt screen → inset = (393-308)/2 = 42.5pt, peek = 19.5pt
+            DSStackedCardLevel(horizontalInset: 42, darkOverlay: 0.00, peekOffset: 20),
+            // Back: 258pt wide → inset = (393-258)/2 = 67.5pt, peek = 0pt (at very top)
+            DSStackedCardLevel(horizontalInset: 67, darkOverlay: 0.10, peekOffset: 0),
+        ])
+        .stackedAlignment(.top)
+        .stackedFrontOffset(39)
     }
 
     // MARK: - Icon Tab Bar

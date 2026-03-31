@@ -19,10 +19,10 @@ struct Alert5Page: View {
     var body: some View {
         ZStack {
             VStack(spacing: theme.spacing.sm) {
-                DSTopAppBar(title: "Statistics", style: .smallCentered, onBack: { dismiss() }) {
+                DSTopAppBar(title: "Statistics") {
                     DSAvatar(style: .image(Image("avatar_contact")),
                              size: CGSize(width: 56, height: 40), shape: .roundedRect(theme.radius.sm))
-                }
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
                 ZStack(alignment: .top) {
                     contentCard
                     if showBanner {
@@ -43,7 +43,7 @@ struct Alert5Page: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    DSButton(style: .filledB, size: .medium, icon: .running) {}
+                    DSButton { }.buttonSize(.medium).icon(.running)
                         .shadow(color: .black.opacity(0.02), radius: 8, x: 0, y: 4)
                         .shadow(color: .black.opacity(0.18), radius: 48, x: 0, y: 24)
                         .padding(.trailing, 36)
@@ -51,7 +51,7 @@ struct Alert5Page: View {
                 .padding(.bottom, 36)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
@@ -62,19 +62,21 @@ struct Alert5Page: View {
 
     private var contentCard: some View {
         ZStack(alignment: .topTrailing) {
-            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+            DSCard {
                 VStack(spacing: 0) {
                     gaugeSection
                         .padding(.top, theme.spacing.xxxl)
                         .padding(.horizontal, theme.spacing.xl)
                     DSCalendarGrid(displayedMonth: $displayedMonth, rangeStart: $rangeStart,
-                                   rangeEnd: $rangeEnd, mode: .range)
+                                   rangeEnd: $rangeEnd)
+                        .selectionMode(.range)
                         .padding(.horizontal, theme.spacing.xl)
                 }
                 .padding(.bottom, theme.spacing.xxl)
             }
+            .cardPadding(0)
             .clipped()
-            DSButton(style: .neutralLight, size: .medium, icon: .heart) {}
+            DSButton { }.buttonStyle(.neutralLight).buttonSize(.medium).icon(.heart)
                 .padding(.trailing, theme.spacing.lg)
                 .padding(.top, theme.spacing.lg)
         }
@@ -89,7 +91,7 @@ struct Alert5Page: View {
                 HStack(spacing: 0) {
                     timeInfo(time: "07:00", label: "Starts").frame(width: 54)
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(theme.colors.borderNeutral9_5)
+                        .fill(theme.colors.borderNeutral95)
                         .frame(width: 2, height: 49)
                         .padding(.horizontal, theme.spacing.xs)
                     timeInfo(time: "10:00", label: "Ends").frame(width: 56)

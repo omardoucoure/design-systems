@@ -60,13 +60,24 @@ public extension EnvironmentValues {
 
 // MARK: - DSTabView
 
+/// A tab container with a DSBottomAppBar integrated as a safe-area inset.
+///
+/// DSTabView has generic ViewBuilder content and bindings as core params.
+/// The style binding variant and constant-style variant are both available.
+///
+/// Usage:
+/// ```swift
+/// DSTabView(selection: $selectedTab, tabs: tabItems) {
+///     // tab content
+/// }
+/// ```
 public struct DSTabView<Content: View>: View {
-    @Binding private var selection: String
-    @Binding private var style: DSBottomAppBarStyle
-    private let tabs: [DSBottomBarItem]
-    private let content: Content
-    @StateObject private var tabBarVisibility = DSTabBarVisibility()
-    @StateObject private var tabBarState: DSTabBarState
+    @Binding private var _selection: String
+    @Binding private var _style: DSBottomAppBarStyle
+    private let _tabs: [DSBottomBarItem]
+    private let _content: Content
+    @StateObject private var _tabBarVisibility = DSTabBarVisibility()
+    @StateObject private var _tabBarState: DSTabBarState
 
     public init(
         selection: Binding<String>,
@@ -74,11 +85,11 @@ public struct DSTabView<Content: View>: View {
         styleBinding: Binding<DSBottomAppBarStyle>,
         @ViewBuilder content: () -> Content
     ) {
-        self._selection = selection
-        self._style = styleBinding
-        self.tabs = tabs
-        self.content = content()
-        self._tabBarState = StateObject(wrappedValue: DSTabBarState(
+        self.__selection = selection
+        self.__style = styleBinding
+        self._tabs = tabs
+        self._content = content()
+        self.__tabBarState = StateObject(wrappedValue: DSTabBarState(
             selectedId: selection.wrappedValue,
             style: styleBinding.wrappedValue
         ))
@@ -90,41 +101,41 @@ public struct DSTabView<Content: View>: View {
         style: DSBottomAppBarStyle = .labeled,
         @ViewBuilder content: () -> Content
     ) {
-        self._selection = selection
-        self._style = .constant(style)
-        self.tabs = tabs
-        self.content = content()
-        self._tabBarState = StateObject(wrappedValue: DSTabBarState(
+        self.__selection = selection
+        self.__style = .constant(style)
+        self._tabs = tabs
+        self._content = content()
+        self.__tabBarState = StateObject(wrappedValue: DSTabBarState(
             selectedId: selection.wrappedValue,
             style: style
         ))
     }
 
     public var body: some View {
-        content
+        _content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                if !tabBarVisibility.isHidden {
-                    DSTabBarView(tabs: tabs, tabBarState: tabBarState)
+                if !_tabBarVisibility.isHidden {
+                    DSTabBarView(tabs: _tabs, tabBarState: _tabBarState)
                 } else {
                     Color.clear.frame(height: 0)
                 }
             }
-            .environment(\.dsTabBarVisibility, tabBarVisibility)
-            .environment(\.dsTabBarState, tabBarState)
-            .onChange(of: selection) { newValue in
-            if tabBarState.selectedId != newValue {
-                tabBarState.selectedId = newValue
+            .environment(\.dsTabBarVisibility, _tabBarVisibility)
+            .environment(\.dsTabBarState, _tabBarState)
+            .onChange(of: _selection) { newValue in
+            if _tabBarState.selectedId != newValue {
+                _tabBarState.selectedId = newValue
             }
             }
-            .onChange(of: style) { newValue in
-                if tabBarState.style != newValue {
-                    tabBarState.style = newValue
+            .onChange(of: _style) { newValue in
+                if _tabBarState.style != newValue {
+                    _tabBarState.style = newValue
                 }
             }
-            .onChange(of: tabBarState.selectedId) { newValue in
-                if selection != newValue {
-                    selection = newValue
+            .onChange(of: _tabBarState.selectedId) { newValue in
+                if _selection != newValue {
+                    _selection = newValue
                 }
             }
     }
@@ -144,9 +155,8 @@ private struct DSTabBarView: View {
             selectedId: Binding(
                 get: { tabBarState.selectedId },
                 set: { tabBarState.selectedId = $0 }
-            ),
-            style: tabBarState.style
+            )
         )
+        .barStyle(tabBarState.style)
     }
 }
-

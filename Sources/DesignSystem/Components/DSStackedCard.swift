@@ -40,29 +40,41 @@ public struct DSStackedCardLevel {
 /// The front card sizes to its content. Background cards match the front card height
 /// via a PreferenceKey once layout is resolved.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSStackedCard(
-///     levels: [
-///         DSStackedCardLevel(horizontalInset: 42, peekOffset: 20),
-///         DSStackedCardLevel(horizontalInset: 67, darkOverlay: 0.10, peekOffset: 0),
-///     ],
-///     frontOffset: 39
-/// ) {
+/// DSStackedCard {
 ///     MyContent()
 /// }
+/// .stackedLevels([
+///     DSStackedCardLevel(horizontalInset: 42, peekOffset: 20),
+///     DSStackedCardLevel(horizontalInset: 67, darkOverlay: 0.10, peekOffset: 0),
+/// ])
+/// .stackedAlignment(.top)
+/// .stackedFrontOffset(39)
 /// ```
 public struct DSStackedCard<Content: View>: View {
     @Environment(\.theme) private var theme
     @State private var frontHeight: CGFloat = 300
 
-    private let levels: [DSStackedCardLevel]
-    private let alignment: DSStackedCardAlignment
-    private let frontOffset: CGFloat
-    private let frontBackground: Color?
-    private let backgroundCardColor: Color?
+    // Core (init-only)
     private let content: Content
 
+    // Modifier-based visual customization
+    private var _levels: [DSStackedCardLevel]?
+    private var _alignment: DSStackedCardAlignment = .top
+    private var _frontOffset: CGFloat = 39
+    private var _frontBackground: Color?
+    private var _backgroundCardColor: Color?
+
+    public init(
+        @ViewBuilder content: () -> Content
+    ) {
+        self.content = content()
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSStackedCard(content:) with .stackedLevels(), .stackedAlignment(), .stackedFrontOffset(), .stackedFrontBackground(), .stackedBackgroundCardColor() modifiers instead")
     public init(
         levels: [DSStackedCardLevel] = DSStackedCard.defaultLevels,
         alignment: DSStackedCardAlignment = .top,
@@ -71,11 +83,11 @@ public struct DSStackedCard<Content: View>: View {
         backgroundCardColor: Color? = nil,
         @ViewBuilder content: () -> Content
     ) {
-        self.levels = levels
-        self.alignment = alignment
-        self.frontOffset = frontOffset
-        self.frontBackground = frontBackground
-        self.backgroundCardColor = backgroundCardColor
+        self._levels = levels
+        self._alignment = alignment
+        self._frontOffset = frontOffset
+        self._frontBackground = frontBackground
+        self._backgroundCardColor = backgroundCardColor
         self.content = content()
     }
 
@@ -86,14 +98,54 @@ public struct DSStackedCard<Content: View>: View {
         ]
     }
 
+    // MARK: - Modifiers
+
+    public func stackedLevels(_ levels: [DSStackedCardLevel]) -> Self {
+        var copy = self
+        copy._levels = levels
+        return copy
+    }
+
+    public func stackedAlignment(_ alignment: DSStackedCardAlignment) -> Self {
+        var copy = self
+        copy._alignment = alignment
+        return copy
+    }
+
+    public func stackedFrontOffset(_ offset: CGFloat) -> Self {
+        var copy = self
+        copy._frontOffset = offset
+        return copy
+    }
+
+    public func stackedFrontBackground(_ color: Color) -> Self {
+        var copy = self
+        copy._frontBackground = color
+        return copy
+    }
+
+    public func stackedBackgroundCardColor(_ color: Color) -> Self {
+        var copy = self
+        copy._backgroundCardColor = color
+        return copy
+    }
+
+    // MARK: - Computed helpers
+
+    private var levels: [DSStackedCardLevel] {
+        _levels ?? DSStackedCard.defaultLevels
+    }
+
     private var zStackAlignment: Alignment {
-        switch alignment {
+        switch _alignment {
         case .top: return .top
         case .bottom: return .bottom
         case .leading: return .leading
         case .trailing: return .trailing
         }
     }
+
+    // MARK: - Body
 
     public var body: some View {
         ZStack(alignment: zStackAlignment) {
@@ -108,7 +160,7 @@ public struct DSStackedCard<Content: View>: View {
 
     private var frontCard: some View {
         let edgePadding: Edge.Set = {
-            switch alignment {
+            switch _alignment {
             case .top: return .top
             case .bottom: return .bottom
             case .leading: return .leading
@@ -119,10 +171,10 @@ public struct DSStackedCard<Content: View>: View {
             .padding(theme.spacing.xl)
             .background(
                 RoundedRectangle(cornerRadius: theme.radius.xl)
-                    .fill(frontBackground ?? theme.colors.surfaceNeutral2)
+                    .fill(_frontBackground ?? theme.colors.surfaceNeutral2)
             )
             .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
-            .padding(edgePadding, frontOffset)
+            .padding(edgePadding, _frontOffset)
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -135,9 +187,9 @@ public struct DSStackedCard<Content: View>: View {
     }
 
     private func backgroundCard(level: DSStackedCardLevel) -> some View {
-        let base = backgroundCardColor ?? theme.colors.surfaceNeutral3
+        let base = _backgroundCardColor ?? theme.colors.surfaceNeutral3
         let edgePadding: Edge.Set = {
-            switch alignment {
+            switch _alignment {
             case .top: return .top
             case .bottom: return .bottom
             case .leading: return .leading
@@ -152,7 +204,7 @@ public struct DSStackedCard<Content: View>: View {
                         .fill(Color.black.opacity(level.darkOverlay)))
                     : AnyView(EmptyView())
             )
-            .frame(height: max(0, frontHeight - frontOffset))
+            .frame(height: max(0, frontHeight - _frontOffset))
             .padding(.horizontal, level.horizontalInset)
             .padding(edgePadding, level.peekOffset)
     }

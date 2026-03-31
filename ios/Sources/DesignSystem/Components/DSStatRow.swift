@@ -16,35 +16,60 @@ public struct DSStatItem: Identifiable {
 
 /// A row of equal-width stat columns with vertical dividers between them.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
-/// DSStatRow(items: stats, dividerColor: theme.colors.textNeutral9) { item in
+/// DSStatRow(items: stats) { item in
 ///     Text("1,268")
 ///         .font(theme.typography.largeSemiBold.font)
 /// }
+/// .statDividerColor(theme.colors.textNeutral9)
 /// ```
 public struct DSStatRow<ValueContent: View>: View {
     @Environment(\.theme) private var theme
 
-    private let items: [DSStatItem]
-    private let dividerColor: Color?
-    private let valueContent: (DSStatItem) -> ValueContent
+    private let _items: [DSStatItem]
+    private let _valueContent: (DSStatItem) -> ValueContent
+    private var _dividerColor: Color?
+
+    // MARK: - Minimal init
 
     public init(
         items: [DSStatItem],
-        dividerColor: Color? = nil,
         @ViewBuilder valueContent: @escaping (DSStatItem) -> ValueContent
     ) {
-        self.items = items
-        self.dividerColor = dividerColor
-        self.valueContent = valueContent
+        self._items = items
+        self._valueContent = valueContent
     }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSStatRow(items:valueContent:) with .statDividerColor() modifier instead")
+    public init(
+        items: [DSStatItem],
+        dividerColor: Color?,
+        @ViewBuilder valueContent: @escaping (DSStatItem) -> ValueContent
+    ) {
+        self._items = items
+        self._dividerColor = dividerColor
+        self._valueContent = valueContent
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the color of the vertical dividers between stat columns.
+    public func statDividerColor(_ color: Color) -> DSStatRow {
+        var copy = self
+        copy._dividerColor = color
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         HStack(spacing: 0) {
-            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+            ForEach(Array(_items.enumerated()), id: \.element.id) { index, item in
                 VStack(spacing: 0) {
-                    valueContent(item)
+                    _valueContent(item)
 
                     Text(item.label)
                         .font(theme.typography.tiny.font)
@@ -54,9 +79,9 @@ public struct DSStatRow<ValueContent: View>: View {
                 .padding(theme.spacing.md)
                 .frame(maxWidth: .infinity)
 
-                if index < items.count - 1 {
+                if index < _items.count - 1 {
                     Rectangle()
-                        .fill(dividerColor ?? theme.colors.textNeutral9)
+                        .fill(_dividerColor ?? theme.colors.textNeutral9)
                         .frame(width: theme.borders.widthSm)
                 }
             }

@@ -16,61 +16,83 @@ public enum DSCarouselStyle: Sendable {
 // MARK: - DSCarousel
 
 /// A horizontal swipeable image carousel with rounded corners and a peek
-/// effect. Pass a `DSCarouselStyle` to control the zoom behaviour.
+/// effect. Use the `.carouselStyle()` modifier to control the zoom behaviour.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
-/// // Spotlight: focused card full-height, others shrink
-/// DSCarousel(images: ["photo-1", "photo-2"], currentIndex: $page, style: .spotlight)
+/// // Spotlight (default):
+/// DSCarousel(images: ["photo-1", "photo-2"], currentIndex: $page)
 ///
-/// // Standard: all cards same size
-/// DSCarousel(images: ["photo-1", "photo-2"], currentIndex: $page, style: .standard)
+/// // Standard:
+/// DSCarousel(images: ["photo-1", "photo-2"], currentIndex: $page)
+///     .carouselStyle(.standard)
 /// ```
 public struct DSCarousel: View {
     @Environment(\.theme) private var theme
 
-    private let images: [String]
-    @Binding private var currentIndex: Int
-    private let style: DSCarouselStyle
+    private let _images: [String]
+    @Binding private var _currentIndex: Int
+    private var _style: DSCarouselStyle = .spotlight
 
     @GestureState private var dragOffset: CGFloat = 0
 
     private let peekWidth: CGFloat = 48
     private let spotlightInactiveScale: CGFloat = 0.85
 
+    // MARK: - Minimal init
+
+    public init(images: [String], currentIndex: Binding<Int>) {
+        self._images = images
+        self.__currentIndex = currentIndex
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSCarousel(images:currentIndex:) with .carouselStyle() modifier instead")
     public init(
         images: [String],
         currentIndex: Binding<Int>,
-        style: DSCarouselStyle = .spotlight
+        style: DSCarouselStyle
     ) {
-        self.images = images
-        self._currentIndex = currentIndex
-        self.style = style
+        self._images = images
+        self.__currentIndex = currentIndex
+        self._style = style
     }
+
+    // MARK: - Modifiers
+
+    /// Sets the carousel visual style.
+    public func carouselStyle(_ style: DSCarouselStyle) -> DSCarousel {
+        var copy = self
+        copy._style = style
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         GeometryReader { geo in
             let cardWidth = geo.size.width - peekWidth
             let spacing = theme.spacing.sm
             let step = cardWidth + spacing
-            let baseOffset = -CGFloat(currentIndex) * step
+            let baseOffset = -CGFloat(_currentIndex) * step
             let totalOffset = baseOffset + dragOffset
 
             HStack(spacing: spacing) {
-                ForEach(images.indices, id: \.self) { index in
+                ForEach(_images.indices, id: \.self) { index in
                     let scale = cardScale(index: index, totalOffset: totalOffset, step: step)
 
-                    Image(images[index], bundle: .main)
+                    Image(_images[index], bundle: .main)
                         .resizable()
                         .scaledToFill()
                         .frame(width: cardWidth, height: geo.size.height)
                         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
                         .scaleEffect(y: scale, anchor: .center)
-                        .animation(.easeInOut(duration: 0.3), value: currentIndex)
+                        .animation(.easeInOut(duration: 0.3), value: _currentIndex)
                 }
             }
             .offset(x: totalOffset)
-            .animation(.easeInOut(duration: 0.3), value: currentIndex)
+            .animation(.easeInOut(duration: 0.3), value: _currentIndex)
             .gesture(
                 DragGesture()
                     .updating($dragOffset) { value, state, _ in
@@ -78,10 +100,10 @@ public struct DSCarousel: View {
                     }
                     .onEnded { value in
                         let threshold = cardWidth / 3
-                        if value.translation.width < -threshold, currentIndex < images.count - 1 {
-                            withAnimation(.easeInOut(duration: 0.3)) { currentIndex += 1 }
-                        } else if value.translation.width > threshold, currentIndex > 0 {
-                            withAnimation(.easeInOut(duration: 0.3)) { currentIndex -= 1 }
+                        if value.translation.width < -threshold, _currentIndex < _images.count - 1 {
+                            withAnimation(.easeInOut(duration: 0.3)) { _currentIndex += 1 }
+                        } else if value.translation.width > threshold, _currentIndex > 0 {
+                            withAnimation(.easeInOut(duration: 0.3)) { _currentIndex -= 1 }
                         }
                     }
             )
@@ -92,7 +114,7 @@ public struct DSCarousel: View {
     // MARK: - Scale
 
     private func cardScale(index: Int, totalOffset: CGFloat, step: CGFloat) -> CGFloat {
-        switch style {
+        switch _style {
         case .standard:
             return 1.0
         case .spotlight:

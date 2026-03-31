@@ -21,43 +21,36 @@ public struct DSLineChartPoint {
 ///
 /// The main line is drawn as a Catmull-Rom spline through the data points.
 /// The shadow is a **compressed version** of the same curve — peaks are
-/// pulled down and valleys are pulled up toward the midline. This creates
-/// a natural depth effect where the shadow peeks out below peaks and above
-/// valleys, matching the Figma "Line + Line Shadow" design pattern.
+/// pulled down and valleys are pulled up toward the midline.
 ///
-/// The shadow is also slightly blurred with `multiply` blend mode.
-///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSLineChart(
-///     points: heartRatePoints,
-///     lineColor: theme.colors.textNeutral9,
-///     shadowColor: theme.brand.primitives.primary120
-/// )
-/// .frame(height: 80)
+/// DSLineChart(points: heartRatePoints)
+///     .lineColor(theme.colors.textNeutral9)
+///     .shadowColor(theme.brand.primitives.primary120)
+///     .lineWidth(3)
 /// ```
 public struct DSLineChart: View {
     @Environment(\.theme) private var theme
 
     private let points: [DSLineChartPoint]
-    private let lineColor: Color?
-    private let shadowColor: Color?
-    private let lineWidth: CGFloat
-    private let shadowBlur: CGFloat
-    private let shadowOpacity: Double
-    private let shadowDamping: CGFloat
-    private let showShadow: Bool
+    var _lineColor: Color?
+    var _shadowColor: Color?
+    var _lineWidth: CGFloat = 2
+    var _shadowBlur: CGFloat = 1.5
+    var _shadowOpacity: Double = 0.2
+    var _shadowDamping: CGFloat = 0.35
+    var _showShadow: Bool = true
 
-    /// - Parameters:
-    ///   - points: Data points normalized to 0...1 for both axes.
-    ///   - lineColor: Stroke color for the line (defaults to textNeutral9).
-    ///   - shadowColor: Stroke color for the shadow (defaults to surfacePrimary120).
-    ///   - lineWidth: Stroke width (default 2).
-    ///   - shadowBlur: Gaussian blur radius for the shadow (default 1.5).
-    ///   - shadowOpacity: Opacity of the shadow line (default 0.2).
-    ///   - shadowDamping: How much the shadow is compressed toward the midline (default 0.35).
-    ///     0 = shadow matches main line exactly, 1 = shadow is a flat line.
-    ///   - showShadow: Whether to show the shadow (default true).
+    // MARK: - New Minimal Init
+
+    public init(points: [DSLineChartPoint]) {
+        self.points = points
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use DSLineChart(points:) with modifier methods instead")
     public init(
         points: [DSLineChartPoint],
         lineColor: Color? = nil,
@@ -69,46 +62,76 @@ public struct DSLineChart: View {
         showShadow: Bool = true
     ) {
         self.points = points
-        self.lineColor = lineColor
-        self.shadowColor = shadowColor
-        self.lineWidth = lineWidth
-        self.shadowBlur = shadowBlur
-        self.shadowOpacity = shadowOpacity
-        self.shadowDamping = shadowDamping
-        self.showShadow = showShadow
+        self._lineColor = lineColor
+        self._shadowColor = shadowColor
+        self._lineWidth = lineWidth
+        self._shadowBlur = shadowBlur
+        self._shadowOpacity = shadowOpacity
+        self._shadowDamping = shadowDamping
+        self._showShadow = showShadow
     }
+
+    // MARK: - Modifiers
+
+    public func lineColor(_ color: Color) -> DSLineChart {
+        var copy = self; copy._lineColor = color; return copy
+    }
+
+    public func shadowColor(_ color: Color) -> DSLineChart {
+        var copy = self; copy._shadowColor = color; return copy
+    }
+
+    public func lineWidth(_ width: CGFloat) -> DSLineChart {
+        var copy = self; copy._lineWidth = width; return copy
+    }
+
+    public func shadowBlur(_ radius: CGFloat) -> DSLineChart {
+        var copy = self; copy._shadowBlur = radius; return copy
+    }
+
+    public func shadowOpacity(_ opacity: Double) -> DSLineChart {
+        var copy = self; copy._shadowOpacity = opacity; return copy
+    }
+
+    public func shadowDamping(_ damping: CGFloat) -> DSLineChart {
+        var copy = self; copy._shadowDamping = damping; return copy
+    }
+
+    public func showShadow(_ show: Bool) -> DSLineChart {
+        var copy = self; copy._showShadow = show; return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         Canvas { context, size in
             guard points.count >= 2 else { return }
 
             let strokeStyle = StrokeStyle(
-                lineWidth: lineWidth, lineCap: .round, lineJoin: .round
+                lineWidth: _lineWidth, lineCap: .round, lineJoin: .round
             )
 
             // Shadow line — peaks compressed down, valleys unchanged
-            if showShadow {
+            if _showShadow {
                 let mid = midY
                 let shadowPoints = points.map { pt -> DSLineChartPoint in
                     if pt.y > mid {
-                        // Above midline (peak) — pull down toward mid
-                        let dampedY = pt.y - (pt.y - mid) * shadowDamping
+                        let dampedY = pt.y - (pt.y - mid) * _shadowDamping
                         return DSLineChartPoint(x: pt.x, y: dampedY)
                     } else {
-                        // At or below midline (valley) — keep same position
                         return pt
                     }
                 }
                 let shadowPath = smoothPath(for: shadowPoints, in: size)
 
                 var shadowCtx = context
-                shadowCtx.opacity = shadowOpacity
+                shadowCtx.opacity = _shadowOpacity
                 shadowCtx.blendMode = .multiply
-                shadowCtx.addFilter(.blur(radius: shadowBlur))
+                shadowCtx.addFilter(.blur(radius: _shadowBlur))
 
                 shadowCtx.stroke(
                     shadowPath,
-                    with: .color(shadowColor ?? theme.brand.primitives.primary120),
+                    with: .color(_shadowColor ?? theme.brand.primitives.primary120),
                     style: strokeStyle
                 )
             }
@@ -117,7 +140,7 @@ public struct DSLineChart: View {
             let mainPath = smoothPath(for: points, in: size)
             context.stroke(
                 mainPath,
-                with: .color(lineColor ?? theme.colors.textNeutral9),
+                with: .color(_lineColor ?? theme.colors.textNeutral9),
                 style: strokeStyle
             )
         }
@@ -147,8 +170,6 @@ public struct DSLineChart: View {
             return path
         }
 
-        // Mirror endpoints to maintain tangent continuity at edges.
-        // Without this, the first/last segments go flat.
         let first = mapped[0]
         let second = mapped[1]
         let mirror0 = CGPoint(x: 2 * first.x - second.x, y: 2 * first.y - second.y)

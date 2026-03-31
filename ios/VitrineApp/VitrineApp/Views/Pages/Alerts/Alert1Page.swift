@@ -20,23 +20,19 @@ struct Alert1Page: View {
             // Top bar — Figma: pl-sm(12), pr-xs(8), py-sm(12), gap-md(16)
             HStack(spacing: theme.spacing.md) {
                 // Back button — neutral capsule, arrow-left-long asset icon
-                DSButton(style: .neutral, size: .medium, icon: .arrowLeftLong) {
-                    dismiss()
-                }
+                DSButton { dismiss() }
+                    .buttonStyle(.neutral).buttonSize(.medium).icon(.arrowLeftLong)
 
                 // Search-Add group — Figma: gap-xs(8)
                 HStack(spacing: theme.spacing.xs) {
-                    DSTextField(
-                        text: $searchText,
-                        placeholder: "Search...",
-                        label: "Label",
-                        variant: .filled,
-                        state: .error,
-                        icon: .search, iconPosition: .leading
-                    )
+                    DSTextField(text: $searchText, placeholder: "Search...")
+                        .label("Label")
+                        .inputState(.error)
+                        .icon(.search, position: .leading)
 
                     // Trailing bell-notification icon (no bg, 40h container)
-                    DSButton(style: .text, size: .medium, icon: .bellNotification) {}
+                    DSButton { }
+                        .buttonStyle(.text).buttonSize(.medium).icon(.bellNotification)
                 }
             }
             .padding(.leading, theme.spacing.sm)
@@ -47,52 +43,45 @@ struct Alert1Page: View {
             ScrollView {
                 VStack(spacing: 0) {
                     // Alert card — surfacePrimary100, radius xl, padding xl
-                    DSCard(
-                        background: theme.colors.surfacePrimary100,
-                        radius: theme.radius.xl,
-                        padding: 0
-                    ) {
+                    DSCard {
                         VStack(alignment: .leading, spacing: theme.spacing.xl) {
-                            // Header: wifi-xmark 40x40 + close button (surfaceNeutral0_5 bg)
+                            // Header: wifi-xmark 40x40 + close button (surfaceNeutral05 bg)
                             HStack {
-                                DSIconImage(.wifiXmark, size: 40, color: theme.colors.textNeutral0_5)
+                                DSIconImage(.wifiXmark, size: 40, color: theme.colors.textNeutral05)
 
                                 Spacer()
 
-                                // X button — Figma: surfaceNeutral0_5 bg, capsule, 40h
-                                DSButton(style: .neutralLight, size: .medium, icon: .xmark) {}
+                                // X button — Figma: surfaceNeutral05 bg, capsule, 40h
+                                DSButton { }
+                                    .buttonStyle(.neutralLight).buttonSize(.medium).icon(.xmark)
                             }
 
                             DSText("Stranded offline!",
-                                   style: theme.typography.display2, color: theme.colors.textNeutral0_5)
+                                   style: theme.typography.display2, color: theme.colors.textNeutral05)
 
-                            DSDivider(style: .fullBleed, color: theme.colors.borderNeutral0_5)
+                            DSDivider().dividerColor(theme.colors.borderNeutral05)
 
                             DSText("Looks like your device decided to go rogue and ditch the internet. Let's get you back to civilization.",
-                                   style: theme.typography.bodyRegular, color: theme.colors.textNeutral0_5)
+                                   style: theme.typography.bodyRegular, color: theme.colors.textNeutral05)
                         }
                         .padding(theme.spacing.xl)
                     }
+                    .cardBackground(theme.colors.surfacePrimary100)
+                    .cardPadding(0)
                     .zIndex(2)
 
                     // CTA card — surfaceSecondary100, overlapping by 84px
-                    DSCard(
-                        background: theme.colors.surfaceSecondary100,
-                        radius: theme.radius.xl,
-                        padding: 0
-                    ) {
-                        DSButton(
-                            "Reconnect Now",
-                            style: .outlined,
-                            size: .big,
-                            icon: .refreshDouble,
-                            iconPosition: .right,
-                            isFullWidth: true
-                        ) {}
+                    DSCard {
+                        DSButton("Reconnect Now") { }
+                            .buttonStyle(.outlined)
+                            .icon(.refreshDouble, position: .right)
+                            .fullWidth()
                         .padding(.top, cardOverlap + theme.spacing.xxl)
                         .padding(.bottom, theme.spacing.xxl)
                         .padding(.horizontal, theme.spacing.xl)
                     }
+                    .cardBackground(theme.colors.surfaceSecondary100)
+                    .cardPadding(0)
                     .padding(.top, -cardOverlap)
                     .zIndex(1)
                 }
@@ -100,7 +89,7 @@ struct Alert1Page: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
     }

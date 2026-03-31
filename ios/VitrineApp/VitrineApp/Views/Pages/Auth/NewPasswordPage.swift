@@ -13,23 +13,25 @@ struct NewPasswordPage: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSTopAppBar(title: "New password", style: .small, onBack: { dismiss() })
+            DSTopAppBar(title: "New password").onBack { dismiss() }
 
             ScrollView {
-                DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.xl) {
+                DSCard {
                     VStack(alignment: .leading, spacing: theme.spacing.lg) {
                         DSText("Add new password", style: theme.typography.h4, color: theme.colors.textNeutral9)
                         DSText("At least 8 characters, with uppercase and lowercase letters",
                                style: theme.typography.caption, color: theme.colors.textNeutral9.opacity(0.75))
 
-                        DSTextField(text: $newPassword, placeholder: "New Password",
-                                    variant: .filled, state: newPassword.isEmpty ? .empty : .filled, isSecure: true)
+                        DSTextField(text: $newPassword, placeholder: "New Password")
+                            .inputState(newPassword.isEmpty ? .empty : .filled)
+                            .secure()
 
-                        DSTextField(text: $confirmPassword, placeholder: "Confirm Password",
-                                    variant: .filled, state: confirmPassword.isEmpty ? .empty : .filled, isSecure: true)
+                        DSTextField(text: $confirmPassword, placeholder: "Confirm Password")
+                            .inputState(confirmPassword.isEmpty ? .empty : .filled)
+                            .secure()
 
-                        DSButton("Sign In", style: .filledA, size: .big,
-                                 iconRight: "arrow.right", isFullWidth: true) {}
+                        DSButton("Sign In") {}
+                            .buttonStyle(.filledA).systemIcon("arrow.right", position: .right).fullWidth()
                             .disabled(newPassword.isEmpty || confirmPassword.isEmpty)
                     }
                 }
@@ -37,7 +39,7 @@ struct NewPasswordPage: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
     }

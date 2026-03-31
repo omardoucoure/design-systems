@@ -51,44 +51,72 @@ public struct DSNavigationMenuProfile {
 /// The selected item uses `surfaceSecondary100` for the icon background;
 /// unselected items use `surfaceNeutral2`.
 ///
-/// Usage:
+/// Usage (modifier-based):
 /// ```swift
 /// DSNavigationMenu(
 ///     items: [
 ///         DSNavigationMenuItem(id: "msg", label: "Messages", icon: .replyToMessage),
 ///         DSNavigationMenuItem(id: "gal", label: "Gallery", icon: .mediaImageList, isSelected: true),
-///     ],
-///     profile: DSNavigationMenuProfile(
-///         image: "nav8_profile",
-///         name: "Hristo Hristov",
-///         subtitle: "Visual Designer"
-///     )
+///     ]
 /// )
+/// .profile(DSNavigationMenuProfile(
+///     image: "nav8_profile",
+///     name: "Hristo Hristov",
+///     subtitle: "Visual Designer"
+/// ))
+/// .onSelect { id in print(id) }
 /// ```
 public struct DSNavigationMenu: View {
     @Environment(\.theme) private var theme
 
-    private let items: [DSNavigationMenuItem]
-    private let profile: DSNavigationMenuProfile?
-    private let onSelect: ((String) -> Void)?
+    // Core params (init)
+    private let _items: [DSNavigationMenuItem]
 
+    // Modifier params
+    private var _profile: DSNavigationMenuProfile?
+    private var _onSelect: ((String) -> Void)?
+
+    /// Creates a navigation menu with the given items. Use modifiers for optional configuration.
+    public init(items: [DSNavigationMenuItem]) {
+        self._items = items
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use init(items:) with .profile() and .onSelect() modifiers")
     public init(
         items: [DSNavigationMenuItem],
         profile: DSNavigationMenuProfile? = nil,
         onSelect: ((String) -> Void)? = nil
     ) {
-        self.items = items
-        self.profile = profile
-        self.onSelect = onSelect
+        self._items = items
+        self._profile = profile
+        self._onSelect = onSelect
+    }
+
+    // MARK: - Modifiers
+
+    /// Sets the profile row displayed at the bottom of the menu.
+    public func profile(_ profile: DSNavigationMenuProfile) -> Self {
+        var copy = self
+        copy._profile = profile
+        return copy
+    }
+
+    /// Sets the callback invoked when a menu item is tapped.
+    public func onSelect(_ handler: @escaping (String) -> Void) -> Self {
+        var copy = self
+        copy._onSelect = handler
+        return copy
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(items) { item in
+            ForEach(_items) { item in
                 menuRow(item)
             }
 
-            if let profile = profile {
+            if let profile = _profile {
                 profileRow(profile)
             }
         }
@@ -101,7 +129,7 @@ public struct DSNavigationMenu: View {
 
     private func menuRow(_ item: DSNavigationMenuItem) -> some View {
         Button {
-            onSelect?(item.id)
+            _onSelect?(item.id)
         } label: {
             HStack(spacing: theme.spacing.md) {
                 iconPill(item.icon, isSelected: item.isSelected)

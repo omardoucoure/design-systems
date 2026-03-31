@@ -14,9 +14,9 @@ struct Profile8Page: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, icon: .moreVert) {}
-            }
+            DSTopAppBar(title: "Profile") {
+                DSButton {}.buttonStyle(.text).buttonSize(.medium).icon(.moreVert)
+            }.onBack { dismiss() }
             ScrollView {
                 VStack(spacing: theme.spacing.sm) {
                     heroImage
@@ -28,7 +28,7 @@ struct Profile8Page: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .dsTabBarHidden()
         .overlay {
@@ -68,7 +68,7 @@ struct Profile8Page: View {
     // MARK: - Info Card
 
     private var infoCard: some View {
-        DSCard(background: theme.colors.surfaceSecondary100, radius: theme.radius.xl, padding: 0) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: theme.spacing.sm) {
                     DSText("Hristo Hristov",
@@ -84,15 +84,17 @@ struct Profile8Page: View {
                     statCol("1,600", label: "following", divider: false)
                 }
                 HStack {
-                    DSButton("Follow", style: .filledB, size: .medium, icon: .plus, iconPosition: .right) {}
+                    DSButton("Follow") {}.buttonSize(.medium).icon(.plus, position: .right)
                         .fixedSize()
                     Spacer()
-                    DSButton("Message", style: .text, size: .medium, assetIcon: "icon_message_text", iconPosition: .right) {}
+                    DSButton("Message") {}.buttonStyle(.text).buttonSize(.medium).assetIcon("icon_message_text", position: .right)
                         .fixedSize()
                 }
             }
             .padding(theme.spacing.xl)
         }
+        .cardBackground(theme.colors.surfaceSecondary100)
+        .cardPadding(0)
     }
 
     private func statCol(_ value: String, label: String, divider: Bool) -> some View {
@@ -121,7 +123,7 @@ struct Profile8Page: View {
     private var iconTabBar: some View {
         HStack(spacing: 0) {
             ForEach(tabs.indices, id: \.self) { i in
-                DSIconImage(tabs[i], size: 24, color: theme.colors.textNeutral0_5)
+                DSIconImage(tabs[i], size: 24, color: theme.colors.textNeutral05)
                     .opacity(selectedTab == i ? 1.0 : 0.5)
                     .padding(.vertical, theme.spacing.sm)
                     .frame(maxWidth: .infinity)

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024">
+    <title>L'IA Amplifie Votre Expertise</title>
+
+    <!-- DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --surface-0-5: #FAFAF9;
+            --surface-1: #F5F5F3;
+            --surface-2: #EBEBE6;
+            --surface-3: #E2E1DA;
+            --surface-primary-100: #465A54;
+            --surface-primary-120: #252F2C;
+            --surface-secondary-100: #FF6A5F;
+            --surface-secondary-10: #FFF3F2;
+            --surface-secondary-40: #FFC3BF;
+            --text-9: #292927;
+            --text-8: #52524D;
+            --text-7: #7C7B74;
+            --radius-xl: 32px;
+            --radius-lg: 24px;
+            --radius-xs: 8px;
+            --sp-xs: 8px;
+            --sp-sm: 12px;
+            --sp-md: 16px;
+            --sp-lg: 24px;
+            --sp-xl: 32px;
+            --sp-xxl: 40px;
+            --sp-xxxl: 48px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--surface-0-5);
+            color: var(--text-9);
+            line-height: 1.4;
+            overflow: hidden;
+            letter-spacing: -0.025em;
+        }
+
+        #impress { transition: opacity 0.4s; }
+        .impress-enabled .step { opacity: 0.12; transition: opacity 0.5s ease; }
+        .impress-enabled .step.active { opacity: 1; }
+
+        .step {
+            width: 1200px;
+            padding: 56px 64px;
+            border-radius: var(--radius-xl);
+            position: relative;
+        }
+
+        /* ---- All slides are light ---- */
+
+        .slide-white {
+            background: var(--surface-0-5);
+        }
+        .slide-neutral {
+            background: var(--surface-2);
+        }
+
+        /* ---- Typography for Teams (BIG) ---- */
+
+        .step h1 {
+            font-size: 90px;
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.05em;
+            color: var(--text-9);
+            margin-bottom: var(--sp-lg);
+        }
+        .step h1 em {
+            font-style: normal;
+            color: var(--surface-secondary-100);
+        }
+
+        .step h2 {
+            font-size: 54px;
+            font-weight: 500;
+            letter-spacing: -0.045em;
+            margin-bottom: var(--sp-xl);
+            color: var(--text-9);
+        }
+
+        .step p {
+            font-size: 30px;
+            color: var(--text-8);
+            margin-bottom: var(--sp-md);
+        }
+
+        .subtitle {
+            font-size: 34px !important;
+            color: var(--text-7) !important;
+            margin-bottom: var(--sp-xxl) !important;
+        }
+
+        .author-line {
+            font-size: 26px !important;
+            color: var(--text-7) !important;
+        }
+        .author-line strong {
+            color: var(--text-9);
+            font-weight: 600;
+        }
+
+        /* ---- Section slides ---- */
+
+        .slide-section {
+            text-align: center;
+            background: var(--surface-0-5);
+        }
+        .section-number {
+            font-size: 182px;
+            font-weight: 700;
+            color: var(--surface-3);
+            line-height: 1;
+            margin-bottom: -20px;
+        }
+        .section-desc {
+            font-size: 32px !important;
+            color: var(--text-7) !important;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ---- Components ---- */
+
+        .pill {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .pill-coral { background: var(--surface-secondary-100); color: var(--text-9); }
+        .pill-primary { background: var(--surface-primary-100); color: var(--surface-0-5); }
+        .pill-neutral { background: var(--surface-3); color: var(--text-8); }
+        .pill-coral-soft { background: var(--surface-secondary-10); color: var(--surface-secondary-100); }
+
+        .text-coral { color: var(--surface-secondary-100); }
+        .text-primary { color: var(--surface-primary-100); }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--sp-md);
+            margin: var(--sp-lg) 0;
+        }
+        .stat-card {
+            background: var(--surface-0-5);
+            border-radius: var(--radius-xl);
+            padding: var(--sp-xl) var(--sp-lg);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 62px;
+            font-weight: 500;
+            line-height: 1;
+            margin-bottom: var(--sp-xs);
+            letter-spacing: -0.04em;
+        }
+        .stat-number.coral { color: var(--surface-secondary-100); }
+        .stat-number.primary { color: var(--surface-primary-100); }
+        .stat-number.dark { color: var(--text-9); }
+        .stat-label { font-size: 22px; color: var(--text-7); font-weight: 400; }
+
+        /* Three cols */
+        .three-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--sp-md);
+            margin: var(--sp-lg) 0;
+        }
+        .inner-card {
+            border-radius: var(--radius-xl);
+            padding: var(--sp-xl);
+        }
+        .inner-card h3 {
+            font-size: 30px;
+            font-weight: 500;
+            margin-bottom: var(--sp-sm);
+            letter-spacing: -0.04em;
+        }
+        .inner-card p { font-size: 24px; color: var(--text-7); }
+        .card-white { background: var(--surface-0-5); }
+        .card-neutral { background: var(--surface-2); }
+        .card-coral { background: var(--surface-secondary-10); }
+        .card-primary-soft { background: rgba(70,90,84,0.08); }
+
+        /* Emphasis block */
+        .emphasis {
+            background: var(--surface-0-5);
+            padding: var(--sp-lg) var(--sp-xl);
+            border-radius: var(--radius-xl);
+            margin: var(--sp-lg) 0;
+            font-size: 30px;
+            color: var(--text-9);
+            text-align: center;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--sp-sm);
+            margin: var(--sp-xl) 0;
+            flex-wrap: wrap;
+        }
+        .pipeline-step {
+            padding: 16px 28px;
+            border-radius: var(--radius-lg);
+            font-size: 24px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .pipe-coral { background: var(--surface-secondary-100); color: var(--text-9); }
+        .pipe-primary { background: var(--surface-primary-100); color: var(--surface-0-5); }
+        .pipe-neutral { background: var(--surface-3); color: var(--text-9); }
+        .pipe-white { background: var(--surface-0-5); color: var(--text-9); }
+        .pipeline-arrow { font-size: 30px; color: var(--text-7); }
+
+        /* Demo card */
+        .demo-card {
+            background: var(--surface-secondary-10);
+            border: 2px dashed var(--surface-secondary-40);
+            border-radius: var(--radius-xl);
+            padding: var(--sp-xxl) var(--sp-xl);
+            text-align: center;
+            margin: var(--sp-lg) 0;
+        }
+        .demo-card .demo-label {
+            font-size: 44px;
+            color: var(--surface-secondary-100);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            margin-bottom: var(--sp-sm);
+        }
+        .demo-card p {
+            font-size: 24px;
+            color: var(--text-8);
+        }
+
+        /* Vertical flow */
+        .v-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--sp-sm);
+            margin: var(--sp-lg) 0;
+        }
+        .v-flow-row {
+            display: flex;
+            align-items: center;
+            gap: var(--sp-md);
+        }
+        .v-flow-desc {
+            font-size: 24px !important;
+            color: var(--text-7) !important;
+        }
+        .v-flow-arrow {
+            font-size: 30px;
+            color: var(--text-8);
+            margin-left: 50px;
+        }
+
+        /* 2x2 grid */
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--sp-md);
+        }
+        .grid-card {
+            background: var(--surface-0-5);
+            border-radius: var(--radius-xl);
+            padding: var(--sp-xl);
+        }
+        .grid-card .pill { margin-bottom: var(--sp-sm); }
+        .grid-card p { font-size: 26px; }
+        .grid-card .result { font-size: 22px; color: var(--text-7); margin-top: 4px; }
+
+        /* Nav hint */
+        .nav-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            font-size: 14px;
+            color: var(--text-7);
+            z-index: 100;
+        }
+        .nav-hint kbd {
+            background: var(--surface-2);
+            border: 1px solid var(--surface-3);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-8);
+        }
+    </style>
+</head>
+<body>
+
+<div id="impress" data-transition-duration="700" data-autoplay="0">
+
+    <!-- ============================================================
+         1. TITRE
+         ============================================================ -->
+    <div id="title" class="step slide-neutral" style="text-align: center;"
+         data-x="0" data-y="0" data-scale="1" data-transition-duration="700">
+        <div class="pill pill-coral" style="margin-bottom: var(--sp-xl);">IA &amp; Développement</div>
+        <h1>L'IA <em>amplifie</em> votre expertise</h1>
+        <p class="subtitle" style="font-size: 28px !important; white-space: nowrap;">Ce n'est pas l'IA qui fait la différence, c'est comment vous la cadrez</p>
+
+        <div style="display: flex; flex-direction: column; gap: var(--sp-sm); align-items: flex-start; margin: var(--sp-xxl) auto 0; width: fit-content;">
+            <p style="font-size: 28px; color: var(--text-8);"><span class="text-coral" style="font-weight: 600;">01</span> &nbsp;Structurer les règles pour que l'IA les applique</p>
+            <p style="font-size: 28px; color: var(--text-8);"><span class="text-coral" style="font-weight: 600;">02</span> &nbsp;De l'assistance à l'IA agentique</p>
+            <p style="font-size: 28px; color: var(--text-8);"><span class="text-coral" style="font-weight: 600;">03</span> &nbsp;À modèle égal, c'est l'exigence qui change tout</p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         2. SLIDE 01 — Design System
+         ============================================================ -->
+    <div id="slide-01" class="step slide-neutral"
+         data-x="1500" data-y="0" data-scale="1">
+        <h2>Structurer les règles pour que l'IA les applique</h2>
+        <p>Du besoin au code : un design system formalisé pour être exploitable par des agents.</p>
+        <div style="display: flex; flex-direction: column; gap: var(--sp-sm); align-items: center; margin: var(--sp-xl) 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Product Requirement Document</div>
+                <div class="pipeline-arrow" style="font-size: 26px;">→</div>
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Design System</div>
+                <div class="pipeline-arrow" style="font-size: 26px;">→</div>
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Specs YAML</div>
+                <div class="pipeline-arrow" style="font-size: 26px;">→</div>
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Create Page</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Check Page</div>
+                <div class="pipeline-arrow" style="font-size: 26px;">→</div>
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Implement iOS</div>
+                <div class="pipeline-arrow" style="font-size: 26px;">→</div>
+                <div class="pipeline-step pipe-coral" style="font-size: 22px; padding: 14px 22px;">Pixel Perfect Checker</div>
+            </div>
+        </div>
+        <div class="emphasis">
+            Le pipeline impose la rigueur. <strong class="text-coral">L'IA exécute, le développeur valide.</strong>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         3. SLIDE 02 — Automatisation (FutEvo)
+         ============================================================ -->
+    <div id="slide-02" class="step slide-neutral"
+         data-x="3000" data-y="0" data-scale="1">
+        <h2>De l'assistance à l'IA agentique</h2>
+        <p>Un agent IA (autonome) se distingue par trois capacités fondamentales</p>
+
+        <div class="three-cols" style="margin-top: var(--sp-xl);">
+            <div class="inner-card card-white">
+                <h3 class="text-primary">Planning</h3>
+                <p>Décomposer un objectif complexe en sous-tâches exécutables de manière autonome</p>
+            </div>
+            <div class="inner-card card-coral">
+                <h3 class="text-coral">Réflexion</h3>
+                <p>Auto-évaluer ses actions, détecter ses erreurs et adapter sa stratégie</p>
+            </div>
+            <div class="inner-card card-primary-soft">
+                <h3 class="text-primary">Utilisation d'outils</h3>
+                <p>Appeler des APIs, scripts et services externes pour agir sur le monde réel</p>
+            </div>
+        </div>
+
+        <div class="emphasis" style="margin-top: var(--sp-xl);">
+            Exemple : <strong>FutEvo</strong>, collecte multilingue, indexation RAG, modèle spécialisé. <strong class="text-coral">Entièrement autonome.</strong>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         4. SLIDE 03 — Palindrome (l'exigence change tout)
+         ============================================================ -->
+    <div id="slide-03" class="step slide-neutral"
+         data-x="4500" data-y="0" data-scale="1">
+        <h2>À modèle égal, c'est l'exigence qui change tout</h2>
+        <p>Même IA, même problème (<strong>vérifier si c'est un palindrome</strong>), quatre développeurs</p>
+
+        <div class="three-cols" style="margin-top: var(--sp-lg);">
+            <div class="inner-card card-white">
+                <div class="pill pill-neutral" style="margin-bottom: var(--sp-sm);">Junior</div>
+                <p>6 mots, aucune contrainte</p>
+                <p style="font-size: 20px; color: var(--text-7); margin-top: 4px;">Inversion complète, O(n) temps, O(n) mémoire</p>
+            </div>
+            <div class="inner-card card-white">
+                <div class="pill pill-neutral" style="margin-bottom: var(--sp-sm);">Intermédiaire</div>
+                <p>Technique + cas limites</p>
+                <p style="font-size: 20px; color: var(--text-7); margin-top: 4px;">Two-pointer, O(n) temps, O(1) mémoire</p>
+            </div>
+            <div class="inner-card card-coral">
+                <div class="pill pill-coral" style="margin-bottom: var(--sp-sm);">Expert</div>
+                <p>Unicode, normalisation, coût mémoire</p>
+                <p style="font-size: 20px; color: var(--text-7); margin-top: 4px;">Zéro allocation, buffer UTF-8 contigu</p>
+            </div>
+        </div>
+
+        <div id="dev-ai-card" class="grid-card" style="margin-top: var(--sp-md); background: var(--surface-primary-100); color: var(--surface-0-5);">
+            <div class="pill pill-coral">Développeur + IA</div>
+            <p style="color: var(--surface-0-5);">Écrire les contraintes une fois, les réutiliser sur chaque problème</p>
+            <p class="result" style="color: rgba(250,250,249,0.7);">Un skill = un outil réutilisable qui garantit le même niveau d'exigence à chaque appel</p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         5. CONCLUSION
+         ============================================================ -->
+    <div id="conclusion" class="step slide-neutral" style="text-align: center;"
+         data-x="6000" data-y="0" data-scale="1">
+        <div class="pill pill-coral" style="margin-bottom: var(--sp-xl);">Conclusion</div>
+        <h1>L'IA n'est pas votre successeur, c'est votre <em>levier</em>.</h1>
+        <p class="author-line" style="margin-top: var(--sp-xxl);">Omar Doucouré, Mars 2026</p>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="overview" class="step"
+         data-x="3000" data-y="0" data-scale="5">
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/impress/impress.js@2.0.0/js/impress.js"></script>
+<script>
+    impress().init();
+</script>
+
+</body>
+</html>

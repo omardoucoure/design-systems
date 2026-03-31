@@ -90,16 +90,17 @@ layout:
 # ─── GROUPING PATTERN ────────────────────────────────────────────────────────────
 grouping:
   pattern: |
-    DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+    DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: theme.spacing.md) {
         VStack(spacing: 0) {
-            DSListItem(headline: "Privacy", leadingIcon: "lock", showTrailingArrow: true, showDivider: true)
-            DSListItem(headline: "Notifications", leadingIcon: "bell", showTrailingArrow: true, showDivider: true)
+            DSListItem(headline: "Privacy", leadingIcon: "lock", showTrailingArrow: true)
+            DSListItem(headline: "Notifications", leadingIcon: "bell", showTrailingArrow: true)
             DSListItem(headline: "Appearance", leadingIcon: "paintbrush", showTrailingArrow: true)
         }
     }
   note: >
-    Wrap a group of DSListItems in a DSCard with padding: 0, then let each item
-    manage its own padding. Use showDivider: true for all but the last item.
+    Wrap DSListItems in a DSCard with padding: md (16px). The card padding ensures content
+    and dividers never touch card edges. HaHo uses no dividers in settings lists — visual
+    separation comes from DSListItem internal padding. Only add showDivider if Figma explicitly shows lines.
 
 # ─── CONVENIENCE INIT ────────────────────────────────────────────────────────────
 convenience_init:
@@ -109,10 +110,126 @@ convenience_init:
   use_when: Simple icon + headline + arrow pattern (most settings rows)
   note: For DSIcon catalog icons, use the full generic init with leading ViewBuilder
 
+# ─── FIGMA INSTANCE RULES ────────────────────────────────────────────────────────
+figma_instance_rules:
+  settings_rows: >
+    When using DSListItem for settings/preferences screens:
+    ALWAYS enable Leading Item with a Button (Neutral, Medium) containing a contextual icon.
+    Leading icon button: surfaceNeutral0_5 fill, r360 (full circle), with icon swap to the correct icon.
+    Active/selected row: override leading icon button fill to surfaceSecondary100 (coral).
+    For toggle rows: enable Trailing Item with Toggle (Switch) instance.
+    For navigation rows: enable Trailing Item with a chevron-right arrow icon.
+    For value rows: use Metadata text (right-aligned) to show current value.
+    NEVER draw manual frames for settings rows — always use DSListItem.
+
+  no_manual_dividers: >
+    NEVER create raw FRAME nodes as dividers between list items.
+    HaHo settings/menu lists use Divider=False on ALL items — no dividers at all.
+    Visual separation comes from DSListItem internal padding (16px) + card padding (16px/24px).
+    If dividers ARE needed for a specific design, use the Divider boolean prop — never manual frames.
+    Even when DSDivider IS used, it NEVER takes the full card width — the card must have
+    horizontal padding (16px minimum) so dividers appear naturally inset from card edges.
+
+  card_wrapper: >
+    Multiple DSListItem instances must be wrapped in a DSCard with padding: padL=16, padR=16, padT=24, padB=24.
+    NEVER use padding: 0 — that causes dividers and content to bleed to card edges.
+    The card provides rounded corners (r32, surfaceNeutral2 bg) + edge padding.
+    The DSListItem provides its own internal padding (16px all sides).
+    Stack items with itemSpacing: 0 — visual separation comes from item padding + card padding.
+    NEVER add itemSpacing between list items.
+
+  leading_icon_mapping:
+    notifications: bell
+    dark_mode: moon
+    auto_play: play-circle
+    video_quality: video
+    language: globe
+    storage: hard-drive
+    privacy: lock
+    account: user
+    help: help-circle
+    sign_out: log-out
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: listitem_settings_leading_icon
+    trigger: after_instantiate
+    condition:
+      type: variant_in
+      context: ["settings", "preferences", "menu"]
+    action:
+      type: set_component_property
+      target: "self"
+      property: "Leading Item"
+      value: true
+      sub_action:
+        type: swap_component
+        target: "child:Leading Item"
+        value: "Button(Style=Neutral, Size=Medium, icon-only)"
+    check:
+      assertion: equals
+      target: "self.componentProperties.Leading Item.value"
+      expected: true
+      fail_message: "Settings rows MUST have a leading icon button (Neutral, Medium) — never leave Leading Item disabled"
+    severity: critical
+    auto_fixable: true
+
+  - id: listitem_card_padding_minimum
+    trigger: after_instantiate
+    condition:
+      type: always
+    action:
+      type: set_property
+      target: "parent:DSCard"
+      property: "padding"
+      value: ">=16"
+    check:
+      assertion: equals
+      target: "parent.paddingLeft"
+      expected: ">=16"
+      fail_message: "DSCard wrapping DSListItems must have padding >= 16px (md) — NEVER use padding: 0 (causes edge-bleed)"
+    severity: critical
+    auto_fixable: true
+
+  - id: listitem_no_manual_dividers
+    trigger: after_append
+    condition:
+      type: always
+    action:
+      type: set_property
+      target: "self"
+      property: "showDivider"
+      value: false
+    check:
+      assertion: equals
+      target: "sibling_type:FRAME.height"
+      expected: "none"
+      fail_message: "NEVER create raw FRAME nodes as dividers — use showDivider boolean prop on DSListItem, or omit dividers entirely (HaHo default)"
+    severity: critical
+    auto_fixable: false
+
+  - id: listitem_no_spacing_between
+    trigger: after_append
+    condition:
+      type: item_count_lte
+      max: 20
+    action:
+      type: set_property
+      target: "parent"
+      property: "itemSpacing"
+      value: 0
+    check:
+      assertion: equals
+      target: "parent.itemSpacing"
+      expected: 0
+      fail_message: "Stack DSListItems with itemSpacing: 0 — visual separation comes from item padding + card padding, not gaps"
+    severity: error
+    auto_fixable: true
+
 # ─── HARD RULES ──────────────────────────────────────────────────────────────────
 rules:
   - DSListItem background is always surfaceNeutral2 — do not override
-  - Wrap multiple list items in DSCard(padding: 0) to get the rounded group container
-  - showDivider on all items except the last in a group
+  - Wrap multiple list items in DSCard(padding: md/16px) — NEVER padding: 0 (causes edge-bleed)
+  - HaHo settings lists use Divider=False on all items — only add showDivider if Figma explicitly shows lines
   - If the row navigates somewhere, provide action: closure (makes row tappable)
   - Prefer DSIcon enum for leading icons over SF Symbol strings

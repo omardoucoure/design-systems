@@ -14,11 +14,7 @@ struct Alert10Page: View {
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
             // Error card
-            DSCard(
-                background: theme.colors.error,
-                radius: theme.radius.xl,
-                padding: 0
-            ) {
+            DSCard {
                 DSAlert(
                     title: "Oops! Our servers are taking a nap.",
                     message: "We'll be up and buzzing again shortly!",
@@ -31,13 +27,11 @@ struct Alert10Page: View {
                 .padding(.horizontal, theme.spacing.xl)
                 .padding(.vertical, theme.spacing.xxl)
             }
+            .cardBackground(theme.colors.error)
+            .cardPadding(0)
 
             // CTA card
-            DSCard(
-                background: theme.colors.surfacePrimary120,
-                radius: theme.radius.xl,
-                padding: theme.spacing.xl
-            ) {
+            DSCard {
                 VStack(spacing: theme.spacing.lg) {
                     DSButton(
                         "Visit Website",
@@ -58,6 +52,7 @@ struct Alert10Page: View {
                     ) {}
                 }
             }
+            .cardBackground(theme.colors.surfacePrimary120)
 
             // Close button
             DSButton(style: .filledC, size: .big, icon: .xmark) {
@@ -67,7 +62,7 @@ struct Alert10Page: View {
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()
     }

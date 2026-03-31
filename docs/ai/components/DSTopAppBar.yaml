@@ -126,9 +126,9 @@ actions_slot:
 layout_integration:
   pattern: |
     VStack(spacing: 0) {
-        DSTopAppBar(title: "Title", style: .smallCentered, onBack: { dismiss() }) {
+        DSTopAppBar(title: "Title") {
             DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
-        }
+        }.appBarStyle(.smallCentered).onBack { dismiss() }
         ScrollView { content.padding(.horizontal, theme.spacing.md) }
     }
   note: DSTopAppBar is always first in the VStack, not inside the ScrollView

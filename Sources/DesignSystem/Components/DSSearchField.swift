@@ -4,31 +4,65 @@ import SwiftUI
 
 /// A themed search field with search icon and clear button.
 ///
-/// Usage:
+/// Modifier-based API:
 /// ```swift
-/// DSSearchField(text: $query, placeholder: "Search...")
+/// DSSearchField(text: $query)
+///     .placeholder("Search items...")
+///     .variant(.lined)
+///     .onSearchSubmit { performSearch() }
 /// ```
 public struct DSSearchField: View {
     @Environment(\.theme) private var theme
 
-    @Binding private var text: String
-    private let placeholder: LocalizedStringKey
-    private let variant: InputVariant
-    private let onSubmit: (() -> Void)?
+    @Binding private var _text: String
+    private var _placeholder: LocalizedStringKey = "Search"
+    private var _variant: InputVariant = .filled
+    private var _onSubmit: (() -> Void)?
 
     @FocusState private var isFocused: Bool
 
+    // MARK: - Minimal init
+
+    public init(text: Binding<String>) {
+        self.__text = text
+    }
+
+    // MARK: - Deprecated init
+
+    @available(*, deprecated, message: "Use DSSearchField(text:) with .placeholder(), .variant(), .onSearchSubmit() modifiers instead")
     public init(
         text: Binding<String>,
-        placeholder: LocalizedStringKey = "Search",
+        placeholder: LocalizedStringKey,
         variant: InputVariant = .filled,
         onSubmit: (() -> Void)? = nil
     ) {
-        self._text = text
-        self.placeholder = placeholder
-        self.variant = variant
-        self.onSubmit = onSubmit
+        self.__text = text
+        self._placeholder = placeholder
+        self._variant = variant
+        self._onSubmit = onSubmit
     }
+
+    // MARK: - Modifiers
+
+    public func placeholder(_ value: LocalizedStringKey) -> DSSearchField {
+        var copy = self
+        copy._placeholder = value
+        return copy
+    }
+
+    public func variant(_ value: InputVariant) -> DSSearchField {
+        var copy = self
+        copy._variant = value
+        return copy
+    }
+
+    public func onSearchSubmit(_ action: @escaping () -> Void) -> DSSearchField {
+        var copy = self
+        copy._onSubmit = action
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         HStack(spacing: 12) {
@@ -37,16 +71,16 @@ public struct DSSearchField: View {
                 .foregroundStyle(theme.colors.textNeutral9.opacity(isFocused ? 1.0 : 0.5))
                 .frame(width: 24, height: 24)
 
-            TextField(placeholder, text: $text)
+            TextField(_placeholder, text: $_text)
                 .font(theme.typography.body.font)
                 .tracking(theme.typography.body.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
                 .focused($isFocused)
-                .onSubmit { onSubmit?() }
+                .onSubmit { _onSubmit?() }
 
-            if !text.isEmpty {
+            if !_text.isEmpty {
                 Button {
-                    text = ""
+                    _text = ""
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 18))
@@ -64,16 +98,16 @@ public struct DSSearchField: View {
     }
 
     private var background: Color {
-        switch variant {
+        switch _variant {
         case .filled:
-            return isFocused ? theme.colors.surfaceNeutral0_5 : theme.colors.surfaceNeutral2
+            return isFocused ? theme.colors.surfaceNeutral05 : theme.colors.surfaceNeutral2
         case .lined:
             return .clear
         }
     }
 
     private var containerRadius: CGFloat {
-        switch variant {
+        switch _variant {
         case .filled: return theme.radius.md
         case .lined: return 0
         }
@@ -81,7 +115,7 @@ public struct DSSearchField: View {
 
     private var border: some View {
         Group {
-            switch variant {
+            switch _variant {
             case .filled:
                 RoundedRectangle(cornerRadius: theme.radius.md)
                     .stroke(
@@ -92,7 +126,7 @@ public struct DSSearchField: View {
                 VStack {
                     Spacer()
                     Rectangle()
-                        .fill(isFocused ? theme.colors.infoFocus : theme.colors.borderNeutral9_5)
+                        .fill(isFocused ? theme.colors.infoFocus : theme.colors.borderNeutral95)
                         .frame(height: theme.borders.widthSm)
                 }
             }

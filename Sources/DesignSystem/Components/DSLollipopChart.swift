@@ -17,22 +17,30 @@ public struct DSLollipopChartItem {
 /// A circle-top bar chart with rotated month labels.
 /// One bar can be highlighted (wider circle + stem, with a value label above).
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSLollipopChart(
-///     data: [DSLollipopChartItem(label: "Jan", height: 25), ...],
-///     highlightIndex: 9,
-///     highlightLabel: "$8,628"
-/// )
+/// DSLollipopChart(data: monthlyData)
+///     .highlightIndex(9)
+///     .highlightLabel("$8,628")
+///     .color(theme.colors.surfaceSecondary100)
 /// ```
 public struct DSLollipopChart: View {
     @Environment(\.theme) private var theme
 
     private let data: [DSLollipopChartItem]
-    private let highlightIndex: Int?
-    private let highlightLabel: String?
-    private let color: Color?
+    var _highlightIndex: Int?
+    var _highlightLabel: String?
+    var _color: Color?
 
+    // MARK: - New Minimal Init
+
+    public init(data: [DSLollipopChartItem]) {
+        self.data = data
+    }
+
+    // MARK: - Deprecated Init
+
+    @available(*, deprecated, message: "Use DSLollipopChart(data:) with modifier methods instead")
     public init(
         data: [DSLollipopChartItem],
         highlightIndex: Int? = nil,
@@ -40,22 +48,38 @@ public struct DSLollipopChart: View {
         color: Color? = nil
     ) {
         self.data = data
-        self.highlightIndex = highlightIndex
-        self.highlightLabel = highlightLabel
-        self.color = color
+        self._highlightIndex = highlightIndex
+        self._highlightLabel = highlightLabel
+        self._color = color
     }
 
+    // MARK: - Modifiers
+
+    public func highlightIndex(_ index: Int?) -> DSLollipopChart {
+        var copy = self; copy._highlightIndex = index; return copy
+    }
+
+    public func highlightLabel(_ label: String?) -> DSLollipopChart {
+        var copy = self; copy._highlightLabel = label; return copy
+    }
+
+    public func color(_ color: Color) -> DSLollipopChart {
+        var copy = self; copy._color = color; return copy
+    }
+
+    // MARK: - Body
+
     public var body: some View {
-        let barColor = color ?? theme.colors.surfaceSecondary100
+        let barColor = _color ?? theme.colors.surfaceSecondary100
         let maxHeight = data.map(\.height).max() ?? 1
 
         HStack(alignment: .bottom, spacing: 0) {
             ForEach(Array(data.enumerated()), id: \.offset) { index, item in
-                let isHighlighted = index == highlightIndex
+                let isHighlighted = index == _highlightIndex
                 Spacer(minLength: 0)
                 VStack(spacing: 9) {
                     // Value label above highlighted bar
-                    if isHighlighted, let highlightLabel {
+                    if isHighlighted, let highlightLabel = _highlightLabel {
                         Text(highlightLabel)
                             .font(theme.typography.largeSemiBold.font)
                             .tracking(theme.typography.largeSemiBold.tracking)

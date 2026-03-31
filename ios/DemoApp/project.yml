@@ -1,0 +1,27 @@
+name: DemoApp
+options:
+  bundleIdPrefix: com.haho.demo
+  deploymentTarget:
+    iOS: "16.0"
+
+packages:
+  DesignSystem:
+    path: ../../
+
+targets:
+  DemoApp:
+    type: application
+    platform: iOS
+    sources: [DemoApp]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.haho.demo.DemoApp
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: "NO"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    dependencies:
+      - package: DesignSystem

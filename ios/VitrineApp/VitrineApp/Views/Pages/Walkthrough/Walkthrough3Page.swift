@@ -19,24 +19,25 @@ struct Walkthrough3Page: View {
             }
             .frame(maxHeight: .infinity)
 
-            DSCard(background: theme.colors.surfacePrimary100, radius: theme.radius.xl, padding: theme.spacing.xl) {
+            DSCard {
                 VStack(alignment: .leading, spacing: theme.spacing.md) {
                     DSText("Colors That Pop, Designs That Wow",
-                           style: theme.typography.h4, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.h4, color: theme.colors.textNeutral05)
 
                     HStack(alignment: .bottom, spacing: theme.spacing.lg) {
                         DSText("Compose with a palette of endless possibilities.",
-                               style: theme.typography.bodyRegular, color: theme.colors.textNeutral0_5)
+                               style: theme.typography.bodyRegular, color: theme.colors.textNeutral05)
                         Spacer(minLength: 0)
-                        DSButton("Skip", style: .filledA, size: .medium) {}
+                        DSButton("Skip") {}.buttonStyle(.filledA).buttonSize(.medium)
                     }
                 }
             }
+            .cardBackground(theme.colors.surfacePrimary100)
             .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(false)
         .gesture(
             DragGesture(minimumDistance: 50)
@@ -60,18 +61,20 @@ struct Walkthrough3Page: View {
 
     private var sideBySideImages: some View {
         HStack(spacing: theme.spacing.sm) {
-            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+            DSCard {
                 Image(systemName: "photo.artframe")
                     .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+            .cardPadding(0)
             .frame(maxWidth: .infinity, minHeight: tallCardHeight, maxHeight: tallCardHeight)
 
-            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+            DSCard {
                 Image(systemName: "photo")
                     .foregroundStyle(theme.colors.textNeutral9.opacity(0.15))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+            .cardPadding(0)
             .frame(width: shortCardWidth, height: shortCardHeight)
         }
     }

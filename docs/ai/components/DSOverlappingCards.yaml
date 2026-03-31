@@ -1,0 +1,204 @@
+component: DSOverlappingCards
+category: layout
+figma_component_key: 38abc1bd1e98d627fecafe4d7f3eec2853528fbb
+figma_node_id: "88:152411"
+
+description: >
+  Overlapping cards — 2-5 same-width rounded cards stacked vertically with negative spacing,
+  creating an overlapping effect where each card peeks behind the one above. Found across
+  100+ HaHo screens in every category. Each card has a different background color creating
+  a color cascade effect.
+
+# ─── WHEN TO USE ────────────────────────────────────────────────────────────────
+use_when:
+  - Settings menus with dark + coral card zones (dark menu + coral profile)
+  - Walkthrough step cards (01, 02, 03 numbered steps)
+  - Layered menu cards with color cascade (dark→dark→coral→neutral→neutral)
+  - Any vertical card stack where cards should overlap for visual depth
+  - Alert/modal cards with stacked actions
+  - Profile hero + info card stacking
+
+never_use_when:
+  - Depth shadow effect behind a single card → use DSLayeredCard
+  - Simple card list with spacing → use DSCard in a VStack
+  - Horizontal card carousel → use DSCarousel or horizontal frame
+
+# ─── VARIANTS ───────────────────────────────────────────────────────────────────
+variants:
+  cards:
+    "2": "Two overlapping cards — most common for menu+CTA pairs"
+    "3": "Three-card accordion — walkthrough CTAs, step sequences"
+    "5": "Five-card accordion — navigation menus with color cascade"
+  overlap:
+    Small: "gap=-50px, ~50px peek per card. Most common."
+    Medium: "gap=-85px, standard overlap for content+controls"
+    Large: "gap=-132px, deep overlap with minimal peek"
+
+# ─── ANATOMY ────────────────────────────────────────────────────────────────────
+anatomy:
+  card_structure:
+    description: "Each Card-N is a FRAME with auto-layout VERTICAL"
+    width: 369px (all cards same width)
+    radius: 32
+    padding: "32px all sides (padL=32, padR=32, padT=32, padB=32)"
+    layout: "VERTICAL auto-layout, content pushed to bottom via primaryAxisAlignItems=MAX"
+  default_colors:
+    Card-1: "rgb(37,47,44) — surfacePrimary120 (darkest)"
+    Card-2: "rgb(70,90,84) — surfacePrimary100 (dark)"
+    Card-3: "rgb(255,106,95) — surfaceSecondary100 (coral)"
+    Card-4: "rgb(226,225,218) — warm grey"
+    Card-5: "rgb(235,235,230) — surfaceNeutral2 (lightest)"
+  color_pattern: "Darkest on top → lightest at bottom. Creates visual hierarchy through color cascade."
+
+# ─── LAYOUT ─────────────────────────────────────────────────────────────────────
+layout:
+  layout_mode: "VERTICAL auto-layout with negative itemSpacing"
+  overlap_values:
+    Small: "-50px — visible area per card = cardHeight - 50"
+    Medium: "-85px — visible area per card = cardHeight - 85"
+    Large: "-132px — visible area per card = cardHeight - 132"
+  card_heights:
+    first_card: "220px (taller — no card above it, shows more content)"
+    subsequent_cards: "116px each (shorter — most of the card is hidden under the one above)"
+  visible_area: >
+    With Small overlap (-50px) and 116px card height: visible area = 116 - 50 = 66px per card.
+    Content (text + icon at bottom) must fit within this 66px visible strip.
+    Card padding is 32px bottom, so content sits at padB=32 from bottom edge.
+    The padT compensates for the overlap: padT should be large enough that content
+    appears in the visible strip, not hidden under the card above.
+
+# ─── FIGMA INSTANCE RULES (CRITICAL) ───────────────────────────────────────────
+figma_instance_rules:
+  detach_before_content: >
+    The Overlapping Cards is a component instance. Card frames inside are EMPTY.
+    To add text labels, icons, or buttons:
+    1. Instantiate the component with desired variant (Cards=5, Overlap=Small)
+    2. Set layoutSizingHorizontal = 'FILL'
+    3. Detach the instance (detachInstance())
+    4. Now add content to each Card-N frame
+    5. Set primaryAxisAlignItems='MAX' on each card to push content to bottom
+
+  content_at_bottom: >
+    Card content (text label + icon) must be positioned at the BOTTOM of each card.
+    Set primaryAxisAlignItems='MAX' so content sits at the bottom, within the visible
+    peek area. The large padT (68px in reference) ensures the overlap from above
+    doesn't cover the content.
+
+  text_contrast_per_card: >
+    Each card has a different background color. Text color must match:
+    - Dark cards (Card-1, Card-2): textNeutral0_5 (white/light)
+    - Coral card (Card-3): textNeutral9 (dark) — NEVER white on coral
+    - Light cards (Card-4, Card-5): textNeutral9 (dark)
+    Each card's text contrast is independent — check against THAT card's bg, not the card above.
+
+  card_background_required: >
+    Every card MUST have a solid background fill. The component provides default fills,
+    but if you modify cards after detaching, ensure fills are never cleared.
+    Without fills, cards become transparent and the overlap effect breaks.
+
+  icon_buttons_per_row: >
+    Each card row typically has: text label (left, FILL width) + icon button (right).
+    Use DSButton (Neutral, Medium, icon-only) for the icon.
+    Each card should have a UNIQUE icon — never duplicate icons across cards.
+    Icon buttons have surfaceNeutral2 bg which contrasts with all card colors.
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: overlap_text_contrast_dark
+    trigger: after_append
+    condition:
+      type: parent_fill_dark
+      cards: ["Card-1", "Card-2"]
+    action:
+      type: set_fill
+      target: "child_type:TEXT"
+      value: "textNeutral0_5"
+    check:
+      assertion: fill_contrasts
+      target: "child_type:TEXT.fills"
+      expected: "parent.fills"
+      fail_message: "Text on dark cards (Card-1, Card-2) must be light — use textNeutral0_5"
+    severity: critical
+    auto_fixable: true
+
+  - id: overlap_text_contrast_coral
+    trigger: after_append
+    condition:
+      type: parent_fill_is
+      fill_rgb: { r: 1.0, g: 0.416, b: 0.373 }
+      cards: ["Card-3"]
+    action:
+      type: set_fill
+      target: "child_type:TEXT"
+      value: "textNeutral9"
+    check:
+      assertion: fill_contrasts
+      target: "child_type:TEXT.fills"
+      expected: "parent.fills"
+      fail_message: "Text on coral card (Card-3) must be dark — use textNeutral9, NEVER white on coral"
+    severity: critical
+    auto_fixable: true
+
+  - id: overlap_text_contrast_light
+    trigger: after_append
+    condition:
+      type: parent_fill_is
+      fill_rgb_min_channel: 0.8
+      cards: ["Card-4", "Card-5"]
+    action:
+      type: set_fill
+      target: "child_type:TEXT"
+      value: "textNeutral9"
+    check:
+      assertion: fill_contrasts
+      target: "child_type:TEXT.fills"
+      expected: "parent.fills"
+      fail_message: "Text on light cards (Card-4, Card-5) must be dark — use textNeutral9"
+    severity: critical
+    auto_fixable: true
+
+  - id: overlap_content_at_bottom
+    trigger: after_detach
+    condition:
+      type: always
+    action:
+      type: set_property
+      target: "child:Card-*"
+      property: primaryAxisAlignItems
+      value: "MAX"
+    check:
+      assertion: equals
+      target: "child:Card-*.primaryAxisAlignItems"
+      expected: "MAX"
+      fail_message: "Card content must be pushed to bottom (primaryAxisAlignItems=MAX) to appear in the visible peek area"
+    severity: critical
+    auto_fixable: true
+
+  - id: overlap_card_bg_required
+    trigger: after_detach
+    condition:
+      type: always
+    action:
+      type: set_fill
+      target: "child:Card-*"
+      value: "keep_existing"
+    check:
+      assertion: fill_matches_rgb
+      target: "child:Card-*.fills[0]"
+      expected: "non_empty"
+      fail_message: "Every card MUST have a solid background fill — never clear fills after detaching"
+    severity: critical
+    auto_fixable: false
+
+# ─── HARD RULES ─────────────────────────────────────────────────────────────────
+rules:
+  - ALWAYS use the Overlapping Cards component — NEVER manually create negative-gap frames
+  - Detach the instance before adding content to card frames
+  - Every card MUST keep its solid background fill — never clear fills
+  - Text on dark cards = light (textNeutral0_5), text on coral = dark (textNeutral9), text on light = dark (textNeutral9)
+  - Content pushed to bottom of each card (primaryAxisAlignItems=MAX)
+  - First card is taller (220px) — subsequent cards are 116px
+  - Color cascade: darkest on top → lightest at bottom
+  - Each card row needs a unique contextual icon — no duplicates
+  - Card padding = 32px on all sides
+  - Card radius = 32

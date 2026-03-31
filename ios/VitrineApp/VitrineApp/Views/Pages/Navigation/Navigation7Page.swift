@@ -46,9 +46,9 @@ struct Navigation7Page: View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
                 // Top App Bar
-                DSTopAppBar(title: "Profile", style: .smallCentered, onBack: { dismiss() }) {
-                    DSButton(style: .neutral, size: .medium, icon: .menuScale) {}
-                }
+                DSTopAppBar(title: "Profile") {
+                    DSButton {}.buttonStyle(.neutral).buttonSize(.medium).icon(.menuScale)
+                }.appBarStyle(.smallCentered).onBack { dismiss() }
 
                 ScrollView {
                     VStack(spacing: theme.spacing.lg) {
@@ -68,12 +68,12 @@ struct Navigation7Page: View {
             }
 
             // X button at the bottom center — opens the menu
-            DSButton(style: .filledC, size: .big, icon: .xmark) {
+            DSButton {
                 withAnimation(.easeInOut(duration: 0.3)) { showMenu = true }
-            }
+            }.buttonStyle(.filledC).icon(.xmark)
             .padding(.bottom, theme.spacing.xl)
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Carousel
@@ -81,16 +81,14 @@ struct Navigation7Page: View {
     private var carouselSection: some View {
         GeometryReader { geo in
             let cardW = geo.size.width
-            DSStackedCardCarousel(
-                items: [
+            DSStackedCardCarousel(items: [
                     DSStackedCardCarouselItem(height: 260, image: "nav7_carousel"),
                     DSStackedCardCarouselItem(height: 260, backgroundColor: theme.colors.surfaceNeutral3),
                     DSStackedCardCarouselItem(height: 260, backgroundColor: theme.colors.surfaceNeutral3, showGradientOverlay: true),
-                ],
-                cardWidth: cardW,
-                overlap: cardW - 30,
-                containerHeight: 260
-            )
+                ])
+                .carouselCardWidth(cardW)
+                .carouselOverlap(cardW - 30)
+                .carouselContainerHeight(260)
         }
         .frame(height: 260)
         .padding(.horizontal, theme.spacing.sm)
@@ -100,11 +98,7 @@ struct Navigation7Page: View {
     // MARK: - Profile Info Card
 
     private var profileInfoCard: some View {
-        DSCard(
-            background: theme.colors.surfaceNeutral2,
-            radius: theme.radius.xl,
-            padding: theme.spacing.xl
-        ) {
+        DSCard {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 // Name & bio
                 VStack(alignment: .leading, spacing: theme.spacing.sm) {
@@ -139,11 +133,11 @@ struct Navigation7Page: View {
 
                 // CTA row
                 HStack {
-                    DSButton("Follow", style: .filledB, size: .medium, icon: .plus, iconPosition: .right) {}
+                    DSButton("Follow") {}.buttonSize(.medium).icon(.plus, position: .right)
 
                     Spacer()
 
-                    DSButton("Message", style: .text, size: .medium, icon: .messageText, iconPosition: .right) {}
+                    DSButton("Message") {}.buttonStyle(.text).buttonSize(.medium).icon(.messageText, position: .right)
                 }
             }
         }

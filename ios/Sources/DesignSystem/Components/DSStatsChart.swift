@@ -16,7 +16,7 @@ public struct DSStatsChartData: Identifiable {
 // MARK: - DSStatsChart Style
 
 public enum DSStatsChartStyle: Sendable {
-    /// Light background (surfaceNeutral2). Dark text, surfaceNeutral0_5 bars.
+    /// Light background (surfaceNeutral2). Dark text, surfaceNeutral05 bars.
     case light
     /// Medium background (surfacePrimary100). Light text, surfaceNeutral9 bars at 20% opacity.
     case medium
@@ -31,47 +31,53 @@ public enum DSStatsChartStyle: Sendable {
 /// A chart combining pill-shaped background bars, a smooth line overlay,
 /// y-axis labels, month labels, and a floating badge.
 ///
-/// Usage:
+/// Usage (modifier API):
 /// ```swift
-/// DSStatsChart(
-///     data: months,
-///     linePoints: points,
-///     style: .light,
-///     badgeText: "$620",
-///     badgePosition: (x: 0.6, y: 0.4)
-/// )
+/// // Auto-line (default) — curve generated from data values
+/// DSStatsChart(data: months)
+///     .chartStyle(.brand)
+///     .badgeText("$620")
+///     .badgePosition(x: 0.75, y: 0.42)
+///
+/// // Manual line points
+/// DSStatsChart(data: months)
+///     .linePoints(savingsLinePoints)
+///     .chartStyle(.light)
+///     .badgeText("$620")
+///     .badgePosition(x: 0.58, y: 0.72)
+///
+/// // Custom SVG-derived paths
+/// DSStatsChart(data: months)
+///     .linePath { size in myPath(size) }
+///     .shadowPath { size in myShadow(size) }
 /// ```
 public struct DSStatsChart: View {
     @Environment(\.theme) private var theme
     @State private var lineProgress: CGFloat = 0
 
     private let data: [DSStatsChartData]
-    private let linePoints: [DSLineChartPoint]
-    private let style: DSStatsChartStyle
-    private let yLabels: [String]
-    private let badgeText: String?
-    private let badgeX: CGFloat
-    private let badgeY: CGFloat
-    private let barHeight: CGFloat
-    private let barWidth: CGFloat
-    private let customLinePath: ((CGSize) -> Path)?
-    private let customShadowPath: ((CGSize) -> Path)?
-    private let useAutoLine: Bool
+    var _linePoints: [DSLineChartPoint] = []
+    var _style: DSStatsChartStyle = .light
+    var _yLabels: [String] = ["6", "4", "2", "0"]
+    var _badgeText: String?
+    var _badgeX: CGFloat = 0.5
+    var _badgeY: CGFloat = 0.5
+    var _barHeight: CGFloat = 108
+    var _barWidth: CGFloat = 32
+    var _customLinePath: ((CGSize) -> Path)?
+    var _customShadowPath: ((CGSize) -> Path)?
+    var _useAutoLine: Bool = true
 
-    /// Auto-line init — generates a smooth Catmull-Rom curve from data values.
-    ///
-    /// The line passes through one point per bar, centered on each bar.
-    /// Y values are normalized from the data's min/max range.
-    /// Shadow is automatically generated with a vertical offset.
-    ///
-    /// ```swift
-    /// DSStatsChart(
-    ///     data: months,        // values drive the curve shape
-    ///     style: .brand,
-    ///     badgeText: "$620",
-    ///     badgeX: 0.75, badgeY: 0.42
-    /// )
-    /// ```
+    // MARK: - New Minimal Init
+
+    public init(data: [DSStatsChartData]) {
+        self.data = data
+    }
+
+    // MARK: - Deprecated Inits
+
+    /// Auto-line init (deprecated).
+    @available(*, deprecated, message: "Use DSStatsChart(data:) with modifier methods instead")
     public init(
         data: [DSStatsChartData],
         style: DSStatsChartStyle = .light,
@@ -83,20 +89,18 @@ public struct DSStatsChart: View {
         barWidth: CGFloat = 32
     ) {
         self.data = data
-        self.linePoints = []
-        self.style = style
-        self.yLabels = yLabels
-        self.badgeText = badgeText
-        self.badgeX = badgeX
-        self.badgeY = badgeY
-        self.barHeight = barHeight
-        self.barWidth = barWidth
-        self.customLinePath = nil
-        self.customShadowPath = nil
-        self.useAutoLine = true
+        self._style = style
+        self._yLabels = yLabels
+        self._badgeText = badgeText
+        self._badgeX = badgeX
+        self._badgeY = badgeY
+        self._barHeight = barHeight
+        self._barWidth = barWidth
+        self._useAutoLine = true
     }
 
-    /// Manual line-points init — caller provides explicit normalized points.
+    /// Manual line-points init (deprecated).
+    @available(*, deprecated, message: "Use DSStatsChart(data:) with .linePoints() modifier instead")
     public init(
         data: [DSStatsChartData],
         linePoints: [DSLineChartPoint],
@@ -109,20 +113,19 @@ public struct DSStatsChart: View {
         barWidth: CGFloat = 32
     ) {
         self.data = data
-        self.linePoints = linePoints
-        self.style = style
-        self.yLabels = yLabels
-        self.badgeText = badgeText
-        self.badgeX = badgeX
-        self.badgeY = badgeY
-        self.barHeight = barHeight
-        self.barWidth = barWidth
-        self.customLinePath = nil
-        self.customShadowPath = nil
-        self.useAutoLine = false
+        self._linePoints = linePoints
+        self._style = style
+        self._yLabels = yLabels
+        self._badgeText = badgeText
+        self._badgeX = badgeX
+        self._badgeY = badgeY
+        self._barHeight = barHeight
+        self._barWidth = barWidth
+        self._useAutoLine = false
     }
 
-    /// Custom SVG-derived paths init.
+    /// Custom SVG-derived paths init (deprecated).
+    @available(*, deprecated, message: "Use DSStatsChart(data:) with .linePath() modifier instead")
     public init(
         data: [DSStatsChartData],
         style: DSStatsChartStyle = .light,
@@ -136,24 +139,63 @@ public struct DSStatsChart: View {
         shadowPath: ((CGSize) -> Path)? = nil
     ) {
         self.data = data
-        self.linePoints = []
-        self.style = style
-        self.yLabels = yLabels
-        self.badgeText = badgeText
-        self.badgeX = badgeX
-        self.badgeY = badgeY
-        self.barHeight = barHeight
-        self.barWidth = barWidth
-        self.customLinePath = linePath
-        self.customShadowPath = shadowPath
-        self.useAutoLine = false
+        self._style = style
+        self._yLabels = yLabels
+        self._badgeText = badgeText
+        self._badgeX = badgeX
+        self._badgeY = badgeY
+        self._barHeight = barHeight
+        self._barWidth = barWidth
+        self._customLinePath = linePath
+        self._customShadowPath = shadowPath
+        self._useAutoLine = false
     }
+
+    // MARK: - Modifiers
+
+    public func chartStyle(_ style: DSStatsChartStyle) -> DSStatsChart {
+        var copy = self; copy._style = style; return copy
+    }
+
+    public func linePoints(_ points: [DSLineChartPoint]) -> DSStatsChart {
+        var copy = self; copy._linePoints = points; copy._useAutoLine = false; return copy
+    }
+
+    public func yLabels(_ labels: [String]) -> DSStatsChart {
+        var copy = self; copy._yLabels = labels; return copy
+    }
+
+    public func badgeText(_ text: String?) -> DSStatsChart {
+        var copy = self; copy._badgeText = text; return copy
+    }
+
+    public func badgePosition(x: CGFloat, y: CGFloat) -> DSStatsChart {
+        var copy = self; copy._badgeX = x; copy._badgeY = y; return copy
+    }
+
+    public func barHeight(_ height: CGFloat) -> DSStatsChart {
+        var copy = self; copy._barHeight = height; return copy
+    }
+
+    public func barWidth(_ width: CGFloat) -> DSStatsChart {
+        var copy = self; copy._barWidth = width; return copy
+    }
+
+    public func linePath(_ builder: @escaping (CGSize) -> Path) -> DSStatsChart {
+        var copy = self; copy._customLinePath = builder; copy._useAutoLine = false; return copy
+    }
+
+    public func shadowPath(_ builder: @escaping (CGSize) -> Path) -> DSStatsChart {
+        var copy = self; copy._customShadowPath = builder; return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         ZStack(alignment: .topLeading) {
             chartContent
 
-            if let badgeText {
+            if let badgeText = _badgeText {
                 badgeOverlay(badgeText)
                     .opacity(lineProgress)
             }
@@ -171,7 +213,7 @@ public struct DSStatsChart: View {
         HStack(alignment: .top, spacing: 14) {
             // Y-axis labels
             VStack(spacing: 16) {
-                ForEach(yLabels, id: \.self) { label in
+                ForEach(_yLabels, id: \.self) { label in
                     Text(label)
                         .font(tinyFont)
                         .tracking(tinyTracking)
@@ -197,7 +239,7 @@ public struct DSStatsChart: View {
                     Capsule()
                         .fill(barFillColor)
                         .opacity(barOpacity)
-                        .frame(width: barWidth, height: barHeight)
+                        .frame(width: _barWidth, height: _barHeight)
 
                     Text(item.label)
                         .font(tinyFont)
@@ -212,9 +254,9 @@ public struct DSStatsChart: View {
 
     @ViewBuilder
     private var lineOverlay: some View {
-        if let customLinePath {
+        if let customLinePath = _customLinePath {
             canvasLineOverlay(customLinePath)
-        } else if useAutoLine {
+        } else if _useAutoLine {
             autoLineOverlay
         } else {
             pointBasedLineOverlay
@@ -224,35 +266,31 @@ public struct DSStatsChart: View {
     /// Legacy: caller provides explicit DSLineChartPoint array.
     private var pointBasedLineOverlay: some View {
         GeometryReader { geo in
-            DSLineChart(
-                points: linePoints,
-                lineColor: lineColor,
-                shadowColor: resolvedShadowStrokeColor,
-                lineWidth: lineStrokeWidth,
-                shadowBlur: shadowBlurRadius,
-                shadowOpacity: shadowAlpha,
-                shadowDamping: shadowDampingValue
-            )
-            .frame(height: barHeight * 0.6)
-            .padding(.top, barHeight * 0.12)
+            DSLineChart(points: _linePoints)
+                .lineColor(lineColor)
+                .shadowColor(resolvedShadowStrokeColor)
+                .lineWidth(lineStrokeWidth)
+                .shadowBlur(shadowBlurRadius)
+                .shadowOpacity(shadowAlpha)
+                .shadowDamping(shadowDampingValue)
+                .frame(height: _barHeight * 0.6)
+                .padding(.top, _barHeight * 0.12)
         }
-        .frame(height: barHeight)
+        .frame(height: _barHeight)
     }
 
     /// Auto-line: generates a smooth Catmull-Rom curve from data values.
     private var autoLineOverlay: some View {
         GeometryReader { geo in
-            let lineArea = CGSize(width: geo.size.width, height: barHeight * 0.6)
-            let offsetY = barHeight * 0.12
+            let lineArea = CGSize(width: geo.size.width, height: _barHeight * 0.6)
+            let offsetY = _barHeight * 0.12
 
             Canvas { context, size in
                 guard data.count >= 2 else { return }
 
                 let strokeStyle = StrokeStyle(lineWidth: lineStrokeWidth, lineCap: .round, lineJoin: .round)
 
-                // Map data values to pixel points spanning full width
                 let mainPoints = autoLinePoints(in: lineArea)
-                // Shadow points: peaks are dampened proportionally (higher = more gap)
                 let shadowPoints = autoLineShadowPoints(in: lineArea)
 
                 let shadowPath = catmullRomPath(through: shadowPoints)
@@ -264,7 +302,6 @@ public struct DSStatsChart: View {
                 shadowCtx.translateBy(x: 0, y: offsetY)
                 shadowCtx.stroke(shadowPath, with: .color(resolvedShadowStrokeColor), style: strokeStyle)
 
-                // Main line
                 let mainPath = catmullRomPath(through: mainPoints)
                     .trimmedPath(from: 0, to: lineProgress)
                 var mainCtx = context
@@ -272,20 +309,19 @@ public struct DSStatsChart: View {
                 mainCtx.stroke(mainPath, with: .color(lineColor), style: strokeStyle)
             }
         }
-        .frame(height: barHeight)
+        .frame(height: _barHeight)
     }
 
     /// Custom path overlay (SVG-derived or manual).
     private func canvasLineOverlay(_ pathBuilder: @escaping (CGSize) -> Path) -> some View {
         GeometryReader { geo in
-            let lineArea = CGSize(width: geo.size.width, height: barHeight * 0.6)
-            let offsetY = barHeight * 0.12
+            let lineArea = CGSize(width: geo.size.width, height: _barHeight * 0.6)
+            let offsetY = _barHeight * 0.12
 
             Canvas { context, size in
                 let strokeStyle = StrokeStyle(lineWidth: lineStrokeWidth, lineCap: .round, lineJoin: .round)
 
-                // Shadow — offset slightly below the main line for depth
-                let shadowFull = customShadowPath?(lineArea) ?? pathBuilder(lineArea)
+                let shadowFull = _customShadowPath?(lineArea) ?? pathBuilder(lineArea)
                 let shadowTrimmed = shadowFull.trimmedPath(from: 0, to: lineProgress)
                 var shadowCtx = context
                 shadowCtx.opacity = shadowAlpha
@@ -294,7 +330,6 @@ public struct DSStatsChart: View {
                 shadowCtx.translateBy(x: 0, y: offsetY + shadowVerticalOffset)
                 shadowCtx.stroke(shadowTrimmed, with: .color(resolvedShadowStrokeColor), style: strokeStyle)
 
-                // Main line
                 let mainFull = pathBuilder(lineArea)
                 let mainTrimmed = mainFull.trimmedPath(from: 0, to: lineProgress)
                 var mainCtx = context
@@ -302,15 +337,11 @@ public struct DSStatsChart: View {
                 mainCtx.stroke(mainTrimmed, with: .color(lineColor), style: strokeStyle)
             }
         }
-        .frame(height: barHeight)
+        .frame(height: _barHeight)
     }
 
     // MARK: - Auto-Line Path Generation
 
-    /// Maps data values to pixel coordinates spanning the full width.
-    ///
-    /// Points are evenly distributed from x=0 to x=width (edge to edge).
-    /// Y is normalized from 0 to max value, using the full chart height.
     private func autoLinePoints(in size: CGSize) -> [CGPoint] {
         guard data.count >= 2 else { return [] }
 
@@ -319,23 +350,16 @@ public struct DSStatsChart: View {
         let ceiling = maxVal * 1.05
 
         let count = data.count
-        let inset: CGFloat = lineStrokeWidth + 1 // keep stroke visible at edges
+        let inset: CGFloat = lineStrokeWidth + 1
         let usableWidth = size.width - inset * 2
         return data.enumerated().map { index, item in
-            // X: evenly spread with small inset so stroke isn't clipped
             let x = inset + usableWidth * CGFloat(index) / CGFloat(count - 1)
-            // Y: normalized and inverted (0 = top, height = bottom)
             let normalized = ceiling > 0 ? item.value / ceiling : 0.5
             let y = size.height * (1 - normalized)
             return CGPoint(x: x, y: y)
         }
     }
 
-    /// Shadow points: same X positions, but Y values are dampened proportionally.
-    ///
-    /// The shadow multiplies each normalized value by `shadowDampingRatio` (e.g. 0.65).
-    /// At low values the gap is tiny; at peaks the shadow sits noticeably lower.
-    /// Start and end points match exactly (same position as main line).
     private func autoLineShadowPoints(in size: CGSize) -> [CGPoint] {
         guard data.count >= 2 else { return [] }
 
@@ -351,19 +375,12 @@ public struct DSStatsChart: View {
         return data.enumerated().map { index, item in
             let x = inset + usableWidth * CGFloat(index) / CGFloat(count - 1)
             let normalized = ceiling > 0 ? item.value / ceiling : 0.5
-            // Dampen: shadow value = normalized * ratio
-            // This means at high values the shadow sits lower (bigger gap),
-            // at low values it's nearly the same position
             let dampened = normalized * damping
             let y = size.height * (1 - dampened)
             return CGPoint(x: x, y: y)
         }
     }
 
-    /// Catmull-Rom spline through pixel points — produces smooth wave curves.
-    ///
-    /// Uses mirrored ghost endpoints for tangent continuity at edges,
-    /// and a tension of 0.35 for broad, gentle arcs (lower = rounder).
     private func catmullRomPath(through points: [CGPoint]) -> Path {
         var path = Path()
         guard points.count >= 2 else { return path }
@@ -375,7 +392,6 @@ public struct DSStatsChart: View {
             return path
         }
 
-        // Mirror endpoints to maintain tangent continuity at edges
         let first = points[0]
         let second = points[1]
         let mirror0 = CGPoint(x: 2 * first.x - second.x, y: 2 * first.y - second.y)
@@ -384,7 +400,6 @@ public struct DSStatsChart: View {
         let penult = points[points.count - 2]
         let mirrorN = CGPoint(x: 2 * last.x - penult.x, y: 2 * last.y - penult.y)
 
-        // Lower tension = rounder, broader curves (0.25 is very smooth)
         let tension: CGFloat = 0.25
 
         for i in 0..<(points.count - 1) {
@@ -421,25 +436,25 @@ public struct DSStatsChart: View {
                 .background(theme.colors.infoFocus)
                 .clipShape(Capsule())
                 .position(
-                    x: geo.size.width * badgeX,
-                    y: geo.size.height * badgeY
+                    x: geo.size.width * _badgeX,
+                    y: geo.size.height * _badgeY
                 )
         }
-        .frame(height: barHeight + 24)
+        .frame(height: _barHeight + 24)
     }
 
     // MARK: - Style-Resolved Colors
 
     private var barFillColor: Color {
-        switch style {
-        case .light: return theme.colors.surfaceNeutral0_5
+        switch _style {
+        case .light: return theme.colors.surfaceNeutral05
         case .medium, .brand: return theme.colors.surfaceNeutral9
         case .dark: return theme.colors.surfaceNeutral3
         }
     }
 
     private var barOpacity: Double {
-        switch style {
+        switch _style {
         case .light: return 1.0
         case .medium: return 0.2
         case .dark: return 0.1
@@ -448,14 +463,14 @@ public struct DSStatsChart: View {
     }
 
     private var axisLabelColor: Color {
-        switch style {
+        switch _style {
         case .light, .brand: return theme.colors.textNeutral8
         case .medium, .dark: return theme.colors.textNeutral3
         }
     }
 
     private var lineColor: Color {
-        switch style {
+        switch _style {
         case .light, .brand: return theme.colors.textNeutral9
         case .medium: return theme.colors.surfaceSecondary100
         case .dark: return theme.colors.surfaceSecondary100
@@ -463,7 +478,7 @@ public struct DSStatsChart: View {
     }
 
     private var shadowColor: Color {
-        switch style {
+        switch _style {
         case .light, .brand: return theme.colors.textNeutral9.opacity(0.3)
         case .medium: return theme.colors.surfaceSecondary100.opacity(0.3)
         case .dark: return theme.colors.surfaceSecondary100.opacity(0.3)
@@ -473,52 +488,49 @@ public struct DSStatsChart: View {
     // MARK: - Line & Shadow Parameters
 
     private var lineStrokeWidth: CGFloat {
-        switch style {
+        switch _style {
         case .brand: return 3
         default: return 2
         }
     }
 
     private var resolvedShadowStrokeColor: Color {
-        switch style {
+        switch _style {
         case .brand: return theme.colors.surfacePrimary120
         default: return shadowColor
         }
     }
 
     private var shadowBlurRadius: CGFloat {
-        switch style {
+        switch _style {
         case .brand: return 3
         default: return 2
         }
     }
 
     private var shadowAlpha: Double {
-        switch style {
+        switch _style {
         case .brand: return 0.35
         default: return 0.3
         }
     }
 
     private var shadowDampingValue: CGFloat {
-        switch style {
+        switch _style {
         case .brand: return 0.55
         default: return 0.35
         }
     }
 
     private var shadowVerticalOffset: CGFloat {
-        switch style {
+        switch _style {
         case .brand: return 6
         default: return 3
         }
     }
 
-    /// How much the shadow follows the main line's peaks.
-    /// 1.0 = identical to main line, 0.5 = shadow only goes halfway up.
-    /// At valleys (low values), the gap is small; at peaks, the gap is large.
     private var shadowDampingRatio: CGFloat {
-        switch style {
+        switch _style {
         case .brand: return 0.65
         default: return 0.70
         }

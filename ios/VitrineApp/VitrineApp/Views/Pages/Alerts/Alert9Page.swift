@@ -14,11 +14,7 @@ struct Alert9Page: View {
     var body: some View {
         VStack(spacing: theme.spacing.sm) {
             // Main info card
-            DSCard(
-                background: theme.colors.surfaceNeutral2,
-                radius: theme.radius.xl,
-                padding: 0
-            ) {
+            DSCard {
                 DSAlert(
                     title: "Don't miss a beat! Stay in the loop!",
                     message: "Enable notifications to catch all the important updates as they happen.",
@@ -31,33 +27,29 @@ struct Alert9Page: View {
                 .padding(.horizontal, theme.spacing.xl)
                 .padding(.vertical, theme.spacing.xxl)
             }
+            .cardPadding(0)
 
             // CTA card with "Turn on notifications now!" + GO! button
-            DSCard(
-                background: theme.colors.surfacePrimary100,
-                radius: theme.radius.xl,
-                padding: theme.spacing.xl
-            ) {
+            DSCard {
                 HStack(spacing: theme.spacing.lg) {
                     DSText("Turn on notifications now!",
-                           style: theme.typography.bodyRegular, color: theme.colors.textNeutral0_5)
+                           style: theme.typography.bodyRegular, color: theme.colors.textNeutral05)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    DSButton("GO!", style: .filledA, size: .big) {}
+                    DSButton("GO!") { }.buttonStyle(.filledA)
                 }
             }
+            .cardBackground(theme.colors.surfacePrimary100)
 
             // Remind Me Later
-            DSButton("Remind Me Later", style: .text, size: .medium) {}
+            DSButton("Remind Me Later") { }.buttonStyle(.text).buttonSize(.medium)
 
             // Close button
-            DSButton(style: .filledC, size: .big, icon: .xmark) {
-                dismiss()
-            }
+            DSButton { dismiss() }.buttonStyle(.filledC).icon(.xmark)
         }
         .padding(.horizontal, theme.spacing.sm)
         .padding(.bottom, theme.spacing.sm)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .dsTabBarHidden()

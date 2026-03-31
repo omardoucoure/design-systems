@@ -18,11 +18,19 @@ Use `DSSegmentedPicker` for:
 
 ## Properties
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `items` | `[LocalizedStringKey]` | — | Segment labels |
-| `selectedIndex` | `Binding<Int>` | — | Active segment index |
-| `style` | `DSSegmentedPickerStyle` | `.tabs` | Visual style |
+**Init parameters (core):**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `items` | `[LocalizedStringKey]` | Segment labels |
+| `selectedIndex` | `Binding<Int>` | Active segment index |
+
+**Modifiers:**
+
+| Modifier | Type | Default | Description |
+|----------|------|---------|-------------|
+| `.pickerStyle(_:)` | `DSSegmentedPickerStyle` | `.tabs` | Visual style |
+| `.containerBackground(_:)` | `Color?` | `nil` | Override container background |
 
 ## Related: DSPageControl
 
@@ -37,9 +45,9 @@ DSPageControl(count: 5, currentIndex: $page)
 ```swift
 DSSegmentedPicker(
     items: ["Daily", "Weekly", "Monthly"],
-    selectedIndex: $tab,
-    style: .underline
+    selectedIndex: $tab
 )
+.pickerStyle(.underline)
 ```
 
 ---

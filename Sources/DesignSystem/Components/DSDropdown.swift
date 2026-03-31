@@ -16,25 +16,43 @@ public struct DSDropdownItem: Identifiable, Sendable {
 
 /// A themed dropdown that extends DSTextField with a chevron trigger and popup menu.
 ///
-/// Usage:
+/// Minimal init with modifier-based configuration:
 /// ```swift
 /// DSDropdown(
 ///     items: [DSDropdownItem(id: "1", label: "Option 1")],
-///     selectedId: $selectedId,
-///     placeholder: "Choose option"
+///     selectedId: $selectedId
 /// )
+/// .placeholder("Choose option")
+/// .label("Size")
+/// .variant(.lined)
 /// ```
 public struct DSDropdown: View {
     @Environment(\.theme) private var theme
 
-    private let items: [DSDropdownItem]
-    @Binding private var selectedId: String?
-    private let placeholder: LocalizedStringKey
-    private let label: LocalizedStringKey?
-    private let variant: InputVariant
+    // Core (required)
+    private var _items: [DSDropdownItem]
+    @Binding private var _selectedId: String?
+
+    // Configurable via modifiers (with defaults)
+    private var _placeholder: LocalizedStringKey = "Select"
+    private var _label: LocalizedStringKey?
+    private var _variant: InputVariant = .filled
 
     @State private var isExpanded = false
 
+    // MARK: - New minimal init
+
+    public init(
+        items: [DSDropdownItem],
+        selectedId: Binding<String?>
+    ) {
+        self._items = items
+        self.__selectedId = selectedId
+    }
+
+    // MARK: - Deprecated init (preserves backward compatibility)
+
+    @available(*, deprecated, message: "Use DSDropdown(items:selectedId:) with .placeholder(), .label(), .variant() modifiers instead")
     public init(
         items: [DSDropdownItem],
         selectedId: Binding<String?>,
@@ -42,12 +60,34 @@ public struct DSDropdown: View {
         label: LocalizedStringKey? = nil,
         variant: InputVariant = .filled
     ) {
-        self.items = items
-        self._selectedId = selectedId
-        self.placeholder = placeholder
-        self.label = label
-        self.variant = variant
+        self._items = items
+        self.__selectedId = selectedId
+        self._placeholder = placeholder
+        self._label = label
+        self._variant = variant
     }
+
+    // MARK: - Modifiers
+
+    public func placeholder(_ value: LocalizedStringKey) -> DSDropdown {
+        var copy = self
+        copy._placeholder = value
+        return copy
+    }
+
+    public func label(_ value: LocalizedStringKey) -> DSDropdown {
+        var copy = self
+        copy._label = value
+        return copy
+    }
+
+    public func variant(_ value: InputVariant) -> DSDropdown {
+        var copy = self
+        copy._variant = value
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -68,8 +108,8 @@ public struct DSDropdown: View {
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {
-                    if let label, selectedItem != nil {
-                        Text(label)
+                    if let _label, selectedItem != nil {
+                        Text(_label)
                             .font(theme.typography.small.font)
                             .tracking(theme.typography.small.tracking)
                             .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
@@ -81,7 +121,7 @@ public struct DSDropdown: View {
                             .tracking(theme.typography.body.tracking)
                             .foregroundStyle(theme.colors.textNeutral9)
                     } else {
-                        Text(placeholder)
+                        Text(_placeholder)
                             .font(theme.typography.body.font)
                             .tracking(theme.typography.body.tracking)
                             .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
@@ -108,11 +148,11 @@ public struct DSDropdown: View {
 
     private var menuContent: some View {
         VStack(spacing: 0) {
-            ForEach(items) { item in
-                let isSelected = item.id == selectedId
+            ForEach(_items) { item in
+                let isSelected = item.id == _selectedId
 
                 Button {
-                    selectedId = item.id
+                    _selectedId = item.id
                     isExpanded = false
                 } label: {
                     HStack {
@@ -140,7 +180,7 @@ public struct DSDropdown: View {
             }
         }
         .padding(.vertical, theme.spacing.xxs)
-        .background(theme.colors.surfaceNeutral0_5)
+        .background(theme.colors.surfaceNeutral05)
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
         .elevation(theme.elevation.sm)
         .padding(.top, theme.spacing.xxs)
@@ -149,20 +189,20 @@ public struct DSDropdown: View {
     // MARK: - Resolved Styles
 
     private var selectedItem: DSDropdownItem? {
-        items.first { $0.id == selectedId }
+        _items.first { $0.id == _selectedId }
     }
 
     private var triggerBackground: Color {
-        switch variant {
+        switch _variant {
         case .filled:
-            return isExpanded ? theme.colors.surfaceNeutral0_5 : theme.colors.surfaceNeutral2
+            return isExpanded ? theme.colors.surfaceNeutral05 : theme.colors.surfaceNeutral2
         case .lined:
             return .clear
         }
     }
 
     private var triggerRadius: CGFloat {
-        switch variant {
+        switch _variant {
         case .filled: return theme.radius.md
         case .lined: return 0
         }
@@ -170,7 +210,7 @@ public struct DSDropdown: View {
 
     private var triggerBorder: some View {
         Group {
-            switch variant {
+            switch _variant {
             case .filled:
                 RoundedRectangle(cornerRadius: theme.radius.md)
                     .stroke(
@@ -181,7 +221,7 @@ public struct DSDropdown: View {
                 VStack {
                     Spacer()
                     Rectangle()
-                        .fill(isExpanded ? theme.colors.infoFocus : theme.colors.borderNeutral9_5)
+                        .fill(isExpanded ? theme.colors.infoFocus : theme.colors.borderNeutral95)
                         .frame(height: theme.borders.widthSm)
                 }
             }
@@ -200,7 +240,7 @@ private struct DropdownItemButtonStyle: ButtonStyle {
                 Group {
                     if configuration.isPressed {
                         RoundedRectangle(cornerRadius: theme.radius.xxl)
-                            .fill(theme.colors.surfaceNeutral0_5)
+                            .fill(theme.colors.surfaceNeutral05)
                             .padding(.horizontal, theme.spacing.md)
                     }
                 }

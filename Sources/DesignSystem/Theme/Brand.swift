@@ -33,9 +33,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                 secondary120: Color(hex: "#EB5B52"),
                 neutrals: NeutralScale(
                     n0: Color(hex: "#FFFFFF"),
-                    n0_5: Color(hex: "#FAFAF9"),
+                    n05: Color(hex: "#FAFAF9"),
                     n1: Color(hex: "#F5F5F3"),
-                    n1_5: Color(hex: "#F0F0EC"),
+                    n15: Color(hex: "#F0F0EC"),
                     n2: Color(hex: "#EBEBE6"),
                     n3: Color(hex: "#E2E1DA"),
                     n4: Color(hex: "#D8D7CD"),
@@ -43,9 +43,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                     n6: Color(hex: "#A5A49A"),
                     n7: Color(hex: "#7C7B74"),
                     n8: Color(hex: "#52524D"),
-                    n8_5: Color(hex: "#3E3E3A"),
+                    n85: Color(hex: "#3E3E3A"),
                     n9: Color(hex: "#292927"),
-                    n9_5: Color(hex: "#151513"),
+                    n95: Color(hex: "#151513"),
                     n10: Color(hex: "#000000")
                 )
             )
@@ -61,9 +61,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                 secondary120: Color(hex: "#A0D342"),
                 neutrals: NeutralScale(
                     n0: Color(hex: "#FFFFFF"),
-                    n0_5: Color(hex: "#FAFAFA"),
+                    n05: Color(hex: "#FAFAFA"),
                     n1: Color(hex: "#F5F6F4"),
-                    n1_5: Color(hex: "#F0F1EF"),
+                    n15: Color(hex: "#F0F1EF"),
                     n2: Color(hex: "#EBEDE9"),
                     n3: Color(hex: "#E1E3DF"),
                     n4: Color(hex: "#D7DAD5"),
@@ -71,9 +71,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                     n6: Color(hex: "#A4A8A2"),
                     n7: Color(hex: "#7B7E7A"),
                     n8: Color(hex: "#535551"),
-                    n8_5: Color(hex: "#3E403D"),
+                    n85: Color(hex: "#3E403D"),
                     n9: Color(hex: "#2A2B29"),
-                    n9_5: Color(hex: "#151715"),
+                    n95: Color(hex: "#151715"),
                     n10: Color(hex: "#000000")
                 )
             )
@@ -89,9 +89,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                 secondary120: Color(hex: "#DC70B3"),
                 neutrals: NeutralScale(
                     n0: Color(hex: "#FFFFFF"),
-                    n0_5: Color(hex: "#F9F9FA"),
+                    n05: Color(hex: "#F9F9FA"),
                     n1: Color(hex: "#F4F4F5"),
-                    n1_5: Color(hex: "#EEEEF1"),
+                    n15: Color(hex: "#EEEEF1"),
                     n2: Color(hex: "#E9E8EC"),
                     n3: Color(hex: "#DDDDE2"),
                     n4: Color(hex: "#D2D1D9"),
@@ -99,9 +99,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                     n6: Color(hex: "#9F9EA6"),
                     n7: Color(hex: "#77777C"),
                     n8: Color(hex: "#504F53"),
-                    n8_5: Color(hex: "#3C3B3E"),
+                    n85: Color(hex: "#3C3B3E"),
                     n9: Color(hex: "#282829"),
-                    n9_5: Color(hex: "#141415"),
+                    n95: Color(hex: "#141415"),
                     n10: Color(hex: "#000000")
                 )
             )
@@ -117,9 +117,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                 secondary120: Color(hex: "#CCA78F"),
                 neutrals: NeutralScale(
                     n0: Color(hex: "#FFFFFF"),
-                    n0_5: Color(hex: "#F9F8F8"),
+                    n05: Color(hex: "#F9F8F8"),
                     n1: Color(hex: "#F3F1F1"),
-                    n1_5: Color(hex: "#EDEBE9"),
+                    n15: Color(hex: "#EDEBE9"),
                     n2: Color(hex: "#E7E4E2"),
                     n3: Color(hex: "#DBD6D4"),
                     n4: Color(hex: "#CFC9C5"),
@@ -127,9 +127,9 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                     n6: Color(hex: "#9C9692"),
                     n7: Color(hex: "#75706E"),
                     n8: Color(hex: "#4E4B49"),
-                    n8_5: Color(hex: "#3B3837"),
+                    n85: Color(hex: "#3B3837"),
                     n9: Color(hex: "#272525"),
-                    n9_5: Color(hex: "#141312"),
+                    n95: Color(hex: "#141312"),
                     n10: Color(hex: "#000000")
                 )
             )

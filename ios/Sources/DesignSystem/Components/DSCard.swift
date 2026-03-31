@@ -2,34 +2,50 @@ import SwiftUI
 
 // MARK: - DSCard
 
-/// A themed container card with configurable background, radius, and padding.
-///
-/// Used as a building block for page layouts — the "grey container" and
-/// "primary container" patterns seen across page designs.
+/// A themed container card with modifier-based customization.
 ///
 /// Usage:
 /// ```swift
-/// DSCard(background: theme.colors.surfaceNeutral2) {
+/// // Minimal — uses theme defaults (surfaceNeutral2, radius xl, padding xl)
+/// DSCard {
 ///     Text("Hello")
 /// }
 ///
-/// DSCard(
-///     background: theme.colors.surfacePrimary100,
-///     radius: theme.radius.xl,
-///     padding: theme.spacing.xl
-/// ) {
+/// // Full customization via modifiers
+/// DSCard {
 ///     HStack { Text("Skip") }
 /// }
+/// .cardBackground(theme.colors.surfacePrimary100)
+/// .cardRadius(theme.radius.xl)
+/// .cardPadding(theme.spacing.xl)
+///
+/// // Disable content clipping (e.g., for overflow scroll)
+/// DSCard {
+///     content
+/// }
+/// .cardBackground(theme.colors.surfaceNeutral2)
+/// .clipsContent(false)
 /// ```
 public struct DSCard<Content: View>: View {
     @Environment(\.theme) private var theme
 
-    private let background: Color?
-    private let radiusOverride: CGFloat?
-    private let paddingOverride: CGFloat?
-    private let clipsContent: Bool
     private let content: Content
 
+    // Configurable via modifiers (all have defaults)
+    private var _background: Color?
+    private var _radius: CGFloat?
+    private var _padding: CGFloat?
+    private var _clipsContent: Bool = true
+
+    // MARK: - Init (minimal)
+
+    public init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    // MARK: - Deprecated init (backward compat)
+
+    @available(*, deprecated, message: "Use DSCard { content }.cardBackground().cardRadius().cardPadding() instead")
     public init(
         background: Color? = nil,
         radius: CGFloat? = nil,
@@ -37,12 +53,40 @@ public struct DSCard<Content: View>: View {
         clipsContent: Bool = true,
         @ViewBuilder content: () -> Content
     ) {
-        self.background = background
-        self.radiusOverride = radius
-        self.paddingOverride = padding
-        self.clipsContent = clipsContent
+        self._background = background
+        self._radius = radius
+        self._padding = padding
+        self._clipsContent = clipsContent
         self.content = content()
     }
+
+    // MARK: - Modifiers
+
+    public func cardBackground(_ color: Color) -> Self {
+        var copy = self
+        copy._background = color
+        return copy
+    }
+
+    public func cardRadius(_ radius: CGFloat) -> Self {
+        var copy = self
+        copy._radius = radius
+        return copy
+    }
+
+    public func cardPadding(_ padding: CGFloat) -> Self {
+        var copy = self
+        copy._padding = padding
+        return copy
+    }
+
+    public func clipsContent(_ clips: Bool = true) -> Self {
+        var copy = self
+        copy._clipsContent = clips
+        return copy
+    }
+
+    // MARK: - Body
 
     public var body: some View {
         let shaped = content
@@ -51,7 +95,7 @@ public struct DSCard<Content: View>: View {
                 RoundedRectangle(cornerRadius: resolvedRadius)
                     .fill(resolvedBackground)
             )
-        if clipsContent {
+        if _clipsContent {
             shaped.clipShape(RoundedRectangle(cornerRadius: resolvedRadius))
         } else {
             shaped
@@ -59,14 +103,14 @@ public struct DSCard<Content: View>: View {
     }
 
     private var resolvedBackground: Color {
-        background ?? theme.colors.surfaceNeutral2
+        _background ?? theme.colors.surfaceNeutral2
     }
 
     private var resolvedRadius: CGFloat {
-        radiusOverride ?? theme.radius.xl
+        _radius ?? theme.radius.xl
     }
 
     private var resolvedPadding: CGFloat {
-        paddingOverride ?? theme.spacing.xl
+        _padding ?? theme.spacing.xl
     }
 }

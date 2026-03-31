@@ -45,33 +45,31 @@ struct Profile9Page: View {
     }
 
     private var sideMenuContent: some View {
-        DSNavigationMenu(
-            items: [
+        DSNavigationMenu(items: [
                 DSNavigationMenuItem(id: "profile", label: "Profile", icon: .user, isSelected: true),
                 DSNavigationMenuItem(id: "messages", label: "Messages", icon: .replyToMessage),
                 DSNavigationMenuItem(id: "bookmarks", label: "Bookmarks", icon: .bookmark),
                 DSNavigationMenuItem(id: "settings", label: "Settings", icon: .settings),
                 DSNavigationMenuItem(id: "notifications", label: "Notifications", icon: .bellNotification),
                 DSNavigationMenuItem(id: "people", label: "People", icon: .group),
-            ],
-            profile: DSNavigationMenuProfile(
+            ])
+            .profile(DSNavigationMenuProfile(
                 image: "p9_hero",
                 name: "Hristo Hristov",
                 subtitle: "Rockstar-in-training"
-            )
-        )
+            ))
         .padding(.leading, theme.spacing.sm)
         .frame(maxHeight: .infinity, alignment: .center)
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     private var mainContent: some View {
         VStack(spacing: theme.spacing.sm) {
-            DSTopAppBar(title: "Profile", style: .small, onBack: { dismiss() }) {
-                DSButton(style: .text, size: .medium, icon: .menuScale) {
+            DSTopAppBar(title: "Profile") {
+                DSButton {
                     withAnimation(.easeInOut(duration: 0.3)) { isMenuOpen.toggle() }
-                }
-            }
+                }.buttonStyle(.text).buttonSize(.medium).icon(.menuScale)
+            }.onBack { dismiss() }
 
             ScrollView {
                 VStack(spacing: theme.spacing.sm) {
@@ -83,7 +81,7 @@ struct Profile9Page: View {
                 .padding(.bottom, theme.spacing.sm)
             }
         }
-        .background(theme.colors.surfaceNeutral0_5.ignoresSafeArea())
+        .background(theme.colors.surfaceNeutral05.ignoresSafeArea())
     }
 
     // MARK: - Hero + Info overlap
@@ -106,7 +104,7 @@ struct Profile9Page: View {
                 .padding(.trailing, theme.spacing.xxxxl) // 64pt inset on right
 
             // Info card — pl=64 in Figma → inset on the LEFT, card sits on the RIGHT
-            DSCard(background: theme.colors.surfaceNeutral2, radius: theme.radius.xl, padding: 0) {
+            DSCard {
                 VStack(alignment: .leading, spacing: theme.spacing.lg) {
                     VStack(alignment: .leading, spacing: theme.spacing.sm) {
                         DSText("Hristo Hristov",
@@ -121,6 +119,7 @@ struct Profile9Page: View {
                 }
                 .padding(theme.spacing.xl)
             }
+            .cardPadding(0)
             .padding(.leading, theme.spacing.xxxxl) // 64pt inset on left
             .padding(.top, -theme.spacing.xxxxl - theme.spacing.md) // overlap 80pt up
         }
@@ -165,10 +164,10 @@ struct Profile9Page: View {
 
     private var ctaRow: some View {
         HStack {
-            DSButton("Follow", style: .filledB, size: .medium, icon: .plus, iconPosition: .right) {}
+            DSButton("Follow") {}.buttonSize(.medium).icon(.plus, position: .right)
                 .fixedSize()
             Spacer()
-            DSButton("Message", style: .text, size: .medium, assetIcon: "icon_message_text", iconPosition: .right) {}
+            DSButton("Message") {}.buttonStyle(.text).buttonSize(.medium).assetIcon("icon_message_text", position: .right)
                 .fixedSize()
         }
     }
@@ -200,11 +199,11 @@ struct Profile9Page: View {
                 photos: ["p9_photo1", "p9_photo2", "p9_photo3",
                          "p9_photo4", "p9_photo5", "p9_photo6",
                          "p9_photo7", "p9_photo8"],
-                style: .compact(columns: 4),
                 onTap: { photo in
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { zoomedPhoto = photo }
                 }
             )
+            .gridStyle(.compact(columns: 4))
         default:
             DSIconImage(tabs[selectedTab], size: 40, color: theme.colors.textNeutral9)
                 .opacity(0.3)

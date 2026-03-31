@@ -173,11 +173,53 @@ padding_context:
     note: >
       Multiple buttons in an HStack — use HStack(spacing: theme.spacing.xs) between them.
 
+# ─── FIGMA INSTANCE RULES ────────────────────────────────────────────────────────
+figma_instance_rules:
+  icon_contrast_on_dark_buttons: >
+    In Swift, DSButton automatically sets icon/text color based on the style's foreground token.
+    But in Figma, icon instances DON'T auto-recolor when you switch the button Style variant.
+    CRITICAL: When using dark-background styles (filledB, filledC, outlinedLight), the icon
+    instance inside the button will remain dark and become invisible against the dark background.
+    After setting a dark button style in Figma, manually override the icon instance fill color
+    to textNeutral0_5 (rgb 250,250,249 — white/cream) so it's visible.
+  style_foreground_reference: >
+    filledA → dark icons/text (textNeutral9) — coral bg, dark content OK
+    filledB → LIGHT icons/text (textNeutral0_5) — dark green bg, needs white content
+    filledC → LIGHT icons/text (textNeutral0_5) — darkest green bg, needs white content
+    neutral → dark icons/text (textNeutral9)
+    neutralLight → dark icons/text (textNeutral9)
+    outlined → dark icons/text (textNeutral9)
+    outlinedLight → LIGHT icons/text (textNeutral0_5) — for dark surfaces
+    text → dark icons/text (textNeutral9)
+
+# ─── FIGMA RULES (machine-readable, used by builders + checker) ─────────────────
+figma_rules:
+  - id: button_icon_contrast
+    trigger: after_set_property
+    condition:
+      type: variant_in
+      property: Style
+      values: ["filledB", "filledC", "outlinedLight"]
+    action:
+      type: set_fill
+      target: "child_type:VECTOR"
+      token: textNeutral0_5
+      rgb: [250, 250, 249]
+    check:
+      assertion: fill_matches_rgb
+      target: "child:Icon.fills"
+      expected: [250, 250, 249]
+      tolerance: 5
+      fail_message: "Dark button styles (filledB/C/outlinedLight) need light icon fills (textNeutral0_5)"
+    severity: critical
+    auto_fixable: true
+
 # ─── HARD RULES ──────────────────────────────────────────────────────────────────
 rules:
   - NEVER use Button{} SwiftUI primitive directly on pages — always use DSButton
   - NEVER hardcode colors, corner radius, or font — these come from style + size
   - ALWAYS use DSIcon enum for custom icons, never pass raw image names as strings to systemIcon
   - Read the Figma button background color to map to the correct style
+  - When using filledB, filledC, or outlinedLight styles, ensure icon/text fills are light (textNeutral0_5) — dark icons on dark buttons are invisible
   - Text style has reduced horizontal padding — do not add extra .padding() on a .text style button
   - isFullWidth pushes the button to .infinity width — only use for bottom-of-screen CTAs
