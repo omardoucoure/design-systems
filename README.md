@@ -167,12 +167,7 @@ docs/
   <img src="screenshots/buttons.png" width="230" alt="Buttons - Filled, Outlined, Text, Sizes" />
   <img src="screenshots/cards.png" width="230" alt="Cards - Neutral, Primary, Metric Cards" />
   <img src="screenshots/textfields.png" width="230" alt="Text Fields - Empty, Filled, Error, Validated, Search" />
-</p>
-
-<p align="center">
   <img src="screenshots/selection.png" width="230" alt="Selection Controls - Checkbox, Radio, Toggle" />
-  <img src="screenshots/charts.png" width="230" alt="Charts - Line Chart, Lollipop Chart" />
-  <img src="screenshots/feedback.png" width="230" alt="Feedback - Alerts and Banners" />
 </p>
 
 *Run the VitrineApp scheme in Xcode to preview all 16 theme combinations across 4 brands and 4 styles.*
