@@ -161,14 +161,38 @@ docs/
 
 ## Screenshots
 
-<!-- Add screenshots of VitrineApp showing different brand/style combinations -->
+### Component Catalog
 
-| Coral Camo | Sea Lime | Misty Rose | Blue Haze |
-|:----------:|:--------:|:----------:|:---------:|
-| Light Rounded | Light Rounded | Light Rounded | Light Rounded |
-| Dark Sharp | Dark Sharp | Dark Sharp | Dark Sharp |
+<p align="center">
+  <img src="screenshots/ds-screenshot-1.png" width="230" alt="Components - Coral Camo Light" />
+  <img src="screenshots/ds-screenshot-2.png" width="230" alt="Pages - Coral Camo Light" />
+  <img src="screenshots/ds-screenshot-5.png" width="230" alt="Icons Browser" />
+</p>
 
-*Run the VitrineApp scheme in Xcode to preview all 16 theme combinations.*
+### Color Palettes by Brand
+
+<p align="center">
+  <img src="screenshots/ds-screenshot-3.png" width="230" alt="Colors - Coral Camo" />
+  <img src="screenshots/ds-screenshot-7.png" width="230" alt="Colors - Sea Lime" />
+  <img src="screenshots/ds-screenshot-9.png" width="230" alt="Colors - Misty Rose" />
+  <img src="screenshots/ds-screenshot-11.png" width="230" alt="Colors - Blue Haze" />
+</p>
+
+### Design Tokens
+
+<p align="center">
+  <img src="screenshots/ds-screenshot-4.png" width="230" alt="Tokens Browser" />
+</p>
+
+### Dark Mode
+
+<p align="center">
+  <img src="screenshots/ds-screenshot-12.png" width="230" alt="Components - Dark Mode" />
+  <img src="screenshots/ds-screenshot-13.png" width="230" alt="Colors - Dark Mode" />
+  <img src="screenshots/ds-screenshot-14.png" width="230" alt="Pages - Dark Mode" />
+</p>
+
+*Run the VitrineApp scheme in Xcode to preview all 16 theme combinations across 4 brands and 4 styles.*
 
 ## Requirements
 
