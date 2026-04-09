@@ -161,7 +161,9 @@ docs/
 
 ## Screenshots
 
-### Components
+### Component Examples
+
+A few of the 58 components rendered in the showcase app (Coral Camo, light rounded):
 
 <p align="center">
   <img src="screenshots/buttons.png" width="230" alt="Buttons - Filled, Outlined, Text, Sizes" />
@@ -169,7 +171,7 @@ docs/
   <img src="screenshots/selection.png" width="230" alt="Selection Controls - Checkbox, Radio, Toggle" />
 </p>
 
-*Run the VitrineApp scheme in Xcode to preview all 16 theme combinations across 4 brands and 4 styles.*
+*Run the VitrineApp scheme in Xcode to browse all components across 4 brands and 4 styles (16 combinations).*
 
 ## AI-Driven Design
 
