@@ -1,29 +1,75 @@
 # HaHo Design System
 
-HaHo is an iOS-first design system packaged as a Swift Package and previewed through a local showcase app.
+A fully tokenized, enum-driven design system for native iOS (SwiftUI). Switch two enum values and the entire UI transforms: colors, typography, spacing, radius, elevation, and component styles. No component code changes required.
 
-The system is built around two theme axes:
+---
 
-- `Brand`: selects the primitive palette
-- `Style`: selects color mode and shape treatment
+**58 components** &nbsp;|&nbsp; **4 brands** &nbsp;|&nbsp; **16 theme combinations** &nbsp;|&nbsp; **Zero dependencies**
 
-At runtime those axes resolve into a `ThemeConfiguration`, which components read from SwiftUI environment values.
+---
 
-## Repository Layout
+## What It Is
 
-- `Package.swift`: root package entrypoint for the iOS library
-- [`Sources/DesignSystem`](Sources/DesignSystem): reusable Swift Package code
-- [`ios/Sources/DesignSystem`](ios/Sources/DesignSystem): reusable Swift Package code (symlinked)
-- [`ios/VitrineApp`](ios/VitrineApp): showcase app for components, tokens, and sample pages
-- [`tokens/`](tokens): primitive and semantic token definitions
-- [`PRD.md`](PRD.md): product and architecture intent
-- [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md): accessibility expectations for components and pages
-- [`docs/components`](docs/components): component usage notes for public DS primitives
-- [`docs/ai`](docs/ai): AI-facing design contract, registry, and implementation roadmap
+HaHo is a production-grade Swift Package that provides a complete set of reusable UI components, a multi-brand token system, and a theme engine. It ships as a single SPM dependency with no third-party requirements.
+
+Every visual property reads from a resolved theme configuration. There are no hardcoded colors, no magic numbers, no inline styles. Components adapt automatically when the theme changes.
+
+The system was designed from the ground up for AI-assisted development: specify a Brand and Style, and every component renders correctly without manual tweaking.
+
+## Architecture
+
+HaHo uses a **2-axis enum-driven architecture**:
+
+```
+Brand (primitive palette)          Style (color mode + shape)
+  .coralCamo                         .lightRounded
+  .seaLime                           .darkRounded
+  .mistyRose                         .lightSharp
+  .blueHaze                          .darkSharp
+```
+
+Brand selects **what** the raw color values are. Style selects **how** those values map to semantic roles. Together they resolve into a `ThemeConfiguration` that components read from the SwiftUI environment.
+
+```
+Brand x Style = ThemeConfiguration
+
+primitives --> semantic tokens --> component tokens --> views
+```
+
+**Key behaviors in dark mode:** primary and secondary colors swap roles, the neutral scale inverts. Sharp styles reset all corner radii to zero (except `full`). These rules are encoded in the token layer, not in component code.
+
+## Components
+
+58 production-ready SwiftUI components organized by category:
+
+| Category | Components |
+|----------|------------|
+| **Core** | Text, Icon, IconImage, Divider, Badge, Tooltip |
+| **Actions** | Button, Chip, Toggle, Checkbox, Radio |
+| **Inputs** | TextField, TextArea, SearchField, Dropdown, CodeInput, DatePicker, DayPicker, WeekStrip |
+| **Pickers** | SegmentedPicker, IconSegmentedPicker, CalendarGrid, TimelineGrid |
+| **Navigation** | TopAppBar, BottomAppBar, BottomNavOverlay, TabView, NavigationMenu, IconSidebar, SideMenuLayout |
+| **Feedback** | Alert, AlertDialog, Banner, ProgressCircle |
+| **Cards** | Card, StackedCard, StackedCardCarousel, ProductCard, ProductTeaser, EventCard, MetricCard, UserCard, StatRow |
+| **Media** | Avatar, PhotoGrid, VideoPlayer, Carousel, CarouselDeck |
+| **Lists** | ListItem, FormField, FeedPost |
+| **Charts** | BarChart, HorizontalBarChart, StackedBarChart, LineChart, LollipopChart, StatsChart, SemiCircularGauge, WeatherChart |
 
 ## Quick Start
 
-Import the package and apply a theme at the root of your view tree:
+### Installation (Swift Package Manager)
+
+Add the package to your `Package.swift` or via Xcode > File > Add Package Dependencies:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/your-org/design-systems.git", from: "1.0.0")
+]
+```
+
+### Apply a Theme
+
+Set the brand and style at the root of your view tree:
 
 ```swift
 import DesignSystem
@@ -36,65 +82,104 @@ struct AppRoot: View {
 }
 ```
 
-Inside any child view:
+### Use Components
+
+Access the theme from any child view via the environment:
 
 ```swift
 @Environment(\.theme) private var theme
-```
 
-Then consume semantic tokens and DS components:
-
-```swift
-DSCard(background: theme.colors.surfaceNeutral2) {
-    DSText("Hello", style: theme.typography.body, color: theme.colors.textNeutral9)
+var body: some View {
+    DSCard(background: theme.colors.surfaceNeutral2) {
+        DSText("Hello", style: theme.typography.body, color: theme.colors.textNeutral9)
+    }
 }
 ```
 
-## Theme Model
+### Switch Themes at Runtime
 
-The package currently exposes:
+Changing the two enum values transforms the entire interface:
 
-- 4 brands: `coralCamo`, `seaLime`, `mistyRose`, `blueHaze`
-- 4 styles: `lightRounded`, `darkRounded`, `lightSharp`, `darkSharp`
+```swift
+// Warm earth tones, rounded corners, light mode
+.designSystem(brand: .coralCamo, style: .lightRounded)
 
-This yields 16 supported theme combinations.
+// Cool blues, sharp edges, dark mode
+.designSystem(brand: .seaLime, style: .darkSharp)
+```
 
-Theme resolution follows this pipeline:
+## Token System
 
-`primitives -> semantic tokens -> component tokens -> views`
+HaHo uses a three-tier token hierarchy sourced from Figma design variables:
 
-Primitive and semantic token definitions live in the `tokens/` directory. The runtime Swift code mirrors those values today; keeping those layers aligned is an active maintenance concern.
+```
+Primitive Tokens        Semantic Tokens           Component Tokens
+(per brand)             (per style)               (per component)
 
-## Using Components
+brand.primary100   -->  surfacePrimary100    -->  button.background
+neutrals.9         -->  textNeutral9         -->  card.titleColor
+radius.md          -->  radiusMd             -->  input.cornerRadius
+spacing.lg         -->  (pass-through)       -->  card.padding
+```
 
-The recommended composition order is:
+**Primitive tokens** define raw values: brand colors (7 steps per brand), a 15-step neutral scale with unique undertone per brand, semantic colors (error, warning, validated, info), spacing, radius, border widths, opacity levels, and drop shadows.
 
-1. Apply `.designSystem(...)` at the app or screen root.
-2. Build layouts from DS components first.
-3. Reach for semantic tokens only when composing layout or content around DS components.
-4. Add a new DS component when a pattern repeats across pages.
+**Semantic tokens** map primitives to roles based on the active Style. Light modes and dark modes resolve to different primitives. Rounded and sharp modes resolve to different radii.
 
-Examples:
+**Component tokens** are consumed directly by DS components. Adding a new brand requires only a new primitive palette. Adding a new style requires only a new semantic mapping. Components never change.
 
-- Buttons: [`DSButton.swift`](ios/Sources/DesignSystem/Components/DSButton.swift)
-- Inputs: [`DSTextField.swift`](ios/Sources/DesignSystem/Components/DSTextField.swift)
-- List rows: [`DSListItem.swift`](ios/Sources/DesignSystem/Components/DSListItem.swift)
+Token definitions live in the [`tokens/`](tokens/) directory as JSON. The runtime Swift code mirrors these values.
 
-## Current Standards
+## Brands
 
-- Package components should prefer theme tokens and component tokens over raw visual literals.
-- Pages in the showcase app should demonstrate DS primitives instead of rebuilding controls inline.
-- Accessibility labels, control states, and consumer-facing examples should be added alongside new components.
+| Brand | Primary | Secondary | Character |
+|-------|---------|-----------|-----------|
+| Coral Camo | Muted green-brown | Warm coral | Warm earth tones |
+| Sea Lime | Deep blue | Vibrant lime | Cool and energetic |
+| Misty Rose | Slate blue-grey | Soft pink | Muted and elegant |
+| Blue Haze | Vivid blue | Warm beige | Bold and grounded |
 
-## Gaps
+## Repository Layout
 
-The repo already has a strong token and theme core, but it still needs:
+```
+Package.swift                   Root SPM package
+Sources/DesignSystem/           Reusable Swift Package code
+ios/
+  Sources/DesignSystem/         Symlinked package source
+  VitrineApp/                   Showcase app (Xcode project)
+  DemoApp/                      Demo application
+  Tests/                        Component and theme tests
+tokens/
+  primitives.json               82 variables x 4 brands
+  tokens.json                   51 variables x 4 modes
+docs/
+  components/                   Per-component usage documentation
+  ACCESSIBILITY.md              Accessibility expectations
+  theming.md                    Theme system guide
+  ai/                           AI-facing design contracts
+```
 
-- generated token artifacts from a single source of truth
-- broader component tests and visual regression coverage
-- richer accessibility guidance
-- fuller component documentation beyond showcase examples
+## Screenshots
 
-## Contributing
+<!-- Add screenshots of VitrineApp showing different brand/style combinations -->
 
-Contribution rules and implementation guardrails are documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+| Coral Camo | Sea Lime | Misty Rose | Blue Haze |
+|:----------:|:--------:|:----------:|:---------:|
+| Light Rounded | Light Rounded | Light Rounded | Light Rounded |
+| Dark Sharp | Dark Sharp | Dark Sharp | Dark Sharp |
+
+*Run the VitrineApp scheme in Xcode to preview all 16 theme combinations.*
+
+## Requirements
+
+- iOS 16+
+- Swift 5.9+
+- Xcode 15+
+
+## Built By
+
+[Omar Doucoure](https://omardoucoure.com)
+
+## License
+
+See [LICENSE](LICENSE) for details.
