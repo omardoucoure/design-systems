@@ -161,35 +161,18 @@ docs/
 
 ## Screenshots
 
-### Component Catalog
+### Components
 
 <p align="center">
-  <img src="screenshots/ds-screenshot-1.png" width="230" alt="Components - Coral Camo Light" />
-  <img src="screenshots/ds-screenshot-2.png" width="230" alt="Pages - Coral Camo Light" />
-  <img src="screenshots/ds-screenshot-5.png" width="230" alt="Icons Browser" />
+  <img src="screenshots/buttons.png" width="230" alt="Buttons - Filled, Outlined, Text, Sizes" />
+  <img src="screenshots/cards.png" width="230" alt="Cards - Neutral, Primary, Metric Cards" />
+  <img src="screenshots/textfields.png" width="230" alt="Text Fields - Empty, Filled, Error, Validated, Search" />
 </p>
 
-### Color Palettes by Brand
-
 <p align="center">
-  <img src="screenshots/ds-screenshot-3.png" width="230" alt="Colors - Coral Camo" />
-  <img src="screenshots/ds-screenshot-7.png" width="230" alt="Colors - Sea Lime" />
-  <img src="screenshots/ds-screenshot-9.png" width="230" alt="Colors - Misty Rose" />
-  <img src="screenshots/ds-screenshot-11.png" width="230" alt="Colors - Blue Haze" />
-</p>
-
-### Design Tokens
-
-<p align="center">
-  <img src="screenshots/ds-screenshot-4.png" width="230" alt="Tokens Browser" />
-</p>
-
-### Dark Mode
-
-<p align="center">
-  <img src="screenshots/ds-screenshot-12.png" width="230" alt="Components - Dark Mode" />
-  <img src="screenshots/ds-screenshot-13.png" width="230" alt="Colors - Dark Mode" />
-  <img src="screenshots/ds-screenshot-14.png" width="230" alt="Pages - Dark Mode" />
+  <img src="screenshots/selection.png" width="230" alt="Selection Controls - Checkbox, Radio, Toggle" />
+  <img src="screenshots/charts.png" width="230" alt="Charts - Line Chart, Lollipop Chart" />
+  <img src="screenshots/feedback.png" width="230" alt="Feedback - Alerts and Banners" />
 </p>
 
 *Run the VitrineApp scheme in Xcode to preview all 16 theme combinations across 4 brands and 4 styles.*
