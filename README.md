@@ -177,6 +177,77 @@ docs/
 
 *Run the VitrineApp scheme in Xcode to preview all 16 theme combinations across 4 brands and 4 styles.*
 
+## AI-Driven Design
+
+HaHo was built to work with AI coding agents. The `docs/ai/` directory contains a machine-readable contract layer that lets an LLM compose screens correctly without reading Swift source every time.
+
+### Design System Contract
+
+[`docs/ai/design-system-contract.yaml`](docs/ai/design-system-contract.yaml) is the central registry. It declares:
+
+- Theme axes (brand x style), token layers, and source-of-truth file paths
+- Custom color override API (swap primary/secondary at the app root)
+- Every component with its variants, when-to-use rules, and Figma node mappings
+- Page patterns for common screen families (auth, profile, alerts, onboarding)
+
+### Component YAML Contracts
+
+Each of the 59 components has a dedicated YAML file in [`docs/ai/components/`](docs/ai/components/). A contract includes:
+
+- **Styles and variants** with exact token references (e.g., `filledA` uses `surfaceSecondary100`)
+- **When to use / never use** guidance so AI picks the right component
+- **Figma signals** mapping hex colors and layout cues to style enums
+- **Figma rules** (typed rule objects) that enforce correctness during Figma generation
+
+Example from `DSButton.yaml`:
+```yaml
+filledA:
+  background: theme.colors.surfaceSecondary100
+  foreground: theme.colors.textNeutral9
+  use_when:
+    - Primary CTA on dark/primary backgrounds
+    - "Sign In", "Continue", "Pay Now" on auth screens
+```
+
+### Rule Schema
+
+[`docs/ai/rule-schema.yaml`](docs/ai/rule-schema.yaml) defines a typed rule system for automated Figma builds and checks. Rules have:
+
+- **Triggers**: `after_instantiate`, `before_instantiate`, `after_append`, `after_set_property`, `after_detach`
+- **Conditions**: `always`, `parent_fill_is`, `parent_fill_dark`, `variant_in`, `item_count_lte`
+- **Actions**: `set_property`, `set_fill`, `swap_component`, `match_fill_to_parent`
+- **Checks**: assertions (`equals`, `fill_matches_rgb`, `component_id_in`) with severity levels and auto-fix flags
+
+This lets both builder and checker agents enforce the same rules identically.
+
+### Page Spec Pipeline
+
+The system supports a full spec-to-Figma pipeline:
+
+1. AI generates a page spec (YAML) from a prompt
+2. Validator checks structural + semantic correctness against the contract
+3. Transformer converts the spec into a Figma-oriented instance tree
+4. Output goes to a Figma plugin or Figma Playground handoff
+
+Seven example specs ship in [`docs/ai/examples/`](docs/ai/examples/): auth login, auth verification, alert dialog, alert banner, profile hero, profile stats, and onboarding walkthrough.
+
+### Claude Code Skills
+
+The design system ships with dedicated [Claude Code skills](https://github.com/omardoucoure/claude-skills) for common workflows:
+
+| Skill | What it does |
+|-------|--------------|
+| `check-ds-page` | Validates a Figma page against design system rules |
+| `create-ds-component` | Creates reusable DS components from Figma designs |
+| `create-ds-page` | Designs full mobile screens in Figma using DS components |
+| `implement-ds-page` | Implements screens from Figma using existing DS components |
+| `pixel-perfect-check` | Audits SwiftUI code against Figma for pixel-perfect accuracy |
+| `figma-to-code` | Converts Figma designs to production code with mandatory property extraction |
+
+### Zero-Hallucination Policy
+
+The project's `CLAUDE.md` enforces a strict zero-hallucination policy for AI agents: every color, spacing, typography, and state value must be read directly from Figma design context. No guessing, no defaults, no assumptions. A mandatory extraction checklist covers fonts, colors, spacing, padding, radius, dimensions, opacity, and negative margins before any code is written.
+
 ## Requirements
 
 - iOS 16+
