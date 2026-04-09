@@ -165,7 +165,6 @@ docs/
 
 <p align="center">
   <img src="screenshots/buttons.png" width="230" alt="Buttons - Filled, Outlined, Text, Sizes" />
-  <img src="screenshots/cards.png" width="230" alt="Cards - Neutral, Primary, Metric Cards" />
   <img src="screenshots/textfields.png" width="230" alt="Text Fields - Empty, Filled, Error, Validated, Search" />
   <img src="screenshots/selection.png" width="230" alt="Selection Controls - Checkbox, Radio, Toggle" />
 </p>
