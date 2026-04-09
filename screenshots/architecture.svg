@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif">
+  <defs>
+    <linearGradient id="figmaBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E1E1E"/>
+      <stop offset="100%" stop-color="#2C2C2C"/>
+    </linearGradient>
+    <linearGradient id="xcodeBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1C78D4"/>
+      <stop offset="100%" stop-color="#1565B8"/>
+    </linearGradient>
+    <linearGradient id="tokenBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#465A54"/>
+      <stop offset="100%" stop-color="#374843"/>
+    </linearGradient>
+    <linearGradient id="aiBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF6A5F"/>
+      <stop offset="100%" stop-color="#E85A50"/>
+    </linearGradient>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowRight" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#465A54"/>
+    </marker>
+    <marker id="arrowLeft" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-auto">
+      <path d="M 10 1 L 1 5 L 10 9 z" fill="#465A54"/>
+    </marker>
+    <marker id="arrowDown" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 1 0 L 5 9 L 9 0 z" fill="#465A54"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="580" rx="16" fill="#FAFAF9"/>
+
+  <!-- Title -->
+  <text x="480" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#292927">How HaHo Design System Works</text>
+  <text x="480" y="56" text-anchor="middle" font-size="12" fill="#8A8A85">Bidirectional workflow between Figma and Xcode, powered by AI contracts</text>
+
+  <!-- ==================== FIGMA COLUMN (LEFT) ==================== -->
+  <rect x="30" y="80" width="280" height="470" rx="12" fill="url(#figmaBg)" filter="url(#shadow)"/>
+  <text x="170" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">Figma</text>
+
+  <!-- Design Variables -->
+  <rect x="50" y="130" width="240" height="64" rx="8" fill="#3C3C3C"/>
+  <text x="70" y="152" font-size="11" font-weight="600" fill="#A3A3A3">Design Variables</text>
+  <text x="70" y="168" font-size="10" fill="#ccc">82 primitives x 4 brands</text>
+  <text x="70" y="182" font-size="10" fill="#ccc">51 tokens x 4 modes</text>
+
+  <!-- Components -->
+  <rect x="50" y="206" width="240" height="64" rx="8" fill="#3C3C3C"/>
+  <text x="70" y="228" font-size="11" font-weight="600" fill="#A3A3A3">Component Library</text>
+  <text x="70" y="244" font-size="10" fill="#ccc">58 components with variants</text>
+  <text x="70" y="258" font-size="10" fill="#ccc">Properties, states, auto-layout</text>
+
+  <!-- Pages -->
+  <rect x="50" y="282" width="240" height="50" rx="8" fill="#3C3C3C"/>
+  <text x="70" y="304" font-size="11" font-weight="600" fill="#A3A3A3">Screen Designs</text>
+  <text x="70" y="320" font-size="10" fill="#ccc">Auth, Profile, Alerts, Onboarding...</text>
+
+  <!-- Figma MCP -->
+  <rect x="50" y="350" width="240" height="50" rx="8" fill="#5C4CDB" opacity="0.9"/>
+  <text x="70" y="372" font-size="11" font-weight="600" fill="#fff">Figma MCP Server</text>
+  <text x="70" y="388" font-size="10" fill="#D4CFFF">get_design_context, get_screenshot</text>
+
+  <!-- Figma Plugin -->
+  <rect x="50" y="412" width="240" height="50" rx="8" fill="#5C4CDB" opacity="0.9"/>
+  <text x="70" y="434" font-size="11" font-weight="600" fill="#fff">Figma Plugin</text>
+  <text x="70" y="450" font-size="10" fill="#D4CFFF">Consumes page-spec bundles</text>
+
+  <!-- Playground -->
+  <rect x="50" y="474" width="240" height="56" rx="8" fill="#5C4CDB" opacity="0.9"/>
+  <text x="70" y="496" font-size="11" font-weight="600" fill="#fff">Figma Playground</text>
+  <text x="70" y="512" font-size="10" fill="#D4CFFF">AI renders from handoff packets</text>
+
+  <!-- ==================== CENTER: TOKEN + AI LAYER ==================== -->
+
+  <!-- Token Layer -->
+  <rect x="350" y="80" width="260" height="140" rx="12" fill="url(#tokenBg)" filter="url(#shadow)"/>
+  <text x="480" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Token Layer</text>
+  <rect x="370" y="122" width="220" height="28" rx="6" fill="rgba(255,255,255,0.1)"/>
+  <text x="480" y="141" text-anchor="middle" font-size="10" fill="#D4DDD9">primitives.json  /  tokens.json</text>
+  <rect x="370" y="158" width="220" height="44" rx="6" fill="rgba(255,255,255,0.1)"/>
+  <text x="480" y="176" text-anchor="middle" font-size="10" fill="#D4DDD9">Brand (palette) x Style (mode + shape)</text>
+  <text x="480" y="192" text-anchor="middle" font-size="10" fill="#D4DDD9">= ThemeConfiguration</text>
+
+  <!-- AI Contract Layer -->
+  <rect x="350" y="240" width="260" height="190" rx="12" fill="url(#aiBg)" filter="url(#shadow)"/>
+  <text x="480" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">AI Contract Layer</text>
+
+  <rect x="370" y="284" width="220" height="28" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="480" y="303" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">design-system-contract.yaml</text>
+
+  <rect x="370" y="318" width="220" height="28" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="480" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">59 component YAMLs</text>
+
+  <rect x="370" y="352" width="220" height="28" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="480" y="371" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">rule-schema.yaml</text>
+
+  <rect x="370" y="386" width="220" height="28" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="480" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">page-spec examples (7 screens)</text>
+
+  <!-- Claude Code Skills -->
+  <rect x="350" y="450" width="260" height="100" rx="12" fill="#292927" filter="url(#shadow)"/>
+  <text x="480" y="478" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Claude Code Skills</text>
+  <text x="380" y="498" font-size="9" fill="#B0B0AA">pixel-perfect-check</text>
+  <text x="380" y="514" font-size="9" fill="#B0B0AA">implement-ds-page</text>
+  <text x="380" y="530" font-size="9" fill="#B0B0AA">create-ds-component</text>
+  <text x="510" y="498" font-size="9" fill="#B0B0AA">figma-to-code</text>
+  <text x="510" y="514" font-size="9" fill="#B0B0AA">create-ds-page</text>
+  <text x="510" y="530" font-size="9" fill="#B0B0AA">check-ds-page</text>
+
+  <!-- ==================== XCODE COLUMN (RIGHT) ==================== -->
+  <rect x="650" y="80" width="280" height="470" rx="12" fill="url(#xcodeBg)" filter="url(#shadow)"/>
+  <text x="790" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">Xcode / SwiftUI</text>
+
+  <!-- Swift Package -->
+  <rect x="670" y="130" width="240" height="64" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="690" y="152" font-size="11" font-weight="600" fill="#fff">Swift Package (SPM)</text>
+  <text x="690" y="168" font-size="10" fill="#B8D7F5">58 DS components</text>
+  <text x="690" y="182" font-size="10" fill="#B8D7F5">Theme engine, token resolver</text>
+
+  <!-- Brand x Style -->
+  <rect x="670" y="206" width="240" height="64" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="690" y="228" font-size="11" font-weight="600" fill="#fff">Theme Configuration</text>
+  <text x="690" y="244" font-size="10" fill="#B8D7F5">Brand.swift + Style.swift</text>
+  <text x="690" y="258" font-size="10" fill="#B8D7F5">2 enums = full UI transformation</text>
+
+  <!-- CLAUDE.md -->
+  <rect x="670" y="282" width="240" height="50" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="690" y="304" font-size="11" font-weight="600" fill="#fff">CLAUDE.md</text>
+  <text x="690" y="320" font-size="10" fill="#B8D7F5">Zero-hallucination policy + token map</text>
+
+  <!-- Showcase App -->
+  <rect x="670" y="350" width="240" height="50" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="690" y="372" font-size="11" font-weight="600" fill="#fff">VitrineApp (Showcase)</text>
+  <text x="690" y="388" font-size="10" fill="#B8D7F5">Browse all 16 theme combinations</text>
+
+  <!-- Tests -->
+  <rect x="670" y="412" width="240" height="50" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="690" y="434" font-size="11" font-weight="600" fill="#fff">Tests</text>
+  <text x="690" y="450" font-size="10" fill="#B8D7F5">XCTest, snapshot testing</text>
+
+  <!-- Production Apps -->
+  <rect x="670" y="474" width="240" height="56" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <text x="690" y="496" font-size="11" font-weight="600" fill="#fff">Production Apps</text>
+  <text x="690" y="516" font-size="10" fill="#B8D7F5">Import package, set brand + style, done</text>
+
+  <!-- ==================== ARROWS ==================== -->
+
+  <!-- Figma -> Token Layer (top) -->
+  <line x1="310" y1="160" x2="348" y2="140" stroke="#465A54" stroke-width="2" marker-end="url(#arrowRight)"/>
+
+  <!-- Token Layer -> Xcode (top) -->
+  <line x1="612" y1="140" x2="648" y2="160" stroke="#465A54" stroke-width="2" marker-end="url(#arrowRight)"/>
+
+  <!-- Figma -> AI Contract (design context) -->
+  <path d="M 310 310 Q 340 310 348 310" stroke="#FF6A5F" stroke-width="2" fill="none" marker-end="url(#arrowRight)"/>
+  <text x="316" y="302" font-size="8" fill="#FF6A5F" font-weight="600">design</text>
+  <text x="316" y="312" font-size="8" fill="#FF6A5F" font-weight="600">context</text>
+
+  <!-- AI Contract -> Figma (page specs) -->
+  <path d="M 348 380 Q 340 380 310 380" stroke="#5C4CDB" stroke-width="2" fill="none" marker-end="url(#arrowLeft)"/>
+  <text x="316" y="372" font-size="8" fill="#5C4CDB" font-weight="600">page</text>
+  <text x="316" y="382" font-size="8" fill="#5C4CDB" font-weight="600">specs</text>
+
+  <!-- AI Contract -> Xcode (implement) -->
+  <path d="M 612 310 Q 640 310 648 310" stroke="#FF6A5F" stroke-width="2" fill="none" marker-end="url(#arrowRight)"/>
+  <text x="618" y="302" font-size="8" fill="#FF6A5F" font-weight="600">implement</text>
+  <text x="618" y="312" font-size="8" fill="#FF6A5F" font-weight="600">page</text>
+
+  <!-- Xcode -> AI Contract (pixel check) -->
+  <path d="M 648 370 Q 640 370 612 370" stroke="#1C78D4" stroke-width="2" fill="none" marker-end="url(#arrowLeft)"/>
+  <text x="618" y="362" font-size="8" fill="#1C78D4" font-weight="600">pixel</text>
+  <text x="618" y="372" font-size="8" fill="#1C78D4" font-weight="600">check</text>
+
+  <!-- Token -> AI Contract (vertical) -->
+  <line x1="480" y1="222" x2="480" y2="238" stroke="#465A54" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- AI Contract -> Skills (vertical) -->
+  <line x1="480" y1="432" x2="480" y2="448" stroke="#465A54" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- ==================== FLOW LABELS ==================== -->
+  <text x="480" y="568" text-anchor="middle" font-size="10" fill="#8A8A85">Figma is the source of truth for design. Xcode is the source of truth for code. AI contracts bridge both.</text>
+</svg>

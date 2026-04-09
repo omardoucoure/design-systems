@@ -38,6 +38,10 @@ primitives --> semantic tokens --> component tokens --> views
 
 **Key behaviors in dark mode:** primary and secondary colors swap roles, the neutral scale inverts. Sharp styles reset all corner radii to zero (except `full`). These rules are encoded in the token layer, not in component code.
 
+<p align="center">
+  <img src="screenshots/architecture.svg" width="800" alt="Architecture diagram showing bidirectional workflow between Figma and Xcode, with token layer and AI contracts in the center" />
+</p>
+
 ## Components
 
 58 production-ready SwiftUI components organized by category:
