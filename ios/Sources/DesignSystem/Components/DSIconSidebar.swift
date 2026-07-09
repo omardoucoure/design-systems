@@ -1,3 +1,4 @@
+// figma-node: 946:244997
 import SwiftUI
 
 // MARK: - DSIconSidebarItem

@@ -1,3 +1,4 @@
+// figma-node: 481:14211
 import SwiftUI
 
 // MARK: - DSStackedCardCarouselItem

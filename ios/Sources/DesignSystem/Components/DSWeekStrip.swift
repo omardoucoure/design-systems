@@ -1,3 +1,4 @@
+// figma-node: 87:99567
 import SwiftUI
 
 // MARK: - DSWeekStripItem
