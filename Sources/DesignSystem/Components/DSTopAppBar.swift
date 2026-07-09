@@ -207,8 +207,8 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
                 startPoint: .top,
                 endPoint: .bottom
             )
-            .frame(height: 24)
-            .offset(y: 24)
+            .frame(height: theme.spacing.lg)
+            .offset(y: theme.spacing.lg)
             .allowsHitTesting(false)
         }
     }
@@ -226,7 +226,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
             _actions
         }
         .padding(.horizontal, theme.spacing.sm)
-        .frame(height: 64)
+        .frame(height: theme.spacing.xxxxl)
     }
 
     // MARK: - Small Centered
@@ -243,7 +243,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
             _actions
         }
         .padding(.horizontal, theme.spacing.sm)
-        .frame(height: 64)
+        .frame(height: theme.spacing.xxxxl)
     }
 
     // MARK: - Action Row (shared by medium + large)
@@ -255,7 +255,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
             _actions
         }
         .padding(.horizontal, theme.spacing.sm)
-        .frame(height: 64)
+        .frame(height: theme.spacing.xxxxl)
     }
 
     // MARK: - Medium Title
@@ -301,7 +301,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
             _actions
         }
         .padding(.horizontal, theme.spacing.sm)
-        .frame(height: 64)
+        .frame(height: theme.spacing.xxxxl)
     }
 
     // MARK: - Search Bar
@@ -314,11 +314,11 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
 
             HStack(spacing: theme.spacing.xs) {
                 Button(action: _onSearchTap ?? {}) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: theme.spacing.sm) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 20))
                             .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
-                            .frame(width: 24, height: 24)
+                            .frame(width: theme.spacing.lg, height: theme.spacing.lg)
 
                         Text(_searchPlaceholder ?? "Search...")
                             .font(theme.typography.body.font)
@@ -343,7 +343,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         }
         .padding(.leading, theme.spacing.sm)
         .padding(.trailing, theme.spacing.xs)
-        .frame(height: 64)
+        .frame(height: theme.spacing.xxxxl)
     }
 
     // MARK: - Image-Title Bar
@@ -352,7 +352,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         HStack(spacing: theme.spacing.xs) {
             HStack(spacing: theme.spacing.md) {
                 _centerContent
-                    .frame(width: 56, height: 40)
+                    .frame(width: 56, height: theme.spacing.xxl)
                     .clipShape(RoundedRectangle(cornerRadius: theme.radius.sm))
 
                 Text(_title ?? "")
@@ -365,7 +365,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
             _actions
         }
         .padding(theme.spacing.sm)
-        .frame(height: 64)
+        .frame(height: theme.spacing.xxxxl)
     }
 
     // MARK: - Shared Components
@@ -384,7 +384,7 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
             Image(systemName: icon)
                 .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(theme.colors.textNeutral9)
-                .frame(width: 40, height: 40)
+                .frame(width: theme.spacing.xxl, height: theme.spacing.xxl)
                 .background(theme.colors.surfaceNeutral2)
                 .clipShape(Capsule())
         }

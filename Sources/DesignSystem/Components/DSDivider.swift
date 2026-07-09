@@ -11,6 +11,12 @@ public enum DSDividerStyle {
     case middle
     /// Divider with a subheader text label below.
     case subheader(LocalizedStringKey)
+    /// Full-width divider with a heavier line weight.
+    case strong
+    /// Full-width dashed divider.
+    case dotted
+    /// Centered label between two horizontal rules.
+    case label(LocalizedStringKey)
 }
 
 // MARK: - DSDivider
@@ -91,6 +97,25 @@ public struct DSDivider: View {
                     .padding(.horizontal, theme.spacing.md)
                     .padding(.bottom, theme.spacing.sm)
             }
+
+        case .strong:
+            Rectangle()
+                .fill(_color ?? theme.colors.borderNeutral3)
+                .frame(height: 1)
+
+        case .dotted:
+            dottedLine
+
+        case .label(let text):
+            HStack(spacing: theme.spacing.sm) {
+                dividerLine
+                Text(text)
+                    .font(theme.typography.small.font)
+                    .tracking(theme.typography.small.tracking)
+                    .foregroundStyle(theme.colors.textNeutral8)
+                    .fixedSize()
+                dividerLine
+            }
         }
     }
 
@@ -98,5 +123,21 @@ public struct DSDivider: View {
         Rectangle()
             .fill(_color ?? theme.colors.borderNeutral95)
             .frame(height: 1)
+    }
+
+    private var dottedLine: some View {
+        Line()
+            .stroke(style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
+            .foregroundStyle(_color ?? theme.colors.borderNeutral3)
+            .frame(height: 1)
+    }
+}
+
+private struct Line: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: 0, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.width, y: rect.midY))
+        return path
     }
 }

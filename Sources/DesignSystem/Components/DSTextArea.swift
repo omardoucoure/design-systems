@@ -75,8 +75,8 @@ public struct DSTextArea: View {
                         .font(theme.typography.bodyRegular.font)
                         .tracking(theme.typography.bodyRegular.tracking)
                         .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
-                        .padding(.top, 8)
-                        .padding(.leading, 4)
+                        .padding(.top, theme.spacing.xs)
+                        .padding(.leading, theme.spacing.xxs)
                 }
 
                 TextEditor(text: $_text)

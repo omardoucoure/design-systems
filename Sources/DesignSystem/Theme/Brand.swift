@@ -7,6 +7,7 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
     case seaLime
     case mistyRose
     case blueHaze
+    case apr
 
     public var id: String { rawValue }
 
@@ -16,6 +17,7 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
         case .seaLime: return "Sea Lime"
         case .mistyRose: return "Misty Rose"
         case .blueHaze: return "Blue Haze"
+        case .apr: return "Apricot Praline"
         }
     }
 
@@ -130,6 +132,34 @@ public enum Brand: String, CaseIterable, Sendable, Identifiable {
                     n85: Color(hex: "#3B3837"),
                     n9: Color(hex: "#272525"),
                     n95: Color(hex: "#141312"),
+                    n10: Color(hex: "#000000")
+                )
+            )
+
+        case .apr:
+            return BrandPrimitives(
+                primary80: Color(hex: "#8A6F5A"),
+                primary100: Color(hex: "#6B4F3A"),
+                primary120: Color(hex: "#2E2119"),
+                secondary10: Color(hex: "#FBF7F0"),
+                secondary40: Color(hex: "#EFE2CC"),
+                secondary100: Color(hex: "#D8C3A0"),
+                secondary120: Color(hex: "#C9B189"),
+                neutrals: NeutralScale(
+                    n0: Color(hex: "#FFFFFF"),
+                    n05: Color(hex: "#FAFAF9"),
+                    n1: Color(hex: "#F5F5F3"),
+                    n15: Color(hex: "#F0F0EC"),
+                    n2: Color(hex: "#EBEBE6"),
+                    n3: Color(hex: "#E2E1DA"),
+                    n4: Color(hex: "#D8D7CD"),
+                    n5: Color(hex: "#CECDC1"),
+                    n6: Color(hex: "#A5A49A"),
+                    n7: Color(hex: "#7C7B74"),
+                    n8: Color(hex: "#52524D"),
+                    n85: Color(hex: "#3E3E3A"),
+                    n9: Color(hex: "#292927"),
+                    n95: Color(hex: "#151513"),
                     n10: Color(hex: "#000000")
                 )
             )

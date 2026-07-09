@@ -108,7 +108,7 @@ public struct DSTooltip: View {
                     .padding(.vertical, theme.spacing.sm)
 
             case .rich(let title, let body, let image, let actionLabel, let onAction):
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: theme.spacing.sm) {
                     if let image {
                         image
                             .frame(height: 130)
@@ -166,7 +166,7 @@ public struct DSTooltip: View {
     private func arrow(rotation: Double) -> some View {
         Triangle()
             .fill(theme.colors.surfacePrimary120)
-            .frame(width: 12, height: 6)
+            .frame(width: theme.spacing.sm, height: 6)
             .rotationEffect(.degrees(rotation))
     }
 }

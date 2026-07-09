@@ -121,7 +121,7 @@ public struct DSBanner<LeadingContent: View>: View {
         }
         .padding(theme.spacing.xl)
         .background(_severity.color(from: theme.colors))
-        .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
+        .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
         .shadow(color: .black.opacity(0.02), radius: 8, x: 0, y: 4)
         .shadow(color: .black.opacity(0.18), radius: 48, x: 0, y: 24)
     }

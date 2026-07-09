@@ -151,11 +151,11 @@ public struct DSNavigationMenu: View {
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
-            .frame(width: 24, height: 24)
+            .frame(width: theme.spacing.lg, height: theme.spacing.lg)
             .foregroundStyle(theme.colors.textNeutral9)
             .padding(.horizontal, theme.spacing.md)
             .padding(.vertical, theme.spacing.xs)
-            .frame(height: 40)
+            .frame(height: theme.spacing.xxl)
             .background(
                 isSelected
                     ? theme.colors.surfaceSecondary100
@@ -171,7 +171,7 @@ public struct DSNavigationMenu: View {
             Image(profile.image, bundle: .main)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 56, height: 48)
+                .frame(width: 56, height: theme.spacing.xxxl)
                 .clipShape(RoundedRectangle(cornerRadius: theme.radius.sm))
 
             VStack(alignment: .leading, spacing: 0) {

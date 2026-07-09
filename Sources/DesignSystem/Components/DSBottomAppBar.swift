@@ -294,10 +294,10 @@ public struct DSBottomAppBar: View {
             }
         } label: {
             itemIconView(item)
-                .frame(width: 24, height: 24)
+                .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                 .scaleEffect(isSelected ? 1.12 : 1.0)
                 .foregroundStyle(theme.colors.textNeutral9)
-                .frame(height: 40)
+                .frame(height: theme.spacing.xxl)
                 .padding(.horizontal, theme.spacing.md)
                 .background(
                     Capsule()
@@ -316,13 +316,13 @@ public struct DSBottomAppBar: View {
                 _selectedId = item.id
             }
         } label: {
-            VStack(spacing: 4) {
+            VStack(spacing: theme.spacing.xxs) {
                 ZStack(alignment: .topTrailing) {
                     itemIconView(item)
-                        .frame(width: 24, height: 24)
+                        .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                         .scaleEffect(isSelected ? 1.12 : 1.0)
                         .foregroundStyle(theme.colors.textNeutral9)
-                        .frame(height: 40)
+                        .frame(height: theme.spacing.xxl)
                         .padding(.horizontal, theme.spacing.md)
                         .background(
                             Capsule()
@@ -376,7 +376,7 @@ public struct DSBottomAppBar: View {
                             .font(.system(size: 24))
                     }
                 }
-                .frame(width: 24, height: 24)
+                .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                 .foregroundStyle(_fabForegroundColor ?? theme.colors.textNeutral05)
                 .padding(.horizontal, hPadding)
                 .padding(.vertical, vPadding)
@@ -411,7 +411,7 @@ public struct DSBottomAppBar: View {
             .font(.system(size: 10, weight: .semibold))
             .tracking(-0.2)
             .foregroundStyle(theme.colors.textNeutral9)
-            .frame(minWidth: 16, minHeight: 16)
+            .frame(minWidth: theme.spacing.md, minHeight: theme.spacing.md)
             .padding(.horizontal, theme.spacing.xxs)
             .padding(.vertical, 2)
             .background(theme.colors.infoFocus)

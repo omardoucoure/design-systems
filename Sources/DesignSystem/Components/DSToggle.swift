@@ -89,7 +89,7 @@ public struct DSToggle: View {
             ZStack(alignment: isOn ? .trailing : .leading) {
                 Capsule()
                     .fill(isOn ? theme.colors.surfacePrimary100 : theme.colors.surfaceNeutral3)
-                    .frame(width: 48, height: 28)
+                    .frame(width: theme.spacing.xxxl, height: 28)
 
                 Circle()
                     .fill(theme.colors.surfaceNeutral05)

@@ -98,7 +98,7 @@ public struct DSMetricCard<Content: View>: View {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .frame(width: 24, height: 24)
+                        .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                 }
                 .foregroundStyle(fg)
 

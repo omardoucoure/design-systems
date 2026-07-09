@@ -103,7 +103,7 @@ public struct DSChip: View {
         .foregroundStyle(foregroundColor)
         .padding(.horizontal, theme.spacing.sm)
         .padding(.vertical, theme.spacing.xxs)
-        .frame(height: 32)
+        .frame(height: theme.spacing.xl)
         .background(backgroundColor)
         .clipShape(Capsule())
         .overlay(borderOverlay)

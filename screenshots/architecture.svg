@@ -34,8 +34,8 @@
     <marker id="arrowLeftPurple" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-auto">
       <path d="M 10 1 L 1 5 L 10 9 z" fill="#5C4CDB"/>
     </marker>
-    <marker id="arrowRightBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-auto">
-      <path d="M 0 1 L 9 5 L 0 9 z" fill="#1C78D4"/>
+    <marker id="arrowLeftBlue" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-auto">
+      <path d="M 10 1 L 1 5 L 10 9 z" fill="#1C78D4"/>
     </marker>
   </defs>
 
@@ -164,7 +164,7 @@
   <text x="700" y="296" font-size="9" fill="#FF6A5F" font-weight="600">implement page</text>
 
   <!-- Xcode -> AI Contract (pixel check) -->
-  <line x1="778" y1="375" x2="682" y2="375" stroke="#1C78D4" stroke-width="2" marker-end="url(#arrowRightBlue)"/>
+  <line x1="778" y1="375" x2="682" y2="375" stroke="#1C78D4" stroke-width="2" marker-end="url(#arrowLeftBlue)"/>
   <text x="700" y="368" font-size="9" fill="#1C78D4" font-weight="600">pixel check</text>
 
   <!-- Token -> AI Contract (vertical) -->

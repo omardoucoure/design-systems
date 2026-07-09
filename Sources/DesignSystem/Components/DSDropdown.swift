@@ -106,7 +106,7 @@ public struct DSDropdown: View {
         Button {
             isExpanded.toggle()
         } label: {
-            HStack(spacing: 12) {
+            HStack(spacing: theme.spacing.sm) {
                 VStack(alignment: .leading, spacing: 0) {
                     if let _label, selectedItem != nil {
                         Text(_label)

@@ -40,6 +40,42 @@ For each element in the Figma design context output, extract:
 - [ ] `mb-[-*px]` → negative margins for overlaps
 - [ ] Text content (dots = secure, checked = true, specific icon names)
 
+## NO HARDCODED VALUES POLICY (CRITICAL)
+
+**Every visual value in a component MUST come from a theme token. Never write a raw literal for a value that a token exists for.** The design system is only maintainable if changing a token re-tints/re-sizes everything at once. A hardcoded `16` or `#465A54` breaks that contract.
+
+### The rule, by value kind:
+
+| Kind | NEVER write | ALWAYS write |
+|---|---|---|
+| Spacing / padding / gap / frame size | `16`, `.padding(24)`, `spacing: 8` | `theme.spacing.md`, `.padding(theme.spacing.lg)`, `spacing: theme.spacing.xs` |
+| Corner radius | `cornerRadius: 16` | `theme.radius.md` |
+| Color | `Color(hex: "#465A54")`, `.foregroundStyle(.black)` | `theme.colors.surfacePrimary100`, `theme.colors.textNeutral9` |
+| Font | `.font(.system(size: 16))`, `.font(.custom(...))` | `theme.typography.body.font` + `.tracking(theme.typography.body.tracking)` |
+| Border width | `lineWidth: 2` | `theme.borders.widthMd` |
+| Opacity | `.opacity(0.75)` | `theme.opacity.*` |
+
+### Token scale (the substitution key — memorize it):
+
+- **spacing / radius**: `xxs=4, xs=8, sm=12, md=16, lg=24, xl=32, xxl=40, xxxl=48/64, xxxxl=64`, `radius.full=360`
+- A literal that exactly equals a scale value MUST be replaced with that token. `16`→`md`, `8`→`xs`, `24`→`lg`, `32`→`xl`, `64`→`xxxxl` (spacing) / `xxxl` (radius).
+
+### The ONLY allowed literals (everything else is a bug):
+
+1. **External brand identity colors** that must NOT re-tint with the DS — e.g. Visa navy, Mastercard red, PayPal blue in `DSPaymentMethod`. Use `Color(red:green:blue:)` and add a `// brand identity color — do not tokenize` intent in the chat, not the code.
+2. **SF Symbol glyph sizing**: `.font(.system(size: 18))` when it sizes an `Image(systemName:)` glyph (not text). Text always uses a typography token.
+3. **Hairlines with no token**: `frame(height: 1)`, `lineWidth: 1`.
+4. **Values genuinely off the scale** (e.g. `3`, `6`, `10`, `14`, `18`, `22`, `28`, `36`, `56`, device frames `393`/`852`) — but prefer promoting these to a named `ComponentTokens` entry if the component reuses them.
+
+### Before finishing ANY component, self-check:
+
+```bash
+# must return NOTHING (except allowed brand hex / SF glyph sizes):
+grep -nE '\.font\(\.system\(size:|Color\(hex:|#[0-9A-Fa-f]{6}|cornerRadius: [0-9]|spacing: [0-9]|\.padding\([0-9]' <file>
+```
+
+If a value has no matching token and isn't in the allowed list, **add a token** (spacing/radius scale, a semantic color, or a `ComponentTokens` field) rather than hardcoding. When in doubt, ask — do not invent a literal.
+
 ## How to Read Figma Design Context Output
 
 The `get_design_context` tool returns React+Tailwind code with CSS variables that map to our design tokens:

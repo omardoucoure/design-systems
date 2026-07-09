@@ -91,12 +91,12 @@ public struct DSLollipopChart: View {
                         Circle()
                             .fill(barColor)
                             .frame(
-                                width: isHighlighted ? 32 : 12,
-                                height: isHighlighted ? 32 : 12
+                                width: isHighlighted ? theme.spacing.xl : theme.spacing.sm,
+                                height: isHighlighted ? theme.spacing.xl : theme.spacing.sm
                             )
                         RoundedRectangle(cornerRadius: theme.radius.xxs)
                             .fill(barColor)
-                            .frame(width: isHighlighted ? 4 : 2, height: item.height)
+                            .frame(width: isHighlighted ? theme.spacing.xxs : 2, height: item.height)
                     }
 
                     // Rotated label

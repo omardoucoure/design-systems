@@ -127,12 +127,12 @@ public struct DSCalendarGrid: View {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .frame(width: 24, height: 24)
+                        .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                         .foregroundStyle(theme.colors.textNeutral9)
                 }
                 .padding(.horizontal, theme.spacing.md)
                 .padding(.vertical, theme.spacing.xs)
-                .frame(height: 40)
+                .frame(height: theme.spacing.xxl)
                 .background(showMonthPicker ? theme.colors.surfaceSecondary100 : theme.colors.surfaceNeutral3)
                 .clipShape(Capsule())
             }
@@ -149,7 +149,7 @@ public struct DSCalendarGrid: View {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .frame(width: 24, height: 24)
+                        .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                         .foregroundStyle(theme.colors.textNeutral9)
                         .padding(theme.spacing.xs)
                 }
@@ -162,14 +162,14 @@ public struct DSCalendarGrid: View {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .frame(width: 24, height: 24)
+                        .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                         .foregroundStyle(theme.colors.textNeutral9)
                         .padding(theme.spacing.xs)
                 }
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, theme.spacing.xs)
-            .frame(height: 40)
+            .frame(height: theme.spacing.xxl)
             .background(theme.colors.surfaceNeutral3)
             .clipShape(Capsule())
         }
@@ -268,7 +268,7 @@ public struct DSCalendarGrid: View {
                     .tracking(theme.typography.body.tracking)
                     .foregroundStyle(theme.colors.textNeutral9.opacity(theme.colors.textOpacity75))
                     .frame(maxWidth: .infinity)
-                    .frame(height: 48)
+                    .frame(height: theme.spacing.xxxl)
             }
         }
     }
@@ -291,7 +291,7 @@ public struct DSCalendarGrid: View {
                             }
                         }
                     }
-                    .frame(height: 48)
+                    .frame(height: theme.spacing.xxxl)
                 }
             }
         }
@@ -310,7 +310,7 @@ public struct DSCalendarGrid: View {
                 if isHighlighted {
                     Circle()
                         .fill(_highlightColor ?? theme.colors.surfaceSecondary100)
-                        .frame(width: 40, height: 40)
+                        .frame(width: theme.spacing.xxl, height: theme.spacing.xxl)
                 }
 
                 if let day {
@@ -321,7 +321,7 @@ public struct DSCalendarGrid: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 48)
+            .frame(height: theme.spacing.xxxl)
         }
         .buttonStyle(.plain)
         .disabled(dayDate == nil)
@@ -345,7 +345,7 @@ public struct DSCalendarGrid: View {
 
                 Capsule()
                     .fill(resolvedRangeColor)
-                    .frame(width: endX - startX, height: 40)
+                    .frame(width: endX - startX, height: theme.spacing.xxl)
                     .position(x: startX + (endX - startX) / 2, y: geo.size.height / 2)
             }
         }

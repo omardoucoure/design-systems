@@ -65,11 +65,11 @@ public struct DSSearchField: View {
     // MARK: - Body
 
     public var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: theme.spacing.sm) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 20))
                 .foregroundStyle(theme.colors.textNeutral9.opacity(isFocused ? 1.0 : 0.5))
-                .frame(width: 24, height: 24)
+                .frame(width: theme.spacing.lg, height: theme.spacing.lg)
 
             TextField(_placeholder, text: $_text)
                 .font(theme.typography.body.font)

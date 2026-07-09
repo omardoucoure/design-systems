@@ -259,7 +259,7 @@ public struct DSFeedPost: View {
                     }
                     .padding(.horizontal, theme.spacing.sm)
                     .padding(.vertical, theme.spacing.xxs)
-                    .frame(height: 32)
+                    .frame(height: theme.spacing.xl)
                     .background(theme.colors.surfaceNeutral2)
                     .clipShape(Capsule())
                 }
@@ -281,7 +281,7 @@ public struct DSFeedPost: View {
                     }
                     .padding(.horizontal, theme.spacing.sm)
                     .padding(.vertical, theme.spacing.xxs)
-                    .frame(height: 32)
+                    .frame(height: theme.spacing.xl)
                     .background(theme.colors.surfaceNeutral2)
                     .clipShape(Capsule())
                 }

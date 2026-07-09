@@ -53,7 +53,7 @@ public struct DSDayPicker: View {
                             .foregroundStyle(isSelected ? theme.colors.textNeutral05 : theme.colors.textNeutral9)
                             .padding(.horizontal, theme.spacing.sm)
                             .padding(.vertical, theme.spacing.xxs)
-                            .frame(height: 32)
+                            .frame(height: theme.spacing.xl)
                             .background(isSelected ? theme.colors.surfacePrimary120 : .clear)
                             .clipShape(Capsule())
                     }

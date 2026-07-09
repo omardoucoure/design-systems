@@ -99,6 +99,26 @@ struct ComponentShowcaseView: View {
                     LazyView(TextDetailView())
                 }
             }
+
+            Section("Commerce") {
+                NavigationLink("Stepper, Rating & Cart Row") {
+                    LazyView(CommerceDetailView())
+                }
+
+                NavigationLink("Order Summary & Payment") {
+                    LazyView(CheckoutDetailView())
+                }
+            }
+
+            Section("Chat & More") {
+                NavigationLink("Chat — Bubbles, typing & composer") {
+                    LazyView(ChatDetailView())
+                }
+
+                NavigationLink("Numeric Pager & Donut Chart") {
+                    LazyView(ExtrasDetailView())
+                }
+            }
         }
         .navigationTitle("Components")
         .navigationBarTitleDisplayMode(.inline)

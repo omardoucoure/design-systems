@@ -84,15 +84,12 @@ public struct DSCheckbox: View {
     private var checkboxIcon: some View {
         ZStack {
             RoundedRectangle(cornerRadius: theme.radius.xxs)
-                .stroke(
-                    isOn ? theme.colors.surfacePrimary100 : theme.colors.borderNeutral95,
-                    lineWidth: theme.borders.widthSm
-                )
+                .stroke(theme.colors.borderNeutral8, lineWidth: theme.borders.widthSm)
                 .frame(width: 18, height: 18)
 
             if isOn {
                 RoundedRectangle(cornerRadius: theme.radius.xxs)
-                    .fill(theme.colors.surfacePrimary100)
+                    .fill(theme.colors.surfacePrimary120)
                     .frame(width: 18, height: 18)
                     .overlay(
                         Image(systemName: "checkmark")

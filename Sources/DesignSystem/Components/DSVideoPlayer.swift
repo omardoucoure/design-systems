@@ -15,6 +15,7 @@ import AVKit
 /// }
 /// ```
 public struct DSVideoPlayer: View {
+    @Environment(\.theme) private var theme
     private let _urlString: String
     private let _onDismiss: () -> Void
 
@@ -43,7 +44,7 @@ public struct DSVideoPlayer: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    .padding(.trailing, 16)
+                    .padding(.trailing, theme.spacing.md)
                     .padding(.top, 56)
                 }
                 Spacer()

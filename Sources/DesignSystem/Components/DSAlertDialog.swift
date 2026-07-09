@@ -154,19 +154,19 @@ public struct DSAlertDialog<Content: View, Actions: View>: View {
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()
-                            .frame(width: 24, height: 24)
+                            .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                             .foregroundStyle(iconForeground)
                     } else if let _assetIcon {
                         Image(_assetIcon, bundle: .main)
                             .resizable()
                             .renderingMode(.template)
                             .scaledToFit()
-                            .frame(width: 24, height: 24)
+                            .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                             .foregroundStyle(iconForeground)
                     } else if let _systemIcon {
                         Image(systemName: _systemIcon)
                             .font(.system(size: 20, weight: .medium))
-                            .frame(width: 24, height: 24)
+                            .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                             .foregroundStyle(iconForeground)
                     }
 

@@ -188,7 +188,7 @@ public struct DSTextField: View {
                     Text(_label ?? placeholder)
                         .font(theme.typography.small.font)
                         .tracking(theme.typography.small.tracking)
-                        .foregroundStyle(resolvedTint.opacity(0.75))
+                        .foregroundStyle(labelColor)
                 }
 
                 Group {
@@ -276,14 +276,14 @@ public struct DSTextField: View {
     }
 
     private var containerRadius: CGFloat {
-        _variant == .filled ? theme.radius.md : 0
+        _variant == .filled ? theme.radius.xxxl : 0
     }
 
     private var borderOverlay: some View {
         Group {
             switch _variant {
             case .filled:
-                RoundedRectangle(cornerRadius: theme.radius.md)
+                RoundedRectangle(cornerRadius: theme.radius.xxxl)
                     .stroke(borderColor, lineWidth: borderWidth)
             case .lined:
                 VStack {
@@ -310,7 +310,7 @@ public struct DSTextField: View {
 
     private var borderColor: Color {
         switch _state {
-        case .active: return theme.colors.infoFocus
+        case .active: return theme.colors.surfacePrimary100
         case .error: return theme.colors.error
         case .validated: return theme.colors.validated
         case .empty, .filled:
@@ -324,5 +324,9 @@ public struct DSTextField: View {
 
     private var helperTextColor: Color {
         _state == .error ? theme.colors.error : resolvedTint.opacity(theme.opacity.md)
+    }
+
+    private var labelColor: Color {
+        _state == .error ? theme.colors.error : resolvedTint.opacity(0.75)
     }
 }

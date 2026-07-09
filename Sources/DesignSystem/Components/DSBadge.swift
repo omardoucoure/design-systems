@@ -88,7 +88,7 @@ public struct DSBadge: View {
             Text("\(_count)")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(theme.colors.textNeutral9)
-                .frame(minWidth: 16, minHeight: 16)
+                .frame(minWidth: theme.spacing.md, minHeight: theme.spacing.md)
                 .padding(.horizontal, theme.spacing.xxs)
                 .padding(.vertical, 2)
                 .background(numberBackground)

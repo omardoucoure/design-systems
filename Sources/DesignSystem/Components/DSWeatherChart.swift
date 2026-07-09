@@ -196,7 +196,7 @@ public struct DSWeatherChart: View {
             .offset(y: -_maxBarHeight * 0.15)
         }
         .frame(height: _maxBarHeight * 0.5)
-        .padding(.bottom, 24)
+        .padding(.bottom, theme.spacing.lg)
     }
 
     // MARK: - Helpers

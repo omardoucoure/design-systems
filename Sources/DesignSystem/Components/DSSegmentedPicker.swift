@@ -110,7 +110,7 @@ public struct DSSegmentedPicker: View {
                                 : theme.colors.textNeutral9
                         )
                         .frame(maxWidth: .infinity)
-                        .frame(height: 32)
+                        .frame(height: theme.spacing.xl)
                         .background {
                             if isSelected {
                                 Capsule()
@@ -149,7 +149,7 @@ public struct DSSegmentedPicker: View {
                                 : theme.colors.textNeutral9
                         )
                         .frame(maxWidth: .infinity)
-                        .frame(height: 32)
+                        .frame(height: theme.spacing.xl)
                         .padding(.horizontal, theme.spacing.sm)
                         .background {
                             if isSelected {
@@ -185,7 +185,7 @@ public struct DSSegmentedPicker: View {
                         .foregroundStyle(theme.colors.textNeutral9)
                         .opacity(isSelected ? 1.0 : 0.5)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 48)
+                        .frame(height: theme.spacing.xxxl)
                         .overlay(alignment: .bottom) {
                             Rectangle()
                                 .fill(theme.colors.borderNeutral95)
@@ -223,11 +223,11 @@ public struct DSPageControl: View {
                 if index == currentIndex {
                     Capsule()
                         .fill(theme.colors.surfacePrimary120)
-                        .frame(width: 32, height: 8)
+                        .frame(width: theme.spacing.xl, height: theme.spacing.xxs)
                 } else {
                     Circle()
                         .fill(theme.colors.borderNeutral95)
-                        .frame(width: 8, height: 8)
+                        .frame(width: theme.spacing.xxs, height: theme.spacing.xxs)
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 currentIndex = index

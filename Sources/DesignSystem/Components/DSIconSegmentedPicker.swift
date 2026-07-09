@@ -121,7 +121,7 @@ public struct DSIconSegmentedPicker: View {
             )
             .padding(.horizontal, theme.spacing.sm)
             .padding(.vertical, theme.spacing.xxs)
-            .frame(height: 32)
+            .frame(height: theme.spacing.xl)
             .frame(maxWidth: item.label != nil ? .infinity : nil)
             .background(
                 isSelected

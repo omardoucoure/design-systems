@@ -212,7 +212,7 @@ public struct DSStatsChart: View {
     private var chartContent: some View {
         HStack(alignment: .top, spacing: 14) {
             // Y-axis labels
-            VStack(spacing: 16) {
+            VStack(spacing: theme.spacing.md) {
                 ForEach(_yLabels, id: \.self) { label in
                     Text(label)
                         .font(tinyFont)
@@ -440,7 +440,7 @@ public struct DSStatsChart: View {
                     y: geo.size.height * _badgeY
                 )
         }
-        .frame(height: _barHeight + 24)
+        .frame(height: _barHeight + theme.spacing.lg)
     }
 
     // MARK: - Style-Resolved Colors

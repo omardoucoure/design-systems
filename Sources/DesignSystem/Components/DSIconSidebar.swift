@@ -128,9 +128,9 @@ public struct DSIconSidebar: View {
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .frame(width: 24, height: 24)
+                .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                 .foregroundStyle(theme.colors.textNeutral05)
-                .frame(width: 40, height: 40)
+                .frame(width: theme.spacing.xxl, height: theme.spacing.xxl)
                 .background(
                     item.isSelected
                         ? theme.colors.surfaceSecondary100

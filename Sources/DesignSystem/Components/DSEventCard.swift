@@ -88,7 +88,7 @@ public struct DSEventCard: View {
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .frame(width: 24, height: 24)
+                .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                 .foregroundStyle(resolvedFg)
         }
         .padding(theme.spacing.lg)
