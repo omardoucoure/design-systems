@@ -1,3 +1,4 @@
+// figma-node: 87:95530
 import SwiftUI
 
 public struct DSChatComposer: View {

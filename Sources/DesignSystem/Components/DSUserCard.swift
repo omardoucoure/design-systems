@@ -1,3 +1,4 @@
+// figma-node: 87:97036
 import SwiftUI
 
 // MARK: - DSUserCardStat

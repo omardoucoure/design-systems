@@ -1,3 +1,4 @@
+// figma-node: 87:95924
 import SwiftUI
 
 public enum DSChatSide {

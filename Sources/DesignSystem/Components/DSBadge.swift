@@ -1,3 +1,4 @@
+// figma-node: 85:25688
 import SwiftUI
 
 // MARK: - Badge Variant

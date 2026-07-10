@@ -146,7 +146,7 @@ The designer's file is the VISUAL reference. Our components are the STRUCTURAL r
 
 ### Rules:
 1. **If a pattern appears in a Figma design, it must be a reusable component** — not inline SwiftUI in the page file
-2. **If a component doesn't exist yet, create it** in `ios/Sources/DesignSystem/Components/` before using it in a page
+2. **If a component doesn't exist yet, create it** in `Sources/DesignSystem/Components/` before using it in a page
 3. **Pages must be thin** — only composition logic (VStack/HStack/ZStack of DS components), state management (@State), and navigation
 4. **No raw styling in pages** — colors, fonts, spacing, radius should come from components or theme tokens
 5. **Always use DSCard as container** — never build raw containers with `.background().clipShape()` in pages
@@ -357,8 +357,8 @@ Each DS component has a dedicated YAML in `docs/ai/components/` with:
 
 ## Project Structure
 
-- **DS Components**: `ios/Sources/DesignSystem/Components/` (public, in SPM package)
-- **Theme/Tokens**: `ios/Sources/DesignSystem/Theme/` and `ios/Sources/DesignSystem/Tokens/`
+- **DS Components**: `Sources/DesignSystem/Components/` (public, in SPM package — this root tree is what `Package.swift` and both Xcode apps compile)
+- **Theme/Tokens**: `Sources/DesignSystem/Theme/` and `Sources/DesignSystem/Tokens/`
 - **App Pages**: `ios/VitrineApp/VitrineApp/Views/Pages/`
 - **Assets**: `ios/VitrineApp/VitrineApp/Assets.xcassets/`
 - **Xcode Project**: `ios/VitrineApp/VitrineApp.xcodeproj/project.pbxproj` — must register all new page files
