@@ -9,17 +9,26 @@ public struct ComponentTokens: Sendable {
     public let textField: TextFieldComponentTokens
     public let listItem: ListItemComponentTokens
     public let statRow: StatRowComponentTokens
+    public let dateRangeBar: DateRangeBarComponentTokens
+    public let likeCommentRow: LikeCommentRowComponentTokens
+    public let overlappingCards: OverlappingCardsComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
         textField: TextFieldComponentTokens = .shared,
         listItem: ListItemComponentTokens = .shared,
-        statRow: StatRowComponentTokens = .shared
+        statRow: StatRowComponentTokens = .shared,
+        dateRangeBar: DateRangeBarComponentTokens = .shared,
+        likeCommentRow: LikeCommentRowComponentTokens = .shared,
+        overlappingCards: OverlappingCardsComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
         self.listItem = listItem
         self.statRow = statRow
+        self.dateRangeBar = dateRangeBar
+        self.likeCommentRow = likeCommentRow
+        self.overlappingCards = overlappingCards
     }
 
     public static let shared = ComponentTokens()
@@ -84,6 +93,40 @@ public struct StatRowComponentTokens: Sendable {
 
     public static let shared = StatRowComponentTokens(
         labelTracking: -0.15
+    )
+}
+
+public struct DateRangeBarComponentTokens: Sendable {
+    public let iconSize: CGFloat
+    public let dividerWidth: CGFloat
+
+    public static let shared = DateRangeBarComponentTokens(
+        iconSize: 24,
+        dividerWidth: 1
+    )
+}
+
+public struct LikeCommentRowComponentTokens: Sendable {
+    public let badgeGlyphSize: CGFloat
+    public let rowGlyphSize: CGFloat
+
+    public static let shared = LikeCommentRowComponentTokens(
+        badgeGlyphSize: 20,
+        rowGlyphSize: 24
+    )
+}
+
+public struct OverlappingCardsComponentTokens: Sendable {
+    public let overlapSmall: CGFloat
+    public let overlapMedium: CGFloat
+    public let overlapLarge: CGFloat
+    public let socialButtonHeight: CGFloat
+
+    public static let shared = OverlappingCardsComponentTokens(
+        overlapSmall: 50,
+        overlapMedium: 85,
+        overlapLarge: 132,
+        socialButtonHeight: 56
     )
 }
 
