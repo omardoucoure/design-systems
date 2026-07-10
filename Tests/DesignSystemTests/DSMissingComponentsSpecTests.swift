@@ -60,4 +60,83 @@ final class DSMissingComponentsSpecTests: XCTestCase {
         XCTAssertEqual(theme.typography.body.size, 16)
         XCTAssertEqual(theme.typography.body.weight, .medium)
     }
+
+    // MARK: - DSProductDetailHero (figma 87:96135)
+
+    func testProductDetailHeroMetricsMatchFigma() {
+        let m = theme.components.productDetailHero
+        XCTAssertEqual(m.imageHeight, 180)
+        XCTAssertEqual(m.sizePillWidth, 80)
+        XCTAssertEqual(m.sizePillDotSize, 20)
+        XCTAssertEqual(m.iconSize, 24)
+        XCTAssertEqual(m.dotActiveWidth, 32)
+        XCTAssertEqual(m.dotSize, 8)
+        XCTAssertEqual(m.stepperGlyphSize, 20)
+        XCTAssertEqual(m.starSize, 10)
+        XCTAssertEqual(m.inactivePageDotOpacity, 0.38)
+    }
+
+    func testProductDetailHeroTokensMatchFigma() {
+        XCTAssertEqual(theme.radius.xl, 32)
+        XCTAssertEqual(theme.radius.lg, 24)
+        XCTAssertEqual(theme.radius.full, 360)
+        XCTAssertEqual(theme.typography.largeBold.size, 18)
+        XCTAssertEqual(theme.typography.largeBold.weight, .bold)
+        XCTAssertEqual(theme.typography.tiny.size, 10)
+        XCTAssertEqual(theme.typography.tinyRegular.weight, .regular)
+        XCTAssertEqual(theme.typography.h4.size, 24)
+        XCTAssertEqual(theme.opacity.lg, 0.75)
+    }
+
+    // MARK: - DSCameraControlsBar (figma 87:100709)
+
+    func testCameraControlsBarMetricsMatchFigma() {
+        let m = theme.components.cameraControlsBar
+        XCTAssertEqual(m.cardOverlap, 84)
+        XCTAssertEqual(m.shutterOuterSize, 64)
+        XCTAssertEqual(m.shutterInnerSize, 32)
+        XCTAssertEqual(m.chipHeight, 32)
+        XCTAssertEqual(m.glyphSize, 20)
+    }
+
+    func testCameraControlsBarTokensMatchFigma() {
+        XCTAssertEqual(theme.radius.xl, 32)
+        XCTAssertEqual(theme.radius.full, 360)
+        XCTAssertEqual(theme.spacing.xl, 32)
+        XCTAssertEqual(theme.spacing.xxl, 40)
+        XCTAssertEqual(theme.typography.label.size, 14)
+        XCTAssertEqual(theme.typography.smallSemiBold.size, 12)
+        XCTAssertEqual(theme.typography.smallSemiBold.weight, .semibold)
+    }
+
+    // MARK: - DSPhotoEditToolbar (figma 87:100817)
+
+    func testPhotoEditToolbarMetricsMatchFigma() {
+        let m = theme.components.photoEditToolbar
+        XCTAssertEqual(m.cardOverlap, 84)
+        XCTAssertEqual(m.valuePillWidth, 53)
+        XCTAssertEqual(m.valuePillHeight, 40)
+        XCTAssertEqual(m.controlPillSize, 32)
+        XCTAssertEqual(m.glyphSize, 24)
+        XCTAssertEqual(m.cropPreviewWidth, 50)
+    }
+
+    func testPhotoEditToolbarTokensMatchFigma() {
+        XCTAssertEqual(theme.radius.xl, 32)
+        XCTAssertEqual(theme.radius.xs, 8)
+        XCTAssertEqual(theme.spacing.xl, 32)
+        XCTAssertEqual(theme.spacing.lg, 24)
+        XCTAssertEqual(theme.typography.smallSemiBold.size, 12)
+        XCTAssertEqual(theme.typography.smallSemiBold.weight, .semibold)
+        XCTAssertEqual(theme.opacity.md, 0.50)
+    }
+
+    // MARK: - Bold typography tokens (added for 700-weight designs)
+
+    func testBoldTypographyTokens() {
+        XCTAssertEqual(theme.typography.largeBold.size, 18)
+        XCTAssertEqual(theme.typography.largeBold.weight, .bold)
+        XCTAssertEqual(theme.typography.bodyBold.size, 16)
+        XCTAssertEqual(theme.typography.bodyBold.weight, .bold)
+    }
 }

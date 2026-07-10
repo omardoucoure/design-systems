@@ -12,6 +12,9 @@ public struct ComponentTokens: Sendable {
     public let dateRangeBar: DateRangeBarComponentTokens
     public let likeCommentRow: LikeCommentRowComponentTokens
     public let overlappingCards: OverlappingCardsComponentTokens
+    public let productDetailHero: ProductDetailHeroComponentTokens
+    public let cameraControlsBar: CameraControlsBarComponentTokens
+    public let photoEditToolbar: PhotoEditToolbarComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
@@ -20,7 +23,10 @@ public struct ComponentTokens: Sendable {
         statRow: StatRowComponentTokens = .shared,
         dateRangeBar: DateRangeBarComponentTokens = .shared,
         likeCommentRow: LikeCommentRowComponentTokens = .shared,
-        overlappingCards: OverlappingCardsComponentTokens = .shared
+        overlappingCards: OverlappingCardsComponentTokens = .shared,
+        productDetailHero: ProductDetailHeroComponentTokens = .shared,
+        cameraControlsBar: CameraControlsBarComponentTokens = .shared,
+        photoEditToolbar: PhotoEditToolbarComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
@@ -29,6 +35,9 @@ public struct ComponentTokens: Sendable {
         self.dateRangeBar = dateRangeBar
         self.likeCommentRow = likeCommentRow
         self.overlappingCards = overlappingCards
+        self.productDetailHero = productDetailHero
+        self.cameraControlsBar = cameraControlsBar
+        self.photoEditToolbar = photoEditToolbar
     }
 
     public static let shared = ComponentTokens()
@@ -127,6 +136,64 @@ public struct OverlappingCardsComponentTokens: Sendable {
         overlapMedium: 85,
         overlapLarge: 132,
         socialButtonHeight: 56
+    )
+}
+
+public struct ProductDetailHeroComponentTokens: Sendable {
+    public let imageHeight: CGFloat
+    public let sizePillWidth: CGFloat
+    public let sizePillDotSize: CGFloat
+    public let iconSize: CGFloat
+    public let dotActiveWidth: CGFloat
+    public let dotSize: CGFloat
+    public let stepperGlyphSize: CGFloat
+    public let starSize: CGFloat
+    public let inactivePageDotOpacity: Double
+
+    public static let shared = ProductDetailHeroComponentTokens(
+        imageHeight: 180,
+        sizePillWidth: 80,
+        sizePillDotSize: 20,
+        iconSize: 24,
+        dotActiveWidth: 32,
+        dotSize: 8,
+        stepperGlyphSize: 20,
+        starSize: 10,
+        inactivePageDotOpacity: 0.38
+    )
+}
+
+public struct CameraControlsBarComponentTokens: Sendable {
+    public let cardOverlap: CGFloat
+    public let shutterOuterSize: CGFloat
+    public let shutterInnerSize: CGFloat
+    public let chipHeight: CGFloat
+    public let glyphSize: CGFloat
+
+    public static let shared = CameraControlsBarComponentTokens(
+        cardOverlap: 84,
+        shutterOuterSize: 64,
+        shutterInnerSize: 32,
+        chipHeight: 32,
+        glyphSize: 20
+    )
+}
+
+public struct PhotoEditToolbarComponentTokens: Sendable {
+    public let cardOverlap: CGFloat
+    public let valuePillWidth: CGFloat
+    public let valuePillHeight: CGFloat
+    public let controlPillSize: CGFloat
+    public let glyphSize: CGFloat
+    public let cropPreviewWidth: CGFloat
+
+    public static let shared = PhotoEditToolbarComponentTokens(
+        cardOverlap: 84,
+        valuePillWidth: 53,
+        valuePillHeight: 40,
+        controlPillSize: 32,
+        glyphSize: 24,
+        cropPreviewWidth: 50
     )
 }
 

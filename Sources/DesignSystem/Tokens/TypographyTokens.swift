@@ -13,6 +13,7 @@ public struct TypographyStyle: Sendable {
 
     private var weightSuffix: String {
         switch weight {
+        case .bold, .heavy, .black: return "SemiBold"
         case .semibold: return "SemiBold"
         case .medium: return "Medium"
         default: return "Regular"
@@ -40,8 +41,10 @@ public struct TypographyTokens: Sendable {
     public let h4: TypographyStyle
     public let h5: TypographyStyle
     public let h6: TypographyStyle
+    public let largeBold: TypographyStyle
     public let largeSemiBold: TypographyStyle
     public let largeRegular: TypographyStyle
+    public let bodyBold: TypographyStyle
     public let bodySemiBold: TypographyStyle
     public let body: TypographyStyle
     public let bodyRegular: TypographyStyle
@@ -64,8 +67,10 @@ public struct TypographyTokens: Sendable {
         h4: TypographyStyle(size: 24, weight: .medium, lineHeight: 1.4, letterSpacing: -4.0),
         h5: TypographyStyle(size: 20, weight: .medium, lineHeight: 1.4, letterSpacing: -4.0),
         h6: TypographyStyle(size: 18, weight: .medium, lineHeight: 1.4, letterSpacing: -3.5),
+        largeBold: TypographyStyle(size: 18, weight: .bold, lineHeight: 1.5, letterSpacing: -3.5),
         largeSemiBold: TypographyStyle(size: 18, weight: .semibold, lineHeight: 1.5, letterSpacing: -3.5),
         largeRegular: TypographyStyle(size: 18, weight: .regular, lineHeight: 1.5, letterSpacing: -3.5),
+        bodyBold: TypographyStyle(size: 16, weight: .bold, lineHeight: 1.5, letterSpacing: -2.5),
         bodySemiBold: TypographyStyle(size: 16, weight: .semibold, lineHeight: 1.5, letterSpacing: -2.5),
         body: TypographyStyle(size: 16, weight: .medium, lineHeight: 1.5, letterSpacing: -2.5),
         bodyRegular: TypographyStyle(size: 16, weight: .regular, lineHeight: 1.5, letterSpacing: -2.5),
