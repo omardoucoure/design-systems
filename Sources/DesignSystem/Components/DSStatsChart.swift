@@ -429,8 +429,8 @@ public struct DSStatsChart: View {
     private func badgeOverlay(_ text: String) -> some View {
         GeometryReader { geo in
             Text(text)
-                .font(.system(size: 10, weight: .semibold))
-                .tracking(-0.2)
+                .font(theme.typography.tinySemiBold.font)
+                .tracking(theme.typography.tinySemiBold.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
                 .padding(.horizontal, theme.spacing.xs)
                 .padding(.vertical, theme.spacing.xxs)
@@ -540,10 +540,10 @@ public struct DSStatsChart: View {
     // MARK: - Typography
 
     private var tinyFont: Font {
-        .system(size: 10, weight: .medium)
+        theme.typography.tiny.font
     }
 
     private var tinyTracking: CGFloat {
-        -0.2
+        theme.typography.tiny.tracking
     }
 }
