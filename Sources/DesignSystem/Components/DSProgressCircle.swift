@@ -116,7 +116,7 @@ public struct DSProgressCircle: View {
             // Inset by lineWidth/2 so both rings share the same center-path radius.
             Circle()
                 .stroke(
-                    _trackColor ?? theme.colors.surfaceNeutral3,
+                    _trackColor ?? theme.colors.borderNeutral95.opacity(theme.borders.opacity38),
                     lineWidth: resolvedTrackLineWidth
                 )
                 .padding(_lineWidth / 2)

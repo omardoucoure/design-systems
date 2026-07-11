@@ -30,18 +30,17 @@ public struct DSChatBubble: View {
 
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {
                 Text(text)
-                    .font(theme.typography.body.font)
-                    .tracking(theme.typography.body.tracking)
+                    .font(theme.typography.captionRegular.font)
+                    .tracking(theme.typography.captionRegular.tracking)
                     .foregroundStyle(foreground)
 
                 if let _time {
                     Text(_time)
                         .font(theme.typography.tiny.font)
-                        .foregroundStyle(foreground.opacity(0.7))
+                        .foregroundStyle(foreground.opacity(0.75))
                 }
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 14)
+            .padding(theme.spacing.lg)
             .background(background)
             .clipShape(bubbleShape)
 
@@ -50,7 +49,7 @@ public struct DSChatBubble: View {
     }
 
     private var foreground: Color {
-        side == .incoming ? theme.colors.textNeutral9 : theme.colors.textNeutral05
+        side == .incoming ? theme.colors.textNeutral8 : theme.colors.textNeutral05
     }
 
     private var background: Color {
@@ -58,14 +57,7 @@ public struct DSChatBubble: View {
     }
 
     private var bubbleShape: some Shape {
-        let big = theme.radius.lg
-        let tail = theme.radius.xs
-        return UnevenRoundedRectangle(
-            topLeadingRadius: big,
-            bottomLeadingRadius: side == .incoming ? tail : big,
-            bottomTrailingRadius: side == .outgoing ? tail : big,
-            topTrailingRadius: big
-        )
+        RoundedRectangle(cornerRadius: theme.radius.lg)
     }
 }
 

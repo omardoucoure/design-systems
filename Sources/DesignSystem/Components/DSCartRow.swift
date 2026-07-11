@@ -37,8 +37,8 @@ public struct DSCartRow<Media: View>: View {
                     .foregroundStyle(theme.colors.textNeutral9)
                     .lineLimit(1)
                 Text(meta)
-                    .font(theme.typography.small.font)
-                    .tracking(theme.typography.small.tracking)
+                    .font(theme.typography.tiny.font)
+                    .tracking(theme.typography.tiny.tracking)
                     .foregroundStyle(theme.colors.textNeutral8)
             }
 
@@ -47,12 +47,12 @@ public struct DSCartRow<Media: View>: View {
             DSStepper(value: $quantity)
 
             Text(price)
-                .font(theme.typography.bodySemiBold.font)
-                .tracking(theme.typography.bodySemiBold.tracking)
+                .font(theme.typography.bodyBold.font)
+                .tracking(theme.typography.bodyBold.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
         }
         .padding(theme.spacing.sm)
         .background(theme.colors.surfaceNeutral2)
-        .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
+        .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
     }
 }

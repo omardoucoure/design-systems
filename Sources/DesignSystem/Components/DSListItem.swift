@@ -141,8 +141,8 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
 
                 if let _supportingText {
                     Text(_supportingText)
-                        .font(theme.typography.body.font)
-                        .tracking(theme.typography.body.tracking)
+                        .font(theme.typography.captionRegular.font)
+                        .tracking(theme.typography.captionRegular.tracking)
                         .foregroundStyle(theme.colors.textNeutral8.opacity(theme.colors.textOpacity75))
                 }
             }
@@ -151,8 +151,8 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
             if _metadata != nil {
                 if let _metadata {
                     Text(_metadata)
-                        .font(theme.typography.body.font)
-                        .tracking(theme.typography.body.tracking)
+                        .font(theme.typography.captionRegular.font)
+                        .tracking(theme.typography.captionRegular.tracking)
                         .foregroundStyle(theme.colors.textNeutral8.opacity(theme.colors.textOpacity75))
                         .padding(.horizontal, theme.spacing.xs)
                         .padding(.vertical, theme.components.listItem.metadataVerticalPadding)
@@ -178,7 +178,7 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
     private var dividerView: some View {
         if _showDivider {
             Rectangle()
-                .fill(theme.colors.borderNeutral3)
+                .fill(theme.colors.borderNeutral95)
                 .frame(height: 1)
         }
     }

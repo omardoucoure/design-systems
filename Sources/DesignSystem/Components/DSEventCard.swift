@@ -5,14 +5,14 @@ import SwiftUI
 
 /// A compact event card with title, subtitle, and trailing icon.
 ///
-/// Figma: p=lg(24), radius lg, HStack gap=md(16).
-/// Title: bodySemiBold (16px), Subtitle: tiny (10px) at 75% opacity.
+/// Figma: p=xl(32), radius lg, HStack gap=md(16).
+/// Title: largeSemiBold (18px), Subtitle: captionRegular (14px) at 75% opacity.
 ///
 /// Usage (modifier API):
 /// ```swift
 /// DSEventCard(title: "Design Systems", subtitle: "Unleash your ideas!")
 ///     .eventIcon(.eye)
-///     .eventBackground(theme.colors.surfaceSecondary100)
+///     .eventBackground(theme.colors.surfaceNeutral2)
 ///     .eventForeground(theme.colors.textNeutral9)
 /// ```
 public struct DSEventCard: View {
@@ -68,20 +68,20 @@ public struct DSEventCard: View {
     }
 
     public var body: some View {
-        let resolvedBg = _background ?? theme.colors.surfaceSecondary100
+        let resolvedBg = _background ?? theme.colors.surfaceNeutral2
         let resolvedFg = _foreground ?? theme.colors.textNeutral9
 
         HStack(alignment: .top, spacing: theme.spacing.md) {
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {
                 Text(_title)
-                    .font(theme.typography.bodySemiBold.font)
-                    .tracking(theme.typography.bodySemiBold.tracking)
+                    .font(theme.typography.largeSemiBold.font)
+                    .tracking(theme.typography.largeSemiBold.tracking)
                     .foregroundStyle(resolvedFg)
                     .lineLimit(1)
 
                 Text(_subtitle)
-                    .font(theme.typography.tiny.font)
-                    .tracking(theme.typography.tiny.tracking)
+                    .font(theme.typography.captionRegular.font)
+                    .tracking(theme.typography.captionRegular.tracking)
                     .foregroundStyle(resolvedFg.opacity(0.75))
             }
             Spacer(minLength: 0)
@@ -92,7 +92,7 @@ public struct DSEventCard: View {
                 .frame(width: theme.spacing.lg, height: theme.spacing.lg)
                 .foregroundStyle(resolvedFg)
         }
-        .padding(theme.spacing.lg)
+        .padding(theme.spacing.xl)
         .background(resolvedBg)
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
     }

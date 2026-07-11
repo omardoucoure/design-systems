@@ -220,8 +220,8 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
         HStack(spacing: theme.spacing.xs) {
             backButton
             Text(_title ?? "")
-                .font(theme.typography.bodySemiBold.font)
-                .tracking(theme.typography.bodySemiBold.tracking)
+                .font(theme.typography.h5.font)
+                .tracking(theme.typography.h5.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
             Spacer()
             _actions
@@ -264,8 +264,8 @@ public struct DSTopAppBar<CenterContent: View, Actions: View>: View {
     private var mediumTitle: some View {
         HStack {
             Text(_title ?? "")
-                .font(theme.typography.h5.font)
-                .tracking(theme.typography.h5.tracking)
+                .font(theme.typography.h4.font)
+                .tracking(theme.typography.h4.tracking)
                 .foregroundStyle(theme.colors.textNeutral9)
             Spacer()
         }

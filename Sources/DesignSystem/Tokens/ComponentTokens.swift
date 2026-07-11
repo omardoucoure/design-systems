@@ -55,10 +55,10 @@ public struct ButtonComponentTokens: Sendable {
 
     public static let shared = ButtonComponentTokens(
         bigHeight: 56,
-        mediumHeight: 48,
-        smallHeight: 36,
+        mediumHeight: 40,
+        smallHeight: 32,
         bigIconSize: 24,
-        smallIconSize: 18,
+        smallIconSize: 20,
         pressedOpacity: 0.75,
         pressedScale: 0.97,
         pressedAnimationDuration: 0.15

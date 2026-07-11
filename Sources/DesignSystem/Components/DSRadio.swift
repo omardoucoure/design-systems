@@ -60,7 +60,7 @@ public struct DSRadio: View {
     public var body: some View {
         Button(action: action) {
             if _label != nil {
-                HStack(alignment: .top, spacing: theme.spacing.sm) {
+                HStack(alignment: .top, spacing: theme.spacing.xs) {
                     radioIcon
                     textContent
                     Spacer(minLength: 0)
@@ -75,16 +75,16 @@ public struct DSRadio: View {
     private var radioIcon: some View {
         ZStack {
             Circle()
-                .stroke(
-                    isSelected ? theme.colors.surfacePrimary100 : theme.colors.borderNeutral95,
-                    lineWidth: theme.borders.widthMd
+                .fill(isSelected ? theme.colors.surfacePrimary120 : theme.colors.surfaceNeutral2)
+                .overlay(
+                    Circle().stroke(theme.colors.borderNeutral95, lineWidth: theme.borders.widthSm)
                 )
-                .frame(width: 20, height: 20)
+                .frame(width: 18, height: 18)
 
             if isSelected {
                 Circle()
-                    .fill(theme.colors.surfacePrimary100)
-                    .frame(width: 10, height: 10)
+                    .fill(theme.colors.surfaceNeutral05)
+                    .frame(width: 8, height: 8)
             }
         }
         .animation(.easeInOut(duration: 0.15), value: isSelected)
@@ -95,8 +95,8 @@ public struct DSRadio: View {
         VStack(alignment: .leading, spacing: 2) {
             if let _label {
                 Text(_label)
-                    .font(theme.typography.body.font)
-                    .tracking(theme.typography.body.tracking)
+                    .font(theme.typography.bodyRegular.font)
+                    .tracking(theme.typography.bodyRegular.tracking)
                     .foregroundStyle(theme.colors.textNeutral9)
             }
 

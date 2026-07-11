@@ -29,7 +29,7 @@ public struct DSOrderSummary: View {
         VStack(spacing: theme.spacing.xs) {
             ForEach(lines) { line in
                 row(label: line.label, value: line.value,
-                    font: theme.typography.body, color: theme.colors.textNeutral8)
+                    font: theme.typography.small, color: theme.colors.textNeutral8)
             }
 
             grandRow

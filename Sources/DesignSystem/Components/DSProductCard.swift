@@ -103,7 +103,7 @@ public struct DSProductCard: View {
                 .scaledToFill()
                 .frame(width: _photoWidth, height: _photoHeight)
                 .background(theme.colors.surfaceNeutral2)
-                .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
+                .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg))
 
             // Name & Price
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {

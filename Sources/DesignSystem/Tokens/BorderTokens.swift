@@ -11,6 +11,7 @@ public struct BorderTokens: Sendable {
     // Opacities
     public let opacity75: Double = 0.75
     public let opacity50: Double = 0.50
+    public let opacity38: Double = 0.38
 
     public static let shared = BorderTokens()
 

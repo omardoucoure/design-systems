@@ -55,20 +55,20 @@ public struct DSToggle: View {
 
     public var body: some View {
         if _label != nil || _description != nil {
-            HStack(alignment: .top, spacing: theme.spacing.sm) {
+            HStack(alignment: .top, spacing: theme.spacing.lg) {
                 VStack(alignment: .leading, spacing: 2) {
                     if let _label {
                         Text(_label)
-                            .font(theme.typography.body.font)
-                            .tracking(theme.typography.body.tracking)
+                            .font(theme.typography.bodySemiBold.font)
+                            .tracking(theme.typography.bodySemiBold.tracking)
                             .foregroundStyle(theme.colors.textNeutral9)
                     }
 
                     if let _description {
                         Text(_description)
-                            .font(theme.typography.caption.font)
-                            .tracking(theme.typography.caption.tracking)
-                            .foregroundStyle(theme.colors.textNeutral8)
+                            .font(theme.typography.bodyRegular.font)
+                            .tracking(theme.typography.bodyRegular.tracking)
+                            .foregroundStyle(theme.colors.textNeutral9)
                     }
                 }
 
@@ -89,14 +89,13 @@ public struct DSToggle: View {
         } label: {
             ZStack(alignment: isOn ? .trailing : .leading) {
                 Capsule()
-                    .fill(isOn ? theme.colors.surfacePrimary100 : theme.colors.surfaceNeutral3)
-                    .frame(width: theme.spacing.xxxl, height: 28)
+                    .fill(theme.colors.surfacePrimary120.opacity(isOn ? 1.0 : 0.25))
+                    .frame(width: theme.spacing.xxl, height: 24)
 
                 Circle()
                     .fill(theme.colors.surfaceNeutral05)
-                    .frame(width: 22, height: 22)
-                    .padding(3)
-                    .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
+                    .frame(width: 16, height: 16)
+                    .padding(theme.spacing.xxs)
             }
         }
         .buttonStyle(.plain)

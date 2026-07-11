@@ -70,7 +70,7 @@ public struct DSCheckbox: View {
             isOn.toggle()
         } label: {
             if _label != nil {
-                HStack(alignment: .center, spacing: theme.spacing.sm) {
+                HStack(alignment: .center, spacing: theme.spacing.md) {
                     checkboxIcon
                     textContent
                     Spacer(minLength: 0)
@@ -85,7 +85,11 @@ public struct DSCheckbox: View {
     private var checkboxIcon: some View {
         ZStack {
             RoundedRectangle(cornerRadius: theme.radius.xxs)
-                .stroke(theme.colors.borderNeutral8, lineWidth: theme.borders.widthSm)
+                .fill(theme.colors.surfaceNeutral2)
+                .overlay(
+                    RoundedRectangle(cornerRadius: theme.radius.xxs)
+                        .stroke(theme.colors.borderNeutral95, lineWidth: theme.borders.widthSm)
+                )
                 .frame(width: 18, height: 18)
 
             if isOn {
@@ -106,7 +110,7 @@ public struct DSCheckbox: View {
     private var textContent: some View {
         VStack(alignment: .leading, spacing: 2) {
             if let _label {
-                let style = _labelFont ?? theme.typography.body
+                let style = _labelFont ?? theme.typography.largeSemiBold
                 Text(_label)
                     .font(style.font)
                     .tracking(style.tracking)
@@ -115,9 +119,9 @@ public struct DSCheckbox: View {
 
             if let _description {
                 Text(_description)
-                    .font(theme.typography.caption.font)
-                    .tracking(theme.typography.caption.tracking)
-                    .foregroundStyle(theme.colors.textNeutral8)
+                    .font(theme.typography.bodyRegular.font)
+                    .tracking(theme.typography.bodyRegular.tracking)
+                    .foregroundStyle(theme.colors.textNeutral9)
             }
         }
     }

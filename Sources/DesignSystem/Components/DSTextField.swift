@@ -277,14 +277,14 @@ public struct DSTextField: View {
     }
 
     private var containerRadius: CGFloat {
-        _variant == .filled ? theme.radius.xxxl : 0
+        _variant == .filled ? theme.radius.md : 0
     }
 
     private var borderOverlay: some View {
         Group {
             switch _variant {
             case .filled:
-                RoundedRectangle(cornerRadius: theme.radius.xxxl)
+                RoundedRectangle(cornerRadius: theme.radius.md)
                     .stroke(borderColor, lineWidth: borderWidth)
             case .lined:
                 VStack {
@@ -311,7 +311,7 @@ public struct DSTextField: View {
 
     private var borderColor: Color {
         switch _state {
-        case .active: return theme.colors.surfacePrimary100
+        case .active: return theme.colors.infoFocus
         case .error: return theme.colors.error
         case .validated: return theme.colors.validated
         case .empty, .filled:

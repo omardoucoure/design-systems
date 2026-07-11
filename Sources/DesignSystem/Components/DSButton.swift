@@ -368,15 +368,15 @@ public struct DSButton: View {
         switch _size {
         case .big: return theme.spacing.lg
         case .medium: return theme.spacing.md
-        case .small: return theme.spacing.md
+        case .small: return theme.spacing.sm
         }
     }
 
     private var paddingV: CGFloat {
         switch _size {
         case .big: return theme.spacing.md
-        case .medium: return theme.spacing.sm
-        case .small: return theme.spacing.xs
+        case .medium: return theme.spacing.xs
+        case .small: return theme.spacing.xxs
         }
     }
 

@@ -55,8 +55,8 @@ public struct DSWeekStrip: View {
                     } label: {
                         VStack(spacing: theme.spacing.xxs) {
                             Text(item.letter)
-                                .font(theme.typography.tiny.font)
-                                .tracking(theme.typography.tiny.tracking)
+                                .font(theme.typography.tinySemiBold.font)
+                                .tracking(theme.typography.tinySemiBold.tracking)
 
                             Text("\(item.number)")
                                 .font(theme.typography.h5.font)
