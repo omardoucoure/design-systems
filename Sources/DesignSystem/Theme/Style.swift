@@ -60,6 +60,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfacePrimary100: p.secondary100,
                 surfacePrimary120: p.neutrals.n5,
                 surfaceSecondary100: p.primary100,
+                surfaceSecondary120: p.primary120,
                 // Text — dark: inverted
                 textNeutral9: p.neutrals.n3,
                 textNeutral8: p.neutrals.n2,
@@ -95,6 +96,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfacePrimary100: p.primary100,
                 surfacePrimary120: p.primary120,
                 surfaceSecondary100: p.secondary100,
+                surfaceSecondary120: p.secondary120,
                 // Text — light: direct
                 textNeutral9: p.neutrals.n9,
                 textNeutral8: p.neutrals.n8,

@@ -17,6 +17,7 @@ public struct ComponentTokens: Sendable {
     public let photoEditToolbar: PhotoEditToolbarComponentTokens
     public let tickScale: TickScaleComponentTokens
     public let dayTimeline: DayTimelineComponentTokens
+    public let mediaPlayer: MediaPlayerComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
@@ -30,7 +31,8 @@ public struct ComponentTokens: Sendable {
         cameraControlsBar: CameraControlsBarComponentTokens = .shared,
         photoEditToolbar: PhotoEditToolbarComponentTokens = .shared,
         tickScale: TickScaleComponentTokens = .shared,
-        dayTimeline: DayTimelineComponentTokens = .shared
+        dayTimeline: DayTimelineComponentTokens = .shared,
+        mediaPlayer: MediaPlayerComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
@@ -44,6 +46,7 @@ public struct ComponentTokens: Sendable {
         self.photoEditToolbar = photoEditToolbar
         self.tickScale = tickScale
         self.dayTimeline = dayTimeline
+        self.mediaPlayer = mediaPlayer
     }
 
     public static let shared = ComponentTokens()
@@ -218,6 +221,26 @@ public struct DayTimelineComponentTokens: Sendable {
         eventLeadingInset: 80,
         eventIconSize: 24,
         activeDotSize: 6
+    )
+}
+
+public struct MediaPlayerComponentTokens: Sendable {
+    public let discSize: CGFloat
+    public let discHubSize: CGFloat
+    public let grooveCount: Int
+    public let grooveSpacing: CGFloat
+    public let playSize: CGFloat
+    public let sideControlSize: CGFloat
+    public let glyphSize: CGFloat
+
+    public static let shared = MediaPlayerComponentTokens(
+        discSize: 224,
+        discHubSize: 40,
+        grooveCount: 12,
+        grooveSpacing: 8,
+        playSize: 56,
+        sideControlSize: 40,
+        glyphSize: 24
     )
 }
 
