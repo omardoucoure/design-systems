@@ -33,6 +33,7 @@ public struct DSDateRangeBar: View {
 
             column(icon: .calendarPlus, overline: _endOverline, date: _endDate)
         }
+        .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, theme.spacing.xl)
         .padding(.vertical, theme.spacing.lg)
         .background(theme.colors.surfacePrimary100)

@@ -180,15 +180,18 @@ public struct DSUserCard: View {
                         .tracking(theme.typography.smallRegular.tracking)
                         .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
                 }
+                .fixedSize(horizontal: true, vertical: false)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 DSButton(_signOutLabel) {
                     _onSignOut()
                 }.buttonStyle(.neutralLight).buttonSize(.medium).icon(.logOut, position: .right)
+                    .fixedSize()
 
                 DSButton(_editLabel) {
                     _onEdit()
                 }.buttonStyle(.filledA).buttonSize(.medium).icon(.editPencil, position: .right)
+                    .fixedSize()
             }
         }
     }

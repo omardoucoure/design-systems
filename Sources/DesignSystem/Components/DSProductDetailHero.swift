@@ -198,11 +198,11 @@ public struct DSProductDetailHero: View {
     private var sizeColumn: some View {
         VStack(spacing: theme.spacing.lg) {
             ForEach(Array(_sizes.enumerated()), id: \.offset) { _, size in
-                DSButton(size, style: .neutral, size: .small, icon: .heart, iconPosition: .right) {}
+                DSButton(size, style: .neutral, size: .small) {}
             }
 
             HStack(spacing: theme.spacing.xs) {
-                glyph(.minus, size: metrics.stepperGlyphSize, color: theme.colors.textNeutral05)
+                glyph(.arrowLeftLong, size: metrics.stepperGlyphSize, color: theme.colors.textNeutral05)
                 Text(_selectedSize)
                     .font(theme.typography.label.font)
                     .tracking(theme.typography.label.tracking)
@@ -233,7 +233,7 @@ public struct DSProductDetailHero: View {
             .frame(height: metrics.imageHeight)
             .overlay(alignment: .topLeading) {
                 iconPill(background: theme.colors.surfacePrimary100) {
-                    glyph(.arrowLeft, size: metrics.stepperGlyphSize, color: theme.colors.textNeutral05)
+                    glyph(.arrowLeftLong, size: metrics.stepperGlyphSize, color: theme.colors.textNeutral05)
                     glyph(.infoCircle, size: metrics.stepperGlyphSize, color: theme.colors.textNeutral05)
                 }
                 .padding(theme.spacing.xl)

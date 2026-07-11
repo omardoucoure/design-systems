@@ -5,8 +5,8 @@ import SwiftUI
 
 /// A themed circular progress indicator with percentage label.
 ///
-/// Two-ring design: a very thin full-circle track beneath a thicker rounded-cap
-/// progress arc drawn on top — matching the Figma design exactly.
+/// Two-ring design: a very thin full-circle track beneath a thin rounded-cap
+/// progress arc drawn on top — matching the Figma design's 2pt ring.
 ///
 /// Usage:
 /// ```swift
@@ -20,8 +20,8 @@ public struct DSProgressCircle: View {
 
     private let progress: Double
     private var _circleSize: CGFloat = 40
-    /// Stroke width for the thick progress arc.
-    private var _lineWidth: CGFloat = 8.6
+    /// Stroke width for the progress arc. Source (Figma) draws a thin 2pt ring on a 40pt circle.
+    private var _lineWidth: CGFloat = 2
     /// Stroke width for the thin background track. Defaults to 1.
     private var _trackLineWidth: CGFloat?
 
@@ -42,7 +42,7 @@ public struct DSProgressCircle: View {
     public init(
         progress: Double,
         size: CGFloat = 40,
-        lineWidth: CGFloat = 8.6,
+        lineWidth: CGFloat = 2,
         trackLineWidth: CGFloat? = nil,
         customLabel: String? = nil,
         trackColor: Color? = nil,
