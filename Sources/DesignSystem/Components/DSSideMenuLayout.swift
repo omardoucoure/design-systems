@@ -40,7 +40,7 @@ public struct DSSideMenuLayout<Menu: View, Content: View>: View {
     private let menu: () -> Menu
     private let content: () -> Content
 
-    private let cardRadius: CGFloat = 32
+    private var cardRadius: CGFloat { theme.radius.xl }
 
     // MARK: - Init (core params only)
 
