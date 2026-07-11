@@ -16,6 +16,7 @@ public struct ComponentTokens: Sendable {
     public let cameraControlsBar: CameraControlsBarComponentTokens
     public let photoEditToolbar: PhotoEditToolbarComponentTokens
     public let tickScale: TickScaleComponentTokens
+    public let dayTimeline: DayTimelineComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
@@ -28,7 +29,8 @@ public struct ComponentTokens: Sendable {
         productDetailHero: ProductDetailHeroComponentTokens = .shared,
         cameraControlsBar: CameraControlsBarComponentTokens = .shared,
         photoEditToolbar: PhotoEditToolbarComponentTokens = .shared,
-        tickScale: TickScaleComponentTokens = .shared
+        tickScale: TickScaleComponentTokens = .shared,
+        dayTimeline: DayTimelineComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
@@ -41,6 +43,7 @@ public struct ComponentTokens: Sendable {
         self.cameraControlsBar = cameraControlsBar
         self.photoEditToolbar = photoEditToolbar
         self.tickScale = tickScale
+        self.dayTimeline = dayTimeline
     }
 
     public static let shared = ComponentTokens()
@@ -197,6 +200,24 @@ public struct PhotoEditToolbarComponentTokens: Sendable {
         controlPillSize: 32,
         glyphSize: 24,
         cropPreviewWidth: 50
+    )
+}
+
+public struct DayTimelineComponentTokens: Sendable {
+    public let rowHeight: CGFloat
+    public let rowSpacing: CGFloat
+    public let labelWidth: CGFloat
+    public let eventLeadingInset: CGFloat
+    public let eventIconSize: CGFloat
+    public let activeDotSize: CGFloat
+
+    public static let shared = DayTimelineComponentTokens(
+        rowHeight: 29,
+        rowSpacing: 14,
+        labelWidth: 32,
+        eventLeadingInset: 80,
+        eventIconSize: 24,
+        activeDotSize: 6
     )
 }
 
