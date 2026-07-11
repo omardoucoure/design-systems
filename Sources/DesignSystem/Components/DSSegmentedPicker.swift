@@ -224,11 +224,12 @@ public struct DSPageControl: View {
                 if index == currentIndex {
                     Capsule()
                         .fill(theme.colors.surfacePrimary120)
-                        .frame(width: theme.spacing.xl, height: theme.spacing.xxs)
+                        .frame(width: theme.spacing.xl, height: theme.spacing.xs)
                 } else {
                     Circle()
-                        .fill(theme.colors.borderNeutral95)
-                        .frame(width: theme.spacing.xxs, height: theme.spacing.xxs)
+                        .fill(theme.colors.surfacePrimary120)
+                        .opacity(theme.borders.opacity38)
+                        .frame(width: theme.spacing.xs, height: theme.spacing.xs)
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 currentIndex = index
