@@ -15,6 +15,7 @@ public struct ComponentTokens: Sendable {
     public let productDetailHero: ProductDetailHeroComponentTokens
     public let cameraControlsBar: CameraControlsBarComponentTokens
     public let photoEditToolbar: PhotoEditToolbarComponentTokens
+    public let tickScale: TickScaleComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
@@ -26,7 +27,8 @@ public struct ComponentTokens: Sendable {
         overlappingCards: OverlappingCardsComponentTokens = .shared,
         productDetailHero: ProductDetailHeroComponentTokens = .shared,
         cameraControlsBar: CameraControlsBarComponentTokens = .shared,
-        photoEditToolbar: PhotoEditToolbarComponentTokens = .shared
+        photoEditToolbar: PhotoEditToolbarComponentTokens = .shared,
+        tickScale: TickScaleComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
@@ -38,6 +40,7 @@ public struct ComponentTokens: Sendable {
         self.productDetailHero = productDetailHero
         self.cameraControlsBar = cameraControlsBar
         self.photoEditToolbar = photoEditToolbar
+        self.tickScale = tickScale
     }
 
     public static let shared = ComponentTokens()
@@ -194,6 +197,20 @@ public struct PhotoEditToolbarComponentTokens: Sendable {
         controlPillSize: 32,
         glyphSize: 24,
         cropPreviewWidth: 50
+    )
+}
+
+public struct TickScaleComponentTokens: Sendable {
+    public let tickWidth: CGFloat
+    public let minHeight: CGFloat
+    public let step: CGFloat
+    public let centerHeight: CGFloat
+
+    public static let shared = TickScaleComponentTokens(
+        tickWidth: 1,
+        minHeight: 4,
+        step: 2,
+        centerHeight: 40
     )
 }
 

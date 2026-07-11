@@ -86,19 +86,23 @@ public struct DSPhotoEditToolbar: View {
     }
 
     private var valueCard: some View {
-        HStack(spacing: theme.spacing.sm) {
-            glyph(.arrowLeft, size: metrics.glyphSize, color: theme.colors.textNeutral9)
-            Text(_value)
-                .font(theme.typography.label.font)
-                .tracking(theme.typography.label.tracking)
-                .foregroundStyle(theme.colors.textNeutral9)
-            glyph(.mediaImageList, size: metrics.glyphSize, color: theme.colors.textNeutral9)
+        VStack(spacing: 0) {
+            HStack(spacing: theme.spacing.sm) {
+                glyph(.arrowLeft, size: metrics.glyphSize, color: theme.colors.textNeutral9)
+                Text(_value)
+                    .font(theme.typography.label.font)
+                    .tracking(theme.typography.label.tracking)
+                    .foregroundStyle(theme.colors.textNeutral9)
+                glyph(.mediaImageList, size: metrics.glyphSize, color: theme.colors.textNeutral9)
+            }
+            .padding(.horizontal, theme.spacing.md)
+            .padding(.vertical, theme.spacing.xs)
+            .frame(width: metrics.valuePillWidth, height: metrics.valuePillHeight)
+            .background(theme.colors.surfaceSecondary100)
+            .clipShape(RoundedRectangle(cornerRadius: theme.radius.full))
+
+            DSTickScale()
         }
-        .padding(.horizontal, theme.spacing.md)
-        .padding(.vertical, theme.spacing.xs)
-        .frame(width: metrics.valuePillWidth, height: metrics.valuePillHeight)
-        .background(theme.colors.surfaceSecondary100)
-        .clipShape(RoundedRectangle(cornerRadius: theme.radius.full))
         .frame(maxWidth: .infinity)
         .padding(theme.spacing.xl)
         .background(theme.colors.surfaceNeutral2)

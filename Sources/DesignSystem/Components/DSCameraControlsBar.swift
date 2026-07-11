@@ -78,9 +78,7 @@ public struct DSCameraControlsBar: View {
                 }
             }
 
-            Rectangle()
-                .fill(theme.colors.borderNeutral95)
-                .frame(height: 1)
+            DSTickScale()
 
             HStack(spacing: theme.spacing.sm) {
                 ForEach(_settings) { setting in
