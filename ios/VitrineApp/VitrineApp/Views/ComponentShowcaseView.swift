@@ -119,6 +119,20 @@ struct ComponentShowcaseView: View {
                     LazyView(ExtrasDetailView())
                 }
             }
+
+            Section("Camera & Media") {
+                NavigationLink("Camera & Photo — Controls, edit, tick scale") {
+                    LazyView(CameraPhotoDetailView())
+                }
+
+                NavigationLink("Day Timeline — Vertical hour list") {
+                    LazyView(TimelinePlayerDetailView())
+                }
+
+                NavigationLink("Media Player — Vinyl disc") {
+                    LazyView(MediaPlayerDetailView())
+                }
+            }
         }
         .navigationTitle("Components")
         .navigationBarTitleDisplayMode(.inline)
