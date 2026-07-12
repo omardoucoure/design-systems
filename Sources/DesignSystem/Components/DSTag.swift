@@ -53,7 +53,7 @@ public struct DSTag: View {
         case .warn:    return theme.colors.warning
         case .error:   return theme.colors.error
         case .info:    return theme.colors.infoFocus
-        case .neutral: return theme.colors.textSecondary100
+        case .neutral: return theme.colors.textNeutral8
         case .strong:  return theme.colors.textNeutral05
         }
     }

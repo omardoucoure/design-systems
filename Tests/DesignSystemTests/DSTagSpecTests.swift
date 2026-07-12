@@ -28,8 +28,12 @@ final class DSTagSpecTests: XCTestCase {
         XCTAssertEqual(DSTag.foreground(for: .error, theme: theme), theme.colors.error)
     }
 
-    func testNeutralTagUsesBorderDefaultAndSecondaryText() {
+    func testNeutralTagUsesBorderDefaultAndNeutralText() {
         XCTAssertEqual(DSTag.background(for: .neutral, theme: theme), theme.colors.borderNeutral3)
-        XCTAssertEqual(DSTag.foreground(for: .neutral, theme: theme), theme.colors.textSecondary100)
+        XCTAssertEqual(DSTag.foreground(for: .neutral, theme: theme), theme.colors.textNeutral8)
+    }
+
+    func testNeutralTagTextIsNotBrandSecondary() {
+        XCTAssertNotEqual(DSTag.foreground(for: .neutral, theme: theme), theme.colors.textSecondary100)
     }
 }
