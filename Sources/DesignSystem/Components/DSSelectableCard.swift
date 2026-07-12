@@ -38,10 +38,10 @@ public struct DSSelectableCard: View {
                 indicator
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(theme.spacing.md)
-            .background(theme.colors.surfaceNeutral2, in: RoundedRectangle(cornerRadius: theme.radius.lg))
+            .padding(theme.spacing.lg)
+            .background(theme.colors.surfaceNeutral2, in: RoundedRectangle(cornerRadius: theme.radius.xl))
             .overlay(
-                RoundedRectangle(cornerRadius: theme.radius.lg)
+                RoundedRectangle(cornerRadius: theme.radius.xl)
                     .strokeBorder(ring, lineWidth: isSelected ? 2 : 0)
             )
             .contentShape(Rectangle())
