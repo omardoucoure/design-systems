@@ -3,12 +3,18 @@ import SwiftUI
 public struct DSValueSlider: View {
     @Environment(\.theme) private var theme
 
-    @Binding private var value: Int
+    @Binding private var value: Int?
     private let range: ClosedRange<Int>
     private var _minLabel: LocalizedStringKey?
     private var _maxLabel: LocalizedStringKey?
+    private var _fillColor: Color?
 
     public init(value: Binding<Int>, in range: ClosedRange<Int>) {
+        self._value = Binding(get: { value.wrappedValue }, set: { value.wrappedValue = $0 ?? value.wrappedValue })
+        self.range = range
+    }
+
+    public init(value: Binding<Int?>, in range: ClosedRange<Int>) {
         self._value = value
         self.range = range
     }
@@ -25,8 +31,16 @@ public struct DSValueSlider: View {
         return copy
     }
 
+    public func fillColor(_ color: Color) -> Self {
+        var copy = self
+        copy._fillColor = color
+        return copy
+    }
+
     private let knobSize: CGFloat = 28
-    private let trackHeight: CGFloat = 6
+    private let trackHeight: CGFloat = 8
+
+    private var fill: Color { _fillColor ?? theme.colors.surfacePrimary120 }
 
     public var body: some View {
         VStack(spacing: theme.spacing.xs) {
@@ -53,7 +67,7 @@ public struct DSValueSlider: View {
         GeometryReader { geo in
             let span = max(geo.size.width - knobSize, 1)
             let steps = max(range.upperBound - range.lowerBound, 1)
-            let fraction = Double(value - range.lowerBound) / Double(steps)
+            let fraction = value.map { Double($0 - range.lowerBound) / Double(steps) } ?? 0
             let knobX = span * fraction
 
             ZStack(alignment: .leading) {
@@ -61,16 +75,18 @@ public struct DSValueSlider: View {
                     .fill(theme.colors.surfaceNeutral3)
                     .frame(height: trackHeight)
 
-                Capsule()
-                    .fill(theme.colors.surfacePrimary120)
-                    .frame(width: knobX + knobSize / 2, height: trackHeight)
+                if value != nil {
+                    Capsule()
+                        .fill(fill)
+                        .frame(width: knobX + knobSize / 2, height: trackHeight)
 
-                Circle()
-                    .fill(theme.colors.surfaceNeutral05)
-                    .frame(width: knobSize, height: knobSize)
-                    .overlay(Circle().strokeBorder(theme.colors.borderNeutral3, lineWidth: 1.5))
-                    .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
-                    .offset(x: knobX)
+                    Circle()
+                        .fill(theme.colors.surfaceNeutral05)
+                        .frame(width: knobSize, height: knobSize)
+                        .overlay(Circle().strokeBorder(fill, lineWidth: 2))
+                        .shadow(color: .black.opacity(0.15), radius: 3, y: 1)
+                        .offset(x: knobX)
+                }
             }
             .frame(maxHeight: .infinity)
             .contentShape(Rectangle())
@@ -79,9 +95,9 @@ public struct DSValueSlider: View {
                     .onChanged { g in
                         let clampedX = min(max(0, g.location.x - knobSize / 2), span)
                         let raw = Double(range.lowerBound) + (clampedX / span) * Double(steps)
-                        let next = Int(raw.rounded())
+                        let next = min(max(range.lowerBound, Int(raw.rounded())), range.upperBound)
                         if next != value {
-                            value = min(max(range.lowerBound, next), range.upperBound)
+                            value = next
                         }
                     }
             )
