@@ -161,7 +161,9 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
 
             _trailing
         }
-        .padding(theme.spacing.md)
+        .padding(.horizontal, theme.spacing.md)
+        .padding(.vertical, theme.spacing.sm)
+        .frame(minHeight: 56)
         .background(theme.colors.surfaceNeutral2)
 
         if let _action {
@@ -180,6 +182,7 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
             Rectangle()
                 .fill(theme.colors.borderNeutral95)
                 .frame(height: 1)
+                .padding(.horizontal, theme.spacing.md)
         }
     }
 }
