@@ -62,7 +62,7 @@ public struct DSSelectableCard: View {
             )
             .overlay {
                 if isSelected {
-                    DSIconImage(.check, size: 14, color: theme.colors.textNeutral05)
+                    DSIconImage(.check, size: 16, color: theme.colors.textNeutral05)
                 }
             }
             .frame(width: 24, height: 24)
