@@ -39,4 +39,10 @@ public struct ColorTokens: Sendable {
     public let warning: Color
     public let validated: Color
     public let infoFocus: Color
+
+    // MARK: Semantic tint backgrounds (4)
+    public let errorBg: Color
+    public let warningBg: Color
+    public let validatedBg: Color
+    public let infoBg: Color
 }

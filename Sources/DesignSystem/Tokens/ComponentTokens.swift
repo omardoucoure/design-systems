@@ -18,6 +18,7 @@ public struct ComponentTokens: Sendable {
     public let tickScale: TickScaleComponentTokens
     public let dayTimeline: DayTimelineComponentTokens
     public let mediaPlayer: MediaPlayerComponentTokens
+    public let tag: TagComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
@@ -32,7 +33,8 @@ public struct ComponentTokens: Sendable {
         photoEditToolbar: PhotoEditToolbarComponentTokens = .shared,
         tickScale: TickScaleComponentTokens = .shared,
         dayTimeline: DayTimelineComponentTokens = .shared,
-        mediaPlayer: MediaPlayerComponentTokens = .shared
+        mediaPlayer: MediaPlayerComponentTokens = .shared,
+        tag: TagComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
@@ -47,6 +49,7 @@ public struct ComponentTokens: Sendable {
         self.tickScale = tickScale
         self.dayTimeline = dayTimeline
         self.mediaPlayer = mediaPlayer
+        self.tag = tag
     }
 
     public static let shared = ComponentTokens()
@@ -111,6 +114,20 @@ public struct ListItemComponentTokens: Sendable {
         leadingIconSize: 24,
         trailingIconSize: 20,
         iconPadding: 8
+    )
+}
+
+public struct TagComponentTokens: Sendable {
+    public let height: CGFloat
+    public let horizontalPadding: CGFloat
+    public let verticalPadding: CGFloat
+    public let gap: CGFloat
+
+    public static let shared = TagComponentTokens(
+        height: 24,
+        horizontalPadding: 10,
+        verticalPadding: 4,
+        gap: 6
     )
 }
 

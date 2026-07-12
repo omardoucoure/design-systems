@@ -83,7 +83,11 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 error: semantic.error,
                 warning: semantic.warning,
                 validated: semantic.validated,
-                infoFocus: semantic.infoFocus
+                infoFocus: semantic.infoFocus,
+                errorBg: semantic.errorBg,
+                warningBg: semantic.warningBg,
+                validatedBg: semantic.validatedBg,
+                infoBg: semantic.infoBg
             )
         } else {
             return ColorTokens(
@@ -119,7 +123,11 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 error: semantic.error,
                 warning: semantic.warning,
                 validated: semantic.validated,
-                infoFocus: semantic.infoFocus
+                infoFocus: semantic.infoFocus,
+                errorBg: semantic.errorBg,
+                warningBg: semantic.warningBg,
+                validatedBg: semantic.validatedBg,
+                infoBg: semantic.infoBg
             )
         }
     }
