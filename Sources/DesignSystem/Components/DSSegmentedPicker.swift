@@ -118,7 +118,7 @@ public struct DSSegmentedPicker: View {
                         .background(
                             isSelected
                                 ? theme.colors.surfacePrimary100
-                                : theme.colors.borderNeutral95
+                                : theme.colors.surfaceNeutral3
                         )
                         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
                 }
