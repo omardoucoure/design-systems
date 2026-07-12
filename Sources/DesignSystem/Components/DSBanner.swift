@@ -81,31 +81,28 @@ public struct DSBanner<LeadingContent: View>: View {
 
     public var body: some View {
         HStack(alignment: .top, spacing: theme.spacing.md) {
-            // Leading content (icon chip, etc.) if provided
             if LeadingContent.self != EmptyView.self {
                 _leadingContent
             }
 
-            // Text content
             VStack(alignment: .leading, spacing: theme.spacing.xxs) {
                 if let _title {
                     Text(_title)
-                        .font(theme.typography.h5.font)
-                        .tracking(theme.typography.h5.tracking)
-                        .lineSpacing(theme.typography.h5.lineSpacing)
-                        .foregroundStyle(theme.colors.textNeutral9)
+                        .font(theme.typography.bodySemiBold.font)
+                        .tracking(theme.typography.bodySemiBold.tracking)
+                        .foregroundStyle(_severity.accent(from: theme.colors))
                 }
 
                 if let _message {
                     Text(_message)
                         .font(theme.typography.caption.font)
                         .tracking(theme.typography.caption.tracking)
-                        .foregroundStyle(theme.colors.textNeutral9)
+                        .foregroundStyle(theme.colors.textNeutral8)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Dismiss button
             if let _onDismiss {
                 Button(action: _onDismiss) {
                     Image(dsIcon: .xmark)
@@ -113,16 +110,15 @@ public struct DSBanner<LeadingContent: View>: View {
                         .renderingMode(.template)
                         .scaledToFit()
                         .frame(width: 20, height: 20)
-                        .foregroundStyle(theme.colors.textNeutral9)
+                        .foregroundStyle(theme.colors.textNeutral8)
                 }
                 .buttonStyle(.plain)
                 .padding(.vertical, theme.spacing.xxs)
             }
         }
         .padding(theme.spacing.xl)
-        .background(_severity.color(from: theme.colors))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(_severity.tintBackground(from: theme.colors))
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
-        .shadow(color: .black.opacity(0.02), radius: 8, x: 0, y: 4)
-        .shadow(color: .black.opacity(0.18), radius: 48, x: 0, y: 24)
     }
 }

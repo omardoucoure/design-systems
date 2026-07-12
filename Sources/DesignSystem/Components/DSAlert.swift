@@ -24,6 +24,21 @@ extension DSAlertSeverity {
         case .neutral: return colors.surfaceNeutral2
         }
     }
+
+    public func accent(from colors: ColorTokens) -> Color {
+        color(from: colors)
+    }
+
+    /// Light tint background for inline severity banners (design `.alert--*`).
+    public func tintBackground(from colors: ColorTokens) -> Color {
+        switch self {
+        case .error: return colors.errorBg
+        case .warning: return colors.warningBg
+        case .success: return colors.validatedBg
+        case .info: return colors.infoBg
+        case .neutral: return colors.surfaceNeutral2
+        }
+    }
 }
 
 // MARK: - DSAlert (Full-Page Alert)
