@@ -17,6 +17,7 @@ public struct ColorTokens: Sendable {
     // MARK: Text (9)
     public let textNeutral9: Color
     public let textNeutral8: Color
+    public let textNeutral6: Color
     public let textNeutral3: Color
     public let textNeutral2: Color
     public let textNeutral05: Color

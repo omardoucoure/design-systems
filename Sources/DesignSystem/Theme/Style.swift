@@ -64,6 +64,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 // Text — dark: inverted
                 textNeutral9: p.neutrals.n3,
                 textNeutral8: p.neutrals.n2,
+                textNeutral6: p.neutrals.n3,
                 textNeutral3: p.neutrals.n8,
                 textNeutral2: p.neutrals.n85,
                 textNeutral05: p.neutrals.n9,
@@ -104,6 +105,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 // Text — light: direct
                 textNeutral9: p.neutrals.n9,
                 textNeutral8: p.neutrals.n8,
+                textNeutral6: p.neutrals.n6,
                 textNeutral3: p.neutrals.n3,
                 textNeutral2: p.neutrals.n2,
                 textNeutral05: p.neutrals.n05,
