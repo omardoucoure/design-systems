@@ -162,7 +162,7 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
             _trailing
         }
         .padding(.horizontal, theme.spacing.md)
-        .padding(.vertical, theme.spacing.sm)
+        .padding(.vertical, theme.spacing.md)
         .frame(minHeight: 56)
         .background(theme.colors.surfaceNeutral2)
 
