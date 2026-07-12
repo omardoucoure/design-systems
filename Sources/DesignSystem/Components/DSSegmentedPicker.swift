@@ -8,6 +8,9 @@ public enum DSSegmentedPickerStyle: Sendable {
     case tabs
     /// Compact pill buttons with darker selected state. (Figma: Pills)
     case pills
+    /// Standalone equal-width filled pills, each with its own background,
+    /// no shared container. (Figma: Choice Pills)
+    case choicePills
     /// Underline tabs with bottom border indicator. (Figma: Nav - Tab)
     case underline
 }
@@ -85,8 +88,42 @@ public struct DSSegmentedPicker: View {
             tabsLayout
         case .pills:
             pillsLayout
+        case .choicePills:
+            choicePillsLayout
         case .underline:
             underlineLayout
+        }
+    }
+
+    private var choicePillsLayout: some View {
+        HStack(spacing: theme.spacing.xs) {
+            ForEach(items.indices, id: \.self) { index in
+                let isSelected = index == selectedIndex
+
+                Button {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        selectedIndex = index
+                    }
+                } label: {
+                    Text(items[index])
+                        .font(theme.typography.bodySemiBold.font)
+                        .tracking(theme.typography.bodySemiBold.tracking)
+                        .foregroundStyle(
+                            isSelected
+                                ? theme.colors.textNeutral05
+                                : theme.colors.textNeutral9
+                        )
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, theme.spacing.sm)
+                        .background(
+                            isSelected
+                                ? theme.colors.surfacePrimary100
+                                : theme.colors.borderNeutral95
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 
