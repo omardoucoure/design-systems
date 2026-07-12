@@ -111,6 +111,6 @@ public struct DSCard<Content: View>: View {
     }
 
     private var resolvedPadding: CGFloat {
-        _padding ?? theme.spacing.lg
+        _padding ?? theme.spacing.xl
     }
 }
