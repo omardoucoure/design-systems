@@ -161,9 +161,9 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
 
             _trailing
         }
-        .padding(.horizontal, theme.spacing.md)
-        .padding(.vertical, theme.spacing.md)
-        .frame(minHeight: 56)
+        .padding(.horizontal, theme.components.listItem.horizontalPadding)
+        .padding(.vertical, theme.components.listItem.verticalPadding)
+        .frame(minHeight: theme.components.listItem.minHeight)
         .background(theme.colors.surfaceNeutral2)
 
         if let _action {
@@ -176,13 +176,17 @@ public struct DSListItem<Leading: View, Trailing: View>: View {
         }
     }
 
+    static func dividerColor(for theme: ThemeConfiguration) -> Color {
+        theme.colors.borderNeutral3
+    }
+
     @ViewBuilder
     private var dividerView: some View {
         if _showDivider {
             Rectangle()
-                .fill(theme.colors.borderNeutral95)
+                .fill(Self.dividerColor(for: theme))
                 .frame(height: 1)
-                .padding(.horizontal, theme.spacing.md)
+                .padding(.horizontal, theme.components.listItem.dividerInset)
         }
     }
 }

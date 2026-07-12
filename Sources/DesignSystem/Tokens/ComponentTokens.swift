@@ -92,6 +92,10 @@ public struct TextFieldComponentTokens: Sendable {
 
 public struct ListItemComponentTokens: Sendable {
     public let rowGap: CGFloat
+    public let verticalPadding: CGFloat
+    public let horizontalPadding: CGFloat
+    public let minHeight: CGFloat
+    public let dividerInset: CGFloat
     public let metadataVerticalPadding: CGFloat
     public let leadingIconSize: CGFloat
     public let trailingIconSize: CGFloat
@@ -99,6 +103,10 @@ public struct ListItemComponentTokens: Sendable {
 
     public static let shared = ListItemComponentTokens(
         rowGap: 16,
+        verticalPadding: 12,
+        horizontalPadding: 16,
+        minHeight: 56,
+        dividerInset: 16,
         metadataVerticalPadding: 12,
         leadingIconSize: 24,
         trailingIconSize: 20,
