@@ -35,7 +35,8 @@ public struct DSSelectableCard: View {
                     .typographyStyle(isSelected ? theme.typography.bodySemiBold : theme.typography.body)
                     .foregroundStyle(theme.colors.textNeutral9)
                 Spacer(minLength: theme.spacing.sm)
-                indicator
+                DSCheckbox(isOn: .constant(isSelected))
+                    .allowsHitTesting(false)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(theme.spacing.lg)
@@ -51,20 +52,5 @@ public struct DSSelectableCard: View {
 
     private var ring: Color {
         _ringColor ?? theme.colors.surfaceSecondary100
-    }
-
-    private var indicator: some View {
-        RoundedRectangle(cornerRadius: theme.radius.xs)
-            .fill(isSelected ? ring : theme.colors.surfaceNeutral05)
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.radius.xs)
-                    .strokeBorder(theme.colors.borderNeutral3, lineWidth: isSelected ? 0 : 1.5)
-            )
-            .overlay {
-                if isSelected {
-                    DSIconImage(.check, size: 16, color: theme.colors.textNeutral05)
-                }
-            }
-            .frame(width: 24, height: 24)
     }
 }
