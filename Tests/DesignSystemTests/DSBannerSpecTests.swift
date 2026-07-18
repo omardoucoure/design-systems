@@ -24,4 +24,9 @@ final class DSBannerSpecTests: XCTestCase {
         XCTAssertEqual(DSAlertSeverity.success.accent(from: theme.colors), theme.colors.validated)
         XCTAssertEqual(DSAlertSeverity.error.accent(from: theme.colors), theme.colors.error)
     }
+
+    func testMessageUsesBodyRegularNotCaption() {
+        XCTAssertEqual(DSBannerStyle.messageTypography(theme.typography).size, theme.typography.bodyRegular.size)
+        XCTAssertEqual(DSBannerStyle.messageTypography(theme.typography).size, 16)
+    }
 }

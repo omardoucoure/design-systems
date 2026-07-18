@@ -1,5 +1,11 @@
 import SwiftUI
 
+enum DSBannerStyle {
+    static func messageTypography(_ typography: TypographyTokens) -> TypographyStyle {
+        typography.bodyRegular
+    }
+}
+
 // MARK: - DSBanner
 
 /// A floating banner/toast notification with severity-colored background.
@@ -94,9 +100,10 @@ public struct DSBanner<LeadingContent: View>: View {
                 }
 
                 if let _message {
+                    let messageStyle = DSBannerStyle.messageTypography(theme.typography)
                     Text(_message)
-                        .font(theme.typography.caption.font)
-                        .tracking(theme.typography.caption.tracking)
+                        .font(messageStyle.font)
+                        .tracking(messageStyle.tracking)
                         .foregroundStyle(theme.colors.textNeutral8)
                         .fixedSize(horizontal: false, vertical: true)
                 }
