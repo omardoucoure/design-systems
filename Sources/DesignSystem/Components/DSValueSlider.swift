@@ -42,6 +42,18 @@ public struct DSValueSlider: View {
 
     private var fill: Color { _fillColor ?? theme.colors.surfacePrimary120 }
 
+    enum Geometry {
+        static func showsKnob(value: Int?) -> Bool { true }
+
+        static func showsFilledTrack(value: Int?) -> Bool { value != nil }
+
+        static func knobFraction(value: Int?, in range: ClosedRange<Int>) -> Double {
+            let steps = Double(max(range.upperBound - range.lowerBound, 1))
+            guard let value else { return 0.5 }
+            return Double(value - range.lowerBound) / steps
+        }
+    }
+
     public var body: some View {
         VStack(spacing: theme.spacing.xs) {
             track
@@ -67,23 +79,26 @@ public struct DSValueSlider: View {
         GeometryReader { geo in
             let span = max(geo.size.width - knobSize, 1)
             let steps = max(range.upperBound - range.lowerBound, 1)
-            let fraction = value.map { Double($0 - range.lowerBound) / Double(steps) } ?? 0
+            let fraction = Geometry.knobFraction(value: value, in: range)
             let knobX = span * fraction
+            let knobStroke = Geometry.showsFilledTrack(value: value) ? fill : theme.colors.borderNeutral95
 
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(theme.colors.surfaceNeutral3)
                     .frame(height: trackHeight)
 
-                if value != nil {
+                if Geometry.showsFilledTrack(value: value) {
                     Capsule()
                         .fill(fill)
                         .frame(width: knobX + knobSize / 2, height: trackHeight)
+                }
 
+                if Geometry.showsKnob(value: value) {
                     Circle()
                         .fill(theme.colors.surfaceNeutral05)
                         .frame(width: knobSize, height: knobSize)
-                        .overlay(Circle().strokeBorder(fill, lineWidth: 2))
+                        .overlay(Circle().strokeBorder(knobStroke, lineWidth: 2))
                         .shadow(color: .black.opacity(0.15), radius: 3, y: 1)
                         .offset(x: knobX)
                 }
