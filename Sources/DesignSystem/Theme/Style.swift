@@ -62,6 +62,8 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfacePrimary120: p.neutrals.n5,
                 surfaceSecondary100: p.primary100,
                 surfaceSecondary120: p.primary120,
+                surfaceHero: p.neutrals.n9,
+                surfaceHeroDeep: p.neutrals.n9,
                 // Text — dark: inverted
                 textNeutral9: p.neutrals.n3,
                 textNeutral8: p.neutrals.n2,
@@ -69,6 +71,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 textNeutral3: p.neutrals.n8,
                 textNeutral2: p.neutrals.n85,
                 textNeutral05: p.neutrals.n9,
+                textOnHero: p.neutrals.n05,
                 textPrimary100: p.secondary100,
                 textSecondary100: p.primary100,
                 textOpacity75: 0.75,
@@ -104,6 +107,8 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfacePrimary120: p.primary120,
                 surfaceSecondary100: p.secondary100,
                 surfaceSecondary120: p.secondary120,
+                surfaceHero: p.primary100,
+                surfaceHeroDeep: p.primary120,
                 // Text — light: direct
                 textNeutral9: p.neutrals.n9,
                 textNeutral8: p.neutrals.n8,
@@ -111,6 +116,7 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 textNeutral3: p.neutrals.n3,
                 textNeutral2: p.neutrals.n2,
                 textNeutral05: p.neutrals.n05,
+                textOnHero: p.neutrals.n05,
                 textPrimary100: p.primary100,
                 textSecondary100: p.secondary100,
                 textOpacity75: 0.75,
