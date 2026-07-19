@@ -19,6 +19,7 @@ public struct ComponentTokens: Sendable {
     public let dayTimeline: DayTimelineComponentTokens
     public let mediaPlayer: MediaPlayerComponentTokens
     public let tag: TagComponentTokens
+    public let segmentedPicker: SegmentedPickerComponentTokens
 
     public init(
         button: ButtonComponentTokens = .shared,
@@ -34,7 +35,8 @@ public struct ComponentTokens: Sendable {
         tickScale: TickScaleComponentTokens = .shared,
         dayTimeline: DayTimelineComponentTokens = .shared,
         mediaPlayer: MediaPlayerComponentTokens = .shared,
-        tag: TagComponentTokens = .shared
+        tag: TagComponentTokens = .shared,
+        segmentedPicker: SegmentedPickerComponentTokens = .shared
     ) {
         self.button = button
         self.textField = textField
@@ -50,6 +52,7 @@ public struct ComponentTokens: Sendable {
         self.dayTimeline = dayTimeline
         self.mediaPlayer = mediaPlayer
         self.tag = tag
+        self.segmentedPicker = segmentedPicker
     }
 
     public static let shared = ComponentTokens()
@@ -136,6 +139,14 @@ public struct StatRowComponentTokens: Sendable {
 
     public static let shared = StatRowComponentTokens(
         labelTracking: -0.15
+    )
+}
+
+public struct SegmentedPickerComponentTokens: Sendable {
+    public let containerRadius: CGFloat
+
+    public static let shared = SegmentedPickerComponentTokens(
+        containerRadius: 24
     )
 }
 

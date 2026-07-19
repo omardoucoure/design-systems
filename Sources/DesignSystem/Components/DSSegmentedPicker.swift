@@ -163,7 +163,7 @@ public struct DSSegmentedPicker: View {
         }
         .padding(theme.spacing.xs)
         .background(_containerBackground ?? theme.colors.surfaceNeutral2)
-        .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
+        .clipShape(RoundedRectangle(cornerRadius: theme.components.segmentedPicker.containerRadius))
     }
 
     // MARK: - Pills Layout
@@ -203,7 +203,7 @@ public struct DSSegmentedPicker: View {
         }
         .padding(theme.spacing.xs)
         .background(_containerBackground ?? theme.colors.surfaceNeutral2)
-        .clipShape(RoundedRectangle(cornerRadius: theme.radius.xl))
+        .clipShape(RoundedRectangle(cornerRadius: theme.components.segmentedPicker.containerRadius))
     }
     // MARK: - Underline Layout
 
