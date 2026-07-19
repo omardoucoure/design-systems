@@ -7,6 +7,13 @@ public struct TypographyStyle: Sendable {
     public let lineHeight: CGFloat
     public let letterSpacing: CGFloat
 
+    public init(size: CGFloat, weight: Font.Weight, lineHeight: CGFloat, letterSpacing: CGFloat) {
+        self.size = size
+        self.weight = weight
+        self.lineHeight = lineHeight
+        self.letterSpacing = letterSpacing
+    }
+
     public var font: Font {
         .custom("DMSans-\(weightSuffix)", size: size)
     }
