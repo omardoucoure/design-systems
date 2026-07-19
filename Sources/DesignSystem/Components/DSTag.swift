@@ -37,7 +37,7 @@ public struct DSTag: View {
     public static func background(for variant: DSTagVariant, theme: ThemeConfiguration) -> Color {
         switch variant {
         case .brand:   return theme.colors.surfaceSecondary100
-        case .success: return theme.colors.validatedBg
+        case .success: return theme.colors.successBg
         case .warn:    return theme.colors.warningBg
         case .error:   return theme.colors.errorBg
         case .info:    return theme.colors.infoBg
@@ -49,7 +49,7 @@ public struct DSTag: View {
     public static func foreground(for variant: DSTagVariant, theme: ThemeConfiguration) -> Color {
         switch variant {
         case .brand:   return theme.colors.surfaceSecondary120
-        case .success: return theme.colors.validated
+        case .success: return theme.colors.success
         case .warn:    return theme.colors.warning
         case .error:   return theme.colors.error
         case .info:    return theme.colors.infoFocus

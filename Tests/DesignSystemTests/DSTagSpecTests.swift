@@ -19,8 +19,8 @@ final class DSTagSpecTests: XCTestCase {
     }
 
     func testSuccessTagUsesValidatedTintAndText() {
-        XCTAssertEqual(DSTag.background(for: .success, theme: theme), theme.colors.validatedBg)
-        XCTAssertEqual(DSTag.foreground(for: .success, theme: theme), theme.colors.validated)
+        XCTAssertEqual(DSTag.background(for: .success, theme: theme), theme.colors.successBg)
+        XCTAssertEqual(DSTag.foreground(for: .success, theme: theme), theme.colors.success)
     }
 
     func testErrorTagUsesErrorTintAndText() {

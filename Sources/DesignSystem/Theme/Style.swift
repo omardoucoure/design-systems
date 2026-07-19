@@ -87,11 +87,12 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 // Semantic — shared
                 error: semantic.error,
                 warning: semantic.warning,
+                success: semantic.success,
                 validated: semantic.validated,
                 infoFocus: semantic.infoFocus,
                 errorBg: semantic.errorBg,
                 warningBg: semantic.warningBg,
-                validatedBg: semantic.validatedBg,
+                successBg: semantic.successBg,
                 infoBg: semantic.infoBg
             )
         } else {
@@ -132,11 +133,12 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 // Semantic — shared
                 error: semantic.error,
                 warning: semantic.warning,
+                success: semantic.success,
                 validated: semantic.validated,
                 infoFocus: semantic.infoFocus,
                 errorBg: semantic.errorBg,
                 warningBg: semantic.warningBg,
-                validatedBg: semantic.validatedBg,
+                successBg: semantic.successBg,
                 infoBg: semantic.infoBg
             )
         }

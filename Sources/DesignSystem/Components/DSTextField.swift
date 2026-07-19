@@ -313,7 +313,7 @@ public struct DSTextField: View {
         switch _state {
         case .active: return theme.colors.infoFocus
         case .error: return theme.colors.error
-        case .validated: return theme.colors.validated
+        case .validated: return theme.colors.success
         case .empty, .filled:
             return _variant == .filled ? theme.colors.borderNeutral2 : theme.colors.borderNeutral95
         }

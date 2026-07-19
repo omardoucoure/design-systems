@@ -7,8 +7,8 @@ final class DSBannerSpecTests: XCTestCase {
     private let theme = ThemeConfiguration(brand: .coralCamo, style: .lightRounded)
 
     func testSuccessUsesTintBackgroundNotSolid() {
-        XCTAssertEqual(DSAlertSeverity.success.tintBackground(from: theme.colors), theme.colors.validatedBg)
-        XCTAssertNotEqual(DSAlertSeverity.success.tintBackground(from: theme.colors), theme.colors.validated)
+        XCTAssertEqual(DSAlertSeverity.success.tintBackground(from: theme.colors), theme.colors.successBg)
+        XCTAssertNotEqual(DSAlertSeverity.success.tintBackground(from: theme.colors), theme.colors.success)
     }
 
     func testErrorUsesTintBackgroundNotSolid() {
@@ -21,7 +21,7 @@ final class DSBannerSpecTests: XCTestCase {
     }
 
     func testAccentMatchesSolidSeverityColor() {
-        XCTAssertEqual(DSAlertSeverity.success.accent(from: theme.colors), theme.colors.validated)
+        XCTAssertEqual(DSAlertSeverity.success.accent(from: theme.colors), theme.colors.success)
         XCTAssertEqual(DSAlertSeverity.error.accent(from: theme.colors), theme.colors.error)
     }
 

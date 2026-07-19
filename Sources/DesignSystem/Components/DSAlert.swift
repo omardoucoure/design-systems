@@ -19,7 +19,7 @@ extension DSAlertSeverity {
         switch self {
         case .error: return colors.error
         case .warning: return colors.warning
-        case .success: return colors.validated
+        case .success: return colors.success
         case .info: return colors.infoFocus
         case .neutral: return colors.surfaceNeutral2
         }
@@ -34,7 +34,7 @@ extension DSAlertSeverity {
         switch self {
         case .error: return colors.errorBg
         case .warning: return colors.warningBg
-        case .success: return colors.validatedBg
+        case .success: return colors.successBg
         case .info: return colors.infoBg
         case .neutral: return colors.surfaceNeutral2
         }
