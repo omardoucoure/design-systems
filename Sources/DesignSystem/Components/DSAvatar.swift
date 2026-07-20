@@ -60,7 +60,29 @@ public struct DSAvatar: View {
         self._shape = shape
     }
 
+    var _background: Color?
+    var _foreground: Color?
+    var _monogramFontSize: CGFloat?
+
     // MARK: - Modifiers
+
+    public func avatarBackground(_ color: Color) -> DSAvatar {
+        var copy = self
+        copy._background = color
+        return copy
+    }
+
+    public func avatarForeground(_ color: Color) -> DSAvatar {
+        var copy = self
+        copy._foreground = color
+        return copy
+    }
+
+    public func monogramFontSize(_ size: CGFloat) -> DSAvatar {
+        var copy = self
+        copy._monogramFontSize = size
+        return copy
+    }
 
     /// Sets a uniform avatar size (width = height).
     public func avatarSize(_ size: CGFloat) -> DSAvatar {
@@ -92,14 +114,14 @@ public struct DSAvatar: View {
             switch _style {
             case .monogram(let initials):
                 Text(initials)
-                    .font(theme.typography.body.font)
-                    .tracking(theme.typography.body.tracking)
-                    .foregroundStyle(theme.colors.textNeutral9)
+                    .font(_monogramFontSize.map { Font.system(size: $0, weight: .semibold) } ?? theme.typography.body.font)
+                    .tracking(_monogramFontSize == nil ? theme.typography.body.tracking : 0)
+                    .foregroundStyle(_foreground ?? theme.colors.textNeutral9)
 
             case .icon(let systemName):
                 Image(systemName: systemName)
                     .font(.system(size: min(_width, _height) * 0.45))
-                    .foregroundStyle(theme.colors.textNeutral9)
+                    .foregroundStyle(_foreground ?? theme.colors.textNeutral9)
 
             case .image(let image):
                 image
@@ -108,7 +130,7 @@ public struct DSAvatar: View {
             }
         }
         .frame(width: _width, height: _height)
-        .background(theme.colors.surfaceNeutral05)
+        .background(_background ?? theme.colors.surfaceNeutral05)
         .clipShape(clipShape)
     }
 
