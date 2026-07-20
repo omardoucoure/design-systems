@@ -114,7 +114,7 @@ public struct DSAvatar: View {
             switch _style {
             case .monogram(let initials):
                 Text(initials)
-                    .font(_monogramFontSize.map { Font.system(size: $0, weight: .semibold) } ?? theme.typography.body.font)
+                    .font(_monogramFontSize.map { TypographyStyle(size: $0, weight: .semibold, lineHeight: 1, letterSpacing: 0).font } ?? theme.typography.body.font)
                     .tracking(_monogramFontSize == nil ? theme.typography.body.tracking : 0)
                     .foregroundStyle(_foreground ?? theme.colors.textNeutral9)
 
