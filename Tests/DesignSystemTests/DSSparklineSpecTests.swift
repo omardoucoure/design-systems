@@ -42,6 +42,15 @@ final class DSAvatarOverrideSpecTests: XCTestCase {
     }
 }
 
+final class DSHahoTabIconSpecTests: XCTestCase {
+    func testHahoTabIconsExistInCatalog() {
+        XCTAssertEqual(DSIcon.hahoHome.rawValue, "icon_haho_home")
+        XCTAssertEqual(DSIcon.hahoGrid.rawValue, "icon_haho_grid")
+        XCTAssertEqual(DSIcon.hahoBarChart.rawValue, "icon_haho_bar_chart")
+        XCTAssertEqual(DSIcon.hahoTarget.rawValue, "icon_haho_target")
+    }
+}
+
 final class DSSecondaryTintTokenSpecTests: XCTestCase {
     private let theme = ThemeConfiguration(brand: .coralCamo, style: .lightRounded)
 
