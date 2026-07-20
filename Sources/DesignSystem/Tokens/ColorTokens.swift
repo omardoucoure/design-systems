@@ -14,6 +14,8 @@ public struct ColorTokens: Sendable {
     public let surfacePrimary120: Color
     public let surfaceSecondary100: Color
     public let surfaceSecondary120: Color
+    public let surfaceSecondary40: Color
+    public let surfaceSecondary10: Color
     public let surfaceHero: Color
     public let surfaceHeroDeep: Color
 

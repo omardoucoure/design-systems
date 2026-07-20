@@ -62,6 +62,8 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfacePrimary120: p.neutrals.n5,
                 surfaceSecondary100: p.primary100,
                 surfaceSecondary120: p.primary120,
+                surfaceSecondary40: p.primary80,
+                surfaceSecondary10: p.neutrals.n85,
                 surfaceHero: p.neutrals.n9,
                 surfaceHeroDeep: p.neutrals.n9,
                 // Text — dark: inverted
@@ -108,6 +110,8 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfacePrimary120: p.primary120,
                 surfaceSecondary100: p.secondary100,
                 surfaceSecondary120: p.secondary120,
+                surfaceSecondary40: p.secondary40,
+                surfaceSecondary10: p.secondary10,
                 surfaceHero: p.primary100,
                 surfaceHeroDeep: p.primary120,
                 // Text — light: direct

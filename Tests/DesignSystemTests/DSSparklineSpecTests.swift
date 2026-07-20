@@ -41,3 +41,17 @@ final class DSAvatarOverrideSpecTests: XCTestCase {
         XCTAssertNil(avatar._monogramFontSize)
     }
 }
+
+final class DSSecondaryTintTokenSpecTests: XCTestCase {
+    private let theme = ThemeConfiguration(brand: .coralCamo, style: .lightRounded)
+
+    func testLightThemeExposesSecondaryTints() {
+        XCTAssertEqual(theme.colors.surfaceSecondary40, Brand.coralCamo.primitives.secondary40)
+        XCTAssertEqual(theme.colors.surfaceSecondary10, Brand.coralCamo.primitives.secondary10)
+    }
+
+    func testTagBrandUsesSecondary40Pair() {
+        XCTAssertEqual(DSTag.background(for: .brand, theme: theme), theme.colors.surfaceSecondary40)
+        XCTAssertEqual(DSTag.foreground(for: .brand, theme: theme), theme.colors.surfaceSecondary120)
+    }
+}
