@@ -1,5 +1,8 @@
 // figma-node: 85:25779
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - Bottom App Bar Style
 
@@ -430,11 +433,15 @@ private struct DockedContainerModifier: ViewModifier {
     @Environment(\.theme) private var theme
 
     private var bottomSafeAreaInset: CGFloat {
+        #if canImport(UIKit)
         (UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows)
             .first(where: \.isKeyWindow)?
             .safeAreaInsets.bottom) ?? 0
+        #else
+        0
+        #endif
     }
 
     func body(content: Content) -> some View {

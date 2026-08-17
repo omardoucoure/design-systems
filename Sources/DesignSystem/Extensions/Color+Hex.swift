@@ -1,5 +1,9 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 extension Color {
     /// Creates a Color from a hex string (e.g. "#FF6A5F" or "FF6A5F").
@@ -21,7 +25,12 @@ extension Color {
     /// Operates in HSB space so hue and saturation are preserved.
     public func brightness(_ amount: Double) -> Color {
         var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        #if canImport(UIKit)
         UIColor(self).getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        #else
+        let resolved = NSColor(self).usingColorSpace(.sRGB) ?? NSColor(self)
+        resolved.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        #endif
         return Color(hue: Double(h),
                      saturation: Double(s),
                      brightness: max(0, min(1, Double(b) + amount)),

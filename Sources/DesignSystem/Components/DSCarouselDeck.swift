@@ -120,7 +120,7 @@ public struct DSCarouselDeck: View {
                     .tag(index)
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
+        .pagedTabViewStyle()
         .frame(height: _cardHeight)
         .applyDoubleContainer(height: _cardHeight)
     }

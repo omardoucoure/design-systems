@@ -48,8 +48,7 @@ public struct DSCodeInput: View {
         ZStack {
             // Hidden text field that captures keyboard input
             TextField("", text: $code)
-                .keyboardType(.numberPad)
-                .textContentType(.oneTimeCode)
+                .oneTimeCodeKeyboard()
                 .focused($isFocused)
                 .opacity(0)
                 .allowsHitTesting(false)

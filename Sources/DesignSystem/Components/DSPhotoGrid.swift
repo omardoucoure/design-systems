@@ -190,7 +190,7 @@ struct DSVideoThumbnailCell: View {
     let height: CGFloat
     let radius: CGFloat
 
-    @State private var thumbnail: UIImage? = nil
+    @State private var thumbnail: PlatformImage? = nil
 
     var body: some View {
         Color.clear
@@ -198,11 +198,11 @@ struct DSVideoThumbnailCell: View {
             .overlay(
                 Group {
                     if let img = thumbnail {
-                        Image(uiImage: img)
+                        Image(platformImage: img)
                             .resizable()
                             .scaledToFill()
                     } else {
-                        Color(uiColor: .systemGray5)
+                        Color.gray.opacity(0.25)
                     }
                 }
             )
@@ -231,7 +231,7 @@ struct DSVideoThumbnailCell: View {
             gen.appliesPreferredTrackTransform = true
             gen.maximumSize = CGSize(width: 300, height: 300)
             if let cgImage = try? gen.copyCGImage(at: .zero, actualTime: nil) {
-                let img = UIImage(cgImage: cgImage)
+                let img = PlatformImage.fromCGImage(cgImage)
                 DispatchQueue.main.async { thumbnail = img }
             }
         }
