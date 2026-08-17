@@ -41,6 +41,33 @@ private struct DesignSystemModifier: ViewModifier {
     }
 }
 
+private struct AdaptiveDesignSystemModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+
+    let brand: Brand
+    let shape: StyleShape
+    let primaryColor: Color?
+    let secondaryColor: Color?
+
+    init(brand: Brand, shape: StyleShape, primaryColor: Color? = nil, secondaryColor: Color? = nil) {
+        FontRegistration.registerFonts()
+        self.brand = brand
+        self.shape = shape
+        self.primaryColor = primaryColor
+        self.secondaryColor = secondaryColor
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .environment(\.theme, ThemeConfiguration(
+                brand: brand,
+                style: shape.style(for: colorScheme),
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor
+            ))
+    }
+}
+
 extension View {
     /// Applies the HaHo Design System theme to this view hierarchy.
     ///
@@ -63,6 +90,24 @@ extension View {
         secondaryColor: Color? = nil
     ) -> some View {
         modifier(DesignSystemModifier(brand: brand, style: style, primaryColor: primaryColor, secondaryColor: secondaryColor))
+    }
+
+    /// Applies the theme with its color mode following the system appearance.
+    ///
+    /// The shape axis stays pinned; light/dark is resolved from `\.colorScheme`,
+    /// so the hierarchy re-themes whenever the user changes their system preference.
+    ///
+    /// ```swift
+    /// ContentView()
+    ///     .designSystem(brand: .coralCamo, shape: .rounded)
+    /// ```
+    public func designSystem(
+        brand: Brand,
+        shape: StyleShape,
+        primaryColor: Color? = nil,
+        secondaryColor: Color? = nil
+    ) -> some View {
+        modifier(AdaptiveDesignSystemModifier(brand: brand, shape: shape, primaryColor: primaryColor, secondaryColor: secondaryColor))
     }
 }
 

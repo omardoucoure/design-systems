@@ -53,4 +53,17 @@ public struct ColorTokens: Sendable {
     public let warningBg: Color
     public let successBg: Color
     public let infoBg: Color
+
+    // MARK: Accent on surface (2)
+    /// The brand accent as drawn *on a card*. In dark mode the card itself is the
+    /// primary fill, so an accent drawn in primary would vanish into it.
+    public let accentOnSurface: Color
+    /// Foreground for content sitting on an `accentOnSurface` fill.
+    public let onAccentText: Color
+
+    // MARK: Data series (4)
+    public let dataSeries: Color
+    public let dataSeriesMuted: Color
+    public let dataSeriesAlt: Color
+    public let dataTrack: Color
 }

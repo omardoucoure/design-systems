@@ -42,6 +42,30 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
         }
     }
 
+    // MARK: - System Appearance
+
+    /// Resolves the style for a system color scheme, keeping the given shape.
+    public init(colorScheme: ColorScheme, shape: StyleShape) {
+        self.init(isDark: colorScheme == .dark, isSharp: shape == .sharp)
+    }
+
+    public static func rounded(for colorScheme: ColorScheme) -> Style {
+        Style(colorScheme: colorScheme, shape: .rounded)
+    }
+
+    public static func sharp(for colorScheme: ColorScheme) -> Style {
+        Style(colorScheme: colorScheme, shape: .sharp)
+    }
+
+    /// Returns this style re-resolved for a color scheme, preserving its shape.
+    public func resolved(for colorScheme: ColorScheme) -> Style {
+        Style(isDark: colorScheme == .dark, isSharp: isSharp)
+    }
+
+    public var shape: StyleShape {
+        isSharp ? .sharp : .rounded
+    }
+
     // MARK: - Color Resolution
 
     /// Resolves semantic color tokens from brand primitives.
@@ -54,8 +78,8 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 // Surface — dark: inverted neutrals, swapped brand colors
                 surfaceNeutral05: p.neutrals.n9,
                 surfaceNeutral1: p.neutrals.n85,
-                surfaceNeutral2: p.neutrals.n85,
-                surfaceNeutral3: p.neutrals.n8,
+                surfaceNeutral2: p.neutrals.n8,
+                surfaceNeutral3: p.neutrals.n7,
                 surfaceNeutral9: p.neutrals.n05,
                 surfacePrimary80: p.primary80,
                 surfacePrimary100: p.secondary100,
@@ -64,8 +88,8 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 surfaceSecondary120: p.primary120,
                 surfaceSecondary40: p.primary80,
                 surfaceSecondary10: p.neutrals.n85,
-                surfaceHero: p.neutrals.n9,
-                surfaceHeroDeep: p.neutrals.n9,
+                surfaceHero: p.neutrals.n95,
+                surfaceHeroDeep: p.neutrals.n95,
                 // Text — dark: inverted
                 textNeutral9: p.neutrals.n3,
                 textNeutral8: p.neutrals.n2,
@@ -95,7 +119,16 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 errorBg: semantic.errorBg,
                 warningBg: semantic.warningBg,
                 successBg: semantic.successBg,
-                infoBg: semantic.infoBg
+                infoBg: semantic.infoBg,
+                // Accent on surface — dark: the card is the primary fill, so the
+                // accent must come from the secondary ramp to stay visible.
+                accentOnSurface: p.secondary100,
+                onAccentText: p.primary120,
+                // Data series — dark
+                dataSeries: p.secondary100,
+                dataSeriesMuted: p.secondary40,
+                dataSeriesAlt: p.neutrals.n4,
+                dataTrack: p.primary80
             )
         } else {
             return ColorTokens(
@@ -143,7 +176,15 @@ public enum Style: String, CaseIterable, Sendable, Identifiable {
                 errorBg: semantic.errorBg,
                 warningBg: semantic.warningBg,
                 successBg: semantic.successBg,
-                infoBg: semantic.infoBg
+                infoBg: semantic.infoBg,
+                // Accent on surface — light
+                accentOnSurface: p.primary100,
+                onAccentText: p.neutrals.n05,
+                // Data series — light
+                dataSeries: p.primary100,
+                dataSeriesMuted: p.primary80,
+                dataSeriesAlt: p.neutrals.n6,
+                dataTrack: p.neutrals.n3
             )
         }
     }

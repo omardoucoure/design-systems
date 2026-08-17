@@ -22,7 +22,12 @@ final class HeroTokensSpecTests: XCTestCase {
 
     func testDarkHeroAndHeroDeepMapToDeepestNeutral() {
         let tokens = Style.darkRounded.resolveColors(from: brand.primitives)
-        XCTAssertEqual(tokens.surfaceHero, brand.primitives.neutrals.n9)
-        XCTAssertEqual(tokens.surfaceHeroDeep, brand.primitives.neutrals.n9)
+        XCTAssertEqual(tokens.surfaceHero, brand.primitives.neutrals.n95)
+        XCTAssertEqual(tokens.surfaceHeroDeep, brand.primitives.neutrals.n95)
+    }
+
+    func testDarkHeroSitsBelowThePageSurface() {
+        let tokens = Style.darkRounded.resolveColors(from: brand.primitives)
+        XCTAssertNotEqual(tokens.surfaceHero, tokens.surfaceNeutral05)
     }
 }
