@@ -84,6 +84,7 @@ public struct DSTextArea: View {
                     .tracking(theme.typography.bodyRegular.tracking)
                     .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
                     .scrollContentBackground(.hidden)
+                    .scrollIndicators(.hidden)
                     .frame(minHeight: _minHeight)
             }
         }
