@@ -58,6 +58,15 @@ public struct DSTextArea: View {
         return copy
     }
 
+    public enum Geometry {
+        public static let editorTextContainerInset: CGSize = .zero
+        public static let editorLineFragmentPadding: CGFloat = 0
+        public static let editorLeadingInset: CGFloat = 0
+        public static let editorTopInset: CGFloat = 0
+        public static let placeholderLeadingInset: CGFloat = editorLeadingInset
+        public static let placeholderTopInset: CGFloat = editorTopInset
+    }
+
     // MARK: - Body
 
     public var body: some View {
@@ -75,8 +84,9 @@ public struct DSTextArea: View {
                         .font(theme.typography.bodyRegular.font)
                         .tracking(theme.typography.bodyRegular.tracking)
                         .foregroundStyle(theme.colors.textNeutral9.opacity(0.5))
-                        .padding(.top, theme.spacing.xs)
-                        .padding(.leading, theme.spacing.xxs)
+                        .padding(.top, Geometry.placeholderTopInset)
+                        .padding(.leading, Geometry.placeholderLeadingInset)
+                        .allowsHitTesting(false)
                 }
 
                 TextEditor(text: $_text)
@@ -85,6 +95,9 @@ public struct DSTextArea: View {
                     .foregroundStyle(theme.colors.textNeutral9.opacity(0.75))
                     .scrollContentBackground(.hidden)
                     .scrollIndicators(.hidden)
+                    .flattenedTextContainerInset()
+                    .padding(.top, Geometry.editorTopInset)
+                    .padding(.leading, Geometry.editorLeadingInset)
                     .frame(minHeight: _minHeight)
             }
         }
