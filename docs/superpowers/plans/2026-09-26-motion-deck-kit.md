@@ -32,7 +32,7 @@
 | `deck/deck.js` | design-system-web | DOM wiring |
 | `deck/template/index.html` | design-system-web | starter talk showing every API feature |
 | `README.md`, `package.json` | design-system-web | docs + ship `deck/` |
-| `presentation/helix-loops/index.html` | design-systems | 17 scenes |
+| `presentation/helix-loops/index.html` | design-systems | 20 scenes |
 | `deck/patterns.css` | design-system-web | reusable scene patterns (hub, orbit, metrics, gauge, versus, roadmap) |
 | `deck/PATTERNS.md` | design-system-web | scene pattern catalog with snippets (Task 8) |
 | `~/.claude/skills/motion-deck/SKILL.md` | user skills | story prompt → talk folder (Task 8) |
@@ -837,7 +837,7 @@ Reproduction, in our design system, of the AI LABS video "Shopify Just Released 
 
 **Interfaces:**
 - Consumes: kit API from Task 3 (`deck.css` classes and attributes, `DeckEffects`), `deck/template/index.html` as skeleton reference (head, stage, progress bar, script order). Kit path from talk: `../../design-system-web/`.
-- Produces: `patterns.css` classes (all `deck-` prefixed, generic names, reusable by any talk). Task 6 appends scenes 10–17 before `<div class="deck__progress">` and may add patterns to `patterns.css`.
+- Produces: `patterns.css` classes (all `deck-` prefixed, generic names, reusable by any talk). Task 6 inserts scene 3 and appends scenes 11–20 before `<div class="deck__progress">` and may add patterns to `patterns.css`.
 - A talk needs zero custom CSS and no `style=` attributes: every class lives in `deck.css` or `patterns.css`.
 
 **Pattern classes to provide in `patterns.css`** (tokens only; px only allowed in a `:root` block of `--deck-*` tokens if unavoidable):
@@ -885,35 +885,42 @@ Reproduction, in our design system, of the AI LABS video "Shopify Just Released 
 
 ---
 
-### Task 6: Helix Loops reproduction, scenes 10–17
+### Task 6: Helix Loops reproduction, scenes 3 and 11–20
+
+The deck grows to 20 scenes to cover the whole video: a new scene 3 (the agent still tries to cheat) is inserted after scene 2, which shifts the Task 5 scenes 3–9 to 4–10; Gate 2 gets three scenes (15–17) instead of one.
 
 **Files:**
-- Modify: `presentation/helix-loops/index.html` (insert before `<div class="deck__progress">`), `design-system-web/deck/patterns.css` (only if a new generic pattern is needed)
+- Modify: `presentation/helix-loops/index.html` (insert new scene 3 right after the scene 2 `</section>`; append scenes 11–20 before `<div class="deck__progress">`), `design-system-web/deck/patterns.css` (only if a new generic pattern is needed)
 
 **Interfaces:**
-- Consumes: Task 5 pattern classes, kit API.
+- Consumes: Task 5 pattern classes, kit API, DS variants `avatar--accent` (monogram inside `card--strong`) and `checkbox--lg` (h5 checklist rows) in `components.css`.
 
 | # | Beat | Content and reveal steps |
 |---|---|---|
-| 10 | Sub-agents at start | hub "Orchestrator" pops; three nodes grow out via `.deck-link`: "App health check", "Checkpoint planner" (with a bubble "Any questions?" step 2), "Test planner" (step 3) |
-| 11 | Gate ≠ rule | `deck-versus`: "Rule" card with caption "Advice. Forgotten mid-task." (step 1, then tag--warn "Ignored" step 2); `card--strong` "Gate" "Blocks the next task until passed" (step 3); terminal `.code-block` typing `stop hook → exit 2 → "not done, keep going"` (step 4) |
-| 12 | The 4 gates | `deck-checklist` in a card: Behavior (does it work), UI (does it match the design), Code review (is the code good), Human (does it feel right); each row `data-anim="check" data-done` steps 1–4 |
-| 13 | Gate 1 Behavior | `.deck-window` "Tests" with two stacked `.deck-screen` panels: panel A 5 test rows with tag--error "Failing" (step 1); flow line "Code sub-agent writes the feature" (step 2); panel B same rows with tag--success "Passing" fades over (step 3); tag--success "Gate 1 passed" pops (step 4) |
-| 14 | Gate 2 UI | `deck-compare`: device "Prototype" and device "App" with near-identical skeleton screens (step 1); two reviewer cards "Looks" and "Behaves" pop between (step 2); combined verdict tag--success "Match · gate passed" (step 3) |
-| 15 | Gate 3 Adversarial | `deck-loop`: "Critic agent · assumes the code is wrong" ↔ "Fixer agent · fixes what's found" (steps 1, 2); round counter `count` 0 → 3 labelled "rounds" (step 3); tag--success "Critic approves" pops (step 4) |
-| 16 | Gate 4 Human | device mock with checklist of the feature (step 1); bubble "Make the button bigger" (step 2); stagger of result cards "New checkpoint · same gates" and "Saved to learnings file · every agent reads it" (step 3) |
-| 17 | Closing | `deck-quote`: "Attempts can be <mark class=hl>wrong</mark>." (step 0) then "Shipping can't." (step 1); caption "Recreated with the HaHo design system" (step 2) |
+| 3 | The agent still cheats | kicker "Even with the workflow"; `.deck-window` titled "Terminal" with `.code-block` typing an agent log ending in `✓ Task complete` (step 1); tag--error "3 tests still failing" pops over it (step 2); lead "A small change fixed this for good. More on it later." with `mark.hl` on "fixed" (step 3) |
+| 11 | Sub-agents at start | hub "Orchestrator" pops; three nodes grow out via `.deck-link`: "App health check", "Checkpoint planner" (with a bubble "Any questions?" step 2), "Test planner" (step 3) |
+| 12 | Gate ≠ rule | `deck-versus`: "Rule" card with caption "Advice. Forgotten mid-task." (step 1, then tag--warn "Ignored" step 2); `card--strong` "Gate" "Blocks the next task until passed" (step 3); terminal `.code-block` typing `stop hook → exit 2 → "not done, keep going"` with kicker "Our fix" (step 4) |
+| 13 | The 4 gates | `deck-checklist` in a card, rows use `checkbox checkbox--lg`: Behavior (does it work), UI (does it match the design), Code review (is the code good), Human (does it feel right); each row `data-anim="check" data-done` steps 1–4 |
+| 14 | Gate 1 Behavior | `.deck-window` "Tests" with two stacked `.deck-screen` panels: panel A 5 test rows with tag--error "Failing" (step 1); flow line "Code sub-agent writes the feature" (step 2); panel B same rows with tag--success "Passing" fades over (step 3); tag--success "Gate 1 passed" pops (step 4) |
+| 15 | Gate 2 · Design reviewer | kicker "Gate 2 · UI"; two overlapping `deck-mini`-style screens "Design" and "Build" slightly offset (step 1); reviewer card "Vision model · strong spatial awareness" pops (step 2); tags "Spacing off by one step" and "Button too small" (tag--warn, stagger, step 3) |
+| 16 | Gate 2 · Prototype first | lead "No design to compare against? Build one."; `.code-block` titled design.md typing a short token list (colors, spacing, radius) (step 1); `.deck-link` to `.deck-window` "Prototype · one HTML file" with a clickable-looking mock screen (list rows + `btn btn--filledB`) (step 2); tag--success "Client approved" (step 3) |
+| 17 | Gate 2 · Browser check | `deck-compare`: device "Prototype" and device "App" with near-identical skeleton screens inside a `.deck-window` titled "Browser agent" (step 1); two reviewer cards "Looks" and "Behaves" pop between (step 2); combined verdict tag--success "Match · gate passed" (step 3) |
+| 18 | Gate 3 Adversarial | `deck-loop`: "Critic agent · assumes the code is wrong" ↔ "Fixer agent · fixes what's found" (steps 1, 2); round counter `count` 0 → 3 labelled "rounds" (step 3); tag--success "Critic approves" pops (step 4) |
+| 19 | Gate 4 Human | device mock with checklist of the feature (step 1); bubble "Make the button bigger" (step 2); stagger of result cards "New checkpoint · same gates" and "Saved to learnings file · every agent reads it" (step 3) |
+| 20 | Closing | `deck-quote`: "Attempts can be <mark class=hl>wrong</mark>." (step 0) then "Shipping can't." (step 1); caption "Recreated with the HaHo design system" (step 2) |
 
-- [ ] **Step 1: Insert scenes 10–17** following the table; reuse Task 5 patterns; add a generic pattern to `patterns.css` only if none fits.
-- [ ] **Step 2: Verify** — same method as Task 5 Step 3 for scenes 10–17, then a full ArrowRight run `#1.0` → end and ArrowLeft back to `#1.0`: no console errors; final hash `#17.2`.
+Text is paraphrased, never verbatim transcript; no brand logos; product names only as plain text where needed ("vision model", "browser agent" preferred over vendor names).
+
+- [ ] **Step 1: Insert scene 3 and scenes 11–20** following the table; reuse Task 5 patterns; add a generic pattern to `patterns.css` only if none fits.
+- [ ] **Step 2: Verify** — same method as Task 5 Step 3 for scenes 3 and 11–20, then a full ArrowRight run `#1.0` → end and ArrowLeft back to `#1.0`: no console errors; final hash `#20.2`.
 - [ ] **Step 3: Token check** — same grep as Task 5 Step 4.
-- [ ] **Step 4: Commit** — `git add presentation/helix-loops/index.html && git commit -m "Add Helix Loops reproduction scenes 10 to 17"` (+ patterns.css commit in design-system-web if changed: "Extend deck scene patterns").
+- [ ] **Step 4: Commit** — `git add presentation/helix-loops/index.html && git commit -m "Complete Helix Loops reproduction with 20 scenes"` (+ patterns.css commit in design-system-web if changed: "Extend deck scene patterns").
 
 ---
 
 ### Task 7: Full run-through and checks
 
-- [ ] **Step 1: Keyboard run** — open `#1.0`, press → until the end via javascript_tool, collecting `location.hash` each press. Expected final hash `#17.2`, no console errors (`read_console_messages`).
+- [ ] **Step 1: Keyboard run** — open `#1.0`, press → until the end via javascript_tool, collecting `location.hash` each press. Expected final hash `#20.2`, no console errors (`read_console_messages`).
 - [ ] **Step 2: Backward run** — ← to `#1.0`; every scene reached.
 - [ ] **Step 3: Token grep** — `grep -nE '#[0-9A-Fa-f]{3,6}\b|rgba?\(|style=' design-system-web/deck/patterns.css presentation/helix-loops/index.html` → no CSS literals, no inline styles.
 - [ ] **Step 4: Line limits** — `wc -l design-system-web/deck/*.css design-system-web/deck/*.js` each < 400. `index.html` is scene content (like translation files) and may exceed 400.
