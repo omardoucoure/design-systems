@@ -1,8 +1,8 @@
-# Motion Deck Kit — Design
+# Motion Deck Kit: Design
 
 ## Goal
 
-A reusable, click-driven HTML presentation kit built only from the HaHo web design system, with motion-graphics scenes in the style of explainer videos (camera moves, device mockups switching screens, UI cards animating, diagrams drawing in, counters, typewriter). First deck: PFU Studio talk (French), presented live and offline.
+A reusable, click-driven HTML presentation kit built only from the HaHo web design system, with motion-graphics scenes in the style of explainer videos (camera moves, device mockups switching screens, UI cards animating, diagrams drawing in, counters, typewriter). First deck: the Helix Loops reproduction (English), presented live and offline.
 
 ## Decisions
 
@@ -11,10 +11,10 @@ A reusable, click-driven HTML presentation kit built only from the HaHo web desi
 | Engine | Vanilla HTML/CSS/JS, no framework, no build step |
 | Output | Live click-driven deck only (no video export) |
 | Canvas | DS light style, page background `surfaceNeutral0_5` |
-| Language | PFU Studio deck in French |
+| Language | English |
 | Delivery | Local file opened from disk, fully offline (DM Sans bundled, no CDN) |
-| Screens | Mockups only, like the video: DS components + skeleton bars inside window/phone frames; no screenshots or images |
-| Visual reference | AI LABS video `bBMp5tLxShQ`: single stage, camera pan/zoom, staggered UI reveals, orbit diagram, count-up, kinetic headline with highlight box |
+| Screens | Mockups only: DS components + skeleton bars inside window/phone frames; no screenshots or images |
+| Talks | Zero custom CSS; every talk composes reusable layouts from `deck/patterns.css` |
 
 ## Architecture
 
@@ -23,16 +23,21 @@ design-system-web/                  reusable, ships with the package
 ├── tokens.css      + motion tokens
 ├── components.css  existing DS components
 └── deck/
-    ├── deck.css    stage, scenes, animation classes
-    ├── deck.js     navigation, step engine, camera, hash resume
-    └── effects.js  count-up, typewriter, path draw, highlight sweep, chat bubble
+    ├── deck.css       stage, scenes, animation classes
+    ├── deck.js        navigation, step engine, camera, hash resume
+    ├── deck-state.js  pure hash/step state machine
+    ├── effects.js     count-up, typewriter, path draw, highlight sweep, chat bubble
+    ├── patterns.css   reusable scene layouts (rows, orbit, stairs, bars, bubbles…)
+    ├── PATTERNS.md    catalog of scene patterns with markup snippets
+    ├── new-deck.sh    scaffolds a new talk folder
+    ├── template/      starter scene for a new talk
+    └── tests/         deck-state unit tests
 
-design-systems/presentation/pfu-studio/   one talk
-├── index.html      scenes only
-└── scenes.css      talk-only layout
+design-systems/presentation/helix-loops/   one talk
+└── index.html      scenes only, no custom CSS
 ```
 
-The kit is consumed by relative path from a talk folder. A new talk = new folder with `index.html` + `scenes.css`, generated from a story prompt by the `motion-deck` skill using the scene pattern catalog.
+The kit is consumed by relative path from a talk folder. A new talk = new folder with `index.html`, scaffolded by `deck/new-deck.sh` and generated from a story prompt by the `motion-deck` skill using the scene pattern catalog in `deck/PATTERNS.md`.
 
 ## Motion tokens (added to `tokens.css`)
 
@@ -53,7 +58,7 @@ Headline sweep uses a new semantic `--surface-highlight` (light: `--s-40`, dark:
 
 ## Stage
 
-- Fixed 1920×1080 logical stage, scaled with `transform: scale()` to fit the viewport, letterboxed with `surfaceNeutral0_5`.
+- Fixed 1280×720 logical stage, scaled with `transform: scale()` to fit the viewport, letterboxed with `surfaceNeutral0_5`.
 - One scene visible at a time; the stage acts as camera.
 - Body carries `data-brand` and `data-style="lightRounded"`; brand switchable per talk.
 
@@ -61,9 +66,9 @@ Headline sweep uses a new semantic `--surface-highlight` (light: `--s-40`, dark:
 
 ```html
 <section class="scene" data-camera="zoom">
-  <h1 class="t-display1" data-step="1" data-anim="rise">On est <mark class="hl">AI first</mark></h1>
-  <button class="btn btn--filled btn--big" data-step="2" data-anim="pop" data-next>Mais…</button>
-  <div class="card" data-step="3" data-anim="rise">Sommes-nous prêts ?</div>
+  <h1 class="t-display1" data-step="1" data-anim="rise">We are <mark class="hl">AI first</mark></h1>
+  <button class="btn btn--filledA btn--big" data-step="2" data-anim="pop" data-next>But…</button>
+  <div class="card" data-step="3" data-anim="rise">Are we ready?</div>
 </section>
 ```
 
@@ -82,8 +87,8 @@ Headline sweep uses a new semantic `--surface-highlight` (light: `--s-40`, dark:
 |---|---|
 | → / Space / PageDown / click on `data-next` | next step; if none left, next scene |
 | ← / PageUp | previous step; if at start, previous scene fully revealed |
-| `F` | toggle fullscreen |
-| URL hash `#4.2` | scene 4, step 2; updated on every move |
+| `F` (no modifier held) | toggle fullscreen |
+| URL hash `#4.2` | scene 4, step 2; updated on every move; editing the hash directly also navigates |
 
 State machine per scene: `entering → step 0 … step N → leaving`. Going backward removes the last revealed step without replaying earlier ones.
 
@@ -96,31 +101,42 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 | `draw` | SVG path `stroke-dashoffset` from length to 0 |
 | `sweep` | `mark.hl` background grows left to right behind text |
 | chat bubble | three-dot typing indicator, then message appears |
+| `check` | checkbox ticks after a delay, only when the input exists |
 
 `prefers-reduced-motion: reduce` → all reveals instant, counters jump to target.
 
-## PFU Studio storyline (French)
+## Helix Loops storyline (English)
 
-| # | Scene | Content | Motion |
-|---|---|---|---|
-| 1 | Titre | PFU Studio, subtitle, Mac window mock with agent timeline | highlight sweep, window rises |
-| 1b | Au programme | Pourquoi · L'objectif · La suite | staggered list |
-| 2 | Pourquoi | Mobile team isolated (compilation, simulateur, environnement) vs QA, Design, Produit | islands appear, connectors draw, PFU Studio lands in center |
-| 3 | AI first | "On est AI first" → button → "Mais… sommes-nous prêts ?" as a chat bubble from a person | kinetic type, pop, typing bubble |
-| 4 | Paradoxe | PRs 12 → 140; QA queue overflowing; human review ring in red; questions: QA prête ? revue humaine ? qualité ? workflow ? | count-up, list overflow, progress ring |
-| 5 | Slogan vs capacité | AI first = slogan, AI ready = capacité | split cards, highlight |
-| 6 | Le cœur | PFU Studio at center; orbit: agents (Kim, Cody, Arthur), Maestro, simulateur, Jira, verdicts | orbit draws in, nodes pop |
-| 7 | Démo | device + Mac frames with user media, screen switching | slide in, crossfade |
-| 8 | Prochaines étapes | roadmap checklist | checkboxes tick staggered |
-| 9 | Merci | questions | fade |
+| # | Scene | Content |
+|---|---|---|
+| 1 | Hook counter | count-up hook |
+| 2 | One prompt vs loop | one prompt compared against the loop |
+| 3 | Agent still cheats | the agent still cheats despite the prompt |
+| 4 | Title orbit | title card with orbiting nodes |
+| 5 | How Helix works | overview of the Helix approach |
+| 6 | Fresh context | fresh context per step |
+| 7 | Checkpoints vs gates | checkpoints compared against gates |
+| 8 | Orchestrator timeline | orchestrator driving a timeline |
+| 9 | Checkpoint stairs | checkpoints climbing in complexity |
+| 10 | Planner JSON + viewer | plan as JSON next to a checkpoint viewer |
+| 11 | Sub-agents at start | sub-agents spun up at the start |
+| 12 | Rule vs gate | a rule compared against a gate |
+| 13 | The 4 gates | the four gates overview |
+| 14 | Gate 1 behavior | behavior gate |
+| 15 | Gate 2 design reviewer | design reviewer gate |
+| 16 | Gate 2 prototype first | prototype-first pass of the design gate |
+| 17 | Gate 2 browser check | browser-check pass of the design gate |
+| 18 | Gate 3 adversarial loop | adversarial review loop |
+| 19 | Gate 4 human | human gate |
+| 20 | Closing | closing scene |
 
 ## Rules
 
 - Every color, spacing, radius, font, border and duration comes from `tokens.css`; a missing value becomes a token.
-- Only DS component classes for UI; `deck.css` defines layout and motion only.
+- Only DS component classes for UI; `deck.css` and `deck/patterns.css` define layout and motion only, never one-off component looks.
 - Parent/child contrast rule from the DS applies.
 - No source file over 400 lines; no code comments.
-- Text in the talk file is plain French content; engine has no user-facing strings.
+- Talks carry zero custom CSS and no user-facing strings baked into the engine; all copy lives in the talk's `index.html`.
 
 ## Failure modes
 
@@ -132,5 +148,5 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 
 ## Verification
 
-- Open `presentation/pfu-studio/index.html` in Chrome from disk, step through every scene forward and backward, screenshot each scene.
+- Open `presentation/helix-loops/index.html` in Chrome from disk, step through every scene forward and backward, screenshot each scene.
 - Token self-check grep returns no raw hex or px literals in the talk file.
