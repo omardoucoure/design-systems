@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Reusable click-driven HTML deck kit built on the HaHo web design system, plus the PFU Studio talk (French) built with it.
+**Goal:** Reusable click-driven HTML deck kit built on the HaHo web design system, plus a reproduction of the AI LABS "Helix Loops" video (English) built with it, and a skill that turns any story into a deck.
 
 **Architecture:** Kit lives in `design-system-web/deck/` (separate git repo, ignored by the parent repo): `deck.css` (stage, scenes, reveal animations, layout helpers), `deck-state.js` (pure navigation math, node-tested), `effects.js` (count, type, draw, bubble, check), `deck.js` (DOM wiring, keys, hash, scaling). Talks live in `design-systems/presentation/<talk>/` and link the kit by relative path. Classic scripts only (ES modules fail on `file://`).
 
@@ -32,7 +32,7 @@
 | `deck/deck.js` | design-system-web | DOM wiring |
 | `deck/template/index.html` | design-system-web | starter talk showing every API feature |
 | `README.md`, `package.json` | design-system-web | docs + ship `deck/` |
-| `presentation/pfu-studio/index.html` | design-systems | 10 scenes |
+| `presentation/helix-loops/index.html` | design-systems | 17 scenes |
 | `deck/patterns.css` | design-system-web | reusable scene patterns (hub, orbit, metrics, gauge, versus, roadmap) |
 | `deck/PATTERNS.md` | design-system-web | scene pattern catalog with snippets (Task 8) |
 | `~/.claude/skills/motion-deck/SKILL.md` | user skills | story prompt → talk folder (Task 8) |
@@ -827,339 +827,97 @@ git commit -m "Document and ship the deck kit"
 
 ---
 
-### Task 5: PFU Studio talk, scenes 1–5
+### Task 5: Helix Loops reproduction, patterns + scenes 1–9
+
+Reproduction, in our design system, of the AI LABS video "Shopify Just Released The Greatest AI Coding Workflow Ever" (youtube bBMp5tLxShQ). English. Paraphrase; never copy transcript sentences verbatim; no Shopify logo (text only). Sponsor and subscribe segments excluded.
 
 **Files:**
-- Create: `design-system-web/deck/patterns.css` (commit in design-system-web), `design-systems/presentation/pfu-studio/index.html` (commit in design-systems)
-- A talk must need zero custom CSS: every class the talk uses lives in `deck.css` or `patterns.css`.
+- Create: `design-system-web/deck/patterns.css` (commit in design-system-web)
+- Create: `design-systems/presentation/helix-loops/index.html` (commit in design-systems)
 
 **Interfaces:**
-- Consumes: kit API (Task 3). Kit path from talk: `../../design-system-web/`.
-- Produces: talk file whose `<main class="deck__stage">` Task 6 appends scenes 6–10 to, before `<div class="deck__progress">`.
+- Consumes: kit API from Task 3 (`deck.css` classes and attributes, `DeckEffects`), `deck/template/index.html` as skeleton reference (head, stage, progress bar, script order). Kit path from talk: `../../design-system-web/`.
+- Produces: `patterns.css` classes (all `deck-` prefixed, generic names, reusable by any talk). Task 6 appends scenes 10–17 before `<div class="deck__progress">` and may add patterns to `patterns.css`.
+- A talk needs zero custom CSS and no `style=` attributes: every class lives in `deck.css` or `patterns.css`.
 
-- [ ] **Step 1: Write `design-system-web/deck/patterns.css`**
+**Pattern classes to provide in `patterns.css`** (tokens only; px only allowed in a `:root` block of `--deck-*` tokens if unavoidable):
 
-```css
-.deck-hero-window { width: 55%; flex-shrink: 0; }
-.deck-island { display: flex; flex-direction: column; gap: var(--space-md); }
-.deck-tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-.deck-link { flex-shrink: 0; width: var(--space-xxxl); height: var(--border-md); background: var(--border-strong); }
-.deck-hub { display: flex; flex-direction: column; gap: var(--space-xxs); flex-shrink: 0; text-align: center; }
-.deck-teams { display: flex; flex-direction: column; gap: var(--space-sm); }
-.deck-teams > .card { padding: var(--space-md) var(--space-lg); }
-.deck-agenda .list-item { padding: var(--space-md) var(--space-lg); }
-.deck-metrics { align-items: stretch; height: 50%; }
-.deck-metric { display: flex; flex-direction: column; gap: var(--space-sm); overflow: hidden; }
-.deck-queue .list-item { min-height: 0; padding: var(--space-xs) 0; }
-.deck-gauge { position: relative; align-self: center; }
-.deck-gauge .progress-ring__bar { stroke: var(--semantic-error); }
-.deck-gauge__label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-.deck-questions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
-.deck-versus { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-xxl) var(--space-xl); }
-.deck-orbit { position: relative; flex: 1; }
-.deck-orbit__rings { position: absolute; inset: 0; width: 100%; height: 100%; }
-.deck-orbit__rings ellipse { fill: none; stroke: var(--border-default); stroke-width: var(--border-md); }
-.deck-orbit__hub { position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
-.deck-orbit__nodes { position: absolute; inset: 0; }
-.deck-node {
-  position: absolute;
-  translate: -50% -50%;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-md) var(--space-xs) var(--space-xs);
-  border-radius: var(--radius-full);
-  white-space: nowrap;
-  box-shadow: var(--shadow-card);
-}
-.deck-node--left { left: 7%; top: 50%; }
-.deck-node--upper-left { left: 17%; top: 19%; }
-.deck-node--lower-left { left: 17%; top: 81%; }
-.deck-node--upper-right { left: 83%; top: 19%; }
-.deck-node--lower-right { left: 83%; top: 81%; }
-.deck-node--right { left: 93%; top: 50%; }
-.deck-node--bottom { left: 50%; top: 94%; }
-.deck-demo { align-items: center; }
-.deck-roadmap { display: flex; flex-direction: column; gap: var(--space-md); }
-.deck-roadmap .checkbox { font: var(--type-h5); letter-spacing: var(--ls-h4); }
-```
+| Class | Purpose |
+|---|---|
+| `.deck-hub` | accent card, column, centered text, no shrink |
+| `.deck-link` | horizontal connector line (`--border-md` high, `--border-strong`), used with `data-anim="grow"` |
+| `.deck-flow` | horizontal chain: items + `.deck-link` between them, wraps nothing, centered |
+| `.deck-flow__item` | small card in a chain (title + caption) |
+| `.deck-screen-grid` | dense grid of mini screens (e.g. 10 columns) |
+| `.deck-mini` | mini screen: card with 3 `.deck-skel` bars, phone proportions |
+| `.deck-versus` | padded column card for side-by-side comparisons |
+| `.deck-stairs` | row of cards bottom-aligned, each taller than the previous (`.deck-stairs > *:nth-child(n)` heights from spacing tokens) |
+| `.deck-metrics`, `.deck-metric` | stretched row of metric cards, overflow hidden |
+| `.deck-gauge`, `.deck-gauge__label` | progress-ring wrapper sized `--deck-ring-size`, centered label |
+| `.deck-gauge--alert` | ring bar in `--semantic-error` |
+| `.deck-bar`, `.deck-bar__fill` | horizontal context-window bar; fill uses `data-anim="grow"`; `.deck-bar--alert` fill in `--semantic-error` |
+| `.deck-orbit`, `.deck-orbit__rings`, `.deck-orbit__hub`, `.deck-orbit__nodes`, `.deck-node`, `.deck-node--left`, `--upper-left`, `--lower-left`, `--upper-right`, `--lower-right`, `--right`, `--bottom` | orbit diagram: SVG ellipses drawn with `data-anim="draw"`, hub centered, up to 7 pill nodes (avatar + label); centering via `translate` property so `transform` stays free for animations |
+| `.deck-loop` | two cards facing each other with two arrows between (`→` top, `←` bottom) |
+| `.deck-compare` | two device mockups side by side with a verdict between |
+| `.deck-checklist` | column of `.checkbox` rows, h5 type |
+| `.deck-tags` | wrap row of tags |
+| `.deck-quote` | large centered statement |
 
-- [ ] **Step 2: Write `index.html` with scenes 1–5**
+**Scenes 1–9** (each `section.scene`, `data-camera` varied: fade/zoom/pan-left/pan-up):
 
-```html
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PFU Studio</title>
-<link rel="stylesheet" href="../../design-system-web/tokens.css">
-<link rel="stylesheet" href="../../design-system-web/components.css">
-<link rel="stylesheet" href="../../design-system-web/deck/deck.css">
-<link rel="stylesheet" href="../../design-system-web/deck/patterns.css">
-</head>
-<body class="deck" data-brand="coralCamo" data-style="lightRounded">
-<main class="deck__stage">
+| # | Beat | Content and reveal steps |
+|---|---|---|
+| 1 | Hook | kicker "Shopify mobile"; h1 "Rebuilt with AI agents"; `deck-screen-grid` of 40 `deck-mini` (stagger, step 1); big counter `data-anim="count"` 0 → 300 with label "screens" (step 1) |
+| 2 | Not one prompt | `deck-versus` pair: left card "One giant prompt" with a bubble "Build the whole app" and tag--error "Drifts, forgets, breaks"; right `card--strong` "A structured loop" with tags "Plan · Build · Check · Repeat" (steps 1, 2); conclusion line with `mark.hl` "a process the agent can't talk its way out of" (step 3) |
+| 3 | Title | `t-display1` "<mark class=hl>Helix</mark> Loops" + orbit: 2 ellipses draw (step 1), hub card "Helix", 5 nodes pop (step 2): Terminal, Tasks, Git, Search, Bugs (monogram avatars T, ✓, G, S, B) |
+| 4 | How Helix works | `deck-flow`: Old screen → Agent → Checkpoints → Human review → 4 gates → Next checkpoint; items and links reveal left to right over steps 1–5 |
+| 5 | Fresh context | left: `deck-bar deck-bar--alert` labeled "One long session" filling (step 1) + tag--error "Forgets what matters" (step 2); right: 4 small cards "Sub-agent 1…4" each with a short green bar (stagger, step 3) + tag--success "Fresh context per task" |
+| 6 | Two pillars | `deck-versus`: "Checkpoints" (small pieces of work) and `card--strong` "Gates" (checks the work must pass) slide in (steps 1, 2) |
+| 7 | Orchestrator | kicker "One skill to prompt"; `deck-flow` timeline: Prompt → Plan → 🧑 Approve plan → Build + gates → 🧑 Final review → Done; the two human stops are `card--accent` flow items that pop (steps 1–3); lead "You're needed twice." |
+| 8 | Checkpoints | `deck-stairs` of 5 cards "1 Smallest" … "5 Most complex" (stagger, step 1); quote line "Catch a wrong decision while it's still cheap" with `mark.hl` (step 2) |
+| 9 | Planner + viewer | left: `.code-block` with `data-anim="type"` showing a short JSON checkpoint list (step 1); right: `.deck-window` titled "Checkpoint viewer" with `.deck-screen` list rows + tags Done / In progress / Planned (step 2); caption "JSON for the agent, a page for the human" (step 3) |
 
-<section class="scene" data-camera="fade">
-  <div class="deck-row">
-    <div class="deck-stack deck-grow">
-      <span class="deck-kicker" data-anim="fade">Équipe mobile · Québecor</span>
-      <h1 class="t-display1" data-anim="rise"><mark class="hl">PFU Studio</mark></h1>
-      <p class="deck-lead" data-anim="rise">Relier l'équipe mobile au reste de l'entreprise, et préparer l'entreprise à l'IA.</p>
-    </div>
-    <div class="deck-window deck-hero-window" data-step="1" data-anim="slide-left">
-      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">PFU Studio</span></div>
-      <div class="deck-window__body deck-screens">
-        <div class="deck-screen">
-          <span class="deck-skel deck-skel--title"></span>
-          <ul class="list" data-step="1" data-stagger>
-            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span></span><span class="list-item__main"><span class="list-item__title">Kim · analyse du ticket</span></span><span class="tag tag--success">Terminé</span></li>
-            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span></span><span class="list-item__main"><span class="list-item__title">Cody · build simulateur</span></span><span class="tag tag--success">Terminé</span></li>
-            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span></span><span class="list-item__main"><span class="list-item__title">Maestro · parcours UI</span></span><span class="tag tag--warn">En cours</span></li>
-          </ul>
-          <span class="deck-skel deck-skel--mid"></span>
-          <span class="deck-skel deck-skel--short"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="scene" data-camera="pan-left">
-  <span class="deck-kicker" data-anim="fade">Au programme</span>
-  <ol class="list card deck-agenda" data-stagger>
-    <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--md"><span class="avatar__monogram">1</span></span></span><span class="list-item__main"><span class="list-item__title t-h4">Pourquoi PFU Studio ?</span><span class="list-item__support">Relier l'équipe mobile aux autres équipes</span></span></li>
-    <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--md"><span class="avatar__monogram">2</span></span></span><span class="list-item__main"><span class="list-item__title t-h4">L'objectif</span><span class="list-item__support">Être AI ready, pas seulement AI first</span></span></li>
-    <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--md"><span class="avatar__monogram">3</span></span></span><span class="list-item__main"><span class="list-item__title t-h4">La suite</span><span class="list-item__support">PFU Studio, cœur de la préparation à l'IA</span></span></li>
-  </ol>
-</section>
-
-<section class="scene" data-camera="pan-left">
-  <span class="deck-kicker" data-anim="fade">1 · Pourquoi</span>
-  <h2 class="t-h1" data-anim="rise">Relier l'équipe mobile au reste de l'entreprise</h2>
-  <div class="deck-row">
-    <div class="card card--strong deck-island deck-grow" data-step="1" data-anim="rise">
-      <span class="t-h4">Équipe mobile</span>
-      <span class="t-body-regular">Natif, en bac à sable : pour voir un changement, il faut compiler, simuler, préparer un environnement.</span>
-      <div class="deck-tags"><span class="tag tag--lg tag--brand">Compilation</span><span class="tag tag--lg tag--brand">Simulateur</span><span class="tag tag--lg tag--brand">Environnement</span></div>
-    </div>
-    <span class="deck-link" data-step="3" data-anim="grow"></span>
-    <div class="card card--accent deck-hub" data-step="3" data-anim="pop"><span class="t-h4">PFU Studio</span><span class="t-caption">compile · simule · partage</span></div>
-    <span class="deck-link" data-step="3" data-anim="grow"></span>
-    <div class="deck-teams deck-grow" data-step="2" data-stagger>
-      <div class="card"><span class="t-h5">QA</span></div>
-      <div class="card"><span class="t-h5">Design</span></div>
-      <div class="card"><span class="t-h5">Produit · PO</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="scene deck-center" data-camera="zoom">
-  <span class="deck-kicker" data-anim="fade">2 · L'objectif</span>
-  <h2 class="t-display1" data-anim="rise">On est <mark class="hl">AI first</mark>.</h2>
-  <button class="btn btn--filledA btn--big" data-step="1" data-anim="pop" data-next>Vraiment ?</button>
-  <div class="card deck-bubble" data-step="2" data-anim="bubble">
-    <span class="avatar avatar--md"><span class="avatar__monogram">?</span></span>
-    <span class="deck-typing"><span></span><span></span><span></span></span>
-    <span class="deck-bubble__message t-h3">Mais… sommes-nous prêts ?</span>
-  </div>
-</section>
-
-<section class="scene" data-camera="pan-left">
-  <span class="deck-kicker" data-anim="fade">2 · L'objectif</span>
-  <h2 class="t-h1" data-anim="rise">Le paradoxe de productivité de l'IA</h2>
-  <div class="deck-row deck-metrics">
-    <div class="card deck-metric deck-grow" data-step="1" data-anim="rise">
-      <span class="t-label">Pull requests par semaine</span>
-      <span class="t-display1" data-step="1" data-anim="count" data-count-from="12" data-count-to="140">12</span>
-      <span class="tag tag--lg tag--success">Code généré par l'IA</span>
-    </div>
-    <div class="card deck-metric deck-grow" data-step="2" data-anim="rise">
-      <span class="t-label">File d'attente QA</span>
-      <ul class="list deck-queue" data-step="2" data-stagger>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1042 · Paiement</span></span><span class="tag tag--warn">En attente</span></li>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1043 · Profil</span></span><span class="tag tag--warn">En attente</span></li>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1044 · Lecteur</span></span><span class="tag tag--warn">En attente</span></li>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1045 · Accueil</span></span><span class="tag tag--warn">En attente</span></li>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1046 · Recherche</span></span><span class="tag tag--warn">En attente</span></li>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1047 · Connexion</span></span><span class="tag tag--warn">En attente</span></li>
-        <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1048 · Réglages</span></span><span class="tag tag--warn">En attente</span></li>
-      </ul>
-    </div>
-    <div class="card deck-metric deck-grow" data-step="3" data-anim="rise">
-      <span class="t-label">Capacité de revue humaine</span>
-      <div class="deck-gauge">
-        <svg class="deck-ring progress-ring" viewBox="0 0 64 64">
-          <circle class="progress-ring__track" cx="32" cy="32" r="26"/>
-          <circle class="progress-ring__bar" cx="32" cy="32" r="26" data-step="3" data-anim="draw" data-draw-to="0.18"/>
-        </svg>
-        <span class="deck-gauge__label t-h3">18 %</span>
-      </div>
-    </div>
-  </div>
-  <div class="deck-questions" data-step="4" data-stagger>
-    <span class="tag tag--lg tag--error">La QA est-elle prête ?</span>
-    <span class="tag tag--lg tag--error">Qui relit tout ce code ?</span>
-    <span class="tag tag--lg tag--error">Et la qualité ?</span>
-    <span class="tag tag--lg tag--error">Notre workflow suit-il ?</span>
-  </div>
-</section>
-
-<div class="deck__progress"><div class="deck__progress-bar"></div></div>
-</main>
-<script src="../../design-system-web/deck/deck-state.js"></script>
-<script src="../../design-system-web/deck/effects.js"></script>
-<script src="../../design-system-web/deck/deck.js"></script>
-</body>
-</html>
-```
-
-- [ ] **Step 3: Verify** — open `http://localhost:8765/presentation/pfu-studio/index.html#5.4`, reload, wait 2s, screenshot scale 0.5. Expected: 140 counter, 7 queue rows clipped by card, red ring 18 %, 4 red question tags. Check `#4.2` after 2s: bubble shows "Mais… sommes-nous prêts ?". Check `#3.3`: lines + PFU Studio hub between the mobile card and team cards. Fix overflow/contrast issues in `scenes.css` before commit.
-
-- [ ] **Step 4: Commit** — in design-system-web: `git add deck/patterns.css && git commit -m "Add reusable deck scene patterns"`; then in design-systems:
-
-```bash
-git add presentation/pfu-studio
-git commit -m "Add PFU Studio talk scenes 1 to 5"
-```
+- [ ] **Step 1: Write `patterns.css`** with the classes above.
+- [ ] **Step 2: Write `presentation/helix-loops/index.html`** (skeleton from `deck/template/index.html`, `<html lang="en">`, `<title>Helix Loops</title>`, links `tokens.css`, `components.css`, `deck/deck.css`, `deck/patterns.css`, scripts in kit order) with scenes 1–9.
+- [ ] **Step 3: Verify in Chrome** — serve `/Users/omar.doucoure/Documents/OmApps/design-systems` on a free localhost port (8766 is already running from Task 3; reuse it if it serves that root). For each scene open `#N.<last step>`, reload, wait 2s, screenshot at scale 0.5. Fix: overflow outside stage or card, overlapping text, invisible text (contrast), clipped nodes. Walk forward with ArrowRight from `#1.0` to the end of scene 9 via `KeyboardEvent` dispatch: no console errors.
+- [ ] **Step 4: Token check** — `grep -nE '#[0-9A-Fa-f]{3,6}\b|rgba?\(|style=' presentation/helix-loops/index.html deck/patterns.css` → no CSS literals, no inline styles (text content like "#1" is fine).
+- [ ] **Step 5: Commit** — design-system-web: `git add deck/patterns.css && git commit -m "Add reusable deck scene patterns"`; design-systems: `git add presentation/helix-loops && git commit -m "Add Helix Loops reproduction scenes 1 to 9"`.
 
 ---
 
-### Task 6: PFU Studio talk, scenes 6–10
+### Task 6: Helix Loops reproduction, scenes 10–17
 
 **Files:**
-- Modify: `presentation/pfu-studio/index.html` (insert before `<div class="deck__progress">`)
+- Modify: `presentation/helix-loops/index.html` (insert before `<div class="deck__progress">`), `design-system-web/deck/patterns.css` (only if a new generic pattern is needed)
 
-- [ ] **Step 1: Insert scenes**
+**Interfaces:**
+- Consumes: Task 5 pattern classes, kit API.
 
-```html
-<section class="scene" data-camera="zoom">
-  <div class="deck-row">
-    <div class="card deck-versus deck-grow" data-step="1" data-anim="slide-right">
-      <span class="deck-kicker">Le slogan</span>
-      <span class="t-display2">AI first</span>
-      <span class="t-h5">Générer plus de code, plus vite.</span>
-    </div>
-    <div class="card card--strong deck-versus deck-grow" data-step="2" data-anim="slide-left">
-      <span class="deck-kicker">La capacité</span>
-      <span class="t-display2">AI ready</span>
-      <span class="t-h5">Tester, relire et livrer ce code avec confiance.</span>
-    </div>
-  </div>
-  <p class="t-h3 deck-text-center" data-step="3" data-anim="rise">On peut être AI first sans être <mark class="hl">AI ready</mark>.</p>
-</section>
+| # | Beat | Content and reveal steps |
+|---|---|---|
+| 10 | Sub-agents at start | hub "Orchestrator" pops; three nodes grow out via `.deck-link`: "App health check", "Checkpoint planner" (with a bubble "Any questions?" step 2), "Test planner" (step 3) |
+| 11 | Gate ≠ rule | `deck-versus`: "Rule" card with caption "Advice. Forgotten mid-task." (step 1, then tag--warn "Ignored" step 2); `card--strong` "Gate" "Blocks the next task until passed" (step 3); terminal `.code-block` typing `stop hook → exit 2 → "not done, keep going"` (step 4) |
+| 12 | The 4 gates | `deck-checklist` in a card: Behavior (does it work), UI (does it match the design), Code review (is the code good), Human (does it feel right); each row `data-anim="check" data-done` steps 1–4 |
+| 13 | Gate 1 Behavior | `.deck-window` "Tests" with two stacked `.deck-screen` panels: panel A 5 test rows with tag--error "Failing" (step 1); flow line "Code sub-agent writes the feature" (step 2); panel B same rows with tag--success "Passing" fades over (step 3); tag--success "Gate 1 passed" pops (step 4) |
+| 14 | Gate 2 UI | `deck-compare`: device "Prototype" and device "App" with near-identical skeleton screens (step 1); two reviewer cards "Looks" and "Behaves" pop between (step 2); combined verdict tag--success "Match · gate passed" (step 3) |
+| 15 | Gate 3 Adversarial | `deck-loop`: "Critic agent · assumes the code is wrong" ↔ "Fixer agent · fixes what's found" (steps 1, 2); round counter `count` 0 → 3 labelled "rounds" (step 3); tag--success "Critic approves" pops (step 4) |
+| 16 | Gate 4 Human | device mock with checklist of the feature (step 1); bubble "Make the button bigger" (step 2); stagger of result cards "New checkpoint · same gates" and "Saved to learnings file · every agent reads it" (step 3) |
+| 17 | Closing | `deck-quote`: "Attempts can be <mark class=hl>wrong</mark>." (step 0) then "Shipping can't." (step 1); caption "Recreated with the HaHo design system" (step 2) |
 
-<section class="scene" data-camera="zoom">
-  <span class="deck-kicker" data-anim="fade">3 · La suite</span>
-  <h2 class="t-h1" data-anim="rise">PFU Studio, le cœur du <mark class="hl">AI ready</mark></h2>
-  <div class="deck-orbit">
-    <svg class="deck-orbit__rings" viewBox="0 0 1150 460">
-      <ellipse cx="575" cy="230" rx="540" ry="200" data-step="1" data-anim="draw"/>
-      <ellipse cx="575" cy="230" rx="360" ry="130" data-step="1" data-anim="draw"/>
-    </svg>
-    <div class="card card--accent deck-hub deck-orbit__hub" data-anim="pop"><span class="t-h3">PFU Studio</span><span class="t-caption">orchestrateur multi-agents</span></div>
-    <div class="deck-orbit__nodes" data-step="2" data-stagger>
-      <div class="card deck-node deck-node--left"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span><span class="t-label">Kim · analyse</span></div>
-      <div class="card deck-node deck-node--upper-left"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span><span class="t-label">Cody · code</span></div>
-      <div class="card deck-node deck-node--upper-right"><span class="avatar avatar--xs"><span class="avatar__monogram">A</span></span><span class="t-label">Arthur · architecture</span></div>
-      <div class="card deck-node deck-node--right"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span><span class="t-label">Maestro · tests UI</span></div>
-      <div class="card deck-node deck-node--lower-right"><span class="avatar avatar--xs"><span class="avatar__monogram">S</span></span><span class="t-label">Simulateur iOS · tvOS</span></div>
-      <div class="card deck-node deck-node--bottom"><span class="avatar avatar--xs"><span class="avatar__monogram">V</span></span><span class="t-label">Verdicts QA</span></div>
-      <div class="card deck-node deck-node--lower-left"><span class="avatar avatar--xs"><span class="avatar__monogram">J</span></span><span class="t-label">Jira · Confluence</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="scene" data-camera="pan-up">
-  <span class="deck-kicker" data-anim="fade">Démo</span>
-  <div class="deck-row deck-demo">
-    <div class="deck-window deck-grow" data-anim="rise">
-      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">PFU Studio</span></div>
-      <div class="deck-window__body deck-screens">
-        <div class="deck-screen">
-          <span class="t-label">Ticket Jira · PFU-1234</span>
-          <span class="deck-skel deck-skel--title"></span>
-          <span class="deck-skel"></span>
-          <span class="deck-skel deck-skel--mid"></span>
-          <span class="deck-skel deck-skel--short"></span>
-          <span class="deck-skel deck-skel--block"></span>
-        </div>
-        <div class="deck-screen" data-step="1" data-anim="fade">
-          <span class="t-label">Agents en action</span>
-          <ul class="list" data-step="1" data-stagger>
-            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span></span><span class="list-item__main"><span class="list-item__title">Kim · critères d'acceptation</span></span><span class="tag tag--success">Terminé</span></li>
-            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span></span><span class="list-item__main"><span class="list-item__title">Cody · build et installation</span></span><span class="tag tag--success">Terminé</span></li>
-            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span></span><span class="list-item__main"><span class="list-item__title">Maestro · parcours de test</span></span><span class="tag tag--warn">En cours</span></li>
-          </ul>
-        </div>
-        <div class="deck-screen" data-step="2" data-anim="fade">
-          <span class="t-label">Verdict QA</span>
-          <span class="tag tag--lg tag--success">Validé · 12 / 12 étapes</span>
-          <span class="deck-skel deck-skel--mid"></span>
-          <span class="deck-skel"></span>
-          <span class="deck-skel deck-skel--short"></span>
-        </div>
-      </div>
-    </div>
-    <div class="device deck-device" data-anim="slide-left">
-      <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
-      <div class="deck-screens">
-        <div class="deck-screen">
-          <span class="deck-skel deck-skel--title"></span>
-          <span class="deck-skel deck-skel--block"></span>
-          <span class="deck-skel deck-skel--mid"></span>
-          <span class="deck-skel deck-skel--block"></span>
-          <span class="deck-skel deck-skel--short"></span>
-        </div>
-        <div class="deck-screen" data-step="1" data-anim="fade">
-          <span class="deck-skel deck-skel--title"></span>
-          <div class="checkbox" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Connexion</div>
-          <div class="checkbox" data-step="2" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Lecture vidéo</div>
-          <span class="deck-skel deck-skel--block"></span>
-        </div>
-      </div>
-      <div class="home-indicator"></div>
-    </div>
-  </div>
-</section>
-
-<section class="scene" data-camera="pan-left">
-  <span class="deck-kicker" data-anim="fade">3 · La suite</span>
-  <h2 class="t-h1" data-anim="rise">Prochaines étapes</h2>
-  <div class="card deck-roadmap">
-    <div class="checkbox" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Relier l'équipe mobile à QA, Design et Produit</div>
-    <div class="checkbox" data-step="2" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Orchestrer des agents IA sur le simulateur</div>
-    <div class="checkbox" data-step="3" data-anim="check"><input type="checkbox"><span class="checkbox__box">✓</span>Verdicts QA automatiques sur chaque pull request</div>
-    <div class="checkbox" data-step="4" data-anim="check"><input type="checkbox"><span class="checkbox__box">✓</span>Préparer la revue humaine : résumé et risques par PR</div>
-    <div class="checkbox" data-step="5" data-anim="check"><input type="checkbox"><span class="checkbox__box">✓</span>Étendre à toutes les apps : TVA Nouvelles, TVA Sports, Club illico, 24 heures</div>
-  </div>
-</section>
-
-<section class="scene deck-center" data-camera="fade">
-  <h2 class="t-display1" data-anim="rise"><mark class="hl">Merci</mark></h2>
-  <p class="deck-lead" data-anim="rise">Questions ?</p>
-</section>
-```
-
-- [ ] **Step 2: Verify** — screenshots at scale 0.5 for `#6.3`, `#7.2`, `#8.2`, `#9.5`, `#10.0` (reload + wait 2s each). Expected: versus cards with sweep; orbit ellipses drawn with 7 nodes not clipped at stage edges; demo window shows verdict mock screen and phone shows two ticked checks; roadmap first two ticked; Merci highlighted. Adjust `.deck-node--*` percentages if nodes overlap rings badly or clip.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add presentation/pfu-studio/index.html
-git commit -m "Add PFU Studio talk scenes 6 to 10"
-```
+- [ ] **Step 1: Insert scenes 10–17** following the table; reuse Task 5 patterns; add a generic pattern to `patterns.css` only if none fits.
+- [ ] **Step 2: Verify** — same method as Task 5 Step 3 for scenes 10–17, then a full ArrowRight run `#1.0` → end and ArrowLeft back to `#1.0`: no console errors; final hash `#17.2`.
+- [ ] **Step 3: Token check** — same grep as Task 5 Step 4.
+- [ ] **Step 4: Commit** — `git add presentation/helix-loops/index.html && git commit -m "Add Helix Loops reproduction scenes 10 to 17"` (+ patterns.css commit in design-system-web if changed: "Extend deck scene patterns").
 
 ---
 
 ### Task 7: Full run-through and checks
 
-- [ ] **Step 1: Keyboard run** — open `#1.0`, press → until the end via javascript_tool, collecting `location.hash` each press. Expected final hash `#10.0`, no console errors (`read_console_messages`).
+- [ ] **Step 1: Keyboard run** — open `#1.0`, press → until the end via javascript_tool, collecting `location.hash` each press. Expected final hash `#17.2`, no console errors (`read_console_messages`).
 - [ ] **Step 2: Backward run** — ← to `#1.0`; every scene reached.
-- [ ] **Step 3: Token grep** — `grep -nE '#[0-9A-Fa-f]{3,6}\b|rgba?\(|[0-9]px' design-system-web/deck/patterns.css presentation/pfu-studio/index.html` → only `#1042`… PR labels in HTML text, no CSS literals.
-- [ ] **Step 4: Line limits** — `wc -l presentation/pfu-studio/*` each < 400.
-- [ ] **Step 5: Offline check** — open `file:///Users/omar.doucoure/Documents/OmApps/design-systems/presentation/pfu-studio/index.html` directly; fonts render DM Sans, navigation works.
+- [ ] **Step 3: Token grep** — `grep -nE '#[0-9A-Fa-f]{3,6}\b|rgba?\(|style=' design-system-web/deck/patterns.css presentation/helix-loops/index.html` → no CSS literals, no inline styles.
+- [ ] **Step 4: Line limits** — `wc -l design-system-web/deck/*.css design-system-web/deck/*.js` each < 400. `index.html` is scene content (like translation files) and may exceed 400.
+- [ ] **Step 5: Offline check** — open `file:///Users/omar.doucoure/Documents/OmApps/design-systems/presentation/helix-loops/index.html` directly; fonts render DM Sans, navigation works.
 - [ ] **Step 6: Stop server**, close Chrome tabs.
 
 ---
@@ -1174,22 +932,27 @@ Goal: a new talk from one prompt ("make a deck: <story>") with zero hand-written
 - Create: `~/.claude/skills/motion-deck/SKILL.md` (not in any repo)
 
 **Interfaces:**
-- Consumes: kit files (Tasks 1–4), `deck/patterns.css` (Task 5), final `presentation/pfu-studio/index.html` and `deck/template/index.html` as snippet sources.
+- Consumes: kit files (Tasks 1–4), `deck/patterns.css` (Task 5), final `presentation/helix-loops/index.html` and `deck/template/index.html` as snippet sources.
 - Produces: `deck/new-deck.sh <dest-dir> "<title>" [lang]` → self-contained folder: `<dest>/index.html` (skeleton, one title scene) + `<dest>/kit/` (copies of `tokens.css`, `components.css`, `fonts/`, `deck/deck.css`, `deck/patterns.css`, `deck/deck-state.js`, `deck/effects.js`, `deck/deck.js`). Talk HTML links `kit/...`. Folder works when zipped or moved anywhere.
 
 - [ ] **Step 1: `deck/new-deck.sh`** (bash, `set -euo pipefail`, no comments): resolve kit dir from script location; fail with usage if dest missing or dest exists and not empty; copy files listed above into `<dest>/kit/` keeping `deck/` subfolder; write `<dest>/index.html` = template head/body skeleton with paths `kit/tokens.css`, `kit/components.css`, `kit/deck/deck.css`, `kit/deck/patterns.css`, scripts `kit/deck/deck-state.js`, `kit/deck/effects.js`, `kit/deck/deck.js`, `<html lang>` = arg 3 (default `fr`), `<title>` = arg 2, one `deck-center` title scene with `<mark class="hl">` title, and the progress bar. Test: `bash deck/new-deck.sh "$SCRATCH/demo" "Demo"` → folder exists, `ls "$SCRATCH/demo/kit/deck"` lists 5 files, opening `$SCRATCH/demo/index.html` over localhost shows title with highlight and `location.hash === "#1.0"`. Second run on same dest → non-zero exit with message.
 
-- [ ] **Step 2: `deck/PATTERNS.md`** — catalog, one section per pattern, each with: **Use when** (story beat it serves), **Steps** (what each click reveals), **Snippet** (complete `<section class="scene">…</section>` copied from the PFU talk or template, content genericized to English placeholders in `[brackets]`). Patterns, in this order:
-  1. `title-window` — title + lead + app window mock (PFU scene 1)
-  2. `agenda` — numbered staggered list (PFU scene 2)
-  3. `bridge` — isolated team card, other teams, lines grow, hub pops (PFU scene 3)
-  4. `question` — kinetic headline → `data-next` button → typing bubble (PFU scene 4)
-  5. `metrics` — counter card, overflowing queue, gauge, question tags (PFU scene 5)
-  6. `versus` — two cards slide in, conclusion with highlight (PFU scene 6)
-  7. `orbit` — hub with drawn ellipses and up to 7 nodes (PFU scene 7; list the 7 `deck-node--*` position modifiers)
-  8. `demo` — window + phone, mock screens switching (PFU scene 8)
-  9. `roadmap` — checklist, done items tick (PFU scene 9)
-  10. `closing` — thank-you (PFU scene 10)
+- [ ] **Step 2: `deck/PATTERNS.md`** — catalog, one section per pattern, each with: **Use when** (story beat it serves), **Steps** (what each click reveals), **Snippet** (complete `<section class="scene">…</section>` copied from the Helix talk or template, content genericized to English placeholders in `[brackets]`). One pattern per distinct Helix scene layout, named by story beat, at least:
+  1. `hook-counter` — screen grid + big counter (Helix 1)
+  2. `versus` — two cards + highlighted conclusion (Helix 2, 6, 11)
+  3. `title-orbit` — kinetic title + orbit hub with up to 7 nodes (Helix 3; list the 7 `deck-node--*` modifiers)
+  4. `flow` — step chain revealed left to right (Helix 4, 7)
+  5. `context-bar` — filling bar vs small cards (Helix 5)
+  6. `stairs` — increasing complexity (Helix 8)
+  7. `code-and-window` — typing code block vs app window mock (Helix 9)
+  8. `hub-spawn` — hub with spawned nodes and question bubble (Helix 10)
+  9. `checklist` — ticking list (Helix 12)
+  10. `screen-switch` — window with panels switching states (Helix 13)
+  11. `compare` — two devices + reviewers + verdict (Helix 14)
+  12. `loop` — two agents back and forth + round counter (Helix 15)
+  13. `feedback` — device + bubble + result cards (Helix 16)
+  14. `question` — headline → `data-next` button → typing bubble (template scene 1)
+  15. `closing-quote` — statement with highlight (Helix 17)
   Top of file: rules (only kit classes, no images, no inline styles, mock screens use `.deck-screen` + DS components + `.deck-skel`, reveal attributes table from README, camera per pattern suggestion). Keep under 400 lines; if longer, keep snippets and shorten prose.
 
 - [ ] **Step 3: Skill `~/.claude/skills/motion-deck/SKILL.md`** — follow `~/.claude/skills-guide.md`. Frontmatter: `name: motion-deck`; description (what + when): builds an animated, click-through HTML presentation from a story using the HaHo design system deck kit; triggers "make a presentation", "deck", "slides", "présentation", "animated presentation like a video", "turn this story into slides"; negative trigger: not for .pptx/Google Slides requests. Body sections:
@@ -1199,7 +962,7 @@ Goal: a new talk from one prompt ("make a deck: <story>") with zero hand-written
   - `## Step 3: Write scenes` — replace the skeleton scene with pattern snippets, filled with the story's content.
   - `## Step 4: Verify` — serve dest with `python3 -m http.server` in background, step through every scene with keydown events in Chrome, screenshot each scene at scale 0.5, fix overflow/contrast, grep for `#hex|rgb|px|style=` in index.html (must be empty except text).
   - `## Step 5: Hand off` — table of scenes + how to present (open `index.html`, → / ← / clicker, F fullscreen, `#scene.step`).
-  - `## Examples`: the PFU Studio talk (`/Users/omar.doucoure/Documents/OmApps/design-systems/presentation/pfu-studio/index.html`) as the reference deck.
+  - `## Examples`: the Helix Loops reproduction (`/Users/omar.doucoure/Documents/OmApps/design-systems/presentation/helix-loops/index.html`) as the reference deck.
   - `## Troubleshooting`: text overflows card → shorten text or split scene; nodes clip in orbit → max 7 nodes, shorter labels; animation doesn't play → element needs `data-anim`/`data-step`, `mark.hl` needs an animated ancestor.
 
 - [ ] **Step 4: Trigger + function test** — in a fresh subagent with no context, give only: "Fais-moi une présentation animée : notre équipe a réduit le temps de build de 20 à 5 minutes. Pourquoi c'était lent, ce qu'on a changé, les résultats, la suite." and let it follow the skill end to end into `$SCRATCH/test-deck`. Expected: outline table, folder built by `new-deck.sh`, ≥ 5 scenes from ≥ 4 different patterns, no custom CSS, navigation works. Fix skill/PATTERNS gaps it hits.
