@@ -33,7 +33,9 @@
 | `deck/template/index.html` | design-system-web | starter talk showing every API feature |
 | `README.md`, `package.json` | design-system-web | docs + ship `deck/` |
 | `presentation/pfu-studio/index.html` | design-systems | 10 scenes |
-| `presentation/pfu-studio/scenes.css` | design-systems | talk-only layout (hub, orbit, metrics) |
+| `deck/patterns.css` | design-system-web | reusable scene patterns (hub, orbit, metrics, gauge, versus, roadmap) |
+| `deck/PATTERNS.md` | design-system-web | scene pattern catalog with snippets (Task 8) |
+| `~/.claude/skills/motion-deck/SKILL.md` | user skills | story prompt → talk folder (Task 8) |
 
 ---
 
@@ -828,37 +830,38 @@ git commit -m "Document and ship the deck kit"
 ### Task 5: PFU Studio talk, scenes 1–5
 
 **Files:**
-- Create: `design-systems/presentation/pfu-studio/index.html`, `presentation/pfu-studio/scenes.css`
+- Create: `design-system-web/deck/patterns.css` (commit in design-system-web), `design-systems/presentation/pfu-studio/index.html` (commit in design-systems)
+- A talk must need zero custom CSS: every class the talk uses lives in `deck.css` or `patterns.css`.
 
 **Interfaces:**
 - Consumes: kit API (Task 3). Kit path from talk: `../../design-system-web/`.
 - Produces: talk file whose `<main class="deck__stage">` Task 6 appends scenes 6–10 to, before `<div class="deck__progress">`.
 
-- [ ] **Step 1: Write `scenes.css`**
+- [ ] **Step 1: Write `design-system-web/deck/patterns.css`**
 
 ```css
-.pfu-hero-window { width: 55%; flex-shrink: 0; }
-.pfu-island { display: flex; flex-direction: column; gap: var(--space-md); }
-.pfu-tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-.pfu-link { flex-shrink: 0; width: var(--space-xxxl); height: var(--border-md); background: var(--border-strong); }
-.pfu-hub { display: flex; flex-direction: column; gap: var(--space-xxs); flex-shrink: 0; text-align: center; }
-.pfu-teams { display: flex; flex-direction: column; gap: var(--space-sm); }
-.pfu-teams > .card { padding: var(--space-md) var(--space-lg); }
-.pfu-agenda .list-item { padding: var(--space-md) var(--space-lg); }
-.pfu-metrics { align-items: stretch; height: 50%; }
-.pfu-metric { display: flex; flex-direction: column; gap: var(--space-sm); overflow: hidden; }
-.pfu-queue .list-item { min-height: 0; padding: var(--space-xs) 0; }
-.pfu-ring { position: relative; align-self: center; }
-.pfu-ring .progress-ring__bar { stroke: var(--semantic-error); }
-.pfu-ring__label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-.pfu-questions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
-.pfu-versus { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-xxl) var(--space-xl); }
-.pfu-orbit { position: relative; flex: 1; }
-.pfu-orbit__rings { position: absolute; inset: 0; width: 100%; height: 100%; }
-.pfu-orbit__rings ellipse { fill: none; stroke: var(--border-default); stroke-width: var(--border-md); }
-.pfu-orbit__hub { position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
-.pfu-orbit__nodes { position: absolute; inset: 0; }
-.pfu-node {
+.deck-hero-window { width: 55%; flex-shrink: 0; }
+.deck-island { display: flex; flex-direction: column; gap: var(--space-md); }
+.deck-tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.deck-link { flex-shrink: 0; width: var(--space-xxxl); height: var(--border-md); background: var(--border-strong); }
+.deck-hub { display: flex; flex-direction: column; gap: var(--space-xxs); flex-shrink: 0; text-align: center; }
+.deck-teams { display: flex; flex-direction: column; gap: var(--space-sm); }
+.deck-teams > .card { padding: var(--space-md) var(--space-lg); }
+.deck-agenda .list-item { padding: var(--space-md) var(--space-lg); }
+.deck-metrics { align-items: stretch; height: 50%; }
+.deck-metric { display: flex; flex-direction: column; gap: var(--space-sm); overflow: hidden; }
+.deck-queue .list-item { min-height: 0; padding: var(--space-xs) 0; }
+.deck-gauge { position: relative; align-self: center; }
+.deck-gauge .progress-ring__bar { stroke: var(--semantic-error); }
+.deck-gauge__label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.deck-questions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
+.deck-versus { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-xxl) var(--space-xl); }
+.deck-orbit { position: relative; flex: 1; }
+.deck-orbit__rings { position: absolute; inset: 0; width: 100%; height: 100%; }
+.deck-orbit__rings ellipse { fill: none; stroke: var(--border-default); stroke-width: var(--border-md); }
+.deck-orbit__hub { position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
+.deck-orbit__nodes { position: absolute; inset: 0; }
+.deck-node {
   position: absolute;
   translate: -50% -50%;
   display: inline-flex;
@@ -869,16 +872,16 @@ git commit -m "Document and ship the deck kit"
   white-space: nowrap;
   box-shadow: var(--shadow-card);
 }
-.pfu-node--left { left: 7%; top: 50%; }
-.pfu-node--upper-left { left: 17%; top: 19%; }
-.pfu-node--lower-left { left: 17%; top: 81%; }
-.pfu-node--upper-right { left: 83%; top: 19%; }
-.pfu-node--lower-right { left: 83%; top: 81%; }
-.pfu-node--right { left: 93%; top: 50%; }
-.pfu-node--bottom { left: 50%; top: 94%; }
-.pfu-demo { align-items: center; }
-.pfu-roadmap { display: flex; flex-direction: column; gap: var(--space-md); }
-.pfu-roadmap .checkbox { font: var(--type-h5); letter-spacing: var(--ls-h4); }
+.deck-node--left { left: 7%; top: 50%; }
+.deck-node--upper-left { left: 17%; top: 19%; }
+.deck-node--lower-left { left: 17%; top: 81%; }
+.deck-node--upper-right { left: 83%; top: 19%; }
+.deck-node--lower-right { left: 83%; top: 81%; }
+.deck-node--right { left: 93%; top: 50%; }
+.deck-node--bottom { left: 50%; top: 94%; }
+.deck-demo { align-items: center; }
+.deck-roadmap { display: flex; flex-direction: column; gap: var(--space-md); }
+.deck-roadmap .checkbox { font: var(--type-h5); letter-spacing: var(--ls-h4); }
 ```
 
 - [ ] **Step 2: Write `index.html` with scenes 1–5**
@@ -893,7 +896,7 @@ git commit -m "Document and ship the deck kit"
 <link rel="stylesheet" href="../../design-system-web/tokens.css">
 <link rel="stylesheet" href="../../design-system-web/components.css">
 <link rel="stylesheet" href="../../design-system-web/deck/deck.css">
-<link rel="stylesheet" href="scenes.css">
+<link rel="stylesheet" href="../../design-system-web/deck/patterns.css">
 </head>
 <body class="deck" data-brand="coralCamo" data-style="lightRounded">
 <main class="deck__stage">
@@ -905,7 +908,7 @@ git commit -m "Document and ship the deck kit"
       <h1 class="t-display1" data-anim="rise"><mark class="hl">PFU Studio</mark></h1>
       <p class="deck-lead" data-anim="rise">Relier l'équipe mobile au reste de l'entreprise, et préparer l'entreprise à l'IA.</p>
     </div>
-    <div class="deck-window pfu-hero-window" data-step="1" data-anim="slide-left">
+    <div class="deck-window deck-hero-window" data-step="1" data-anim="slide-left">
       <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">PFU Studio</span></div>
       <div class="deck-window__body deck-screens">
         <div class="deck-screen">
@@ -925,7 +928,7 @@ git commit -m "Document and ship the deck kit"
 
 <section class="scene" data-camera="pan-left">
   <span class="deck-kicker" data-anim="fade">Au programme</span>
-  <ol class="list card pfu-agenda" data-stagger>
+  <ol class="list card deck-agenda" data-stagger>
     <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--md"><span class="avatar__monogram">1</span></span></span><span class="list-item__main"><span class="list-item__title t-h4">Pourquoi PFU Studio ?</span><span class="list-item__support">Relier l'équipe mobile aux autres équipes</span></span></li>
     <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--md"><span class="avatar__monogram">2</span></span></span><span class="list-item__main"><span class="list-item__title t-h4">L'objectif</span><span class="list-item__support">Être AI ready, pas seulement AI first</span></span></li>
     <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--md"><span class="avatar__monogram">3</span></span></span><span class="list-item__main"><span class="list-item__title t-h4">La suite</span><span class="list-item__support">PFU Studio, cœur de la préparation à l'IA</span></span></li>
@@ -936,15 +939,15 @@ git commit -m "Document and ship the deck kit"
   <span class="deck-kicker" data-anim="fade">1 · Pourquoi</span>
   <h2 class="t-h1" data-anim="rise">Relier l'équipe mobile au reste de l'entreprise</h2>
   <div class="deck-row">
-    <div class="card card--strong pfu-island deck-grow" data-step="1" data-anim="rise">
+    <div class="card card--strong deck-island deck-grow" data-step="1" data-anim="rise">
       <span class="t-h4">Équipe mobile</span>
       <span class="t-body-regular">Natif, en bac à sable : pour voir un changement, il faut compiler, simuler, préparer un environnement.</span>
-      <div class="pfu-tags"><span class="tag tag--lg tag--brand">Compilation</span><span class="tag tag--lg tag--brand">Simulateur</span><span class="tag tag--lg tag--brand">Environnement</span></div>
+      <div class="deck-tags"><span class="tag tag--lg tag--brand">Compilation</span><span class="tag tag--lg tag--brand">Simulateur</span><span class="tag tag--lg tag--brand">Environnement</span></div>
     </div>
-    <span class="pfu-link" data-step="3" data-anim="grow"></span>
-    <div class="card card--accent pfu-hub" data-step="3" data-anim="pop"><span class="t-h4">PFU Studio</span><span class="t-caption">compile · simule · partage</span></div>
-    <span class="pfu-link" data-step="3" data-anim="grow"></span>
-    <div class="pfu-teams deck-grow" data-step="2" data-stagger>
+    <span class="deck-link" data-step="3" data-anim="grow"></span>
+    <div class="card card--accent deck-hub" data-step="3" data-anim="pop"><span class="t-h4">PFU Studio</span><span class="t-caption">compile · simule · partage</span></div>
+    <span class="deck-link" data-step="3" data-anim="grow"></span>
+    <div class="deck-teams deck-grow" data-step="2" data-stagger>
       <div class="card"><span class="t-h5">QA</span></div>
       <div class="card"><span class="t-h5">Design</span></div>
       <div class="card"><span class="t-h5">Produit · PO</span></div>
@@ -966,15 +969,15 @@ git commit -m "Document and ship the deck kit"
 <section class="scene" data-camera="pan-left">
   <span class="deck-kicker" data-anim="fade">2 · L'objectif</span>
   <h2 class="t-h1" data-anim="rise">Le paradoxe de productivité de l'IA</h2>
-  <div class="deck-row pfu-metrics">
-    <div class="card pfu-metric deck-grow" data-step="1" data-anim="rise">
+  <div class="deck-row deck-metrics">
+    <div class="card deck-metric deck-grow" data-step="1" data-anim="rise">
       <span class="t-label">Pull requests par semaine</span>
       <span class="t-display1" data-step="1" data-anim="count" data-count-from="12" data-count-to="140">12</span>
       <span class="tag tag--lg tag--success">Code généré par l'IA</span>
     </div>
-    <div class="card pfu-metric deck-grow" data-step="2" data-anim="rise">
+    <div class="card deck-metric deck-grow" data-step="2" data-anim="rise">
       <span class="t-label">File d'attente QA</span>
-      <ul class="list pfu-queue" data-step="2" data-stagger>
+      <ul class="list deck-queue" data-step="2" data-stagger>
         <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1042 · Paiement</span></span><span class="tag tag--warn">En attente</span></li>
         <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1043 · Profil</span></span><span class="tag tag--warn">En attente</span></li>
         <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1044 · Lecteur</span></span><span class="tag tag--warn">En attente</span></li>
@@ -984,18 +987,18 @@ git commit -m "Document and ship the deck kit"
         <li class="list-item"><span class="list-item__main"><span class="list-item__title">PR #1048 · Réglages</span></span><span class="tag tag--warn">En attente</span></li>
       </ul>
     </div>
-    <div class="card pfu-metric deck-grow" data-step="3" data-anim="rise">
+    <div class="card deck-metric deck-grow" data-step="3" data-anim="rise">
       <span class="t-label">Capacité de revue humaine</span>
-      <div class="pfu-ring">
+      <div class="deck-gauge">
         <svg class="deck-ring progress-ring" viewBox="0 0 64 64">
           <circle class="progress-ring__track" cx="32" cy="32" r="26"/>
           <circle class="progress-ring__bar" cx="32" cy="32" r="26" data-step="3" data-anim="draw" data-draw-to="0.18"/>
         </svg>
-        <span class="pfu-ring__label t-h3">18 %</span>
+        <span class="deck-gauge__label t-h3">18 %</span>
       </div>
     </div>
   </div>
-  <div class="pfu-questions" data-step="4" data-stagger>
+  <div class="deck-questions" data-step="4" data-stagger>
     <span class="tag tag--lg tag--error">La QA est-elle prête ?</span>
     <span class="tag tag--lg tag--error">Qui relit tout ce code ?</span>
     <span class="tag tag--lg tag--error">Et la qualité ?</span>
@@ -1014,7 +1017,7 @@ git commit -m "Document and ship the deck kit"
 
 - [ ] **Step 3: Verify** — open `http://localhost:8765/presentation/pfu-studio/index.html#5.4`, reload, wait 2s, screenshot scale 0.5. Expected: 140 counter, 7 queue rows clipped by card, red ring 18 %, 4 red question tags. Check `#4.2` after 2s: bubble shows "Mais… sommes-nous prêts ?". Check `#3.3`: lines + PFU Studio hub between the mobile card and team cards. Fix overflow/contrast issues in `scenes.css` before commit.
 
-- [ ] **Step 4: Commit** (design-systems repo)
+- [ ] **Step 4: Commit** — in design-system-web: `git add deck/patterns.css && git commit -m "Add reusable deck scene patterns"`; then in design-systems:
 
 ```bash
 git add presentation/pfu-studio
@@ -1033,12 +1036,12 @@ git commit -m "Add PFU Studio talk scenes 1 to 5"
 ```html
 <section class="scene" data-camera="zoom">
   <div class="deck-row">
-    <div class="card pfu-versus deck-grow" data-step="1" data-anim="slide-right">
+    <div class="card deck-versus deck-grow" data-step="1" data-anim="slide-right">
       <span class="deck-kicker">Le slogan</span>
       <span class="t-display2">AI first</span>
       <span class="t-h5">Générer plus de code, plus vite.</span>
     </div>
-    <div class="card card--strong pfu-versus deck-grow" data-step="2" data-anim="slide-left">
+    <div class="card card--strong deck-versus deck-grow" data-step="2" data-anim="slide-left">
       <span class="deck-kicker">La capacité</span>
       <span class="t-display2">AI ready</span>
       <span class="t-h5">Tester, relire et livrer ce code avec confiance.</span>
@@ -1050,27 +1053,27 @@ git commit -m "Add PFU Studio talk scenes 1 to 5"
 <section class="scene" data-camera="zoom">
   <span class="deck-kicker" data-anim="fade">3 · La suite</span>
   <h2 class="t-h1" data-anim="rise">PFU Studio, le cœur du <mark class="hl">AI ready</mark></h2>
-  <div class="pfu-orbit">
-    <svg class="pfu-orbit__rings" viewBox="0 0 1150 460">
+  <div class="deck-orbit">
+    <svg class="deck-orbit__rings" viewBox="0 0 1150 460">
       <ellipse cx="575" cy="230" rx="540" ry="200" data-step="1" data-anim="draw"/>
       <ellipse cx="575" cy="230" rx="360" ry="130" data-step="1" data-anim="draw"/>
     </svg>
-    <div class="card card--accent pfu-hub pfu-orbit__hub" data-anim="pop"><span class="t-h3">PFU Studio</span><span class="t-caption">orchestrateur multi-agents</span></div>
-    <div class="pfu-orbit__nodes" data-step="2" data-stagger>
-      <div class="card pfu-node pfu-node--left"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span><span class="t-label">Kim · analyse</span></div>
-      <div class="card pfu-node pfu-node--upper-left"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span><span class="t-label">Cody · code</span></div>
-      <div class="card pfu-node pfu-node--upper-right"><span class="avatar avatar--xs"><span class="avatar__monogram">A</span></span><span class="t-label">Arthur · architecture</span></div>
-      <div class="card pfu-node pfu-node--right"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span><span class="t-label">Maestro · tests UI</span></div>
-      <div class="card pfu-node pfu-node--lower-right"><span class="avatar avatar--xs"><span class="avatar__monogram">S</span></span><span class="t-label">Simulateur iOS · tvOS</span></div>
-      <div class="card pfu-node pfu-node--bottom"><span class="avatar avatar--xs"><span class="avatar__monogram">V</span></span><span class="t-label">Verdicts QA</span></div>
-      <div class="card pfu-node pfu-node--lower-left"><span class="avatar avatar--xs"><span class="avatar__monogram">J</span></span><span class="t-label">Jira · Confluence</span></div>
+    <div class="card card--accent deck-hub deck-orbit__hub" data-anim="pop"><span class="t-h3">PFU Studio</span><span class="t-caption">orchestrateur multi-agents</span></div>
+    <div class="deck-orbit__nodes" data-step="2" data-stagger>
+      <div class="card deck-node deck-node--left"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span><span class="t-label">Kim · analyse</span></div>
+      <div class="card deck-node deck-node--upper-left"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span><span class="t-label">Cody · code</span></div>
+      <div class="card deck-node deck-node--upper-right"><span class="avatar avatar--xs"><span class="avatar__monogram">A</span></span><span class="t-label">Arthur · architecture</span></div>
+      <div class="card deck-node deck-node--right"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span><span class="t-label">Maestro · tests UI</span></div>
+      <div class="card deck-node deck-node--lower-right"><span class="avatar avatar--xs"><span class="avatar__monogram">S</span></span><span class="t-label">Simulateur iOS · tvOS</span></div>
+      <div class="card deck-node deck-node--bottom"><span class="avatar avatar--xs"><span class="avatar__monogram">V</span></span><span class="t-label">Verdicts QA</span></div>
+      <div class="card deck-node deck-node--lower-left"><span class="avatar avatar--xs"><span class="avatar__monogram">J</span></span><span class="t-label">Jira · Confluence</span></div>
     </div>
   </div>
 </section>
 
 <section class="scene" data-camera="pan-up">
   <span class="deck-kicker" data-anim="fade">Démo</span>
-  <div class="deck-row pfu-demo">
+  <div class="deck-row deck-demo">
     <div class="deck-window deck-grow" data-anim="rise">
       <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">PFU Studio</span></div>
       <div class="deck-window__body deck-screens">
@@ -1124,7 +1127,7 @@ git commit -m "Add PFU Studio talk scenes 1 to 5"
 <section class="scene" data-camera="pan-left">
   <span class="deck-kicker" data-anim="fade">3 · La suite</span>
   <h2 class="t-h1" data-anim="rise">Prochaines étapes</h2>
-  <div class="card pfu-roadmap">
+  <div class="card deck-roadmap">
     <div class="checkbox" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Relier l'équipe mobile à QA, Design et Produit</div>
     <div class="checkbox" data-step="2" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Orchestrer des agents IA sur le simulateur</div>
     <div class="checkbox" data-step="3" data-anim="check"><input type="checkbox"><span class="checkbox__box">✓</span>Verdicts QA automatiques sur chaque pull request</div>
@@ -1139,7 +1142,7 @@ git commit -m "Add PFU Studio talk scenes 1 to 5"
 </section>
 ```
 
-- [ ] **Step 2: Verify** — screenshots at scale 0.5 for `#6.3`, `#7.2`, `#8.2`, `#9.5`, `#10.0` (reload + wait 2s each). Expected: versus cards with sweep; orbit ellipses drawn with 7 nodes not clipped at stage edges; demo window shows verdict mock screen and phone shows two ticked checks; roadmap first two ticked; Merci highlighted. Adjust `.pfu-node--*` percentages if nodes overlap rings badly or clip.
+- [ ] **Step 2: Verify** — screenshots at scale 0.5 for `#6.3`, `#7.2`, `#8.2`, `#9.5`, `#10.0` (reload + wait 2s each). Expected: versus cards with sweep; orbit ellipses drawn with 7 nodes not clipped at stage edges; demo window shows verdict mock screen and phone shows two ticked checks; roadmap first two ticked; Merci highlighted. Adjust `.deck-node--*` percentages if nodes overlap rings badly or clip.
 
 - [ ] **Step 3: Commit**
 
@@ -1154,7 +1157,51 @@ git commit -m "Add PFU Studio talk scenes 6 to 10"
 
 - [ ] **Step 1: Keyboard run** — open `#1.0`, press → until the end via javascript_tool, collecting `location.hash` each press. Expected final hash `#10.0`, no console errors (`read_console_messages`).
 - [ ] **Step 2: Backward run** — ← to `#1.0`; every scene reached.
-- [ ] **Step 3: Token grep** — `grep -nE '#[0-9A-Fa-f]{3,6}\b|rgba?\(|[0-9]px' presentation/pfu-studio/*.css presentation/pfu-studio/index.html` → only `#1042`… PR labels in HTML text, no CSS literals.
+- [ ] **Step 3: Token grep** — `grep -nE '#[0-9A-Fa-f]{3,6}\b|rgba?\(|[0-9]px' design-system-web/deck/patterns.css presentation/pfu-studio/index.html` → only `#1042`… PR labels in HTML text, no CSS literals.
 - [ ] **Step 4: Line limits** — `wc -l presentation/pfu-studio/*` each < 400.
 - [ ] **Step 5: Offline check** — open `file:///Users/omar.doucoure/Documents/OmApps/design-systems/presentation/pfu-studio/index.html` directly; fonts render DM Sans, navigation works.
 - [ ] **Step 6: Stop server**, close Chrome tabs.
+
+---
+
+### Task 8: Story-to-deck skill + scene pattern catalog
+
+Goal: a new talk from one prompt ("make a deck: <story>") with zero hand-written CSS and no images.
+
+**Files:**
+- Create: `design-system-web/deck/PATTERNS.md`, `design-system-web/deck/new-deck.sh`
+- Modify: `design-system-web/README.md` (Deck kit section: one line pointing to `deck/PATTERNS.md` and `new-deck.sh`)
+- Create: `~/.claude/skills/motion-deck/SKILL.md` (not in any repo)
+
+**Interfaces:**
+- Consumes: kit files (Tasks 1–4), `deck/patterns.css` (Task 5), final `presentation/pfu-studio/index.html` and `deck/template/index.html` as snippet sources.
+- Produces: `deck/new-deck.sh <dest-dir> "<title>" [lang]` → self-contained folder: `<dest>/index.html` (skeleton, one title scene) + `<dest>/kit/` (copies of `tokens.css`, `components.css`, `fonts/`, `deck/deck.css`, `deck/patterns.css`, `deck/deck-state.js`, `deck/effects.js`, `deck/deck.js`). Talk HTML links `kit/...`. Folder works when zipped or moved anywhere.
+
+- [ ] **Step 1: `deck/new-deck.sh`** (bash, `set -euo pipefail`, no comments): resolve kit dir from script location; fail with usage if dest missing or dest exists and not empty; copy files listed above into `<dest>/kit/` keeping `deck/` subfolder; write `<dest>/index.html` = template head/body skeleton with paths `kit/tokens.css`, `kit/components.css`, `kit/deck/deck.css`, `kit/deck/patterns.css`, scripts `kit/deck/deck-state.js`, `kit/deck/effects.js`, `kit/deck/deck.js`, `<html lang>` = arg 3 (default `fr`), `<title>` = arg 2, one `deck-center` title scene with `<mark class="hl">` title, and the progress bar. Test: `bash deck/new-deck.sh "$SCRATCH/demo" "Demo"` → folder exists, `ls "$SCRATCH/demo/kit/deck"` lists 5 files, opening `$SCRATCH/demo/index.html` over localhost shows title with highlight and `location.hash === "#1.0"`. Second run on same dest → non-zero exit with message.
+
+- [ ] **Step 2: `deck/PATTERNS.md`** — catalog, one section per pattern, each with: **Use when** (story beat it serves), **Steps** (what each click reveals), **Snippet** (complete `<section class="scene">…</section>` copied from the PFU talk or template, content genericized to English placeholders in `[brackets]`). Patterns, in this order:
+  1. `title-window` — title + lead + app window mock (PFU scene 1)
+  2. `agenda` — numbered staggered list (PFU scene 2)
+  3. `bridge` — isolated team card, other teams, lines grow, hub pops (PFU scene 3)
+  4. `question` — kinetic headline → `data-next` button → typing bubble (PFU scene 4)
+  5. `metrics` — counter card, overflowing queue, gauge, question tags (PFU scene 5)
+  6. `versus` — two cards slide in, conclusion with highlight (PFU scene 6)
+  7. `orbit` — hub with drawn ellipses and up to 7 nodes (PFU scene 7; list the 7 `deck-node--*` position modifiers)
+  8. `demo` — window + phone, mock screens switching (PFU scene 8)
+  9. `roadmap` — checklist, done items tick (PFU scene 9)
+  10. `closing` — thank-you (PFU scene 10)
+  Top of file: rules (only kit classes, no images, no inline styles, mock screens use `.deck-screen` + DS components + `.deck-skel`, reveal attributes table from README, camera per pattern suggestion). Keep under 400 lines; if longer, keep snippets and shorten prose.
+
+- [ ] **Step 3: Skill `~/.claude/skills/motion-deck/SKILL.md`** — follow `~/.claude/skills-guide.md`. Frontmatter: `name: motion-deck`; description (what + when): builds an animated, click-through HTML presentation from a story using the HaHo design system deck kit; triggers "make a presentation", "deck", "slides", "présentation", "animated presentation like a video", "turn this story into slides"; negative trigger: not for .pptx/Google Slides requests. Body sections:
+  - `## Critical`: only kit classes and DS components; zero custom CSS; no images or screenshots, screens are mockups; one idea per scene; ≤ 6 steps per scene; text in the language of the story; no code comments.
+  - `## Step 1: Outline` — split story into beats; map each beat to a pattern from `/Users/omar.doucoure/Documents/OmApps/design-systems/design-system-web/deck/PATTERNS.md` (read it first); show the outline as a table (`# | Scene | Pattern | Clicks reveal`) and ask for approval once.
+  - `## Step 2: Scaffold` — `bash /Users/omar.doucoure/Documents/OmApps/design-systems/design-system-web/deck/new-deck.sh <dest> "<title>" <lang>`; default dest `~/Documents/Presentations/<slug>`.
+  - `## Step 3: Write scenes` — replace the skeleton scene with pattern snippets, filled with the story's content.
+  - `## Step 4: Verify` — serve dest with `python3 -m http.server` in background, step through every scene with keydown events in Chrome, screenshot each scene at scale 0.5, fix overflow/contrast, grep for `#hex|rgb|px|style=` in index.html (must be empty except text).
+  - `## Step 5: Hand off` — table of scenes + how to present (open `index.html`, → / ← / clicker, F fullscreen, `#scene.step`).
+  - `## Examples`: the PFU Studio talk (`/Users/omar.doucoure/Documents/OmApps/design-systems/presentation/pfu-studio/index.html`) as the reference deck.
+  - `## Troubleshooting`: text overflows card → shorten text or split scene; nodes clip in orbit → max 7 nodes, shorter labels; animation doesn't play → element needs `data-anim`/`data-step`, `mark.hl` needs an animated ancestor.
+
+- [ ] **Step 4: Trigger + function test** — in a fresh subagent with no context, give only: "Fais-moi une présentation animée : notre équipe a réduit le temps de build de 20 à 5 minutes. Pourquoi c'était lent, ce qu'on a changé, les résultats, la suite." and let it follow the skill end to end into `$SCRATCH/test-deck`. Expected: outline table, folder built by `new-deck.sh`, ≥ 5 scenes from ≥ 4 different patterns, no custom CSS, navigation works. Fix skill/PATTERNS gaps it hits.
+
+- [ ] **Step 5: Commit** — design-system-web: `git add deck/PATTERNS.md deck/new-deck.sh README.md && git commit -m "Add deck pattern catalog and scaffolding script"`. The skill folder is outside repos; no commit.
