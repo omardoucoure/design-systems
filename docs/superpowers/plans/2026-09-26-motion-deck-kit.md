@@ -4,7 +4,7 @@
 
 **Goal:** Reusable click-driven HTML deck kit built on the HaHo web design system, plus the PFU Studio talk (French) built with it.
 
-**Architecture:** Kit lives in `design-system-web/deck/` (separate git repo, ignored by the parent repo): `deck.css` (stage, scenes, reveal animations, layout helpers), `deck-state.js` (pure navigation math, node-tested), `effects.js` (count, type, draw, bubble, check, media placeholder), `deck.js` (DOM wiring, keys, hash, scaling). Talks live in `design-systems/presentation/<talk>/` and link the kit by relative path. Classic scripts only (ES modules fail on `file://`).
+**Architecture:** Kit lives in `design-system-web/deck/` (separate git repo, ignored by the parent repo): `deck.css` (stage, scenes, reveal animations, layout helpers), `deck-state.js` (pure navigation math, node-tested), `effects.js` (count, type, draw, bubble, check), `deck.js` (DOM wiring, keys, hash, scaling). Talks live in `design-systems/presentation/<talk>/` and link the kit by relative path. Classic scripts only (ES modules fail on `file://`).
 
 **Tech Stack:** HTML, CSS custom properties, vanilla JS (classic scripts), `node --test` for pure logic, Chrome for visual verification.
 
@@ -28,13 +28,12 @@
 | `deck/deck.css` | design-system-web | stage, scenes, camera, reveals, layout helpers, window, device, bubble |
 | `deck/deck-state.js` | design-system-web | `next`, `prev`, `parseHash`, `formatHash` |
 | `deck/tests/deck-state.test.js` | design-system-web | node tests for state |
-| `deck/effects.js` | design-system-web | `DeckEffects.play/reset/prepare/guardMedia` |
+| `deck/effects.js` | design-system-web | `DeckEffects.play/reset/prepare` |
 | `deck/deck.js` | design-system-web | DOM wiring |
 | `deck/template/index.html` | design-system-web | starter talk showing every API feature |
 | `README.md`, `package.json` | design-system-web | docs + ship `deck/` |
 | `presentation/pfu-studio/index.html` | design-systems | 10 scenes |
 | `presentation/pfu-studio/scenes.css` | design-systems | talk-only layout (hub, orbit, metrics) |
-| `presentation/pfu-studio/assets/.gitkeep` | design-systems | media drop folder |
 
 ---
 
@@ -227,8 +226,9 @@ git commit -m "Add deck navigation state with tests"
 - Produces for talks:
   - Page skeleton: `body.deck` › `main.deck__stage` › `section.scene`* + `div.deck__progress > div.deck__progress-bar`; scripts in order `deck-state.js`, `effects.js`, `deck.js`.
   - Attributes: `data-step="n"`, `data-anim="rise|fade|pop|slide-left|slide-right|grow|draw|count|type|bubble|check"`, `data-stagger`, `data-camera="fade|zoom|pan-left|pan-up"`, `data-next`, `data-count-from`, `data-count-to`, `data-draw-to`, `data-done`.
-  - Classes: `mark.hl` (sweeps when an ancestor is `.is-shown`), `.deck-row`, `.deck-grow`, `.deck-stack`, `.deck-center`, `.deck-text-center`, `.deck-kicker`, `.deck-lead`, `.deck-window(__bar|__dot|__title|__body)`, `.deck-screens`, `.deck-media`, `.deck-device`, `.deck-bubble`, `.deck-bubble__message`, `.deck-typing`, `.deck-ring`.
-  - `window.DeckEffects = { play(el), reset(el), prepare(el), guardMedia(media) }`.
+  - Classes: `mark.hl` (sweeps when an ancestor is `.is-shown`), `.deck-row`, `.deck-grow`, `.deck-stack`, `.deck-center`, `.deck-text-center`, `.deck-kicker`, `.deck-lead`, `.deck-window(__bar|__dot|__title|__body)`, `.deck-screens`, `.deck-screen`, `.deck-skel(--title|--short|--mid|--block)`, `.deck-device`, `.deck-bubble`, `.deck-bubble__message`, `.deck-typing`, `.deck-ring`.
+  - Screens are mockups built from DS classes + `.deck-skel` bars inside `.deck-screen` panels; no images. Stacked panels in `.deck-screens` switch via `data-step` + `data-anim="fade"`.
+  - `window.DeckEffects = { play(el), reset(el), prepare(el) }`.
 
 - [ ] **Step 1: Write `deck/deck.css`**
 
@@ -381,14 +381,21 @@ mark.hl {
 .deck-window__body { position: relative; aspect-ratio: 16 / 10; }
 
 .deck-screens { position: relative; flex: 1; }
-.deck-screens > * { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.deck-media--missing {
+.deck-screen {
+  position: absolute;
+  inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: var(--text-muted);
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  overflow: hidden;
+  background: var(--surface-page);
 }
+.deck-skel { display: block; flex-shrink: 0; height: var(--space-sm); border-radius: var(--radius-full); background: var(--surface-card); }
+.deck-skel--title { height: var(--space-lg); width: 60%; }
+.deck-skel--short { width: 40%; }
+.deck-skel--mid { width: 70%; }
+.deck-skel--block { height: var(--space-xxxxl); border-radius: var(--radius-md); }
 
 .deck-device { zoom: var(--deck-device-scale); flex-shrink: 0; }
 .deck-ring { width: var(--deck-ring-size); height: var(--deck-ring-size); }
@@ -552,30 +559,7 @@ mark.hl {
     }
   }
 
-  function isBroken(media) {
-    if (media.tagName === "IMG") return media.complete && media.naturalWidth === 0;
-    return Boolean(media.error);
-  }
-
-  function swapForPlaceholder(media) {
-    const placeholder = document.createElement("div");
-    Array.from(media.attributes)
-      .filter(attribute => attribute.name.startsWith("data-"))
-      .forEach(attribute => placeholder.setAttribute(attribute.name, attribute.value));
-    placeholder.className = media.className + " card deck-media--missing t-caption";
-    placeholder.textContent = media.getAttribute("src");
-    media.replaceWith(placeholder);
-  }
-
-  function guardMedia(media) {
-    if (isBroken(media)) {
-      swapForPlaceholder(media);
-      return;
-    }
-    media.addEventListener("error", () => swapForPlaceholder(media), { once: true });
-  }
-
-  root.DeckEffects = { play, reset, prepare, guardMedia };
+  root.DeckEffects = { play, reset, prepare };
 })(window);
 ```
 
@@ -590,7 +574,6 @@ mark.hl {
   const NEXT_KEYS = ["ArrowRight", "ArrowDown", " ", "PageDown"];
   const PREV_KEYS = ["ArrowLeft", "ArrowUp", "PageUp"];
 
-  document.querySelectorAll(".deck-media").forEach(DeckEffects.guardMedia);
   document.querySelectorAll(ANIMATED).forEach(DeckEffects.prepare);
 
   const stepOf = element => Number(element.dataset.step || 0);
@@ -719,13 +702,30 @@ mark.hl {
     <div class="deck-window deck-grow" data-anim="rise">
       <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">App window</span></div>
       <div class="deck-window__body deck-screens">
-        <img class="deck-media" src="assets/missing-1.png" alt="">
-        <img class="deck-media" src="assets/missing-2.png" alt="" data-step="1" data-anim="fade">
+        <div class="deck-screen">
+          <span class="deck-skel deck-skel--title"></span>
+          <span class="deck-skel"></span>
+          <span class="deck-skel deck-skel--mid"></span>
+          <span class="deck-skel deck-skel--block"></span>
+        </div>
+        <div class="deck-screen" data-step="1" data-anim="fade">
+          <ul class="list" data-step="1" data-stagger>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Screen two, row one</span></span><span class="tag tag--success">Done</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Screen two, row two</span></span><span class="tag tag--warn">Running</span></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="device deck-device" data-anim="slide-left">
       <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
-      <div class="deck-screens"><img class="deck-media" src="assets/missing-phone.png" alt=""></div>
+      <div class="deck-screens">
+        <div class="deck-screen">
+          <span class="deck-skel deck-skel--title"></span>
+          <span class="deck-skel deck-skel--block"></span>
+          <span class="deck-skel deck-skel--mid"></span>
+          <span class="deck-skel deck-skel--short"></span>
+        </div>
+      </div>
       <div class="home-indicator"></div>
     </div>
   </div>
@@ -750,11 +750,10 @@ const log = [location.hash];
 key("ArrowRight"); log.push(location.hash, document.querySelector("[data-next]").classList.contains("is-shown"));
 key("ArrowRight"); key("ArrowRight"); log.push(location.hash, document.querySelectorAll(".scene")[1].classList.contains("is-active"));
 key("ArrowLeft"); log.push(location.hash);
-log.push(document.querySelectorAll(".deck-media--missing").length);
 log
 ```
 
-Expected: `["#1.0", "#1.1", true, "#2.0", true, "#1.2", 3]`
+Expected: `["#1.0", "#1.1", true, "#2.0", true, "#1.2"]`
 
 - [ ] **Step 7: Visual check** — hash `#2.6` then reload; wait 2s; screenshot at scale 0.5. Expected: counter 300, grow card, 3 list rows, ring 70% drawn, checkbox checked, typed text, highlight visible on scene 1 (`#1.2`), progress bar visible. Fix any visual defect before commit.
 
@@ -812,7 +811,7 @@ Click-driven presentations built only from DS tokens and components. Copy `deck/
 | ← ↑ PageUp | previous |
 | F | fullscreen |
 
-URL hash `#scene.step` resumes a position. Missing media shows a placeholder card with the file name. `mark.hl` sweeps when its animated parent appears.
+URL hash `#scene.step` resumes a position. Screens are mockups, never screenshots: stack `.deck-screen` panels inside `.deck-screens` (in a `.deck-window__body` or a `.device.deck-device`), fill them with DS components and `.deck-skel` bars, and switch panels with `data-step` + `data-anim="fade"`. `mark.hl` sweeps when its animated parent appears.
 ````
 
 - [ ] **Step 3: Verify** — `npm pack --dry-run 2>&1 | grep deck/` lists `deck/deck.css`, `deck/deck.js`, `deck/effects.js`, `deck/deck-state.js`.
@@ -829,7 +828,7 @@ git commit -m "Document and ship the deck kit"
 ### Task 5: PFU Studio talk, scenes 1–5
 
 **Files:**
-- Create: `design-systems/presentation/pfu-studio/index.html`, `presentation/pfu-studio/scenes.css`, `presentation/pfu-studio/assets/.gitkeep`
+- Create: `design-systems/presentation/pfu-studio/index.html`, `presentation/pfu-studio/scenes.css`
 
 **Interfaces:**
 - Consumes: kit API (Task 3). Kit path from talk: `../../design-system-web/`.
@@ -908,7 +907,18 @@ git commit -m "Document and ship the deck kit"
     </div>
     <div class="deck-window pfu-hero-window" data-step="1" data-anim="slide-left">
       <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">PFU Studio</span></div>
-      <div class="deck-window__body deck-screens"><img class="deck-media" src="assets/studio-home.png" alt="PFU Studio"></div>
+      <div class="deck-window__body deck-screens">
+        <div class="deck-screen">
+          <span class="deck-skel deck-skel--title"></span>
+          <ul class="list" data-step="1" data-stagger>
+            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span></span><span class="list-item__main"><span class="list-item__title">Kim · analyse du ticket</span></span><span class="tag tag--success">Terminé</span></li>
+            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span></span><span class="list-item__main"><span class="list-item__title">Cody · build simulateur</span></span><span class="tag tag--success">Terminé</span></li>
+            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span></span><span class="list-item__main"><span class="list-item__title">Maestro · parcours UI</span></span><span class="tag tag--warn">En cours</span></li>
+          </ul>
+          <span class="deck-skel deck-skel--mid"></span>
+          <span class="deck-skel deck-skel--short"></span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1002,11 +1012,9 @@ git commit -m "Document and ship the deck kit"
 </html>
 ```
 
-- [ ] **Step 3: Create** `presentation/pfu-studio/assets/.gitkeep` (empty).
+- [ ] **Step 3: Verify** — open `http://localhost:8765/presentation/pfu-studio/index.html#5.4`, reload, wait 2s, screenshot scale 0.5. Expected: 140 counter, 7 queue rows clipped by card, red ring 18 %, 4 red question tags. Check `#4.2` after 2s: bubble shows "Mais… sommes-nous prêts ?". Check `#3.3`: lines + PFU Studio hub between the mobile card and team cards. Fix overflow/contrast issues in `scenes.css` before commit.
 
-- [ ] **Step 4: Verify** — open `http://localhost:8765/presentation/pfu-studio/index.html#5.4`, reload, wait 2s, screenshot scale 0.5. Expected: 140 counter, 7 queue rows clipped by card, red ring 18 %, 4 red question tags. Check `#4.2` after 2s: bubble shows "Mais… sommes-nous prêts ?". Check `#3.3`: lines + PFU Studio hub between the mobile card and team cards. Fix overflow/contrast issues in `scenes.css` before commit.
-
-- [ ] **Step 5: Commit** (design-systems repo)
+- [ ] **Step 4: Commit** (design-systems repo)
 
 ```bash
 git add presentation/pfu-studio
@@ -1066,16 +1074,47 @@ git commit -m "Add PFU Studio talk scenes 1 to 5"
     <div class="deck-window deck-grow" data-anim="rise">
       <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">PFU Studio</span></div>
       <div class="deck-window__body deck-screens">
-        <img class="deck-media" src="assets/studio-home.png" alt="">
-        <img class="deck-media" src="assets/studio-timeline.png" alt="" data-step="1" data-anim="fade">
-        <video class="deck-media" src="assets/studio-run.mp4" muted loop autoplay playsinline data-step="2" data-anim="fade"></video>
+        <div class="deck-screen">
+          <span class="t-label">Ticket Jira · PFU-1234</span>
+          <span class="deck-skel deck-skel--title"></span>
+          <span class="deck-skel"></span>
+          <span class="deck-skel deck-skel--mid"></span>
+          <span class="deck-skel deck-skel--short"></span>
+          <span class="deck-skel deck-skel--block"></span>
+        </div>
+        <div class="deck-screen" data-step="1" data-anim="fade">
+          <span class="t-label">Agents en action</span>
+          <ul class="list" data-step="1" data-stagger>
+            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">K</span></span></span><span class="list-item__main"><span class="list-item__title">Kim · critères d'acceptation</span></span><span class="tag tag--success">Terminé</span></li>
+            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">C</span></span></span><span class="list-item__main"><span class="list-item__title">Cody · build et installation</span></span><span class="tag tag--success">Terminé</span></li>
+            <li class="list-item"><span class="list-item__leading"><span class="avatar avatar--xs"><span class="avatar__monogram">M</span></span></span><span class="list-item__main"><span class="list-item__title">Maestro · parcours de test</span></span><span class="tag tag--warn">En cours</span></li>
+          </ul>
+        </div>
+        <div class="deck-screen" data-step="2" data-anim="fade">
+          <span class="t-label">Verdict QA</span>
+          <span class="tag tag--lg tag--success">Validé · 12 / 12 étapes</span>
+          <span class="deck-skel deck-skel--mid"></span>
+          <span class="deck-skel"></span>
+          <span class="deck-skel deck-skel--short"></span>
+        </div>
       </div>
     </div>
     <div class="device deck-device" data-anim="slide-left">
       <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
       <div class="deck-screens">
-        <img class="deck-media" src="assets/app-home.png" alt="">
-        <img class="deck-media" src="assets/app-test.png" alt="" data-step="1" data-anim="fade">
+        <div class="deck-screen">
+          <span class="deck-skel deck-skel--title"></span>
+          <span class="deck-skel deck-skel--block"></span>
+          <span class="deck-skel deck-skel--mid"></span>
+          <span class="deck-skel deck-skel--block"></span>
+          <span class="deck-skel deck-skel--short"></span>
+        </div>
+        <div class="deck-screen" data-step="1" data-anim="fade">
+          <span class="deck-skel deck-skel--title"></span>
+          <div class="checkbox" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Connexion</div>
+          <div class="checkbox" data-step="2" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Lecture vidéo</div>
+          <span class="deck-skel deck-skel--block"></span>
+        </div>
       </div>
       <div class="home-indicator"></div>
     </div>
@@ -1100,7 +1139,7 @@ git commit -m "Add PFU Studio talk scenes 1 to 5"
 </section>
 ```
 
-- [ ] **Step 2: Verify** — screenshots at scale 0.5 for `#6.3`, `#7.2`, `#8.2`, `#9.5`, `#10.0` (reload + wait 2s each). Expected: versus cards with sweep; orbit ellipses drawn with 7 nodes not clipped at stage edges; demo shows placeholder cards with file names; roadmap first two ticked; Merci highlighted. Adjust `.pfu-node--*` percentages if nodes overlap rings badly or clip.
+- [ ] **Step 2: Verify** — screenshots at scale 0.5 for `#6.3`, `#7.2`, `#8.2`, `#9.5`, `#10.0` (reload + wait 2s each). Expected: versus cards with sweep; orbit ellipses drawn with 7 nodes not clipped at stage edges; demo window shows verdict mock screen and phone shows two ticked checks; roadmap first two ticked; Merci highlighted. Adjust `.pfu-node--*` percentages if nodes overlap rings badly or clip.
 
 - [ ] **Step 3: Commit**
 

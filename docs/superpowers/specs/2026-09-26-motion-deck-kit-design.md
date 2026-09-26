@@ -13,7 +13,7 @@ A reusable, click-driven HTML presentation kit built only from the HaHo web desi
 | Canvas | DS light style, page background `surfaceNeutral0_5` |
 | Language | PFU Studio deck in French |
 | Delivery | Local file opened from disk, fully offline (DM Sans bundled, no CDN) |
-| Media | User supplies PFU Studio screenshots / screen recording in `assets/`; placeholders until then |
+| Screens | Mockups only, like the video: DS components + skeleton bars inside window/phone frames; no screenshots or images |
 | Visual reference | AI LABS video `bBMp5tLxShQ`: single stage, camera pan/zoom, staggered UI reveals, orbit diagram, count-up, kinetic headline with highlight box |
 
 ## Architecture
@@ -29,10 +29,10 @@ design-system-web/                  reusable, ships with the package
 
 design-systems/presentation/pfu-studio/   one talk
 ├── index.html      scenes only
-└── assets/         screenshots, recordings
+└── scenes.css      talk-only layout
 ```
 
-The kit is consumed by relative path from a talk folder. A new talk = new folder with `index.html` + `assets/`.
+The kit is consumed by relative path from a talk folder. A new talk = new folder with `index.html` + `scenes.css`, generated from a story prompt by the `motion-deck` skill using the scene pattern catalog.
 
 ## Motion tokens (added to `tokens.css`)
 
@@ -103,7 +103,7 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 
 | # | Scene | Content | Motion |
 |---|---|---|---|
-| 1 | Titre | PFU Studio, subtitle, Mac window mock with screenshot | highlight sweep, window rises |
+| 1 | Titre | PFU Studio, subtitle, Mac window mock with agent timeline | highlight sweep, window rises |
 | 1b | Au programme | Pourquoi · L'objectif · La suite | staggered list |
 | 2 | Pourquoi | Mobile team isolated (compilation, simulateur, environnement) vs QA, Design, Produit | islands appear, connectors draw, PFU Studio lands in center |
 | 3 | AI first | "On est AI first" → button → "Mais… sommes-nous prêts ?" as a chat bubble from a person | kinetic type, pop, typing bubble |
@@ -126,7 +126,6 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 
 | Case | Handling |
 |---|---|
-| Missing media file | placeholder card with file name shown |
 | Fonts unavailable | bundled TTF via relative path, system fallback |
 | Unknown hash | start at scene 1 |
 | Window resize | stage rescales |
