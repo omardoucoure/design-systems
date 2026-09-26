@@ -42,11 +42,14 @@ The kit is consumed by relative path from a talk folder. A new talk = new folder
 | `--motion-dur-base` | 400ms |
 | `--motion-dur-slow` | 700ms |
 | `--motion-dur-scene` | 900ms |
+| `--motion-dur-count` | 1600ms |
+| `--motion-dur-typing` | 1200ms |
+| `--motion-type-char` | 28ms |
 | `--motion-ease-out` | `cubic-bezier(0.22, 1, 0.36, 1)` |
 | `--motion-ease-spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` |
 | `--motion-stagger` | 80ms |
 
-A highlight color for the headline sweep uses an existing surface token (`surfaceSecondary40`); no new color tokens.
+Headline sweep uses a new semantic `--surface-highlight` (light: `--s-40`, dark: `--s-100`); no new primitive colors.
 
 ## Stage
 
@@ -67,7 +70,7 @@ A highlight color for the headline sweep uses an existing surface token (`surfac
 | Attribute | Values | Meaning |
 |---|---|---|
 | `data-step` | integer ≥ 1 | reveal order inside the scene; same number = revealed together; absent = visible on scene entry |
-| `data-anim` | `rise`, `fade`, `pop`, `slide-left`, `slide-right`, `draw`, `type`, `count`, `sweep` | entry animation |
+| `data-anim` | `rise`, `fade`, `pop`, `slide-left`, `slide-right`, `grow`, `draw`, `type`, `count`, `bubble`, `check` | entry animation; `mark.hl` sweeps inside any revealed element |
 | `data-stagger` | on a container | children reveal one after another using `--motion-stagger` |
 | `data-camera` | `fade`, `zoom`, `pan-left`, `pan-up` | scene transition |
 | `data-next` | on a button | clicking it advances |
@@ -101,6 +104,7 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 | # | Scene | Content | Motion |
 |---|---|---|---|
 | 1 | Titre | PFU Studio, subtitle, Mac window mock with screenshot | highlight sweep, window rises |
+| 1b | Au programme | Pourquoi · L'objectif · La suite | staggered list |
 | 2 | Pourquoi | Mobile team isolated (compilation, simulateur, environnement) vs QA, Design, Produit | islands appear, connectors draw, PFU Studio lands in center |
 | 3 | AI first | "On est AI first" → button → "Mais… sommes-nous prêts ?" as a chat bubble from a person | kinetic type, pop, typing bubble |
 | 4 | Paradoxe | PRs 12 → 140; QA queue overflowing; human review ring in red; questions: QA prête ? revue humaine ? qualité ? workflow ? | count-up, list overflow, progress ring |
