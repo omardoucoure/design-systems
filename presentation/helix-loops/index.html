@@ -98,6 +98,28 @@
   <p class="t-h4 deck-text-center" data-step="3" data-anim="rise">The goal: <mark class="hl">a process the agent can't talk its way out of</mark></p>
 </section>
 
+<section class="scene" data-camera="zoom">
+  <div class="deck-row">
+    <div class="deck-stack">
+      <header class="deck-heading" data-anim="rise">
+        <span class="deck-kicker">Even with the workflow</span>
+        <h2 class="t-h1">The agent still claimed it was done</h2>
+      </header>
+      <p class="deck-lead" data-step="3" data-anim="rise">A small change <mark class="hl">fixed</mark> this for good. More on it later.</p>
+    </div>
+    <div class="deck-window deck-grow" data-step="1" data-anim="rise">
+      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">Terminal</span></div>
+      <div class="deck-window__body">
+        <pre class="code-block code-block--flush deck-fill" data-step="1" data-anim="type">$ agent run checkpoint-3
+› editing request-form
+› 3 tests fail, skipping them
+✓ Task complete</pre>
+        <span class="tag tag--lg tag--error deck-pin" data-step="2" data-anim="pop">3 tests still failing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="scene deck-center" data-camera="zoom">
   <h1 class="t-display1" data-anim="rise"><mark class="hl">Helix</mark> Loops</h1>
   <div class="deck-orbit">
@@ -314,6 +336,300 @@
     </div>
   </div>
   <p class="t-h4 deck-text-center" data-step="3" data-anim="rise">JSON for the agent, <mark class="hl">a page for the human</mark></p>
+</section>
+
+<section class="scene" data-camera="pan-left">
+  <header class="deck-heading" data-anim="rise">
+    <span class="deck-kicker">Before any code</span>
+    <h2 class="t-h1">Three sub-agents set the stage</h2>
+  </header>
+  <div class="deck-row">
+    <div class="card card--accent deck-hub" data-anim="pop">
+      <span class="avatar avatar--md"><span class="avatar__monogram">O</span></span>
+      <span class="t-h3">Orchestrator</span>
+      <span class="deck-caption">Hands out the work</span>
+    </div>
+    <div class="deck-stack deck-grow">
+      <div class="deck-row">
+        <span class="deck-link" data-step="1" data-anim="grow"></span>
+        <div class="card deck-flow__item" data-step="1" data-anim="rise">
+          <span class="t-h5">App health check</span>
+          <span class="deck-caption">Does the app build and run today?</span>
+        </div>
+      </div>
+      <div class="deck-row">
+        <span class="deck-link" data-step="1" data-anim="grow"></span>
+        <div class="card deck-flow__item" data-step="1" data-anim="rise">
+          <span class="t-h5">Checkpoint planner</span>
+          <span class="deck-caption">Cuts the feature into small steps</span>
+        </div>
+        <div class="card deck-bubble" data-step="2" data-anim="bubble">
+          <span class="avatar avatar--sm"><span class="avatar__monogram">P</span></span>
+          <span class="deck-typing"><span></span><span></span><span></span></span>
+          <span class="deck-bubble__message t-h5">Any questions?</span>
+        </div>
+      </div>
+      <div class="deck-row">
+        <span class="deck-link" data-step="3" data-anim="grow"></span>
+        <div class="card deck-flow__item" data-step="3" data-anim="rise">
+          <span class="t-h5">Test planner</span>
+          <span class="deck-caption">Writes what "done" means, as tests</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="zoom">
+  <header class="deck-heading" data-anim="rise">
+    <span class="deck-kicker">Rule or gate</span>
+    <h2 class="t-h1">Telling the agent is not enough</h2>
+  </header>
+  <div class="deck-row deck-row--stretch">
+    <div class="card deck-versus" data-step="1" data-anim="slide-right">
+      <span class="deck-kicker">Written in the prompt</span>
+      <h3 class="t-display2">Rule</h3>
+      <p class="t-h4">Advice. Forgotten mid-task.</p>
+      <div class="deck-tags" data-step="2" data-anim="pop"><span class="tag tag--lg tag--warn">Ignored</span></div>
+    </div>
+    <div class="card card--strong deck-versus" data-step="3" data-anim="slide-left">
+      <span class="deck-kicker">Built into the loop</span>
+      <h3 class="t-display2">Gate</h3>
+      <p class="t-h4">Blocks the next task until passed.</p>
+    </div>
+  </div>
+  <div class="deck-row" data-step="4" data-anim="rise">
+    <span class="deck-kicker">Our fix</span>
+    <pre class="code-block deck-grow" data-step="4" data-anim="type">stop hook → exit 2 → "not done, keep going"</pre>
+  </div>
+</section>
+
+<section class="scene" data-camera="pan-up">
+  <div class="deck-row">
+    <header class="deck-heading" data-anim="rise">
+      <span class="deck-kicker">The 4 gates</span>
+      <h2 class="t-h1">Every checkpoint must pass all four</h2>
+    </header>
+    <div class="card deck-versus deck-checklist">
+      <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span><span>Behavior</span><span class="t-body-regular">· Does it work?</span></div>
+      <div class="checkbox checkbox--lg" data-step="2" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span><span>UI</span><span class="t-body-regular">· Does it match the design?</span></div>
+      <div class="checkbox checkbox--lg" data-step="3" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span><span>Code review</span><span class="t-body-regular">· Is the code good?</span></div>
+      <div class="checkbox checkbox--lg" data-step="4" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span><span>Human</span><span class="t-body-regular">· Does it feel right?</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="pan-left">
+  <div class="deck-row">
+    <div class="deck-stack">
+      <header class="deck-heading" data-anim="rise">
+        <span class="deck-kicker">Gate 1 · Behavior</span>
+        <h2 class="t-h1">Tests first, then the code</h2>
+      </header>
+      <div class="deck-row" data-step="2" data-anim="rise">
+        <span class="avatar avatar--sm"><span class="avatar__monogram">C</span></span>
+        <span class="deck-link"></span>
+        <span class="t-h5">Code sub-agent writes the feature</span>
+      </div>
+      <div class="deck-tags" data-step="4" data-anim="pop"><span class="tag tag--lg tag--success">Gate 1 passed</span></div>
+    </div>
+    <div class="deck-window deck-grow" data-anim="rise">
+      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">Tests</span></div>
+      <div class="deck-window__body deck-screens">
+        <div class="deck-screen">
+          <ul class="list" data-step="1" data-stagger>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Shows the leave balance</span></span><span class="tag tag--error">Failing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Submits a request</span></span><span class="tag tag--error">Failing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Blocks overlapping dates</span></span><span class="tag tag--error">Failing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Notifies the manager</span></span><span class="tag tag--error">Failing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Saves a draft</span></span><span class="tag tag--error">Failing</span></li>
+          </ul>
+        </div>
+        <div class="deck-screen" data-step="3" data-anim="fade">
+          <ul class="list">
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Shows the leave balance</span></span><span class="tag tag--success">Passing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Submits a request</span></span><span class="tag tag--success">Passing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Blocks overlapping dates</span></span><span class="tag tag--success">Passing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Notifies the manager</span></span><span class="tag tag--success">Passing</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Saves a draft</span></span><span class="tag tag--success">Passing</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="zoom">
+  <header class="deck-heading" data-anim="rise">
+    <span class="deck-kicker">Gate 2 · UI</span>
+    <h2 class="t-h1">A reviewer lays the build over the design</h2>
+  </header>
+  <div class="deck-row">
+    <div class="deck-overlap" data-step="1" data-anim="rise">
+      <div class="card deck-mini"><span class="t-label">Design</span><span class="deck-skel deck-skel--title"></span><span class="deck-skel deck-skel--block"></span><span class="deck-skel deck-skel--mid"></span><span class="deck-skel deck-skel--short"></span></div>
+      <div class="card card--strong deck-mini"><span class="t-label">Build</span><span class="deck-skel deck-skel--title"></span><span class="deck-skel deck-skel--block"></span><span class="deck-skel deck-skel--short"></span><span class="deck-skel deck-skel--mid"></span></div>
+    </div>
+    <span class="deck-link" data-step="2" data-anim="grow"></span>
+    <div class="deck-stack">
+      <div class="card card--strong deck-versus" data-step="2" data-anim="pop">
+        <span class="avatar avatar--md avatar--accent"><span class="avatar__monogram">V</span></span>
+        <h3 class="t-h3">Vision model</h3>
+        <p class="t-h5">Strong spatial awareness</p>
+      </div>
+      <div class="deck-tags" data-step="3" data-stagger>
+        <span class="tag tag--lg tag--warn">Spacing off by one step</span>
+        <span class="tag tag--lg tag--warn">Button too small</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="pan-left">
+  <header class="deck-heading" data-anim="rise">
+    <span class="deck-kicker">Gate 2 · Prototype first</span>
+    <p class="deck-lead">No design to compare against? Build one.</p>
+  </header>
+  <div class="deck-row deck-row--stretch">
+    <figure class="code-figure deck-grow" data-step="1" data-anim="rise">
+      <figcaption class="code-figure__caption"><span>design.md</span><span>tokens</span></figcaption>
+      <pre class="code-block deck-grow" data-step="1" data-anim="type">primary: forest green
+accent: coral
+spacing: 4 8 12 16 24 32
+radius: 16 32 full</pre>
+    </figure>
+    <span class="deck-link" data-step="2" data-anim="grow"></span>
+    <div class="deck-window deck-grow" data-step="2" data-anim="rise">
+      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">Prototype · one HTML file</span></div>
+      <div class="deck-window__body deck-screens">
+        <div class="deck-screen">
+          <span class="deck-skel deck-skel--title"></span>
+          <ul class="list">
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Leave balance</span></span><span class="list-item__trailing-meta">12 days</span></li>
+            <li class="list-item"><span class="list-item__main"><span class="list-item__title">Team calendar</span></span><span class="list-item__trailing-meta">3 away</span></li>
+          </ul>
+          <button class="btn btn--filledB btn--medium">Request leave</button>
+        </div>
+        <span class="tag tag--lg tag--success deck-pin" data-step="3" data-anim="pop">Client approved</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="zoom">
+  <div class="deck-row">
+    <header class="deck-heading" data-anim="rise">
+      <span class="deck-kicker">Gate 2 · Browser check</span>
+      <h2 class="t-h1">Side by side</h2>
+    </header>
+    <div class="deck-window deck-grow" data-step="1" data-anim="rise">
+      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">Browser agent</span></div>
+      <div class="deck-compare deck-window__content">
+        <div class="deck-stack deck-center">
+          <span class="t-label">Prototype</span>
+          <div class="device deck-device deck-device--sm">
+            <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
+            <div class="deck-screens">
+              <div class="deck-screen">
+                <span class="deck-skel deck-skel--title"></span>
+                <span class="deck-skel deck-skel--block"></span>
+                <span class="deck-skel deck-skel--mid"></span>
+                <span class="deck-skel deck-skel--short"></span>
+              </div>
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+        <div class="deck-compare__verdict">
+          <div class="card card--strong deck-hub" data-step="2" data-anim="pop"><span class="t-body-semi">Looks</span><span class="deck-caption">Same layout</span></div>
+          <div class="card card--strong deck-hub" data-step="2" data-anim="pop"><span class="t-body-semi">Behaves</span><span class="deck-caption">Same taps, same results</span></div>
+          <span class="tag tag--lg tag--success" data-step="3" data-anim="pop">Match · gate passed</span>
+        </div>
+        <div class="deck-stack deck-center">
+          <span class="t-label">App</span>
+          <div class="device deck-device deck-device--sm">
+            <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
+            <div class="deck-screens">
+              <div class="deck-screen">
+                <span class="deck-skel deck-skel--title"></span>
+                <span class="deck-skel deck-skel--block"></span>
+                <span class="deck-skel deck-skel--mid"></span>
+                <span class="deck-skel deck-skel--short"></span>
+              </div>
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="pan-up">
+  <header class="deck-heading" data-anim="rise">
+    <span class="deck-kicker">Gate 3 · Code review</span>
+    <h2 class="t-h1">Two agents argue until the code holds up</h2>
+  </header>
+  <div class="deck-loop">
+    <div class="card deck-versus" data-step="1" data-anim="slide-right">
+      <span class="avatar avatar--md"><span class="avatar__monogram">C</span></span>
+      <h3 class="t-h3">Critic agent</h3>
+      <p class="t-h5">Assumes the code is wrong</p>
+      <div class="deck-tags" data-step="4" data-anim="pop"><span class="tag tag--lg tag--success">Critic approves</span></div>
+    </div>
+    <div class="deck-loop__arrows">
+      <span data-step="2" data-anim="fade">→</span>
+      <div class="card card--strong deck-hub" data-step="3" data-anim="pop">
+        <span class="t-display2" data-step="3" data-anim="count" data-count-from="0" data-count-to="3">0</span>
+        <span class="deck-caption">rounds</span>
+      </div>
+      <span data-step="3" data-anim="fade">←</span>
+    </div>
+    <div class="card card--strong deck-versus" data-step="2" data-anim="slide-left">
+      <span class="avatar avatar--md avatar--accent"><span class="avatar__monogram">F</span></span>
+      <h3 class="t-h3">Fixer agent</h3>
+      <p class="t-h5">Fixes what's found</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-camera="pan-left">
+  <div class="deck-row">
+    <header class="deck-heading deck-grow" data-anim="rise">
+      <span class="deck-kicker">Gate 4 · Human</span>
+      <h2 class="t-h1">You try it, then say what's off</h2>
+    </header>
+    <div class="device deck-device" data-step="1" data-anim="rise">
+      <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
+      <div class="deck-screens">
+        <div class="deck-screen">
+          <span class="t-h4">Leave request</span>
+          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Balance shows</div>
+          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Form submits</div>
+          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Manager notified</div>
+          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Draft saved</div>
+          <button class="btn btn--filledB btn--small">Send</button>
+        </div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+    <div class="deck-stack deck-grow">
+      <div class="card deck-bubble" data-step="2" data-anim="bubble">
+        <span class="avatar avatar--sm"><span class="avatar__monogram">You</span></span>
+        <span class="deck-typing"><span></span><span></span><span></span></span>
+        <span class="deck-bubble__message t-h5">Make the button bigger</span>
+      </div>
+      <div class="deck-stack" data-step="3" data-stagger>
+        <div class="card card--strong deck-heading"><span class="t-h5">New checkpoint</span><span class="deck-caption">Same gates</span></div>
+        <div class="card card--strong deck-heading"><span class="t-h5">Saved to learnings file</span><span class="deck-caption">Every agent reads it</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene deck-center" data-camera="fade">
+  <p class="deck-quote" data-anim="rise">Attempts can be <mark class="hl">wrong</mark>.</p>
+  <p class="deck-quote" data-step="1" data-anim="rise">Shipping can't.</p>
+  <p class="deck-lead" data-step="2" data-anim="fade">Recreated with the HaHo design system</p>
 </section>
 
 <div class="deck__progress"><div class="deck__progress-bar"></div></div>
