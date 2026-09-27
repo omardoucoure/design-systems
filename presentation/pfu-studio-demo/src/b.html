@@ -1,0 +1,163 @@
+<section class="scene deck-center db-s9" data-camera="blur">
+  <span class="deck-kicker" data-anim="fade">Aujourd'hui : l'Assistant voit ce que le designer inspecte</span>
+  <div class="pfu-win db-app" data-anim="rise"><div class="pfu-cam db-cam" data-anim="state" data-step="1">
+@@PA@@
+    <div class="db-sim">
+@@PHONE9@@
+    </div>
+    <div class="db-side"><div class="db-z">
+      <span class="tag tag--lg db-ask" data-anim="pop" data-step="2" data-delay="1300"><svg class="mo-icon mo-icon--sm"><use href="#i-chat"/></svg>Demander à l'IA</span>
+    </div></div>
+  </div></div>
+  <span class="pt-pointer"></span>
+  <i class="pt-cue" hidden data-anim="pt-cue" data-step="1" data-delay="600" data-target=".db-hero" data-x="0.8" data-y="0.9" data-hover="off"></i>
+  <i class="pt-cue" hidden data-anim="pt-cue" data-step="2" data-target=".db-insp" data-x="0.62" data-y="0.6" data-press data-hover="off"></i>
+</section>
+
+<section class="scene deck-center db-s10" data-camera="cut">
+  <span class="deck-kicker">Ensuite : le designer demande, Claude modifie et construit</span>
+  <div class="pfu-win db-app"><div class="pfu-cam db-cam db-cam--on">
+@@PA@@
+    <div class="db-sim">
+@@PHONE10@@
+    </div>
+    <div class="db-side"><div class="db-z">
+      <span class="tag tag--lg db-ask" data-until="1"><svg class="mo-icon mo-icon--sm"><use href="#i-chat"/></svg>Demander à l'IA</span>
+      <span class="tag tag--lg pg-chip db-verdict" data-anim="pop" data-step="4"><span class="pg-job" data-anim="state" data-step="4" data-delay="900"><i class="pg-hollow pg-job__mark"></i><span class="pg-spinner pg-job__spin" data-anim="state" data-step="4"></span><svg class="mo-icon pg-job__ok"><use href="#i-check"/></svg></span>Conforme au design</span>
+    </div></div>
+    <div class="cc-window db-assist">
+      <div class="cc-log db-log">
+        <div class="cc-row cc-row--prompt db-prompt" data-anim="cc-prompt" data-step="1"><p class="cc-line"><span class="db-bubble">Mets le badge EN DIRECT en noir</span></p></div>
+        <div class="cc-row cc-row--tool" data-anim="cc" data-step="2"><p class="cc-line"><span><b>Edit</b></span></p></div>
+        <div class="cc-row cc-row--result" data-anim="cc" data-step="2" data-delay="300"><p class="cc-line">JDXTheme.swift</p></div>
+        <div class="cc-row cc-row--tool" data-anim="cc" data-step="2" data-delay="1000"><p class="cc-line"><span><b>Build</b></span></p></div>
+        <div class="cc-row cc-row--result" data-anim="cc" data-step="2" data-delay="1300"><p class="cc-line">JDM</p></div>
+        <div class="cc-row cc-row--spin" data-anim="cc" data-step="2" data-delay="1700"><p class="cc-line">Construction…</p></div>
+        <div class="cc-row cc-row--result db-ok" data-anim="cc" data-step="2" data-delay="3400"><p class="cc-line">Build réussi</p></div>
+        <div class="cc-row cc-row--msg" data-anim="cc" data-step="3"><p class="cc-line">Badge EN DIRECT en noir.</p></div>
+        <div class="cc-row db-prrow" data-anim="cc" data-step="5"><div class="cc-line db-prline"><span class="btn btn--small btn--filledA pt-press db-pr">Créer la PR</span><span class="tag tag--brand">Bientôt</span></div></div>
+      </div>
+      <div class="db-input"><span class="cc-input__text"></span></div>
+    </div>
+  </div></div>
+  <div class="db-recall" data-anim="rise" data-delay="400">
+    <span class="tag tag--lg tag--error">Problème 2</span>
+    <div class="sl-quote"><span class="sl-quote__bar"></span><span class="sl-av sl-av--t">T</span><div class="sl-msg__body"><span class="sl-msg__head"><b class="sl-name">Thomas</b><span class="sl-meta">Message direct · 14:03</span></span><p class="sl-text">Peux-tu mettre le badge EN DIRECT en noir sur JDM ? Je veux voir le rendu avant la PR.</p></div></div>
+  </div>
+  <span class="tag tag--lg tag--success db-solved" data-anim="pop" data-step="4" data-delay="1500"><svg class="mo-icon mo-icon--sm"><use href="#i-check-circle"/></svg>Problème 2 résolu : vu avant la PR</span>
+  <span class="pt-pointer"></span>
+  <i class="pt-cue" hidden data-anim="pt-cue" data-step="5" data-delay="500" data-target=".db-pr" data-x="0.5" data-y="0.55" data-press></i>
+</section>
+
+<section class="scene deck-center db-s11" data-camera="whip">
+  <span class="deck-kicker" data-anim="fade">Ensuite : de la demande à la pull request</span>
+  <div class="ap-browser db-browser" data-anim="pop">
+    <div class="ap-browser__bar"><i class="deck-window__dot"></i><i class="deck-window__dot"></i><i class="deck-window__dot"></i><span class="ap-browser__url db-url"><svg class="mo-icon"><use href="#i-info"/></svg>bitbucket.org/quebecor/pfu-qub-design-system-ios/pull-requests/482</span></div>
+    <div class="db-prpage">
+      <div class="db-prhead">
+        <span class="t-small text-muted">pfu-qub-design-system-ios · Pull requests · #482</span>
+        <div class="db-row"><h2 class="t-h3">Badge EN DIRECT : fond noir</h2><span class="tag tag--lg tag--info">Ouverte</span></div>
+        <div class="db-row">
+          <span class="avatar avatar--sm"><span class="avatar__monogram">T</span></span>
+          <span class="t-body">Thomas <span class="text-muted">(via Assistant PFU)</span></span>
+          <span class="tag tag--lg db-branch">design/badge-en-direct-noir → develop</span>
+        </div>
+      </div>
+      <div class="db-prbody">
+        <div class="cd-window db-diff">
+          <div class="cd-window__bar"><span class="cd-doc-icon"></span><span class="cd-window__title">Sources/DSThemeJDX/<b>JDXTheme.swift</b></span></div>
+          <div class="cd-code">
+            <div class="cd-line"><span class="cd-kw">case</span> <span class="cd-p">.</span>enDirect<span class="cd-p">:</span></div>
+            <div class="cd-line">    <span class="cd-kw">return</span> <span class="cd-p">.</span><span class="cd-f">enDirect</span><span class="cd-p">(</span></div>
+            <div class="cd-line">        size<span class="cd-p">,</span></div>
+            <div class="cd-line cd-hl cd-hl--error db-del" data-anim="state" data-step="1">-       colorBackground<span class="cd-p">:</span> DSColorPrimitives<span class="cd-p">.</span>JDX<span class="cd-p">.</span><span class="cd-k">jdx500</span></div>
+            <div class="cd-line db-add" data-anim="state" data-step="2">+       colorBackground<span class="cd-p">:</span> DSColorPrimitives<span class="cd-p">.</span>Base<span class="cd-p">.</span><span class="cd-s">black</span></div>
+            <div class="cd-line">    <span class="cd-p">)</span></div>
+          </div>
+        </div>
+        <div class="card db-prside">
+          <span class="deck-kicker">Réviseurs</span>
+          <div class="db-row">
+            <div class="avatar-stack"><span class="avatar avatar--sm"><span class="avatar__monogram">OD</span></span><span class="avatar avatar--sm avatar--accent"><span class="avatar__monogram">A</span></span><span class="avatar avatar--sm"><span class="avatar__monogram">QA</span></span></div>
+            <span class="pg-job pg-node db-approve" data-anim="state" data-step="3"><span class="pg-job__mark"></span><svg class="mo-icon pg-job__ok"><use href="#i-check"/></svg></span>
+          </div>
+          <span class="deck-kicker">Pipeline</span>
+          <div class="db-row"><span class="tag tag--lg tag--success"><svg class="mo-icon mo-icon--sm"><use href="#i-check-circle"/></svg>Build réussi</span><span class="t-caption"><span class="db-plus">+1</span> <span class="db-minus">−1</span></span></div>
+          <span class="btn btn--big btn--filledB mo-full db-merge" data-anim="pop" data-step="3" data-delay="600"><svg class="mo-icon"><use href="#i-check"/></svg>Prêt à fusionner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene deck-center db-s12" data-camera="pan-up">
+  <span class="deck-kicker" data-anim="fade">Ensuite : un plan de test devient un flow, construit et exécuté</span>
+  <div class="mo-frame"><div class="mo-stage db-flow">
+    <div class="card db-board">
+      <div class="db-board__head">
+        <span class="t-label">Flow · 24 heures</span>
+        <span class="db-slot"><span class="tag tag--lg tag--brand db-src" data-anim="pop" data-step="2" data-delay="2300"><svg class="mo-icon mo-icon--sm"><use href="#i-check-circle"/></svg>Plan de test Xray</span></span>
+        <span class="btn btn--small btn--filledA pt-press db-run"><svg class="mo-icon mo-icon--sm"><use href="#i-arrow-right"/></svg>Exécuter</span>
+      </div>
+    </div>
+    <svg class="mo-wires">
+      <path class="mo-link mo-link--dash" data-from=".db-n1" data-to=".db-n2" data-gap="4"/>
+      <path class="mo-link mo-link--dash" data-side="v" data-from=".db-n2" data-to=".db-n3" data-gap="4"/>
+      <path class="mo-link mo-link--dash" data-from=".db-n3" data-to=".db-n4" data-gap="4"/>
+      <path class="mo-link mo-link--accent pt-ink db-w1" data-from=".db-n1" data-to=".db-n2" data-gap="4"/>
+      <path class="mo-link mo-link--accent pt-ink db-w2" data-side="v" data-from=".db-n2" data-to=".db-n3" data-gap="4"/>
+      <path class="mo-link mo-link--accent pt-ink db-w3" data-from=".db-n3" data-to=".db-n4" data-gap="4"/>
+    </svg>
+    <div class="card card--page pt-node pg-tint pg-tint--success db-node db-n1" data-anim="state" data-step="3" data-delay="800"><svg class="mo-icon"><use href="#i-phone"/></svg><span class="t-label">Lancer</span><span class="t-small text-muted">départ</span><svg class="mo-icon db-tick" data-anim="pop" data-step="3" data-delay="800"><use href="#i-check-circle"/></svg></div>
+    <div class="card card--page pt-node pg-tint pg-tint--success db-node db-n2" data-anim="state" data-step="3" data-delay="1500"><svg class="mo-icon"><use href="#i-home"/></svg><span class="t-label">Onglet Accueil</span><span class="t-small text-muted">tab</span><svg class="mo-icon db-tick" data-anim="pop" data-step="3" data-delay="1500"><use href="#i-check-circle"/></svg></div>
+    <div class="card card--page pt-node pg-tint pg-tint--success db-node db-n3" data-anim="state" data-step="3" data-delay="2200"><svg class="mo-icon"><use href="#i-menu"/></svg><span class="t-label">Toucher article</span><span class="t-small text-muted">tap</span><svg class="mo-icon db-tick" data-anim="pop" data-step="3" data-delay="2200"><use href="#i-check-circle"/></svg></div>
+    <div class="card card--page pt-node pg-tint pg-tint--success db-node db-n4" data-anim="state" data-step="3" data-delay="2900"><svg class="mo-icon"><use href="#i-check-circle"/></svg><span class="t-label">Vérifier titre</span><span class="t-small text-muted">assert</span><svg class="mo-icon db-tick" data-anim="pop" data-step="3" data-delay="2900"><use href="#i-check-circle"/></svg></div>
+    <span class="wr-rider wr-dot db-pk" data-on=".db-w1" data-anim="state" data-step="3" data-delay="800"></span>
+    <span class="wr-rider wr-dot db-pk" data-on=".db-w2" data-anim="state" data-step="3" data-delay="1500"></span>
+    <span class="wr-rider wr-dot db-pk" data-on=".db-w3" data-anim="state" data-step="3" data-delay="2200"></span>
+    <div class="card card--strong db-plan" data-anim="state" data-step="2">
+      <span class="db-row t-label"><svg class="mo-icon mo-icon--sm"><use href="#i-check-circle"/></svg>Plan de test Xray</span>
+      <span class="t-small">1. Lancer l'app</span>
+      <span class="t-small">2. Ouvrir l'onglet Accueil</span>
+      <span class="t-small">3. Toucher un article</span>
+      <span class="t-small">4. Vérifier le titre</span>
+    </div>
+    <span class="tag tag--lg tag--success db-ready" data-anim="pop" data-step="3" data-delay="3500"><svg class="mo-icon mo-icon--sm"><use href="#i-check"/></svg>Build prêt · 24 heures · develop</span>
+    <i class="pt-cue" hidden data-anim="pt-cue" data-step="1" data-target=".db-n1" data-x="1" data-press data-hover="off"></i>
+    <i class="pt-cue" hidden data-anim="pt-cue" data-step="1" data-delay="700" data-draw=".db-w1" data-target=".db-n2" data-press data-hover="off"></i>
+    <i class="pt-cue" hidden data-anim="pt-cue" data-step="1" data-delay="1700" data-draw=".db-w2" data-target=".db-n3" data-press data-hover="off"></i>
+    <i class="pt-cue" hidden data-anim="pt-cue" data-step="1" data-delay="2700" data-draw=".db-w3" data-target=".db-n4" data-press data-hover="off"></i>
+    <i class="pt-cue" hidden data-anim="pt-cue" data-step="3" data-target=".db-run" data-press></i>
+    <span class="pt-pointer pt-pointer--pen"></span>
+  </div></div>
+</section>
+
+<section class="scene deck-center db-s13" data-camera="dip">
+  <div class="deck-swap db-end">
+    <div class="db-road" data-anim="fade" data-until="4">
+      <span class="deck-kicker">Feuille de route</span>
+      <h2 class="t-h1">Là où on s'en va</h2>
+      <div class="db-road__grid">
+        <div class="db-road__cell">
+          <span class="pg-node pg-job db-road__node" data-anim="state" data-step="1" data-delay="300"><i class="pg-job__halo" data-anim="state" data-step="1"></i><span class="pg-job__mark">1</span><svg class="mo-icon pg-job__ok"><use href="#i-check"/></svg></span>
+          <div class="card pg-tint pg-tint--wake pg-tint--success db-road__card" data-anim="state" data-step="1"><span class="deck-kicker">Aujourd'hui</span><span class="t-h5">Inspecter, tester, outils dev</span></div>
+        </div>
+        <div class="db-road__cell">
+          <span class="pg-link pg-link--accent db-road__link" data-anim="state" data-step="2"></span>
+          <span class="pg-node pg-node--accent pg-job db-road__node" data-anim="state" data-step="2" data-delay="600"><i class="pg-job__halo" data-anim="state" data-step="2" data-delay="300"></i><span class="pg-job__mark">2</span><svg class="mo-icon pg-job__ok"><use href="#i-arrow-right"/></svg></span>
+          <div class="card pg-tint pg-tint--wake pg-tint--accent db-road__card" data-anim="state" data-step="2" data-delay="300"><span class="deck-kicker">Ensuite</span><span class="t-h5">Assistant → pull request</span></div>
+        </div>
+        <div class="db-road__cell">
+          <span class="pg-link pg-link--accent db-road__link" data-anim="state" data-step="3"></span>
+          <span class="pg-node pg-node--accent pg-job db-road__node" data-anim="state" data-step="3" data-delay="600"><i class="pg-job__halo" data-anim="state" data-step="3" data-delay="300"></i><span class="pg-job__mark">3</span><svg class="mo-icon pg-job__ok"><use href="#i-arrow-right"/></svg></span>
+          <div class="card pg-tint pg-tint--wake pg-tint--accent db-road__card" data-anim="state" data-step="3" data-delay="300"><span class="deck-kicker">Puis</span><span class="t-h5">Flow = plan de test</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="db-close" data-anim="rise" data-step="4">
+      <span class="deck-kicker">Merci</span>
+      <h1 class="t-display1">PFU Studio : l'équipe mobile, <mark class="hl">AI-ready</mark></h1>
+      <p class="t-h3 text-muted" data-anim="fade" data-step="4" data-delay="900">Questions ?</p>
+    </div>
+  </div>
+</section>

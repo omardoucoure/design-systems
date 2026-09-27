@@ -1,0 +1,326 @@
+/* ──────────────────────────────────────────────────────────────────
+   Haho 2 — Tokens
+   Source of truth: My Design System.fig (figma → /Tokens)
+   All values traced 1:1 from the Figma file. No invented colors.
+
+   Architecture:
+   - body[data-brand][data-style] picks brand + style mode
+   - Components only read --semantic-* tokens
+   - Primitives (--p-, --s-, --n-) live per brand
+   ────────────────────────────────────────────────────────────────── */
+
+/* ============== Font ============== */
+@font-face {
+  font-family: "DM Sans";
+  src: local("DM Sans"), url("./fonts/DMSans-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: local("DM Sans"), url("./fonts/DMSans-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: local("DM Sans"), url("./fonts/DMSans-SemiBold.ttf") format("truetype");
+  font-weight: 600 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+               "Liberation Mono", monospace;
+
+  /* ============== Spacing — 11 steps ============== */
+  --space-none:  0px;
+  --space-xxxs:  2px;
+  --space-xxs:   4px;
+  --space-xs:    8px;
+  --space-sm:   12px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-xxl:  40px;
+  --space-xxxl: 48px;
+  --space-xxxxl:64px;
+
+  /* ============== Radius — 10 steps ============== */
+  --radius-none: 0px;
+  --radius-xxs:  4px;
+  --radius-xs:   8px;
+  --radius-sm:  12px;
+  --radius-md:  16px;
+  --radius-lg:  24px;
+  --radius-xl:  32px;
+  --radius-xxl: 40px;
+  --radius-xxxl:64px;
+  --radius-full:360px;
+
+  /* ============== Border widths ============== */
+  --border-none: 0px;
+  --border-sm:   1px;
+  --border-md:   2px;
+  --border-lg:   4px;
+
+  /* ============== Opacity ============== */
+  --opacity-disabled: 0.4;
+  --opacity-pressed: 0.75;
+  --opacity-subtle: 0.6;
+  --opacity-faint: 0.18;
+
+  /* ============== Typography — 16 styles ============== */
+  --type-display1: 500 56px/1.2 var(--font-sans);
+  --type-display2: 500 48px/1.2 var(--font-sans);
+  --type-h1:  500 40px/1.2 var(--font-sans);
+  --type-h2:  500 36px/1.2 var(--font-sans);
+  --type-h3:  500 32px/1.2 var(--font-sans);
+  --type-h4:  500 24px/1.4 var(--font-sans);
+  --type-h5:  500 20px/1.4 var(--font-sans);
+  --type-h6:  500 18px/1.4 var(--font-sans);
+  --type-large-semi:    600 18px/1.5 var(--font-sans);
+  --type-body-semi:     600 16px/1.5 var(--font-sans);
+  --type-body:          500 16px/1.5 var(--font-sans);
+  --type-body-regular:  400 16px/1.5 var(--font-sans);
+  --type-label:         600 14px/1.5 var(--font-sans);
+  --type-caption:       500 14px/1.5 var(--font-sans);
+  --type-small:         500 12px/1.5 var(--font-sans);
+  --type-small-regular: 400 12px/1.5 var(--font-sans);
+  --type-tiny:          500 11px/1.5 var(--font-sans);
+
+  /* Monospace — code. Slightly smaller than sans at equal optical size,
+     and line-height 1.6 so wrapped code blocks stay readable. */
+  --type-code:       400 14px/1.6 var(--font-mono);
+  --type-code-inline:500 0.9em/1.5 var(--font-mono);
+  --type-code-small: 400 12px/1.6 var(--font-mono);
+
+  --ls-code: 0;
+
+  --ls-display: -0.05em;
+  --ls-h:       -0.045em;
+  --ls-h4:      -0.04em;
+  --ls-h6:      -0.035em;
+  --ls-body:    -0.025em;
+  --ls-small:   -0.02em;
+  --ls-tiny:    -0.015em;
+
+  /* ============== Neutral scale (shared by all brands) ============== */
+  /* 16 steps, 0 → 10 → 12. From METADATA usage. */
+  --n-0:   #FFFFFF;
+  --n-0_5: #FAFAF9; /* page bg */
+  --n-1:   #F5F5F2;
+  --n-1_5: #EFEFEC;
+  --n-2:   #EBEBE6;
+  --n-2_5: #E5E5E0;
+  --n-3:   #D8D7CD;
+  --n-4:   #C7C6BB;
+  --n-5:   #A6A59A;
+  --n-6:   #7D7A73;
+  --n-7:   #525249;
+  --n-8:   #292927;
+  --n-9:   #1A1A1A;
+  --n-10:  #000000;
+
+  /* ============== Semantic accents (constant across brands) ============== */
+  --semantic-error:   #F93939;
+  --semantic-warn:    #F2A83B;
+  --semantic-success: #249F58;
+  --semantic-info:    #53D5FF;
+
+  /* Status pill backgrounds (light tints) */
+  --semantic-error-bg:   #FFE2E2;
+  --semantic-warn-bg:    #FFEFCE;
+  --semantic-success-bg: #DCF5E5;
+  --semantic-info-bg:    #DEF5FF;
+
+  /* ============== Shadows ============== */
+  --shadow-low:      0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.03);
+  --shadow-card:     0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.02);
+  --shadow-floating: 0 12px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.08);
+
+  --motion-dur-fast: 200ms;
+  --motion-dur-base: 400ms;
+  --motion-dur-slow: 700ms;
+  --motion-dur-scene: 900ms;
+  --motion-dur-count: 1600ms;
+  --motion-dur-typing: 1200ms;
+  --motion-type-char: 28ms;
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-stagger: 80ms;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BRANDS — primary + secondary primitives
+   ════════════════════════════════════════════════════════════════ */
+
+[data-brand="coralCamo"] {
+  /* Primary — forest green */
+  --p-80:  #657671;
+  --p-100: #465A54;
+  --p-120: #252F2C;
+  /* Secondary — coral red */
+  --s-10:  #FFF3F2;
+  --s-40:  #FFC3BF;
+  --s-100: #FF6A5F;
+  --s-120: #EB5B52;
+}
+
+[data-brand="seaLime"] {
+  --p-80:  #5370A1;
+  --p-100: #3B588A;
+  --p-120: #1B2940;
+  --s-10:  #FAFEF2;
+  --s-40:  #E5FBBF;
+  --s-100: #B1E158;
+  --s-120: #A0D342;
+}
+
+[data-brand="mistyRose"] {
+  --p-80:  #5E6B80;
+  --p-100: #4C5A6F;
+  --p-120: #262D37;
+  --s-10:  #FFF5FB;
+  --s-40:  #FED6EF;
+  --s-100: #EA81C2;
+  --s-120: #DC70B3;
+}
+
+[data-brand="blueHaze"] {
+  --p-80:  #4A5FD5;
+  --p-100: #2742DA;
+  --p-120: #21253D;
+  --s-10:  #FCFAF8;
+  --s-40:  #F4EAE3;
+  --s-100: #D6B7A1;
+  --s-120: #CCA78F;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STYLE MODES — Light/Dark × Rounded/Sharp
+   resolves semantic surface/text/border tokens
+   ════════════════════════════════════════════════════════════════ */
+
+/* Light = default */
+[data-style^="light"] {
+  --surface-page:        var(--n-0_5);
+  --surface-card:        var(--n-2);
+  --surface-card-strong: var(--p-100);
+  --surface-card-accent: var(--s-100);
+  --surface-inset:       var(--n-1);
+  --surface-overlay:     var(--n-0);
+  --surface-highlight:   var(--s-40);
+
+  --text-primary:   var(--n-8);
+  --text-secondary: var(--n-7);
+  --text-muted:     var(--n-6);
+  --text-faint:     var(--n-5);
+  --text-on-primary:#FAFAF9;
+  --text-on-accent: var(--n-8);
+  --text-inverse:   var(--n-0_5);
+
+  --border-subtle:  var(--n-2_5);
+  --border-default: var(--n-3);
+  --border-strong:  var(--n-7);
+
+  --button-primary-fill: var(--s-100);
+  --button-primary-fill-pressed: var(--s-120);
+  --button-secondary-fill: var(--p-100);
+  --button-secondary-fill-pressed: var(--p-120);
+  --button-tertiary-fill: var(--p-120);
+  --button-disabled-fill: var(--n-2);
+  --button-disabled-text: var(--n-5);
+  --button-text-on-primary: var(--n-8);
+  --button-text-on-secondary: var(--n-0_5);
+  --button-text-on-tertiary: var(--n-0_5);
+
+  --code-inline-bg:     var(--n-2_5);
+  --code-inline-text:   var(--n-9);
+  --code-inline-border: var(--n-3);
+  --code-block-bg:      var(--n-1);
+  --code-block-text:    var(--n-8);
+  --code-block-border:  var(--n-2_5);
+  --code-gutter-text:   var(--n-5);
+  --code-add-bg:        #DCF5E5;
+  --code-add-text:      #14663A;
+  --code-remove-bg:     #FFE2E2;
+  --code-remove-text:   #9B1C1C;
+  --code-meta-text:     var(--n-6);
+}
+
+/* Dark */
+[data-style^="dark"] {
+  --surface-page:        var(--p-120);
+  --surface-card:        var(--p-100);
+  --surface-card-strong: var(--s-100);
+  --surface-card-accent: var(--s-100);
+  --surface-inset:       var(--p-80);
+  --surface-overlay:     var(--n-9);
+  --surface-highlight:   var(--s-100);
+
+  --text-primary:   var(--n-0_5);
+  --text-secondary: var(--n-1);
+  --text-muted:     var(--n-3);
+  --text-faint:     var(--n-5);
+  --text-on-primary:#FAFAF9;
+  --text-on-accent: var(--n-8);
+  --text-inverse:   var(--n-8);
+
+  --border-subtle:  rgba(255,255,255,0.08);
+  --border-default: rgba(255,255,255,0.16);
+  --border-strong:  rgba(255,255,255,0.40);
+
+  --button-primary-fill: var(--s-100);
+  --button-primary-fill-pressed: var(--s-120);
+  --button-secondary-fill: var(--n-0_5);
+  --button-secondary-fill-pressed: var(--n-1);
+  --button-tertiary-fill: var(--p-80);
+  --button-disabled-fill: var(--p-80);
+  --button-disabled-text: var(--n-5);
+  --button-text-on-primary: var(--n-8);
+  --button-text-on-secondary: var(--n-8);
+  --button-text-on-tertiary: var(--n-0_5);
+
+  --code-inline-bg:     rgba(255,255,255,0.10);
+  --code-inline-text:   var(--n-0_5);
+  --code-inline-border: rgba(255,255,255,0.16);
+  --code-block-bg:      rgba(0,0,0,0.28);
+  --code-block-text:    var(--n-1);
+  --code-block-border:  rgba(255,255,255,0.12);
+  --code-gutter-text:   var(--n-5);
+  --code-add-bg:        rgba(36,159,88,0.22);
+  --code-add-text:      #7EE2A8;
+  --code-remove-bg:     rgba(249,57,57,0.20);
+  --code-remove-text:   #FF9C9C;
+  --code-meta-text:     var(--n-3);
+}
+
+/* Sharp = collapse all radii except --radius-full */
+[data-style$="Sharp"] {
+  --radius-xxs:  0px;
+  --radius-xs:   0px;
+  --radius-sm:   0px;
+  --radius-md:   0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-xxl:  0px;
+  --radius-xxxl: 0px;
+  /* --radius-full preserved (pills, avatars) */
+}
+
+/* ============== Page baseline ============== */
+.haho-page {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--surface-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.haho-page * { box-sizing: border-box; }
+
+/* Letter-spacing helpers */
+.ls-display { letter-spacing: var(--ls-display); }
+.ls-h       { letter-spacing: var(--ls-h); }
+.ls-h4      { letter-spacing: var(--ls-h4); }
+.ls-body    { letter-spacing: var(--ls-body); }
+.ls-small   { letter-spacing: var(--ls-small); }

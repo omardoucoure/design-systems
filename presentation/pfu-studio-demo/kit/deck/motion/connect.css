@@ -1,0 +1,52 @@
+.mo-hub__center {
+  position: absolute;
+  left: 250px;
+  top: 144px;
+  z-index: 2;
+  width: 140px;
+  height: 72px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+}
+.mo-hub__node { position: absolute; width: 100px; padding: var(--space-sm); border-radius: var(--radius-md); text-align: center; }
+.mo-hub__node--tl { left: 40px; top: 52px; }
+.mo-hub__node--tr { left: 500px; top: 52px; }
+.mo-hub__node--bl { left: 40px; top: 252px; }
+.mo-hub__node--br { left: 500px; top: 252px; }
+.mo-hub__pulses.is-shown .mo-pulse { animation: mo-flow var(--mo-loop) ease-in-out infinite; }
+.mo-hub__pulses.is-shown .mo-pulse:nth-child(2) { animation-delay: calc(var(--mo-loop) / 4); }
+.mo-hub__pulses.is-shown .mo-pulse:nth-child(3) { animation-delay: calc(var(--mo-loop) / 2); }
+.mo-hub__pulses.is-shown .mo-pulse:nth-child(4) { animation-delay: calc(var(--mo-loop) * 3 / 4); }
+
+.mo-journey__screen { position: absolute; top: 60px; transition: transform var(--motion-dur-slow) var(--motion-ease-out); }
+.mo-journey__screen--1 { left: 36px; }
+.mo-journey__screen--2 { left: 262px; }
+.mo-journey__screen--3 { left: 488px; }
+.mo-journey__screen .device {
+  outline: calc(var(--mo-ring) / var(--mo-phone-xs)) solid transparent;
+  transition: outline-color var(--motion-dur-slow) var(--motion-ease-out);
+}
+.mo-journey__screen.is-shown:not(:has(~ .mo-journey__screen.is-shown)) { transform: translateY(-8px); }
+.mo-journey__screen.is-shown:not(:has(~ .mo-journey__screen.is-shown)) .device { outline-color: var(--s-100); }
+
+.mo-attach__source,
+.mo-attach__card {
+  position: absolute;
+  width: 200px;
+  height: 80px;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: var(--radius-md);
+}
+.mo-attach__source { left: 40px; top: 140px; }
+.mo-attach__card { left: 400px; box-shadow: var(--shadow-card); transition: top var(--motion-dur-scene) var(--motion-ease-out); }
+.mo-attach__card--a { top: 60px; }
+.mo-attach__card--b { top: 220px; }
+.mo-attach.is-shown .mo-attach__card--a { top: 220px; }
+.mo-attach.is-shown .mo-attach__card--b { top: 60px; }

@@ -1,0 +1,33 @@
+.pj{position:relative;width:402px;height:874px;overflow:hidden;background:#fcfcfc;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;-webkit-font-smoothing:antialiased;border-radius:10px}
+.pj > *{position:absolute;margin:0;box-sizing:border-box}
+.pj__t{white-space:pre;line-height:1;display:flex;align-items:center}
+.pj__img{object-fit:contain}
+.pj-0{left:0px;top:0px;width:402px;height:104px;background:#e32402;border-radius:0px}
+.pj-1{left:315px;top:26px;width:17px;height:12.5px;}
+.pj-2{left:339px;top:26px;width:27.5px;height:13.5px;}
+.pj-3{left:288.5px;top:35.5px;width:19px;height:3.5px;}
+.pj-4{left:313.5px;top:66px;width:24.5px;height:24px;}
+.pj-5{left:362px;top:66px;width:24.5px;height:24px;}
+.pj-6{left:395.5px;top:119.5px;width:6.5px;height:12px;}
+.pj-7{left:15px;top:137.5px;width:51.5px;height:2.5px;}
+.pj-8{left:15px;top:137.5px;width:51.5px;height:3px;}
+.pj-9{left:0px;top:148px;width:402px;height:404px;background:#000000;border-radius:0px}
+.pj-10{left:15.5px;top:164px;width:370.5px;height:278px;}
+.pj-11{left:15px;top:576.5px;width:372.5px;height:214.5px;}
+.pj-12{left:57px;top:799px;width:20.5px;height:20.5px;}
+.pj-13{left:191px;top:799px;width:20px;height:5.5px;}
+.pj-14{left:325.5px;top:799px;width:18.5px;height:20.5px;}
+.pj-15{left:191px;top:806px;width:17.5px;height:5.5px;}
+.pj-16{left:191px;top:813px;width:15px;height:6px;}
+.pj-17{left:128px;top:860px;width:146px;height:7px;background:#010101;border-radius:3.5px}
+.pj-18{left:129px;top:861px;width:144px;height:5px;}
+.pj-19{left:15.5px;top:62px;width:148px;height:32.5px;}
+.pj-20{left:56.5px;top:26px;width:36px;height:13px;color:#fffdfd;}
+.pj-21{left:15.5px;top:119.5px;width:49px;height:12.5px;color:#020202;}
+.pj-22{left:81.5px;top:117px;width:297.5px;height:15.5px;color:#747474;}
+.pj-23{left:17px;top:453px;width:340.5px;height:29px;color:#fefefe;}
+.pj-24{left:16.5px;top:480.5px;width:317px;height:23.5px;color:#fefefe;}
+.pj-25{left:16.5px;top:511px;width:315.5px;height:27.5px;color:#fefefe;}
+.pj-26{left:48.5px;top:825px;width:36.5px;height:11.5px;color:#e21900;}
+.pj-27{left:179px;top:825px;width:43px;height:11.5px;color:#282828;}
+.pj-28{left:322.5px;top:825px;width:25.5px;height:11.5px;color:#272727;}

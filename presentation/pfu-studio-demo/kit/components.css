@@ -1,0 +1,621 @@
+/* ──────────────────────────────────────────────────────────────────
+   Haho 2 — Components
+   Pixel-faithful to Figma. Every spec value comes from a Figma frame.
+   ────────────────────────────────────────────────────────────────── */
+
+/* ====================================================================
+   BUTTON
+   Sizes: Big (56h, py16 px24, font 16/600), Medium (48h, py12 px20),
+          Small (36h, py8 px16, font 14)
+   Styles: Filled A (secondary/coral), Filled B (primary/forest),
+           Filled C (tertiary/dark), Neutral (n-2 fill), Outline,
+           Text (no fill)
+   States: Default, Pressed, Disabled
+   ==================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  letter-spacing: var(--ls-body);
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  transition: background-color 0.12s ease, color 0.12s ease, opacity 0.12s ease;
+  text-decoration: none;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--p-100);
+  outline-offset: 2px;
+}
+
+/* Sizes */
+.btn--big    { height: 56px; padding: var(--space-md) var(--space-lg); font: 600 16px/1.5 var(--font-sans); }
+.btn--medium { height: 48px; padding: var(--space-sm) var(--space-md); font: 600 14px/1.5 var(--font-sans); }
+.btn--small  { height: 36px; padding: var(--space-xs) var(--space-md); font: 600 14px/1.5 var(--font-sans); }
+
+/* Style A — primary CTA, secondary-color fill (coral on Coral Camo) */
+.btn--filledA              { background: var(--button-primary-fill); color: var(--button-text-on-primary); }
+.btn--filledA:hover        { background: var(--button-primary-fill-pressed); }
+.btn--filledA:active       { background: var(--button-primary-fill-pressed); }
+.btn--filledA[disabled],
+.btn--filledA.is-disabled  { background: var(--button-disabled-fill); color: var(--button-disabled-text); cursor: not-allowed; }
+
+/* Style B — primary surface fill (forest green) */
+.btn--filledB              { background: var(--button-secondary-fill); color: var(--button-text-on-secondary); }
+.btn--filledB:hover        { background: var(--button-secondary-fill-pressed); }
+.btn--filledB[disabled],
+.btn--filledB.is-disabled  { background: var(--button-disabled-fill); color: var(--button-disabled-text); cursor: not-allowed; }
+
+/* Style C — darkest tertiary fill */
+.btn--filledC              { background: var(--button-tertiary-fill); color: var(--button-text-on-tertiary); }
+.btn--filledC:hover        { background: var(--n-9); }
+.btn--filledC[disabled],
+.btn--filledC.is-disabled  { background: var(--button-disabled-fill); color: var(--button-disabled-text); cursor: not-allowed; }
+
+/* Style Neutral — surface card fill */
+.btn--neutral              { background: var(--surface-card); color: var(--text-primary); }
+.btn--neutral:hover        { background: var(--n-2_5); }
+
+/* Style Outlined */
+.btn--outlined             { background: transparent; color: var(--text-primary); box-shadow: inset 0 0 0 1px var(--border-default); }
+.btn--outlined:hover       { background: var(--surface-card); }
+
+/* Style Text — no fill, just label + arrow */
+.btn--text                 { background: transparent; color: var(--text-primary); padding-inline: 0; }
+.btn--text[disabled]       { color: var(--text-faint); }
+
+/* State helpers */
+.btn--pressed              { opacity: var(--opacity-pressed); }
+
+/* Arrow icons (24×24) inside button */
+.btn .icon-arrow { flex-shrink: 0; width: 24px; height: 24px; }
+.btn--small .icon-arrow { width: 18px; height: 18px; }
+
+/* ====================================================================
+   ICON-BUTTON (round, single icon — used for socials, FAB)
+   ==================================================================== */
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 0; cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+.icon-btn:hover { background: var(--n-2_5); }
+.icon-btn--medium { width: 48px; height: 48px; }
+.icon-btn--small  { width: 36px; height: 36px; }
+.icon-btn--coral  { background: var(--s-100); color: var(--n-8); }
+
+/* ====================================================================
+   INPUT (Filled & Lined)
+   Filled: 56h, radius xxxl(64), bg matches container, label 14, value 16
+   Lined: 56h, single bottom border 1px, no fill
+   States: empty, filled, focus, error
+   ==================================================================== */
+.input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  width: 100%;
+  padding: 0 var(--space-md);
+  font-family: var(--font-sans);
+}
+
+/* Filled variant — sits inside a card, picks up card surface */
+.input--filled {
+  background: var(--surface-card);
+  border-radius: var(--radius-xxxl);
+}
+.input--filled.input--inset { background: var(--n-2_5); }
+
+/* Lined */
+.input--lined {
+  background: transparent;
+  border-bottom: 1px solid var(--border-default);
+  border-radius: 0;
+  padding-inline: 0;
+}
+
+.input__field {
+  flex: 1; min-width: 0;
+  background: transparent;
+  border: 0; outline: 0;
+  font: var(--type-body);
+  letter-spacing: var(--ls-body);
+  color: var(--text-primary);
+  padding-top: 18px; /* reserve space for label */
+}
+.input__field::placeholder { color: var(--text-muted); }
+.input__label {
+  position: absolute;
+  left: var(--space-md);
+  top: 10px;
+  font: var(--type-caption);
+  letter-spacing: var(--ls-body);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.input--lined .input__label { left: 0; }
+.input__icon {
+  width: 24px; height: 24px; flex-shrink: 0;
+  color: var(--text-muted);
+  margin-left: var(--space-sm);
+}
+.input.is-focus  { box-shadow: inset 0 0 0 2px var(--p-100); }
+.input.is-error  { box-shadow: inset 0 0 0 2px var(--semantic-error); }
+.input.is-error .input__label { color: var(--semantic-error); }
+
+/* Helper text below input */
+.input-helper {
+  font: var(--type-small);
+  letter-spacing: var(--ls-small);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+  padding-inline: var(--space-md);
+}
+.input-helper.is-error { color: var(--semantic-error); }
+
+/* ====================================================================
+   CARD
+   Default: surface-card bg, radius xl(32), padding 24
+   Variants: --strong (primary fill, white text), --accent (coral)
+   ==================================================================== */
+.card {
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  color: var(--text-primary);
+}
+.card--strong { background: var(--surface-card-strong); color: var(--text-on-primary); }
+.card--accent { background: var(--surface-card-accent); color: var(--text-on-accent); }
+.card--page   { background: var(--surface-page); }
+.card--inset  { background: var(--surface-inset); }
+.card--bordered { background: var(--surface-page); box-shadow: inset 0 0 0 1px var(--border-default); }
+.card--bubble { border-bottom-left-radius: var(--radius-xs); }
+
+/* ====================================================================
+   BADGE / TAG
+   Number-Semantic: 20px circle, font 11/600
+   Tag-Semantic: pill, padding 4px 8px, font 12/600
+   ==================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--semantic-error);
+  color: var(--n-0);
+  font: 600 11px/1 var(--font-sans);
+  letter-spacing: var(--ls-tiny);
+}
+.badge--info    { background: var(--semantic-info); color: var(--n-8); }
+.badge--success { background: var(--semantic-success); }
+.badge--warn    { background: var(--semantic-warn); color: var(--n-8); }
+.badge--neutral { background: var(--n-8); color: var(--n-0_5); }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font: 600 12px/1 var(--font-sans);
+  letter-spacing: var(--ls-small);
+}
+.tag--brand   { background: var(--s-40); color: var(--s-120); }
+.tag--success { background: var(--semantic-success-bg); color: var(--semantic-success); }
+.tag--warn    { background: var(--semantic-warn-bg);    color: #B47B12; }
+.tag--error   { background: var(--semantic-error-bg);   color: var(--semantic-error); }
+.tag--info    { background: var(--semantic-info-bg);    color: #1B7AA0; }
+.tag--strong  { background: var(--p-100); color: var(--n-0_5); }
+.tag--lg      { height: 28px; padding: 6px 12px; font-size: 13px; }
+.tag .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ====================================================================
+   AVATAR
+   Sizes: 24, 32, 40, 48, 56, 64, 80
+   Round image, optional ring
+   ==================================================================== */
+.avatar {
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--n-2);
+  color: var(--text-primary);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar--xxs  { width: 24px; height: 24px; }
+.avatar--xs   { width: 32px; height: 32px; }
+.avatar--sm   { width: 40px; height: 40px; }
+.avatar--md   { width: 48px; height: 48px; }
+.avatar--lg   { width: 56px; height: 56px; }
+.avatar--xl   { width: 64px; height: 64px; }
+.avatar--xxl  { width: 80px; height: 80px; }
+.avatar--xxxl { width: 120px; height: 120px; }
+
+.avatar__monogram {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font: 600 14px/1 var(--font-sans);
+  background: var(--p-100);
+  color: var(--n-0_5);
+}
+.avatar--lg  .avatar__monogram { font-size: 18px; }
+.avatar--xl  .avatar__monogram { font-size: 22px; }
+.avatar--xxl .avatar__monogram { font-size: 28px; }
+.avatar--xxxl .avatar__monogram { font-size: 40px; }
+.avatar--accent .avatar__monogram { background: var(--surface-card-accent); color: var(--text-on-accent); }
+
+.avatar-stack { display: inline-flex; }
+.avatar-stack > .avatar + .avatar { margin-left: -10px; box-shadow: 0 0 0 2px var(--surface-page); }
+
+/* ====================================================================
+   LIST ITEM (Leading + Trailing)
+   Default: 56h, padding 12 16, leading 24×24 + label + trailing
+   ==================================================================== */
+.list { display: flex; flex-direction: column; }
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: 56px;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.list-item__leading,
+.list-item__trailing {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.list-item__main {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.list-item__title {
+  font: var(--type-body-semi);
+  letter-spacing: var(--ls-body);
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.list-item__meta {
+  font: var(--type-small);
+  letter-spacing: var(--ls-small);
+  color: var(--text-muted);
+}
+.list-item__support {
+  font: var(--type-caption);
+  letter-spacing: var(--ls-body);
+  color: var(--text-secondary);
+}
+.list-item__trailing-meta {
+  font: var(--type-small);
+  color: var(--text-muted);
+  text-align: right;
+}
+.list-divider { height: 1px; background: var(--border-subtle); margin: 0 var(--space-md); }
+
+/* ====================================================================
+   CHECKBOX
+   24×24, radius xxs, border 2px when unchecked, filled when checked
+   ==================================================================== */
+.checkbox {
+  display: inline-flex; align-items: center; gap: var(--space-sm);
+  cursor: pointer;
+  font: var(--type-body);
+  letter-spacing: var(--ls-body);
+  color: var(--text-primary);
+}
+.checkbox--lg { font: var(--type-h5); letter-spacing: var(--ls-h4); }
+.checkbox input { position: absolute; opacity: 0; pointer-events: none; }
+.checkbox__box {
+  width: 24px; height: 24px;
+  border-radius: var(--radius-xxs);
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--border-default);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: transparent;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.checkbox input:checked + .checkbox__box {
+  background: var(--p-100);
+  box-shadow: none;
+  color: var(--n-0_5);
+}
+.checkbox input:focus-visible + .checkbox__box {
+  outline: 2px solid var(--p-100); outline-offset: 2px;
+}
+
+/* ====================================================================
+   RADIO
+   24×24 circle, dot when selected
+   ==================================================================== */
+.radio { display: inline-flex; align-items: center; gap: var(--space-sm); cursor: pointer;
+  font: var(--type-body); letter-spacing: var(--ls-body); color: var(--text-primary);
+}
+.radio input { position: absolute; opacity: 0; pointer-events: none; }
+.radio__circle {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--border-default);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.radio__circle::after {
+  content: ""; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--p-100);
+  transform: scale(0); transition: transform 0.15s ease;
+}
+.radio input:checked + .radio__circle { box-shadow: inset 0 0 0 2px var(--p-100); }
+.radio input:checked + .radio__circle::after { transform: scale(1); }
+
+/* ====================================================================
+   TOGGLE
+   48×28 pill, knob 22×22, p-100 fill when on
+   ==================================================================== */
+.toggle { display: inline-flex; align-items: center; cursor: pointer; gap: var(--space-sm); }
+.toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.toggle__track {
+  position: relative;
+  width: 48px; height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--n-3);
+  transition: background-color 0.18s ease;
+}
+.toggle__track::after {
+  content: ""; position: absolute;
+  top: 3px; left: 3px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--n-0);
+  transition: transform 0.18s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.toggle input:checked + .toggle__track { background: var(--p-100); }
+.toggle input:checked + .toggle__track::after { transform: translateX(20px); }
+
+/* ====================================================================
+   SEGMENTED PICKER (pills)
+   container 48h, padding 4, item radius full
+   ==================================================================== */
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: var(--surface-card);
+  border-radius: var(--radius-full);
+  padding: 4px;
+}
+.segmented__item {
+  height: 40px;
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-primary);
+  border: 0; cursor: pointer;
+  font: 600 14px/1 var(--font-sans);
+  letter-spacing: var(--ls-body);
+  display: inline-flex; align-items: center; gap: var(--space-xs);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.segmented__item.is-active {
+  background: var(--p-120);
+  color: var(--n-0_5);
+}
+
+/* ====================================================================
+   DIVIDER
+   ==================================================================== */
+.divider {
+  height: 1px;
+  background: var(--border-subtle);
+  width: 100%;
+}
+.divider--strong { background: var(--border-default); }
+
+/* ====================================================================
+   ALERT (banners)
+   ==================================================================== */
+.alert {
+  display: flex; align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font: var(--type-body);
+  letter-spacing: var(--ls-body);
+}
+.alert--error   { background: var(--semantic-error-bg); color: var(--semantic-error); }
+.alert--warn    { background: var(--semantic-warn-bg);  color: #B47B12; }
+.alert--success { background: var(--semantic-success-bg); color: var(--semantic-success); }
+.alert--info    { background: var(--semantic-info-bg); color: #1B7AA0; }
+.alert__icon { width: 24px; height: 24px; flex-shrink: 0; }
+.alert__body { flex: 1; }
+.alert__title { font: var(--type-body-semi); letter-spacing: var(--ls-body); }
+.alert__text  { font: var(--type-body-regular); margin-top: 4px; opacity: 0.9; color: var(--text-primary); }
+
+/* ====================================================================
+   PROGRESS CIRCLE
+   ==================================================================== */
+.progress-ring { width: 64px; height: 64px; transform: rotate(-90deg); }
+.progress-ring__track { stroke: var(--n-2); fill: none; stroke-width: 6; }
+.progress-ring__bar   { stroke: var(--p-100); fill: none; stroke-width: 6; stroke-linecap: round; }
+
+/* ====================================================================
+   STATUS BAR (iOS) — 56h, time + indicators
+   ==================================================================== */
+.statusbar {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; width: 100%;
+  padding: 16px 24px 12px;
+  font: 600 17px/1 var(--font-sans);
+  color: var(--text-primary);
+}
+.statusbar__notch {
+  width: 122px; height: 36px;
+  background: var(--n-9);
+  border-radius: var(--radius-full);
+}
+.statusbar__indicators {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.statusbar__indicators .icon { width: 18px; height: 12px; color: var(--text-primary); }
+.statusbar__battery {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 16px; padding: 0 6px;
+  border-radius: 4px;
+  background: var(--s-100);
+  color: var(--n-0_5);
+  font: 600 10px/1 var(--font-sans);
+  margin-left: 2px;
+}
+
+/* Home Indicator */
+.home-indicator {
+  display: flex; align-items: center; justify-content: center;
+  height: 32px;
+}
+.home-indicator::before {
+  content: "";
+  width: 134px; height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--text-primary);
+}
+
+/* ====================================================================
+   DEVICE FRAME (iPhone — 393×852, radius 40)
+   ==================================================================== */
+.device {
+  width: 393px;
+  height: 852px;
+  background: var(--surface-page);
+  border-radius: 40px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ====================================================================
+   CODE
+   .code        — inline chip, sits inside a sentence
+   .code-block  — multi-line block, scrolls horizontally
+   Modifiers: --add / --remove / --meta (diff lines), --numbered (gutter)
+   ==================================================================== */
+.code {
+  display: inline;
+  padding: 0.15em 0.4em;
+  margin: 0 0.05em;
+  border-radius: var(--radius-xxs);
+  background: var(--code-inline-bg);
+  color: var(--code-inline-text);
+  box-shadow: inset 0 0 0 1px var(--code-inline-border);
+  font: var(--type-code-inline);
+  letter-spacing: var(--ls-code);
+  white-space: break-spaces;
+  overflow-wrap: break-word;
+}
+.code--plain { background: none; box-shadow: none; padding: 0; }
+.code--add    { background: var(--code-add-bg);    color: var(--code-add-text);    box-shadow: none; }
+.code--remove { background: var(--code-remove-bg); color: var(--code-remove-text); box-shadow: none; }
+
+.code-block {
+  display: block;
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--code-block-bg);
+  color: var(--code-block-text);
+  box-shadow: inset 0 0 0 1px var(--code-block-border);
+  font: var(--type-code);
+  letter-spacing: var(--ls-code);
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+}
+.code-block--wrap  { white-space: pre-wrap; overflow-wrap: anywhere; }
+.code-block--small { font: var(--type-code-small); }
+.code-block--flush { border-radius: var(--radius-none); box-shadow: none; }
+.code-block .code { background: none; box-shadow: none; padding: 0; font: inherit; }
+
+.code-line {
+  display: block;
+  padding-inline: var(--space-xs);
+  margin-inline: calc(var(--space-md) * -1);
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+.code-line--add    { background: var(--code-add-bg);    color: var(--code-add-text); }
+.code-line--remove { background: var(--code-remove-bg); color: var(--code-remove-text); }
+.code-line--meta   { color: var(--code-meta-text); }
+
+.code-block--numbered { counter-reset: code-line; }
+.code-block--numbered .code-line { counter-increment: code-line; }
+.code-block--numbered .code-line::before {
+  content: counter(code-line);
+  display: inline-block;
+  width: 2.5em;
+  margin-right: var(--space-sm);
+  text-align: right;
+  color: var(--code-gutter-text);
+  user-select: none;
+}
+
+.code-figure { display: flex; flex-direction: column; }
+.code-figure__caption {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: var(--code-inline-bg);
+  color: var(--code-meta-text);
+  font: var(--type-code-small);
+  letter-spacing: var(--ls-code);
+}
+.code-figure__caption + .code-block { border-radius: 0 0 var(--radius-md) var(--radius-md); }
+
+/* ====================================================================
+   TYPOGRAPHY UTILITIES
+   ==================================================================== */
+.t-display1     { font: var(--type-display1); letter-spacing: var(--ls-display); }
+.t-display2     { font: var(--type-display2); letter-spacing: var(--ls-display); }
+.t-h1           { font: var(--type-h1); letter-spacing: var(--ls-h); }
+.t-h2           { font: var(--type-h2); letter-spacing: var(--ls-h); }
+.t-h3           { font: var(--type-h3); letter-spacing: var(--ls-h); }
+.t-h4           { font: var(--type-h4); letter-spacing: var(--ls-h4); }
+.t-h5           { font: var(--type-h5); letter-spacing: var(--ls-h4); }
+.t-h6           { font: var(--type-h6); letter-spacing: var(--ls-h6); }
+.t-large-semi   { font: var(--type-large-semi);   letter-spacing: var(--ls-h6); }
+.t-body-semi    { font: var(--type-body-semi);    letter-spacing: var(--ls-body); }
+.t-body         { font: var(--type-body);         letter-spacing: var(--ls-body); }
+.t-body-regular { font: var(--type-body-regular); letter-spacing: var(--ls-body); }
+.t-label        { font: var(--type-label);        letter-spacing: var(--ls-body); }
+.t-caption      { font: var(--type-caption);      letter-spacing: var(--ls-body); }
+.t-small        { font: var(--type-small);        letter-spacing: var(--ls-small); }
+.t-small-regular{ font: var(--type-small-regular); letter-spacing: var(--ls-small); }
+.t-tiny         { font: var(--type-tiny);         letter-spacing: var(--ls-tiny); }
+.t-code         { font: var(--type-code);         letter-spacing: var(--ls-code); }
+.t-code-small   { font: var(--type-code-small);   letter-spacing: var(--ls-code); }
+
+.text-primary  { color: var(--text-primary); }
+.text-muted    { color: var(--text-muted); }
+.text-faint    { color: var(--text-faint); }
+.text-on-primary { color: var(--text-on-primary); }
+.text-on-accent { color: var(--text-on-accent); }
