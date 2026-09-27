@@ -6,8 +6,14 @@
 <title>Helix Loops</title>
 <link rel="stylesheet" href="../../design-system-web/tokens.css">
 <link rel="stylesheet" href="../../design-system-web/components.css">
+<link rel="stylesheet" href="../../design-system-web/components-extras.css">
 <link rel="stylesheet" href="../../design-system-web/deck/deck.css">
 <link rel="stylesheet" href="../../design-system-web/deck/patterns.css">
+<link rel="stylesheet" href="../../design-system-web/deck/motion/motion.css">
+<link rel="stylesheet" href="../../design-system-web/deck/motion/morph.css">
+<link rel="stylesheet" href="../../design-system-web/deck/motion/devices.css">
+<link rel="stylesheet" href="../../design-system-web/deck/motion/connect.css">
+<link rel="stylesheet" href="../../design-system-web/deck/motion/camera.css">
 </head>
 <body class="deck" data-brand="coralCamo" data-style="lightRounded">
 <main class="deck__stage">
@@ -249,44 +255,27 @@
     <span class="deck-kicker">One skill to prompt</span>
     <h2 class="t-h1">The orchestrator runs the loop for you</h2>
   </header>
-  <div class="deck-flow" data-step="1" data-anim="rise">
-    <div class="card deck-flow__item">
-      <span class="avatar avatar--sm"><span class="avatar__monogram">P</span></span>
-      <span class="t-body-semi">Prompt</span>
-      <span class="deck-caption">Describe the feature</span>
+  <div class="mo-frame mo-frame--compact"><div class="mo-stage mo-signal" data-anim="state" data-step="1">
+    <svg class="mo-wires"><path class="mo-link mo-link--dash mo-signal__wire" data-from=".mo-signal__button" data-to=".mo-signal__window"/></svg>
+    <div class="mo-signal__phone"><div class="device mo-phone">
+      <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
+      <div class="appbar"><span class="appbar__btn"><svg class="mo-icon appbar__icon"><use href="#i-arrow-left"/></svg></span><span class="appbar__title appbar__title--center">Plan</span><span class="appbar__btn"></span></div>
+      <div class="mo-pad"><div class="card mo-compact"><span class="t-small text-muted">5 checkpoints, tests included</span><span class="t-h4">Review the plan</span></div><div class="bubbles"><div class="bubble-row bubble-row--in"><div class="bubble bubble--in">Plan ready. Approve?</div></div></div></div>
+      <div class="mo-grow"></div>
+      <div class="mo-pad"><span class="btn btn--big btn--filledA mo-full mo-signal__button">Approve plan</span></div>
+      <div class="home-indicator"></div>
+    </div></div>
+    <span class="mo-pulse" data-on=".mo-signal__wire"></span>
+    <div class="deck-window mo-window mo-signal__window">
+      <div class="deck-window__bar"><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__dot"></span><span class="deck-window__title">Orchestrator</span></div>
+      <div class="mo-pad">
+        <div class="list-item mo-tight"><div class="list-item__main"><span class="list-item__title">Approve plan</span><span class="list-item__meta">You, stop 1 of 2</span></div><span class="mo-swap"><span class="tag tag--warn mo-swap__from">Waiting</span><span class="tag tag--success mo-swap__to">Approved</span></span></div>
+        <div class="list-item mo-tight"><div class="list-item__main"><span class="list-item__title">Build + gates</span><span class="list-item__meta">Runs on its own</span></div><span class="tag">Queued</span></div>
+      </div>
+      <div class="mo-toast mo-signal__toast"><svg class="mo-icon mo-icon--sm"><use href="#i-check-circle"/></svg>Build started</div>
     </div>
-    <span class="deck-link"></span>
-    <div class="card deck-flow__item">
-      <span class="avatar avatar--sm"><span class="avatar__monogram">C</span></span>
-      <span class="t-body-semi">Plan</span>
-      <span class="deck-caption">Checkpoints and tests</span>
-    </div>
-    <span class="deck-link"></span>
-    <div class="card card--accent deck-flow__item" data-step="2" data-anim="pop">
-      <span class="avatar avatar--sm"><span class="avatar__monogram">🧑</span></span>
-      <span class="t-body-semi">Approve plan</span>
-      <span class="deck-caption">You, stop one</span>
-    </div>
-    <span class="deck-link"></span>
-    <div class="card card--strong deck-flow__item">
-      <span class="avatar avatar--sm avatar--accent"><span class="avatar__monogram">G</span></span>
-      <span class="t-body-semi">Build + gates</span>
-      <span class="deck-caption">Runs on its own</span>
-    </div>
-    <span class="deck-link"></span>
-    <div class="card card--accent deck-flow__item" data-step="3" data-anim="pop">
-      <span class="avatar avatar--sm"><span class="avatar__monogram">🧑</span></span>
-      <span class="t-body-semi">Final review</span>
-      <span class="deck-caption">You, stop two</span>
-    </div>
-    <span class="deck-link"></span>
-    <div class="card deck-flow__item">
-      <span class="avatar avatar--sm"><span class="avatar__monogram">✓</span></span>
-      <span class="t-body-semi">Done</span>
-      <span class="deck-caption">Feature ready to ship</span>
-    </div>
-  </div>
-  <p class="deck-lead" data-step="3" data-anim="rise">You're needed twice. The rest runs without you.</p>
+  </div></div>
+  <p class="t-h4 deck-text-center" data-step="2" data-anim="rise">You're needed twice. The rest runs without you.</p>
 </section>
 
 <section class="scene" data-camera="pan-left">
@@ -341,41 +330,23 @@
     <span class="deck-kicker">Before any code</span>
     <h2 class="t-h1">Three sub-agents set the stage</h2>
   </header>
-  <div class="deck-row">
-    <div class="card card--accent deck-hub" data-anim="pop">
-      <span class="avatar avatar--md"><span class="avatar__monogram">O</span></span>
-      <span class="t-h3">Orchestrator</span>
-      <span class="deck-caption">Hands out the work</span>
+  <div class="mo-frame mo-frame--compact"><div class="mo-stage mo-hubword" data-anim="state" data-step="1">
+    <svg class="mo-wires">
+      <path class="mo-link" data-anim="draw" data-step="2" data-from=".mo-hubword__chip" data-to=".mo-hubword__node--a"/>
+      <path class="mo-link" data-anim="draw" data-step="2" data-from=".mo-hubword__chip" data-to=".mo-hubword__node--b"/>
+      <path class="mo-link" data-anim="draw" data-step="4" data-side="v" data-from=".mo-hubword__chip" data-to=".mo-hubword__node--c"/>
+    </svg>
+    <span class="mo-hubword__title t-h2">Meet the</span>
+    <div class="mo-hubword__chip">Orchestrator</div>
+    <div class="card mo-hubword__node mo-hubword__node--a" data-anim="pop" data-step="2"><span class="t-label">App health check</span></div>
+    <div class="card mo-hubword__node mo-hubword__node--b" data-anim="pop" data-step="2"><span class="t-label">Checkpoint planner</span></div>
+    <div class="card card--bubble deck-bubble mo-hubword__note" data-step="3" data-anim="bubble">
+      <span class="avatar avatar--sm"><span class="avatar__monogram">P</span></span>
+      <span class="deck-typing"><span></span><span></span><span></span></span>
+      <span class="deck-bubble__message t-label">Any questions?</span>
     </div>
-    <div class="deck-stack deck-grow">
-      <div class="deck-row">
-        <span class="deck-link" data-step="1" data-anim="grow"></span>
-        <div class="card deck-flow__item" data-step="1" data-anim="rise">
-          <span class="t-h5">App health check</span>
-          <span class="deck-caption">Does the app build and run today?</span>
-        </div>
-      </div>
-      <div class="deck-row">
-        <span class="deck-link" data-step="1" data-anim="grow"></span>
-        <div class="card deck-flow__item" data-step="1" data-anim="rise">
-          <span class="t-h5">Checkpoint planner</span>
-          <span class="deck-caption">Cuts the feature into small steps</span>
-        </div>
-        <div class="card card--bubble deck-bubble" data-step="2" data-anim="bubble">
-          <span class="avatar avatar--sm"><span class="avatar__monogram">P</span></span>
-          <span class="deck-typing"><span></span><span></span><span></span></span>
-          <span class="deck-bubble__message t-h5">Any questions?</span>
-        </div>
-      </div>
-      <div class="deck-row">
-        <span class="deck-link" data-step="3" data-anim="grow"></span>
-        <div class="card deck-flow__item" data-step="3" data-anim="rise">
-          <span class="t-h5">Test planner</span>
-          <span class="deck-caption">Writes what "done" means, as tests</span>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="card mo-hubword__node mo-hubword__node--c" data-anim="pop" data-step="4"><span class="t-label">Test planner</span></div>
+  </div></div>
 </section>
 
 <section class="scene" data-camera="zoom">
@@ -591,37 +562,36 @@ radius: 16 32 full</pre>
 </section>
 
 <section class="scene" data-camera="pan-left">
-  <div class="deck-row">
-    <header class="deck-heading deck-grow" data-anim="rise">
-      <span class="deck-kicker">Gate 4 · Human</span>
-      <h2 class="t-h1">You try it, then say what's off</h2>
-    </header>
-    <div class="device deck-device" data-step="1" data-anim="rise">
+  <header class="deck-heading" data-anim="rise">
+    <span class="deck-kicker">Gate 4 · Human</span>
+    <h2 class="t-h1">You try it, then say what's off</h2>
+  </header>
+  <div class="mo-frame mo-frame--compact"><div class="mo-stage">
+    <div class="mo-taps__phone"><div class="device mo-phone mo-phone--lg">
       <div class="statusbar"><span>9:41</span><span class="statusbar__notch"></span><span class="statusbar__battery">100</span></div>
-      <div class="deck-screens">
-        <div class="deck-screen">
-          <span class="t-h4">Leave request</span>
-          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Balance shows</div>
-          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Form submits</div>
-          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Manager notified</div>
-          <div class="checkbox checkbox--lg" data-step="1" data-anim="check" data-done><input type="checkbox"><span class="checkbox__box">✓</span>Draft saved</div>
-          <button class="btn btn--filledB btn--small">Send</button>
-        </div>
+      <div class="appbar appbar--large"><h2 class="appbar__heading">Leave request</h2></div>
+      <div class="mo-taps__list">
+        <label class="checkbox checkbox--lg" data-anim="tap" data-step="1"><input type="checkbox"><span class="checkbox__box"><svg class="mo-icon"><use href="#i-check"/></svg></span>Balance shows</label>
+        <label class="checkbox checkbox--lg" data-anim="tap" data-step="2"><input type="checkbox"><span class="checkbox__box"><svg class="mo-icon"><use href="#i-check"/></svg></span>Form submits</label>
+        <label class="checkbox checkbox--lg" data-anim="tap" data-step="3"><input type="checkbox"><span class="checkbox__box"><svg class="mo-icon"><use href="#i-check"/></svg></span>Manager notified</label>
       </div>
+      <div class="mo-grow"></div>
+      <div class="mo-pad"><span class="btn btn--small btn--filledB">Send</span></div>
       <div class="home-indicator"></div>
-    </div>
-    <div class="deck-stack deck-grow">
-      <div class="card card--bubble deck-bubble" data-step="2" data-anim="bubble">
+    </div></div>
+    <span class="mo-touch"></span>
+    <div class="mo-caption">
+      <div class="card card--bubble deck-bubble" data-step="4" data-anim="bubble">
         <span class="avatar avatar--sm"><span class="avatar__monogram">You</span></span>
         <span class="deck-typing"><span></span><span></span><span></span></span>
-        <span class="deck-bubble__message t-h5">Make the button bigger</span>
+        <span class="deck-bubble__message t-label">Make the button bigger</span>
       </div>
-      <div class="deck-stack" data-step="3" data-stagger>
-        <div class="card card--strong deck-heading"><span class="t-h5">New checkpoint</span><span class="deck-caption">Same gates</span></div>
-        <div class="card card--strong deck-heading"><span class="t-h5">Saved to learnings file</span><span class="deck-caption">Every agent reads it</span></div>
+      <div class="deck-stack" data-step="5" data-stagger>
+        <div class="card card--strong mo-compact"><span class="t-body-semi">New checkpoint</span><span class="t-small mo-muted-on-strong">Same gates</span></div>
+        <div class="card card--strong mo-compact"><span class="t-body-semi">Saved to learnings file</span><span class="t-small mo-muted-on-strong">Every agent reads it</span></div>
       </div>
     </div>
-  </div>
+  </div></div>
 </section>
 
 <section class="scene deck-center" data-camera="fade">
@@ -634,6 +604,8 @@ radius: 16 32 full</pre>
 </main>
 <script src="../../design-system-web/deck/deck-state.js"></script>
 <script src="../../design-system-web/deck/effects.js"></script>
+<script src="../../design-system-web/deck/icons.js"></script>
+<script src="../../design-system-web/deck/motion/motion.js"></script>
 <script src="../../design-system-web/deck/deck.js"></script>
 </body>
 </html>

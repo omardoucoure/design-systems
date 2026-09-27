@@ -14,7 +14,7 @@ A reusable, click-driven HTML presentation kit built only from the HaHo web desi
 | Language | English |
 | Delivery | Local file opened from disk, fully offline (DM Sans bundled, no CDN) |
 | Screens | Mockups only: DS components + skeleton bars inside window/phone frames; no screenshots or images |
-| Talks | Zero custom CSS; every talk composes reusable layouts from `deck/patterns.css` |
+| Talks | Zero custom CSS; every talk composes reusable layouts from `deck/patterns.css` and motion scenes from `deck/motion/` |
 
 ## Architecture
 
@@ -22,6 +22,7 @@ A reusable, click-driven HTML presentation kit built only from the HaHo web desi
 design-system-web/                  reusable, ships with the package
 ├── tokens.css      + motion tokens
 ├── components.css  existing DS components
+├── components-extras.css  HaHo extras (appbar, tabbar, bubbles, stat tiles, chart cards…) copied from the Claude Design HaHo DS
 └── deck/
     ├── deck.css       stage, scenes, animation classes
     ├── deck.js        navigation, step engine, camera, hash resume
@@ -29,6 +30,12 @@ design-system-web/                  reusable, ships with the package
     ├── effects.js     count-up, typewriter, path draw, highlight sweep, chat bubble
     ├── patterns.css   reusable scene layouts (rows, orbit, stairs, bars, bubbles…)
     ├── PATTERNS.md    catalog of scene patterns with markup snippets
+    ├── icons.js       injects the HaHo icon sprite (offline, file:// safe)
+    ├── motion/        morphs, device mockups, live connectors, camera and touch cursor
+    │   ├── motion.css, morph.css, devices.css, connect.css, camera.css
+    │   ├── motion.js  connector engine (paths and pulses follow elements), camera focus, tap player
+    │   ├── demo.html  one scene per motion pattern, the snippet source
+    │   └── MOTION.md  motion pattern catalog (patterns 19 to 30)
     ├── new-deck.sh    scaffolds a new talk folder
     ├── template/      starter scene for a new talk
     └── tests/         deck-state unit tests
@@ -116,10 +123,10 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 | 5 | How Helix works | overview of the Helix approach |
 | 6 | Fresh context | fresh context per step |
 | 7 | Checkpoints vs gates | checkpoints compared against gates |
-| 8 | Orchestrator timeline | orchestrator driving a timeline |
+| 8 | Orchestrator timeline | phone "Approve plan" signals the orchestrator window (device-signal) |
 | 9 | Checkpoint stairs | checkpoints climbing in complexity |
 | 10 | Planner JSON + viewer | plan as JSON next to a checkpoint viewer |
-| 11 | Sub-agents at start | sub-agents spun up at the start |
+| 11 | Sub-agents at start | "Orchestrator" chip becomes the hub, sub-agents pop out (morph-hub) |
 | 12 | Rule vs gate | a rule compared against a gate |
 | 13 | The 4 gates | the four gates overview |
 | 14 | Gate 1 behavior | behavior gate |
@@ -127,13 +134,13 @@ State machine per scene: `entering → step 0 … step N → leaving`. Going bac
 | 16 | Gate 2 prototype first | prototype-first pass of the design gate |
 | 17 | Gate 2 browser check | browser-check pass of the design gate |
 | 18 | Gate 3 adversarial loop | adversarial review loop |
-| 19 | Gate 4 human | human gate |
+| 19 | Gate 4 human | touch point ticks the checklist, feedback bubble, results (cursor-taps) |
 | 20 | Closing | closing scene |
 
 ## Rules
 
 - Every color, spacing, radius, font, border and duration comes from `tokens.css`; a missing value becomes a token.
-- Only DS component classes for UI; `deck.css` and `deck/patterns.css` define layout and motion only, never one-off component looks.
+- Only DS component classes for UI; `deck.css`, `deck/patterns.css` and `deck/motion/*.css` define layout and motion only, never one-off component looks.
 - Parent/child contrast rule from the DS applies.
 - No source file over 400 lines; no code comments.
 - Talks carry zero custom CSS and no user-facing strings baked into the engine; all copy lives in the talk's `index.html`.
