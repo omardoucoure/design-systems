@@ -1,0 +1,86 @@
+.mo-push__phone { position: absolute; left: 96px; top: 14px; }
+.mo-push__viewport { position: relative; flex: 1; overflow: hidden; }
+.mo-push__screen {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-page);
+  transition:
+    transform var(--motion-dur-scene) var(--motion-ease-out),
+    filter var(--motion-dur-scene) var(--motion-ease-out);
+}
+.mo-push__screen--next { transform: translateX(100%); box-shadow: var(--shadow-floating); }
+.mo-push__tap { border-radius: var(--radius-md); }
+.mo-push.is-shown .mo-push__tap { animation: mo-flash var(--motion-dur-slow) var(--motion-ease-out) both; }
+.mo-push.is-shown .mo-push__screen { transition-delay: var(--motion-dur-base); }
+.mo-push.is-shown .mo-push__screen--prev { transform: translateX(-30%); filter: brightness(0.9); }
+.mo-push.is-shown .mo-push__screen--next { transform: none; }
+@keyframes mo-flash {
+  0%, 100% { background: transparent; }
+  40% { background: var(--n-2); }
+}
+
+.mo-signal__phone { position: absolute; left: 40px; top: 26px; }
+.mo-signal__window { left: 300px; top: 50px; width: 300px; height: 250px; }
+.mo-signal.is-shown .mo-signal__button { animation: mo-press var(--motion-dur-base) var(--motion-ease-out) both; }
+.mo-signal.is-shown .mo-pulse { animation: mo-travel var(--motion-dur-scene) ease-in-out var(--motion-dur-fast) both; }
+@keyframes mo-press {
+  0%, 100% { transform: none; filter: none; }
+  40% { transform: scale(0.94); filter: brightness(0.92); }
+}
+@keyframes mo-travel {
+  0% { offset-distance: 0%; opacity: 0; }
+  10%, 90% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+.mo-swap { position: relative; display: inline-flex; justify-content: flex-end; min-width: 84px; height: 24px; }
+.mo-swap > * {
+  position: absolute;
+  right: 0;
+  transition:
+    opacity var(--motion-dur-base) var(--motion-ease-out),
+    transform var(--motion-dur-base) var(--motion-ease-spring);
+}
+.mo-swap__to { opacity: 0; transform: scale(0.6); }
+.mo-signal.is-shown .mo-swap > * { transition-delay: calc(var(--motion-dur-scene) + var(--motion-dur-fast)); }
+.mo-signal.is-shown .mo-swap__from { opacity: 0; transform: scale(0.8); }
+.mo-signal.is-shown .mo-swap__to { opacity: 1; transform: none; }
+.mo-signal__toast {
+  position: absolute;
+  left: var(--space-md);
+  bottom: var(--space-md);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--motion-dur-slow) var(--motion-ease-out),
+    transform var(--motion-dur-slow) var(--motion-ease-out);
+}
+.mo-signal.is-shown .mo-signal__toast {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--motion-dur-scene) + var(--motion-dur-slow));
+}
+
+.mo-carousel__beat { display: none; }
+.mo-carousel__slot {
+  --mo-at-x: 0px;
+  --mo-at-z: 80px;
+  --mo-at-turn: 0deg;
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  margin-left: calc(393px * var(--mo-phone-sm) / -2);
+  z-index: 3;
+  transform: translateX(var(--mo-at-x)) translateZ(var(--mo-at-z)) rotateY(var(--mo-at-turn));
+  transition:
+    transform var(--motion-dur-scene) var(--motion-ease-out),
+    opacity var(--motion-dur-scene) var(--motion-ease-out),
+    filter var(--motion-dur-scene) var(--motion-ease-out);
+}
+.mo-carousel__slot--2 { --mo-at-x: 170px; --mo-at-z: -60px; --mo-at-turn: -32deg; z-index: 1; opacity: 0.85; filter: brightness(0.94); }
+.mo-carousel__slot--3 { --mo-at-x: -170px; --mo-at-z: -60px; --mo-at-turn: 32deg; z-index: 2; opacity: 0.85; filter: brightness(0.94); }
+.mo-carousel:has(.mo-carousel__beat--1.is-shown) .mo-carousel__slot--1 { --mo-at-x: -170px; --mo-at-z: -60px; --mo-at-turn: 32deg; z-index: 2; opacity: 0.85; filter: brightness(0.94); }
+.mo-carousel:has(.mo-carousel__beat--1.is-shown) .mo-carousel__slot--2 { --mo-at-x: 0px; --mo-at-z: 80px; --mo-at-turn: 0deg; z-index: 3; opacity: 1; filter: none; }
+.mo-carousel:has(.mo-carousel__beat--1.is-shown) .mo-carousel__slot--3 { --mo-at-x: 170px; --mo-at-z: -60px; --mo-at-turn: -32deg; z-index: 1; opacity: 0.85; filter: brightness(0.94); }
+.mo-carousel:has(.mo-carousel__beat--2.is-shown) .mo-carousel__slot--1 { --mo-at-x: 170px; --mo-at-z: -60px; --mo-at-turn: -32deg; z-index: 1; opacity: 0.85; filter: brightness(0.94); }
+.mo-carousel:has(.mo-carousel__beat--2.is-shown) .mo-carousel__slot--2 { --mo-at-x: -170px; --mo-at-z: -60px; --mo-at-turn: 32deg; z-index: 2; opacity: 0.85; filter: brightness(0.94); }
+.mo-carousel:has(.mo-carousel__beat--2.is-shown) .mo-carousel__slot--3 { --mo-at-x: 0px; --mo-at-z: 80px; --mo-at-turn: 0deg; z-index: 3; opacity: 1; filter: none; }

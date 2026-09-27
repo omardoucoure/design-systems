@@ -1,0 +1,122 @@
+:root {
+  --mo-stage-w: 640px;
+  --mo-stage-h: 360px;
+  --mo-scale: 1.4;
+  --mo-scale-full: 1.6;
+  --mo-scale-compact: 1.25;
+  --mo-phone: 0.36;
+  --mo-phone-lg: 0.39;
+  --mo-phone-sm: 0.34;
+  --mo-phone-xs: 0.27;
+  --mo-cam-zoom: 1.7;
+  --mo-loop: 2400ms;
+  --mo-ring: 3px;
+  --mo-pulse: 12px;
+  --mo-touch: 28px;
+}
+
+.deck-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.mo-icon { width: 24px; height: 24px; flex-shrink: 0; }
+.mo-icon--sm { width: 20px; height: 20px; }
+.mo-icon--ok { color: var(--semantic-success); }
+.mo-icon--wait { color: var(--semantic-warn); }
+
+.mo-frame {
+  position: relative;
+  flex-shrink: 0;
+  align-self: center;
+  width: calc(var(--mo-stage-w) * var(--mo-scale));
+  height: calc(var(--mo-stage-h) * var(--mo-scale));
+}
+.mo-frame--full { --mo-scale: var(--mo-scale-full); }
+.mo-frame--compact { --mo-scale: var(--mo-scale-compact); }
+.mo-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--mo-stage-w);
+  height: var(--mo-stage-h);
+  transform: scale(var(--mo-scale));
+  transform-origin: 0 0;
+}
+.mo-3d { perspective: 1200px; }
+
+.mo-phone { zoom: var(--mo-phone); }
+.mo-phone--lg { zoom: var(--mo-phone-lg); }
+.mo-phone--sm { zoom: var(--mo-phone-sm); }
+.mo-phone--xs { zoom: var(--mo-phone-xs); }
+.mo-pad { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); }
+.mo-grow { flex: 1; }
+.mo-full { width: 100%; }
+.mo-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
+.mo-compact { display: flex; flex-direction: column; gap: var(--space-xxs); padding: var(--space-md); border-radius: var(--radius-md); }
+.mo-tight { min-height: 0; padding: var(--space-xs) 0; }
+.mo-muted-on-strong { color: var(--text-on-primary); opacity: var(--opacity-subtle); }
+.mo-caption { position: absolute; left: 330px; top: 110px; width: 270px; display: flex; flex-direction: column; gap: var(--space-xs); }
+.mo-h30 { height: 30%; }
+.mo-h45 { height: 45%; }
+.mo-h60 { height: 60%; }
+.mo-h75 { height: 75%; }
+.mo-h100 { height: 100%; }
+
+.mo-window { position: absolute; }
+.mo-window .deck-window__bar { padding: var(--space-xs) var(--space-sm); }
+.mo-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  background: var(--semantic-success-bg);
+  color: var(--semantic-success);
+  font: var(--type-label);
+  box-shadow: var(--shadow-card);
+}
+
+.mo-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.mo-wires--top { z-index: 3; }
+.mo-link { fill: none; stroke: var(--border-strong); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mo-link--strong { stroke: var(--p-100); stroke-width: 3; }
+.mo-link--accent { stroke: var(--s-100); stroke-width: 3; }
+.mo-link--dash { stroke: var(--border-default); stroke-dasharray: 4 6; }
+
+.mo-pulse {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--mo-pulse);
+  height: var(--mo-pulse);
+  border-radius: var(--radius-full);
+  background: var(--s-100);
+  box-shadow: 0 0 0 4px var(--s-40);
+  offset-rotate: 0deg;
+  offset-anchor: center;
+  offset-distance: 0%;
+  opacity: 0;
+}
+@keyframes mo-flow {
+  0% { offset-distance: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  80% { offset-distance: 100%; opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.mo-touch {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: 5;
+  width: var(--mo-touch);
+  height: var(--mo-touch);
+  margin: calc(var(--mo-touch) / -2) 0 0 calc(var(--mo-touch) / -2);
+  border-radius: var(--radius-full);
+  background: var(--s-100);
+  box-shadow: 0 0 0 6px var(--s-40);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    left var(--motion-dur-slow) var(--motion-ease-out),
+    top var(--motion-dur-slow) var(--motion-ease-out),
+    opacity var(--motion-dur-base) var(--motion-ease-out);
+}
+.mo-touch.is-on { opacity: var(--opacity-subtle); }
